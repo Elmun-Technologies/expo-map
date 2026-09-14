@@ -116,8 +116,11 @@ eksport yozilmaydi). Ya'ni "yo'q joyni sotish" texnik jihatdan imkonsiz bo'ladi.
 
 ## 7. Men sizdan kutayotgan fayl va undan kerak bo'ladigan ma'lumot
 
-Fayl istalgan formatda bo'lishi mumkin (DWG, PDF, Figma havola, Excel ro'yxat, hatto qo'lda chizilgan
-eskiz skaneri). Undan quyidagilar kerak:
+Fayl istalgan formatda bo'lishi mumkin (DWG/DXF chizma, PDF, Figma havola, Excel ro'yxat, hatto qo'lda
+chizilgan eskiz skaneri). **Hozirgi holat:** siz DWG (yoki PDF) chizmani tanladingiz — uni shu yerga
+tashlang, o'lchamlarni o'qib layout'ni real ma'lumot bilan to'ldiraman. DWG'ni bevosita o'qish qiyin
+bo'lsa, undan **PDF yoki yuqori aniqlikdagi rasm** chiqarib yuborish yetarli (o'lcham yozuvlari
+ko'rinib turishi kerak). Undan quyidagilar kerak:
 
 - [ ] Zalning umumiy o'lchami (m) va shakli (to'g'ri to'rtburchakmi yoki burchak/aylana bor);
 - [ ] Har bir blokning **boshlanish nuqtasi** (zalning chap-tepa burchagidan, metrda) va ustun/qator soni;

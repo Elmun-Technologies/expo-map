@@ -27,10 +27,12 @@ Brauzerda ochiladi (telefonda ham ishlaydi). Demo loginlar (`data/sellers.exampl
 |---|---|---|
 | Aziz Karimov | `1111` | oddiy sotuvchi |
 | Dilnoza Yusupova | `2222` | oddiy sotuvchi |
+| Sardor Umarov | `3333` | oddiy sotuvchi |
 | Menejer | `9999` | admin: jurnal, boshqalarning yozuvini bo'shatish |
 
-Ishga tushirishdan oldin **albatta** `data/sellers.example.json` → `data/sellers.json` qilib nusxalab,
-PIN'larni almashtiring (faylda `role: "admin"` — menejer).
+Ishlab turgan holda loginlar `data/sellers.json` faylidan olinadi (git'ga tushmaydi) —
+fayl formati va izoh: `data/sellers.README.txt`.
+
 
 ## 2. Sotuvchi nima qiladi (3 qadam)
 
@@ -59,10 +61,13 @@ stend.id = "A-01-05"        (blok-raqam; mijoz shartnomasida ham aynan shu ID yo
 ```
 
 ```json
-{ "id": "A-01", "x": 4, "y": 6, "cols": 4, "rows": 2 }
+{ "id": "A-01", "x": 4, "y": 5, "cols": 2, "rows": 4 }   → 6 m × 12 m = 72 m²
 ```
 
-`cols × rows` **doim 8** bo'lishi kerak (72 m²). Nostandart shakl kerak bo'lsa:
+`cols × rows` **doim 8** bo'lishi kerak (72 m²). Standart shakl — **2 ustun × 4 qator** (6 m × 12 m),
+lekin har bir blok o'z shakliga ega bo'lishi mumkin: `cols: 4, rows: 2` (12×6 m), `cols: 8, rows: 1`
+(24×3 m) va h.k. Raqamlash standart bo'yicha chapdan-o'ngga, yuqoridan-pastga (`"numbering": "col-major"`
+bilan ustun bo'ylab raqamlash ham mumkin). Nostandart shakl kerak bo'lsa:
 `"stands": [{ "col": 0, "row": 0, "no": 1 }, ...]` — lekin stendlar uzluksiz (yonma-yon) bo'lishi shart,
 aks holda validator blokni rad etadi.
 
@@ -111,6 +116,31 @@ node tools/import-csv.mjs blocks.csv --hall "A zal" --width 66 --height 44 \
 
 Skript oxirida validator natijasini ko'rsatadi. Xato bo'lsa — fayl yozilgan bo'lsa ham xarita chiqmaydi,
 to'g'rilab qayta ishga tushirasiz. Nostandart shakl uchun: `--mode stands` (`stend,blok,x,y`).
+
+## 5b. DWG/DXF chizma bo'lsa (real zal fayli)
+
+```bash
+pip install ezdxf                                  # bir marta
+
+# 1) chizmada nima borligini ko'rish (layerlar, to'rtburchaklar, yozuvlar)
+python3 tools/inspect-dxf.py zal.dxf --min-area 4
+
+# 2) avtomatik layout yasash
+python3 tools/dxf-to-layout.py zal.dxf --block-layer BLOK --hall-layer ZAL \
+        --feature XONA:room --feature USTUN:column --label-layer YOZUV \
+        --out layout/hall-A.json --hall "A zal" --project "Ekspo Markazi" --price 1250000
+```
+
+Konvertor nimalarni o'zi ushlaydi (mijozga xato ketmasligi uchun):
+
+* **Y o'qini teskari qiladi** — DXF'da Y pastdan tepaga, layout'da tepadan pastga
+  (xaritaning "oynadagidek teskari" chiqishi eng ko'p uchraydigan mapping xatosi);
+* 72 m² **bo'lmagan** to'rtburchaklarni alohida ro'yxat qilib ko'rsatadi (masalan 6×9 m = 54 m²);
+* blok koordinatasi 3 m to'rga tushmasa, yo'lak 2 m dan tor bo'lsa, bloklar ustma-ust tushsa — ogohlantiradi;
+* oxirida `tools/validate-layout.mjs` ni ishga tushirib yakuniy hukmni beradi.
+
+DXF kerak bo'lsa: AutoCAD/LibreCAD'da "Save As → DXF", yoki DWG→DXF konvertor.
+Alternativa — `tools/import-csv.mjs` (Excel ro'yxat bo'lsa).
 
 ## 6. Server: API va ma'lumot
 
@@ -164,6 +194,8 @@ tools/validate-layout.mjs         # CLI validator (CI uchun)
 tools/test-validator.mjs          # 12 ta buzilgan layout testi
 tools/export-svg.mjs              # mijozga yuboriladigan xarita (SVG)
 tools/import-csv.mjs              # Excel/CSV → layout JSON
+tools/inspect-dxf.py              # DXF: layerlar, to'rtburchaklar, yozuvlar ro'yxati (ezdxf)
+tools/dxf-to-layout.py            # DXF → layout JSON (Y o'qini teskari qiladi, xatolarni sanaydi)
 tools/demo.mjs                    # demo holat: --seed / --reset
 tests/smoke.mjs                   # UI smoke-test (jsdom; ishlab turgan serverga qarshi)
 exports/                # chiqarilgan xaritalar
