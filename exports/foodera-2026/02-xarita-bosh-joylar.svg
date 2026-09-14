@@ -393,6 +393,8 @@
 <text x="475.00" y="224.40" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">6</text>
 <text x="475.00" y="242.40" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">06</text>
 <rect x="408.00" y="269.40" width="68" height="7" rx="3.5" fill="#2E8B8B"/>
+<rect x="508.00" y="127.40" width="66.00" height="66.00" rx="3" fill="#2E8B8B" fill-opacity="0.85" stroke="#0f2233" stroke-width="1.3"/>
+<rect x="508.00" y="193.40" width="66.00" height="66.00" rx="3" fill="#2E8B8B" fill-opacity="0.85" stroke="#0f2233" stroke-width="1.3"/>
 <rect x="772.00" y="127.40" width="264.00" height="132.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
 <rect x="772.00" y="95.40" width="118.72" height="25" rx="5" fill="#2E8B8B"/>
 <text x="831.36" y="112.45" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">EQ-2 · 72 m²</text>
@@ -415,6 +417,8 @@
 <text x="937.00" y="224.40" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">6</text>
 <text x="937.00" y="242.40" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">06</text>
 <rect x="870.00" y="269.40" width="68" height="7" rx="3.5" fill="#2E8B8B"/>
+<rect x="970.00" y="127.40" width="66.00" height="66.00" rx="3" fill="#2E8B8B" fill-opacity="0.85" stroke="#0f2233" stroke-width="1.3"/>
+<rect x="970.00" y="193.40" width="66.00" height="66.00" rx="3" fill="#2E8B8B" fill-opacity="0.85" stroke="#0f2233" stroke-width="1.3"/>
 <rect x="68.00" y="233.00" width="132.00" height="70.22" rx="3" fill="#eaf6ec" stroke="#E8A33D" stroke-width="1.1" stroke-dasharray="6 4"/>
 <text x="134.00" y="264.48" font-size="18.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">A6</text>
 <text x="134.00" y="283.98" font-size="10.00" fill="#1b5e20" text-anchor="middle" opacity="0.9">19,15 m²</text>
@@ -433,14 +437,6 @@
 <rect x="68.00" y="695.00" width="132.00" height="100.50" rx="3" fill="#eaf6ec" stroke="#E8A33D" stroke-width="1.1" stroke-dasharray="6 4"/>
 <text x="134.00" y="741.62" font-size="18.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">A1</text>
 <text x="134.00" y="761.12" font-size="10.00" fill="#1b5e20" text-anchor="middle" opacity="0.9">27,41 m²</text>
-<path d="M508 127.4L574 127.4L574 193.4L574 259.4L508 259.4L508 193.4Z" fill="#c62828" stroke="#8e1b1b" stroke-width="2"/>
-<text x="541.00" y="185.39" font-size="10.48" font-weight="bold" fill="#ffffff" text-anchor="middle">Rus Expo</text>
-<text x="541.00" y="197.96" font-size="10.48" font-weight="bold" fill="#ffffff" text-anchor="middle">Group</text>
-<text x="541.00" y="217.98" font-size="8.00" fill="#ffffff" text-anchor="middle" opacity="0.92">18 m²</text>
-<path d="M970 127.4L1036 127.4L1036 193.4L1036 259.4L970 259.4L970 193.4Z" fill="#fff3d6" stroke="#f59e0b" stroke-width="2"/>
-<text x="1003.00" y="185.62" font-size="9.28" font-weight="bold" fill="#8a5a00" text-anchor="middle">KazPack</text>
-<text x="1003.00" y="196.75" font-size="9.28" font-weight="bold" fill="#8a5a00" text-anchor="middle">Machinery</text>
-<text x="1003.00" y="216.54" font-size="8.00" fill="#8a5a00" text-anchor="middle" opacity="0.92">18 m²</text>
 <rect x="46.00" y="1217.00" width="15" height="15" rx="3" fill="#eaf6ec" stroke="#2e7d32" stroke-width="1.4"/>
 <text x="69.00" y="1230.00" font-size="13" fill="#33454f">Bo'sh: 106 stend · 1 041,18 m²</text>
 <rect x="325.80" y="1217.00" width="15" height="15" rx="3" fill="#fff3d6" stroke="#f59e0b" stroke-width="1.4"/>

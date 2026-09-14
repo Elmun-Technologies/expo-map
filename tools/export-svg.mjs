@@ -183,7 +183,8 @@ const sectionRows = (!detail && (exp.sections || []).length)
   : [];
 // BAND joylar: bitta kompaniya nechta stend olgan bo'lsa — BITTA quti, nomi ichida.
 // (kompaniyalar ro'yxati jadvali olib tashlandi — nom xaritada o'z joyida ko'rinadi)
-const extraUnits = mergedAsStands(blocks);
+const neutral = stateFile === null;                 // --no-state: bo'sh xarita (katalog/bozor uchun)
+const extraUnits = neutral ? { stands: [], items: {} } : mergedAsStands(blocks);
 const units = groupBookings([...allStands, ...extraUnits.stands], Object.assign({}, items, extraUnits.items));
 const bookedIds = new Set(units.flatMap((u) => u.ids.filter((id) => !id.includes('~m'))));
 const mergedDrawn = new Set(units.flatMap((u) => u.ids.filter((id) => id.includes('~m'))));
@@ -262,10 +263,10 @@ for (const b of blocks) {
     // birlashtirilgan (stendlar olib tashlangan) kataklar
     for (const m of b.merged || []) {
       if (mergedDrawn.has(`${b.id}~m${(b.merged || []).indexOf(m)}`)) continue;
-      const st = m.status ? STATUS[m.status] : null;
+      const st = !neutral && m.status ? STATUS[m.status] : null;
       out.push(`<rect x="${R(X(m.x))}" y="${R(Y(m.y))}" width="${R(S(m.w))}" height="${R(S(m.h))}" rx="3" fill="${st ? st.fill : (b.color || '#0f2233')}" fill-opacity="${st ? 1 : 0.85}" stroke="${st ? st.stroke : '#0f2233'}" stroke-width="1.3"/>`);
       const cx = X(m.x + m.w / 2), cy = Y(m.y + m.h / 2);
-      const label = String(m.label || '');
+      const label = neutral ? '' : String(m.label || '');
       const maxLines = S(m.h) > 55 ? 3 : 2;
       const lines = wrapText(label, S(m.w) - 12, S(m.h) - 10, maxLines, 15);
       const lh = Math.min(S(m.h) / (lines.length + 1.1), 20);
@@ -277,7 +278,7 @@ for (const b of blocks) {
       lines.forEach((ln, idx) => {
         out.push(`<text x="${R(cx)}" y="${R(cy - (lines.length - 1) * lh / 2 + idx * lh + fs * 0.36)}" font-size="${R(fs)}" font-weight="bold" fill="${ink}" text-anchor="middle">${esc(ln)}</text>`);
       });
-      if (m.buyer && m.buyer !== label) {
+      if (!neutral && m.buyer && m.buyer !== label) {
         const bl = wrapText(m.buyer, S(m.w) - 10, 14, 1);
         out.push(`<text x="${R(cx)}" y="${R(cy + S(m.h) / 2 - 6)}" font-size="${R(Math.max(6.5, fs * 0.72))}" fill="${ink}" text-anchor="middle" opacity="0.95">${esc(bl[0])}</text>`);
       }
