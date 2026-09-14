@@ -7,7 +7,7 @@
 import { validateLayout } from '../lib/layout.mjs';
 
 const base = () => ({
-  meta: { stand: { w: 3, h: 3, areaM2: 9 }, block: { stands: 8, areaM2: 72 }, minAisleM: 2 },
+  meta: { stand: { w: 3, h: 3, areaM2: 9 }, block: { stands: 8, areaM2: 72 }, minAisleM: 2, status: 'approved' },
   hall: { width: 60, height: 40 },
   features: [],
   blocks: [
@@ -19,8 +19,8 @@ const base = () => ({
 
 const cases = [
   { name: 'toza layout o\'tishi kerak', layout: base(), expect: 'ok' },
-  { name: 'blokda 6 ta stend (8 emas)', layout: { ...base(), blocks: [{ id: 'A-01', x: 5, y: 5, cols: 3, rows: 2 }] }, expect: /aynan 8 ta/ },
-  { name: 'blokda 10 ta stend', layout: { ...base(), blocks: [{ id: 'A-01', x: 5, y: 5, cols: 5, rows: 2 }] }, expect: /aynan 8 ta/ },
+  { name: 'blokda 6 ta stend (8 emas)', layout: { ...base(), blocks: [{ id: 'A-01', x: 5, y: 5, cols: 3, rows: 2 }] }, expect: /standart blok 8 ta/ },
+  { name: 'blokda 10 ta stend', layout: { ...base(), blocks: [{ id: 'A-01', x: 5, y: 5, cols: 5, rows: 2 }] }, expect: /standart blok 8 ta/ },
   { name: 'stend 3.5×3 m (9 m² emas)', layout: { ...base(), meta: { stand: { w: 3.5, h: 3, areaM2: 9 }, minAisleM: 2 } }, expect: /9 m2 bo'lishi shart/ },
   { name: 'qo\'lda joylash: stendlar orasida 0.5 m bo\'shliq', layout: {
       ...base(),
@@ -51,7 +51,27 @@ const cases = [
       { id: 'A-01', x: 5, y: 5, cols: 4, rows: 2 },
       { id: 'A-01', x: 20, y: 5, cols: 4, rows: 2 },
     ] }, expect: /Blok ID takrorlanyapti/ },
-  { name: 'maydon 72 emas (meta.block.areaM2 = 90)', layout: { ...base(), meta: { stand: { w: 3, h: 3, areaM2: 9 }, block: { stands: 8, areaM2: 90 }, minAisleM: 2 } }, expect: /72 bo'lishi shart/ },
+  { name: 'maydon 72 emas (meta.block.areaM2 = 90)', layout: { ...base(), meta: { stand: { w: 3, h: 3, areaM2: 9 }, block: { stands: 8, areaM2: 90 }, minAisleM: 2, status: 'approved' } }, expect: /72 bo'lishi shart/ },
+
+  // --- real chizma uchun qo'shilgan imkoniyatlar ---
+  { name: "nostandart stend: maydon o'lchamga mos (22.67 = 6 x 3.78)", layout: {
+      ...base(), customStands: [{ id: 'A4', x: 1, y: 1, w: 6, h: 3.78, areaM2: 22.67 }],
+    }, expect: 'ok' },
+  { name: "nostandart stend: maydon o'lchamga mos emas", layout: {
+      ...base(), customStands: [{ id: 'A4', x: 1, y: 1, w: 6, h: 3.78, areaM2: 30 }],
+    }, expect: /o'lchamdan .* chiqadi/ },
+  { name: 'multi-stend guruh (12 ta = 108 m2) strict rejimda xato', layout: {
+      ...base(), blocks: [{ id: 'A', x: 5, y: 5, cols: 2, rows: 6 }],
+    }, expect: /standart blok 8 ta/ },
+  { name: 'multi-stend guruh enforceBlockRule:false bilan faqat ogohlantirish', layout: {
+      ...base(), meta: { ...base().meta, enforceBlockRule: false }, blocks: [{ id: 'A', x: 5, y: 5, cols: 2, rows: 6 }],
+    }, expect: 'ok', expectWarn: /12 ta stend/ },
+  { name: 'zona tashqarisiga chiqqan stend', layout: {
+      ...base(),
+      zones: [{ id: 'main', label: 'Asosiy zal', x: 0, y: 0, w: 20, h: 20 }],
+      blocks: [{ id: 'A-01', x: 15, y: 15, cols: 2, rows: 4, zone: 'main' }],
+    }, expect: /zonasidan tashqarida/ },
+  { name: 'qoralama holat ogohlantirish beradi', layout: { ...base(), meta: { ...base().meta, status: 'draft' } }, expect: 'ok', expectWarn: /QORALAMA/ },
 ];
 
 let pass = 0, fail = 0;

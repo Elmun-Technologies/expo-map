@@ -85,7 +85,13 @@ const clickMap = (el, pointerId = 1) => {
 
 await tick(600);
 assert(errors.length === 0, 'ilova xatosiz yuklandi' + (errors.length ? ' → ' + errors.join(' | ') : ''));
-assert($('#hallTitle').textContent.includes('Ekspo'), 'layout yuklandi: ' + $('#hallTitle').textContent);
+assert($('#hallTitle').textContent.includes(layout.meta.project) || $('#hallTitle').textContent.includes(layout.meta.hall),
+  'layout yuklandi: ' + $('#hallTitle').textContent);
+assert(!layout.customStands?.length || doc.querySelectorAll('#world .stand.custom').length === layout.customStands.length,
+  `nostandart stendlar chizildi (${doc.querySelectorAll('#world .stand.custom').length}/${layout.customStands?.length || 0})`);
+if ((layout.meta.status || 'draft') !== 'approved') {
+  assert(!$('#draftBanner').hidden, 'QORALAMA banneri ko\'rsatildi');
+}
 assert($$('#world .stand').length === layout.stands.length, `xaritada ${layout.stands.length} stend chizildi (${$$('#world .stand').length})`);
 assert($('#stats').textContent.includes("bo'sh"), 'statistika ko\'rsatildi');
 
@@ -109,8 +115,11 @@ $('#clearSel').click();
 await tick(50);
 clickMap($$('#world .block-chip').find((c) => c.dataset.block === freeBlock.id), 2);
 await tick();
-assert($('#selChips').children.length === 8, `blok bosilganda 8 stend tanlandi (${$('#selChips').children.length})`);
-assert($('#selInfo').textContent.replace(/\s+/g, ' ').includes('8 stend · 72 m²'), '72 m² ko\'rsatildi: ' + $('#selInfo').textContent.replace(/\s+/g, ' ').slice(0, 80));
+const fbArea = freeBlock.stands.reduce((a, s) => a + s.areaM2, 0);
+const fbAreaTxt = fbArea.toLocaleString('ru-RU').replace(/\u00A0/g, ' ');
+assert($('#selChips').children.length === freeBlock.stands.length, `blok bosilganda ${freeBlock.stands.length} stend tanlandi (${$('#selChips').children.length})`);
+assert($('#selInfo').textContent.replace(/\s+/g, ' ').includes(`${freeBlock.stands.length} stend · ${fbAreaTxt} m²`),
+  'blok maydoni ko\'rsatildi: ' + $('#selInfo').textContent.replace(/\s+/g, ' ').slice(0, 90));
 
 // --- sotish oqimi
 $('#buyer').value = 'Smoke Test MChJ';
@@ -123,12 +132,12 @@ $('#confirmOk').click();
 await tick(900);
 assert(!$('#receipt').hidden, 'sotuv kvitansiyasi chiqdi');
 assert($('#receipt').textContent.includes('Smoke Test MChJ'), 'kvitansiyada mijoz ismi bor');
-assert($('#receipt').textContent.includes('72 m²'), 'kvitansiyada 72 m²');
+assert($('#receipt').textContent.replace(/\u00A0/g, ' ').includes(`${fbAreaTxt} m²`), 'kvitansiyada blok maydoni');
 assert(errors.length === 0, 'sotuvdan keyin ham xato yo\'q' + (errors.length ? ' → ' + errors.join(' | ') : ''));
 
 st = await (await fetch(BASE + '/api/state')).json();
 const sold = Object.values(st.items).filter((i) => i.blockId === freeBlock.id && i.status === 'sold');
-assert(sold.length === 8, `serverda ${freeBlock.id} ning 8 stendi "sold" (${sold.length})`);
+assert(sold.length === freeBlock.stands.length, `serverda ${freeBlock.id} ning ${freeBlock.stands.length} stendi "sold" (${sold.length})`);
 
 // --- sotilgan blok qayta tanlanganda "Sotish" o'chirilgan
 $('#clearSel').click();

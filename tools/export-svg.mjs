@@ -31,6 +31,11 @@ if (!check.ok) {
   console.error('✗ Layout xato — eksport qilinmadi:\n' + check.errors.map((e) => '   ✗ ' + e).join('\n'));
   process.exit(1);
 }
+const isDraft = (raw.meta?.status || 'draft') !== 'approved';
+if (isDraft && !args.includes('--force')) {
+  console.error(`✗ Bu xarita QORALAMA (meta.status = "${raw.meta?.status || 'draft'}") — mijozga yuborish uchun avval raqamlarni tasdiqlang,\n  keyin layout JSON'da meta.status = "approved" qiling. Majburan chiqarish kerak bo'lsa: --force`);
+  process.exit(1);
+}
 const exp = expandLayout(raw);
 
 let stateOpt = opt('state', null);
@@ -83,7 +88,8 @@ const sub = `${exp.meta.pricePerM2 && !blockFilter ? fmtNum(exp.meta.pricePerM2)
 
 // ---------------------------------------------------------------- legenda qatorlari
 const counts = { free: 0, reserved: 0, sold: 0, blocked: 0 };
-for (const b of blocks) for (const s of b.stands) counts[statusOf(s.id)]++;
+const allStands = [...blocks.flatMap((b) => b.stands), ...(blockFilter ? [] : exp.customStands || [])];
+for (const s of allStands) counts[statusOf(s.id)]++;
 const legendItems = ['free', 'reserved', 'sold', 'blocked'].filter((k) => k !== 'blocked' || counts.blocked);
 const innerW = Math.max(S(content.w), Math.max(txtW(title, F.title), txtW(sub, F.sub)));
 const legend = [];
@@ -110,7 +116,7 @@ const legend = [];
 const legendRows = legend.length ? legend[legend.length - 1].row + 1 : 0;
 const legendH = legendRows ? legendRows * (F.legend + 12) + 10 : 0;
 // blok kartasida sarlavha ostida blok yorlig'i uchun ham joy kerak
-const headerH = F.title + F.sub + 22 + (blockFilter ? F.chip + 24 : 0);
+const headerH = F.title + F.sub + 22 + (blockFilter ? F.chip + 24 : 0) + (isDraft ? 34 : 0);
 
 // ---------------------------------------------------------------- sahifa o'lchami
 const headerW = Math.max(txtW(title, F.title), txtW(sub, F.sub)) + PAD * 2;
@@ -126,10 +132,23 @@ const Y = (m) => oy + S(m);      // chiqarishda R() bilan yaxlitlanadi
 const out = [];
 out.push(`<svg xmlns="http://www.w3.org/2000/svg" width="${pageW.toFixed(0)}" height="${pageH.toFixed(0)}" viewBox="0 0 ${pageW.toFixed(0)} ${pageH.toFixed(0)}" font-family="DejaVu Sans, Helvetica, Arial, sans-serif">`);
 out.push(`<rect width="${pageW.toFixed(0)}" height="${pageH.toFixed(0)}" fill="#ffffff"/>`);
+if (isDraft) {
+  out.push(`<rect x="0" y="0" width="${pageW.toFixed(0)}" height="26" fill="#8e1b1b"/>`);
+  out.push(`<text x="${(pageW / 2).toFixed(0)}" y="18" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">QORALAMA - raqamlar tasdiqlanmagan, mijozga yuborilmaydi</text>`);
+}
 
 // sarlavha (title/sub yuqorida hisoblangan)
 out.push(`<text x="${PAD}" y="${PAD + F.title}" font-size="${F.title}" font-weight="bold" fill="#0f2233">${esc(title)}</text>`);
 out.push(`<text x="${PAD}" y="${PAD + F.title + F.sub + 8}" font-size="${F.sub}" fill="#5b6b7a">${esc(sub)}</text>`);
+
+// zonalar
+if (!blockFilter) {
+  for (const z of exp.zones || []) {
+    if (!z.w || !z.h) continue;
+    out.push(`<rect x="${R(X(z.x))}" y="${R(Y(z.y))}" width="${R(S(z.w))}" height="${R(S(z.h))}" rx="4" fill="${z.color || '#f2f5f8'}" fill-opacity="0.85" stroke="#b9c7d4" stroke-width="1.2" stroke-dasharray="9 6"/>`);
+    out.push(`<text x="${R(X(z.x) + z.w / 2)}" y="${R(Y(z.y) + 24)}" font-size="${F.feat + 2}" font-weight="bold" fill="#93a3b1" text-anchor="middle">${esc(z.label)}</text>`);
+  }
+}
 
 // zal konturi va obyektlar
 if (!blockFilter) {
@@ -149,20 +168,32 @@ if (!blockFilter) {
 
 // bloklar va stendlar
 for (const b of blocks) {
+  if (b.kind === 'custom') continue; // nostandart stend: yorliq va maydon o'z ichida yozilgan
   out.push(`<rect x="${R(X(b.x))}" y="${R(Y(b.y))}" width="${R(S(b.w))}" height="${R(S(b.h))}" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>`);
 
   // blok yorlig'i
-  const chipText = `${b.label} · 72 m²`;
+  const chipText = `${b.label} · ${fmtNum(b.areaM2)} m²`;
   const chipW = Math.min(S(b.w) + 60, txtW(chipText, F.chip) + 22);
   const chipH = F.chip + 12;
   const chipX = X(b.x), chipY = Y(b.y) - chipH - 7;
-  out.push(`<rect x="${R(chipX)}" y="${R(chipY)}" width="${R(chipW)}" height="${chipH}" rx="5" fill="#0f2233"/>`);
+  out.push(`<rect x="${R(chipX)}" y="${R(chipY)}" width="${R(chipW)}" height="${chipH}" rx="5" fill="${b.color || '#0f2233'}"/>`);
   out.push(`<text x="${R(chipX + chipW / 2)}" y="${R(chipY + chipH / 2 + F.chip * 0.35)}" font-size="${F.chip}" font-weight="bold" fill="#ffffff" text-anchor="middle">${esc(chipText)}</text>`);
 
-  for (const s of b.stands) {
-    const st = STATUS[statusOf(s.id)];
-    out.push(`<rect x="${R(X(s.x))}" y="${R(Y(s.y))}" width="${R(S(s.w))}" height="${R(S(s.h))}" rx="3" fill="${st.fill}" stroke="${st.stroke}" stroke-width="1.1"/>`);
-    const cx = X(s.x + s.w / 2), cy = Y(s.y + s.h / 2);
+  if (b.kind === 'custom') continue;
+  for (const s of b.stands) drawStand(s, false);
+}
+
+// nostandart o'lchamdagi stendlar (A1–A6 kabi) — maydoni o'zida yozilgan
+for (const s of exp.customStands || []) drawStand(s, true);
+
+function drawStand(s, custom) {
+  const st = STATUS[statusOf(s.id)];
+  out.push(`<rect x="${R(X(s.x))}" y="${R(Y(s.y))}" width="${R(S(s.w))}" height="${R(S(s.h))}" rx="3" fill="${st.fill}" stroke="${s.color || st.stroke}" stroke-width="1.1"${custom ? ' stroke-dasharray="6 4"' : ''}/>`);
+  const cx = X(s.x + s.w / 2), cy = Y(s.y + s.h / 2);
+  if (custom) {
+    out.push(`<text x="${R(cx)}" y="${R(cy)}" font-size="${F.num}" font-weight="bold" fill="${st.ink}" text-anchor="middle">${esc(s.label || s.id)}</text>`);
+    out.push(`<text x="${R(cx)}" y="${R(cy + F.num + 4)}" font-size="${F.sid}" fill="${st.ink}" text-anchor="middle" opacity="0.9">${esc(fmtNum(s.areaM2))} m²</text>`);
+  } else {
     out.push(`<text x="${R(cx)}" y="${R(cy - 2)}" font-size="${F.num}" font-weight="bold" fill="${st.ink}" text-anchor="middle">${esc(s.noLabel)}</text>`);
     out.push(`<text x="${R(cx)}" y="${R(cy + F.sid + 6)}" font-size="${F.sid}" fill="${st.ink}" text-anchor="middle" opacity="0.85">${esc(s.id.replace(/^.*?-(?=\d+$)/, ''))}</text>`);
   }
@@ -176,8 +207,9 @@ for (const L of legend) {
   out.push(`<rect x="${R(x)}" y="${R(y - F.legend)}" width="${F.legend + 2}" height="${F.legend + 2}" rx="3" fill="${STATUS[L.k].fill}" stroke="${STATUS[L.k].stroke}" stroke-width="1.4"/>`);
   out.push(`<text x="${R(x + F.legend + 10)}" y="${R(y)}" font-size="${F.legend}" fill="#33454f">${esc(L.text)}</text>`);
 }
-const totalStands = blocks.reduce((a, b) => a + b.stands.length, 0);
-out.push(`<text x="${pageW - PAD}" y="${pageH - PAD + F.foot}" font-size="${F.foot}" fill="#33454f" text-anchor="end">Jami: ${totalStands} stend · ${fmtNum(totalStands * 9)} m²</text>`);
+const totalStands = allStands.length;
+const totalAreaM2 = allStands.reduce((a, s) => a + s.areaM2, 0);
+out.push(`<text x="${pageW - PAD}" y="${pageH - PAD + F.foot}" font-size="${F.foot}" fill="#33454f" text-anchor="end">Jami: ${totalStands} stend · ${fmtNum(totalAreaM2)} m²</text>`);
 out.push('</svg>');
 
 // yozish
@@ -186,4 +218,4 @@ const outPath = path.resolve(ROOT, String(opt('out', `exports/${baseName}${block
 fs.mkdirSync(path.dirname(outPath), { recursive: true });
 fs.writeFileSync(outPath, out.join('\n'));
 const kb = (fs.statSync(outPath).size / 1024).toFixed(1);
-console.log(`✓ ${path.relative(ROOT, outPath)} — ${pageW.toFixed(0)}×${pageH.toFixed(0)} px (${kb} KB), ${totalStands} stend · ${fmtNum(totalStands * 9)} m²`);
+console.log(`✓ ${path.relative(ROOT, outPath)} — ${pageW.toFixed(0)}×${pageH.toFixed(0)} px (${kb} KB), ${totalStands} stend · ${fmtNum(totalAreaM2)} m²`);

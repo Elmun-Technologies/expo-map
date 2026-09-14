@@ -49,6 +49,25 @@ u havolada faqat xarita va holat ko'rinadi (login, narx kiritish yo'q).
 **Chop etish / PDF:** sahifadagi `Chop etish / PDF` tugmasi A3 landshaft varaq chiqaradi:
 xarita + legenda + bo'sh joylar ro'yxati + bloklar jadvali (har biri 72 m²).
 
+## 2b. Real chizma (Крытый павильон) — qoralama holati
+
+| Fayl | Nima |
+|---|---|
+| `layout/hall-A.json` | **Namuna zal** (8 blok × 72 m² = 576 m²) — tizimni sinash va o'rgatish uchun, tasdiqlangan |
+| `layout/hall-real.json` | **Sizning real zaliingiz qoralamasi** — 12 guruh (A–F ustunlar = 108 m², pastki qator 72/36 m²) + 6 nostandart stend (A1–A6) |
+| `docs/CHIZMA-ANKETA.md` | Tasdiqlash uchun savollar ro'yxati (o'lchamlar, raqamlash, narx) |
+| `exports/hall-real-DRAFT.svg` | Qoralama xarita (suv belgisi bilan) — ko'rib chiqish uchun |
+
+Panelni real zaл bilan ochish:
+
+```bash
+LAYOUT=layout/hall-real.json STATE=data/state-real.json PORT=4174 node server.mjs
+```
+
+**Muhim:** real chizmada asosiy zal kataklari 2×6 = **12 ta** (108 m²) — ya'ni 72 m² (8 stend) qoidasidan
+farq qiladi. Shuning uchun bu layoutda `meta.enforceBlockRule = false` (ogohlantirish, xato emas) va
+`meta.status = "draft"`. Tasdiqlangach `approved` qilinadi va suv belgisi/havola blokirovkasi o'chadi.
+
 ## 3. Layout — yagona haqiqat manbai
 
 `layout/hall-A.json` — zalning o'lchamlari, obyektlari (kirish, sahna, WC, ustunlar) va bloklarning
@@ -64,7 +83,18 @@ stend.id = "A-01-05"        (blok-raqam; mijoz shartnomasida ham aynan shu ID yo
 { "id": "A-01", "x": 4, "y": 5, "cols": 2, "rows": 4 }   → 6 m × 12 m = 72 m²
 ```
 
-`cols × rows` **doim 8** bo'lishi kerak (72 m²). Standart shakl — **2 ustun × 4 qator** (6 m × 12 m),
+**Qoidalar:** standart blokda `cols × rows = 8` (72 m²). Real zalda guruhlar boshqacha bo'lishi mumkin
+(masalan 2×6 = 12 stend = 108 m²) — bunday holda `meta.enforceBlockRule = false` qilinadi va tizim
+ogohlantirish bilan ishlaydi, har bir guruhning aniq maydonini ko'rsatib.
+Nostandart **yakka** stendlar `customStands` bo'limida beriladi (maydoni aniq yoziladi, geometriyasi tekshiriladi):
+
+```json
+"customStands": [
+  { "id": "A3", "x": 1, "y": 15.3, "w": 6, "h": 4.23, "areaM2": 25.4, "group": "Chap qanot", "color": "#e8a33d" }
+]
+```
+
+Zonalar (`zones`) — xaritada rangli fon: asosiy zal, chap qanot, B2B, sahna, konferens-zal. Standart shakl — **2 ustun × 4 qator** (6 m × 12 m),
 lekin har bir blok o'z shakliga ega bo'lishi mumkin: `cols: 4, rows: 2` (12×6 m), `cols: 8, rows: 1`
 (24×3 m) va h.k. Raqamlash standart bo'yicha chapdan-o'ngga, yuqoridan-pastga (`"numbering": "col-major"`
 bilan ustun bo'ylab raqamlash ham mumkin). Nostandart shakl kerak bo'lsa:
@@ -191,6 +221,7 @@ lib/layout.mjs          # layout yadrosi: 9 m²/72 m² qoidalari, expand + valid
 layout/hall-A.json      # A zalning yagona manbasi (namuna)
 app/index.html|style.css|app.js   # sotuv paneli (vanilla JS, build yo'q)
 tools/validate-layout.mjs         # CLI validator (CI uchun)
+docs/CHIZMA-ANKETA.md             # real chizma bo'yicha tasdiqlash savollari
 tools/test-validator.mjs          # 12 ta buzilgan layout testi
 tools/export-svg.mjs              # mijozga yuboriladigan xarita (SVG)
 tools/import-csv.mjs              # Excel/CSV → layout JSON

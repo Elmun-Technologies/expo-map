@@ -59,6 +59,14 @@ body {
 .map-note { color: var(--muted); font-size: 12px; margin: 6px 2px 0; }
 .map-note code { background: #eef2f6; padding: 1px 5px; border-radius: 4px; }
 
+.draft-banner {
+  background: #8e1b1b; color: #fff; padding: 8px 16px; font-size: 13.5px; text-align: center;
+}
+.draft-banner.info { background: #8a5a00; }
+.zone-label { fill: #8595a3; font-size: 1.15px; pointer-events: none; letter-spacing: .02em; }
+.stand .area { font-size: .95px; text-anchor: middle; dominant-baseline: middle; pointer-events: none; fill: #5b6b7a; }
+.stand.custom rect.box { stroke-dasharray: .5 .3; }
+
 .legend {
   position: absolute; top: 24px; left: 24px; background: rgba(255,255,255,.94);
   border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font-size: 12.5px;
@@ -153,7 +161,15 @@ label.inline input { width: 92px; margin: 0; }
   .layout { display: block; }
   .map-wrap { padding: 0; }
   #map { width: 100%; height: 150mm; border: 1px solid #000; }
-  .legend { position: static; display: flex !important; flex-direction: row; gap: 16px; border: none; box-shadow: none; margin-top: 4mm; }
+  .draft-banner {
+  background: #8e1b1b; color: #fff; padding: 8px 16px; font-size: 13.5px; text-align: center;
+}
+.draft-banner.info { background: #8a5a00; }
+.zone-label { fill: #8595a3; font-size: 1.15px; pointer-events: none; letter-spacing: .02em; }
+.stand .area { font-size: .95px; text-anchor: middle; dominant-baseline: middle; pointer-events: none; fill: #5b6b7a; }
+.stand.custom rect.box { stroke-dasharray: .5 .3; }
+
+.legend { position: static; display: flex !important; flex-direction: row; gap: 16px; border: none; box-shadow: none; margin-top: 4mm; }
   .print-only { display: block; margin-top: 4mm; font-size: 11pt; }
   .print-only h2 { font-size: 14pt; margin: 0 0 2mm; }
   .print-only table { border-collapse: collapse; width: 100%; font-size: 9pt; }

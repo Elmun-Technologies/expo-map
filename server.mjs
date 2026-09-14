@@ -22,8 +22,9 @@ const PORT = Number(process.env.PORT || 4173);
 const HOST = process.env.HOST || '0.0.0.0';
 const LAYOUT_PATH = path.resolve(ROOT, process.env.LAYOUT || 'layout/hall-A.json');
 const DATA_DIR = path.join(ROOT, 'data');
-const STATE_FILE = path.join(DATA_DIR, 'state.json');
-const AUDIT_FILE = path.join(DATA_DIR, 'audit.log');
+// test/sinov uchun alohida holat fayli: STATE=data/state-test.json
+const STATE_FILE = process.env.STATE ? path.resolve(ROOT, process.env.STATE) : path.join(DATA_DIR, 'state.json');
+const AUDIT_FILE = process.env.STATE ? STATE_FILE + '.audit.log' : path.join(DATA_DIR, 'audit.log');
 const SELLERS_FILE = path.join(DATA_DIR, 'sellers.json');
 const SELLERS_EXAMPLE = path.join(DATA_DIR, 'sellers.example.json');
 const APP_DIR = path.join(ROOT, 'app');
@@ -41,7 +42,11 @@ for (const w of check.warnings) console.warn('   ⚠ ' + w);
 const exp = expandLayout(rawLayout);
 const standsById = new Map(exp.stands.map((s) => [s.id, s]));
 const blocksById = new Map(exp.blocks.map((b) => [b.id, b]));
-console.log(`✓ Layout yuklandi: ${exp.meta.project} · ${exp.meta.hall} · ${exp.blocks.length} blok / ${exp.stands.length} stend (${(exp.stands.length * exp.meta.stand.areaM2).toLocaleString('uz-UZ')} m²)`);
+const totalArea = exp.stands.reduce((a, s) => a + s.areaM2, 0);
+console.log(`✓ Layout yuklandi: ${exp.meta.project} · ${exp.meta.hall} · ${exp.gridBlocks.length} blok + ${exp.customStands.length} nostandart stend · ${exp.stands.length} stend (${totalArea.toLocaleString('uz-UZ')} m²)`);
+if ((exp.meta.status || 'draft') !== 'approved') {
+  console.warn('⚠ DIQQAT: bu layout QORALAMA (meta.status != "approved"). Panelda mijozga havola bloklangan, eksport ham to\'xtatiladi.');
+}
 
 // ---------------------------------------------------------------- data
 fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -62,6 +67,18 @@ if (fs.existsSync(STATE_FILE)) {
   } catch (e) {
     console.error('✗ data/state.json buzuq:', e.message);
     process.exit(1);
+  }
+}
+
+// Boshqa layout'dan qolgan yozuvlar (masalan zal almashganda) hisobga olinmaydi
+{
+  const stale = Object.keys(state.items || {}).filter((id) => !standsById.has(id));
+  if (stale.length) {
+    for (const id of stale) delete state.items[id];
+    state.revision++;
+    state.updatedAt = new Date().toISOString();
+    persist();
+    console.log(`⚠ ${stale.length} ta eski yozuv (bu layout'da yo'q stendlar) holatdan olib tashlandi`);
   }
 }
 
@@ -256,8 +273,10 @@ const server = http.createServer(async (req, res) => {
       return send(res, 200, {
         meta: exp.meta,
         hall: exp.hall,
+        zones: exp.zones,
         features: exp.features,
         blocks: exp.blocks,
+        customStands: exp.customStands,
         stands: exp.stands,
         layoutVersion: rawLayout.meta?.version || null,
       });

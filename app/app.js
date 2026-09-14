@@ -52,6 +52,22 @@
     renderStats();
     renderLegend();
     document.title = `${layout.meta.hall} · Ekspo xaritasi`;
+    const msgs = [];
+    if ((layout.meta.status || 'draft') !== 'approved') {
+      msgs.push(`⚠ QORALAMA XARITA (v${layout.meta.version || '?'}) — raqamlar tasdiqlanmagan, mijozga yuborib bo'lmaydi.`);
+    }
+    const deviants = (layout.blocks || []).filter((b) => b.kind !== 'custom' && Math.abs(b.areaM2 - 72) > 0.01);
+    if (deviants.length) {
+      const some = deviants.slice(0, 4).map((b) => `${b.label} = ${fmtNum(b.areaM2)} m²`).join(', ');
+      msgs.push(`ℹ Bu zaldagi guruhlar 72 m² (8×9) qoidasidan farq qiladi: ${some}${deviants.length > 4 ? ` va yana ${deviants.length - 4} ta` : ''}. Narx va maydon har bir guruh bo'yicha hisoblanadi.`);
+    }
+    const customCount = (layout.customStands || []).length;
+    if (customCount) msgs.push(`ℹ ${customCount} ta nostandart stend (A1–A6 kabi) — maydoni xaritada yozilgan, narxi o'sha maydon bo'yicha.`);
+    if (msgs.length) {
+      $('#draftBanner').hidden = false;
+      $('#draftBanner').className = 'draft-banner' + ((layout.meta.status || 'draft') !== 'approved' ? '' : ' info');
+      $('#draftBanner').textContent = msgs.join('  |  ');
+    }
     $('#hallTitle').textContent = `${layout.meta.project} — ${layout.meta.hall}`;
     $('#hallSub').textContent = `${layout.blocks.length} blok · ${layout.stands.length} stend · ${fmtNum(layout.stands.length * 9)} m² · layout v${layout.meta.version || '?'}`;
   }
@@ -136,6 +152,17 @@
     pad = Math.max(3, W * 0.04);
     $('#map').setAttribute('viewBox', `${-pad} ${-pad} ${W + pad * 2} ${H + pad * 2}`);
 
+    // zonalar (asosiy zal, chap qanot, B2B, konferens...)
+    const zoneG = el('g');
+    for (const z of layout.zones || []) {
+      if (!z.w || !z.h) continue;
+      zoneG.appendChild(el('rect', { x: z.x, y: z.y, width: z.w, height: z.h, rx: 0.4, fill: z.color || '#f2f5f8', stroke: '#c9d4de', 'stroke-width': 0.14, 'stroke-dasharray': '1.2 .8' }));
+      const t = el('text', { x: z.x + 0.6, y: z.y + 1.5, fill: '#7d8b98', 'font-size': 1.15 }, z.label);
+      t.setAttribute('class', 'zone-label');
+      zoneG.appendChild(t);
+    }
+    world.appendChild(zoneG);
+
     // zal
     const hallG = el('g');
     const outline = layout.hall.outline?.length >= 3 ? layout.hall.outline.map((p) => p.join(',')).join(' ') : `0,0 ${W},0 ${W},${H} 0,${H}`;
@@ -153,31 +180,41 @@
     const blockG = el('g');
     const standG = el('g');
     for (const b of layout.blocks) {
-      blockG.appendChild(el('rect', { x: b.x, y: b.y, width: b.w, height: b.h, class: 'block-outline', rx: 0.3 }));
+      blockG.appendChild(el('rect', { x: b.x, y: b.y, width: b.w, height: b.h, class: 'block-outline', rx: 0.3, stroke: b.color || '#90a4b5' }));
 
       // blok nomi — bosilsa butun blok tanlanadi
       const chip = el('g', { class: 'block-chip', 'data-block': b.id, tabindex: '0' });
       const label = b.label;
       const cw = Math.max(5.4, label.length * 1.15 + 3.4);
-      chip.appendChild(el('rect', { x: b.x, y: b.y - 1.95, width: cw, height: 1.5, rx: 0.35 }));
-      chip.appendChild(el('text', { x: b.x + cw / 2, y: b.y - 1.2 }, `${label} · 72 m²`));
-      chip.appendChild(el('title', {}, `${label} bloki — 8 stend × 9 m² = 72 m². Bosib butun blokni tanlang.`));
+      chip.appendChild(el('rect', { x: b.x, y: b.y - 1.95, width: cw, height: 1.5, rx: 0.35, fill: b.color || '#0f2233' }));
+      chip.appendChild(el('text', { x: b.x + cw / 2, y: b.y - 1.2 }, `${label} · ${fmtNum(b.areaM2)} m²`));
+      chip.appendChild(el('title', {}, `${label} bloki — ${b.stands.length} stend × 9 m² = ${fmtNum(b.areaM2)} m². Bosib butun blokni tanlang.`));
       blockG.appendChild(chip);
 
-      for (const s of b.stands) {
-        const st = statusOf(s.id);
-        const g = el('g', { class: 'stand', 'data-id': s.id, 'data-status': st, 'data-block': b.id });
-        g.appendChild(el('rect', { x: s.x, y: s.y, width: s.w, height: s.h, class: 'box', rx: 0.25 }));
-        g.appendChild(el('text', { x: s.x + s.w / 2, y: s.y + s.h / 2, class: 'num' }, s.noLabel));
-        g.appendChild(el('title', {}, `${s.id} · ${s.areaM2} m² · ${STATUS_LABEL[st]}${items[s.id]?.buyer ? ' · ' + items[s.id].buyer : ''}`));
-        standG.appendChild(g);
-      }
+      if (b.kind === 'custom') continue; // nostandart stendlar pastda alohida chiziladi
+      for (const s of b.stands) standG.appendChild(standNode(s));
     }
+    // nostandart o'lchamdagi stendlar (A1–A6 kabi)
+    for (const s of layout.customStands || []) standG.appendChild(standNode(s, true));
     world.appendChild(blockG);
     world.appendChild(standG);
     applyView();
     applyFilters();
     applySearch();
+  }
+
+  function standNode(s, custom) {
+    const st = statusOf(s.id);
+    const g = el('g', { class: 'stand' + (custom ? ' custom' : ''), 'data-id': s.id, 'data-status': st, 'data-block': s.blockId });
+    g.appendChild(el('rect', { x: s.x, y: s.y, width: s.w, height: s.h, class: 'box', rx: 0.25, stroke: s.color || undefined }));
+    if (custom) {
+      g.appendChild(el('text', { x: s.x + s.w / 2, y: s.y + s.h / 2 - 0.25, class: 'num' }, s.label || s.id));
+      g.appendChild(el('text', { x: s.x + s.w / 2, y: s.y + s.h / 2 + 1.15, class: 'area' }, `${fmtNum(s.areaM2)} m²`));
+    } else {
+      g.appendChild(el('text', { x: s.x + s.w / 2, y: s.y + s.h / 2, class: 'num' }, s.noLabel));
+    }
+    g.appendChild(el('title', {}, `${s.id} · ${fmtNum(s.areaM2)} m² · ${STATUS_LABEL[st]}${items[s.id]?.buyer ? ' · ' + items[s.id].buyer : ''}${s.note ? ' · ' + s.note : ''}`));
+    return g;
   }
 
   function applyView() { $('#world').setAttribute('transform', `translate(${view.tx} ${view.ty}) scale(${view.k})`); }
@@ -299,19 +336,22 @@
   }
 
   function renderStats() {
-    const all = layout.stands.length;
     const by = { free: 0, reserved: 0, sold: 0, blocked: 0 };
-    let revenue = 0, soldArea = 0;
+    const area = { free: 0, reserved: 0, sold: 0, blocked: 0 };
+    let revenue = 0;
     for (const s of layout.stands) {
       const st = statusOf(s.id);
       by[st] = (by[st] || 0) + 1;
-      if (st === 'sold') { revenue += items[s.id]?.amount || 0; soldArea += s.areaM2; }
+      area[st] = (area[st] || 0) + s.areaM2;
+      if (st === 'sold') revenue += items[s.id]?.amount || 0;
     }
+    const totalArea = layout.stands.reduce((a, s) => a + s.areaM2, 0);
     $('#stats').innerHTML = `
-      <div class="stat"><b>${by.free}</b><span>bo'sh stend · ${fmtNum(by.free * 9)} m²</span></div>
-      <div class="stat"><b>${by.reserved}</b><span>bron · ${fmtNum(by.reserved * 9)} m²</span></div>
-      <div class="stat"><b>${by.sold}</b><span>sotilgan · ${fmtNum(soldArea)} m²</span></div>
-      <div class="stat"><b>${fmtNum(revenue)}</b><span>so'm sotuv (${fmtMln(revenue)})</span></div>`;
+      <div class="stat"><b>${by.free}</b><span>bo'sh stend · ${fmtNum(area.free)} m²</span></div>
+      <div class="stat"><b>${by.reserved}</b><span>bron · ${fmtNum(area.reserved)} m²</span></div>
+      <div class="stat"><b>${by.sold}</b><span>sotilgan · ${fmtNum(area.sold)} m²</span></div>
+      <div class="stat"><b>${fmtNum(totalArea)}</b><span>jami m² (${by.sold + by.reserved} band)</span></div>
+      <div class="stat" style="grid-column:1/-1"><b>${fmtNum(revenue)}</b><span>so'm sotuv · ${fmtMln(revenue)}</span></div>`;
   }
 
   function renderLegend() {
@@ -321,7 +361,8 @@
       <div class="row">
         <span class="sw" style="background:${k === 'free' ? '#eaf6ec' : k === 'reserved' ? '#fff8e1' : k === 'sold' ? '#fdecea' : '#eceff1'};border-color:${STATUS_COLOR[k]}"></span>
         <label><input type="checkbox" data-st="${k}" ${hiddenStatuses.has(k) ? '' : 'checked'}/> ${STATUS_LABEL[k]} (${counts[k] || 0})</label>
-      </div>`).join('') + `<div class="row muted" style="font-size:11.5px">1 stend = 3×3 m = 9 m² · 1 blok = 8 stend = 72 m²</div>`;
+      </div>`).join('') + `<div class="row muted" style="font-size:11.5px">1 stend = 3×3 m = 9 m² · 1 blok = 8 stend = 72 m²`
+      + (layout.customStands?.length ? `<br>${layout.customStands.length} ta nostandart stend (maydoni o'zida yozilgan)` : '') + `</div>`;
     $$('#legend input[data-st]').forEach((cb) => cb.addEventListener('change', () => {
       cb.checked ? hiddenStatuses.delete(cb.dataset.st) : hiddenStatuses.add(cb.dataset.st);
       applyFilters();
@@ -430,14 +471,14 @@
   $('#clearSel').addEventListener('click', () => { selection.clear(); renderSelection(); paintSelection(); });
 
   function showReceipt(standIds, extra, result) {
-    const area = standIds.length * 9;
+    const area = standIds.reduce((a, id) => a + (layout.stands.find((s) => s.id === id)?.areaM2 || 0), 0);
     const amount = standIds.reduce((a, id) => a + (result?.[id]?.amount || 0), 0);
     const blockIds = [...new Set(standIds.map((id) => id.split('-').slice(0, 2).join('-')))];
     $('#receipt').hidden = false;
     $('#receipt').innerHTML = `
       <h2>Sotuv kvitansiyasi ✓</h2>
       <div>Sotilgan joy(lar): <b>${standIds.join(', ')}</b></div>
-      <div>Blok(lar): ${blockIds.join(', ')} · Maydon: ${standIds.length} × 9 m² = <b>${fmtNum(area)} m²</b></div>
+      <div>Guruh(lar): ${blockIds.join(', ')} · Maydon: ${standIds.length} stend = <b>${fmtNum(area)} m²</b></div>
       <div>Mijoz: <b>${extra.buyer || ''}</b> ${extra.phone || ''} ${extra.company ? '· ' + extra.company : ''}</div>
       <div>Summa: <b>${fmtMoney(amount)}</b> (${fmtMln(amount)})</div>
       <div class="muted">Sotuvchi: ${seller?.name || ''} · ${fmtDate(new Date().toISOString())} · ${layout.meta.project}, ${layout.meta.hall} · layout v${layout.meta.version}</div>
@@ -454,6 +495,9 @@
 
   // ------------------------------------------------------------ mijoz rejimi / print / share
   $('#clientMode').addEventListener('click', async () => {
+    if ((layout?.meta?.status || 'draft') !== 'approved') {
+      return fail('Bu xarita hali QORALAMA — mijozga havola yuborishdan oldin raqamlarni tasdiqlash kerak (meta.status = "approved").');
+    }
     const url = new URL(location.href);
     url.searchParams.set('mode', 'client');
     try { await navigator.clipboard.writeText(url.toString()); toast('Mijoz uchun havola nusxalandi: ' + url.toString()); }
@@ -469,10 +513,10 @@
       $('.map-wrap').appendChild(sheet);
     }
     const freeIds = layout.stands.filter((s) => statusOf(s.id) === 'free').map((s) => s.id);
-    const rows = layout.blocks.map((b) => {
+    const rows = layout.blocks.filter((b) => b.kind !== 'custom').map((b) => {
       const cnt = { free: 0, reserved: 0, sold: 0, blocked: 0 };
       b.stands.forEach((s) => cnt[statusOf(s.id)]++);
-      return `<tr><td>${b.id}</td><td>8 × 9 = 72 m²</td><td>${cnt.free}</td><td>${cnt.reserved}</td><td>${cnt.sold}</td><td>${cnt.free ? b.stands.filter((s) => statusOf(s.id) === 'free').map((s) => s.id).join(', ') : '—'}</td></tr>`;
+      return `<tr><td>${b.id}</td><td>${b.stands.length} × 9 = ${fmtNum(b.areaM2)} m²</td><td>${cnt.free}</td><td>${cnt.reserved}</td><td>${cnt.sold}</td><td>${cnt.free ? b.stands.filter((s) => statusOf(s.id) === 'free').map((s) => s.id).join(', ') : '—'}</td></tr>`;
     }).join('');
     sheet.innerHTML = `
       <h2>${layout.meta.project} — ${layout.meta.hall} · joylashuv xaritasi (v${layout.meta.version})</h2>

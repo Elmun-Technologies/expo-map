@@ -114,6 +114,33 @@ eksport yozilmaydi). Ya'ni "yo'q joyni sotish" texnik jihatdan imkonsiz bo'ladi.
 * Analitika: qaysi bloklar tez sotiladi, qaysi narx ishlaydi, sotuvchilar reytingi.
 * Tadbir kunida QR orqali kelganini belgilash, kassa/badge tizimi bilan bog'lash.
 
+## 6b. Real chizma tahlili (Крытый павильон) — 2026-09-14
+
+Siz yuborgan chizma (rasm) o'rganildi va `layout/hall-real.json` **qoralamasi** shu asosda tayyorlandi.
+Chizmadan o'qilgan tuzilma:
+
+| Element | Chizmada | Izoh |
+|---|---|---|
+| Chap qanot | A1–A6 stendlari | Nostandart o'lchamlar: A3=25.4, A4=22.67, A5=20.32, A6=19.15 m² (A1, A2 yozuvi ko'rinmadi) |
+| Asosiy zal | A, B, C, D, E, F ustunlar | Har birida 2×6 = **12 ta katak** (9 m²) → **108 m²**, ya'ni 72 m² qoidasidan **katta** |
+| Pastki qator | B (4), C (8), D (8), E (8), F (8), G (4) | 8 talik guruhlar = 72 m² (qoidaga mos), 4 taliklar = 36 m² |
+| Boshqa | Sahna, B2B zona, Small Conference Hall, Registratsiya, 2×WC, zina, texnik xona, yuk ko'tarish yo'lagi | Zonalar xaritada alohida rang bilan ko'rsatildi |
+
+**Muhim xulosa (mijoz shikoyatining ildizi shu yerda):** chizmadagi asosiy zal kataklari 12 tadan —
+ya'ni bir ustun 108 m². Agar sotuvchi buni "bir blok / 72 m²" deb aytsa, mijoz **36 m²** kam joy oladi
+yoki ortiqcha pul to'laydi. Tizim endi buni o'zi aytadi: har bir guruh maydoni (`108 m²`, `72 m²`,
+`36 m²`, `25.4 m²`...) xaritada va hisob-kitobda **ko'rinib turadi**, 72 m² dan farq qilgani
+uchun ogohlantirish beriladi (`meta.enforceBlockRule`).
+
+Chizmada yana bir xatarli joy bor: har bir katakda **ikkita raqam** yozilgan (`A7/9м` va `B9/9м` kabi).
+Qaysi biri mijozga aytiladigan stend ID si ekani tasdiqlanishi shart — aks holda chizmadagi chalkashlik
+yana panelga ko'chadi. Savollar ro'yxati: **`docs/CHIZMA-ANKETA.md`** (D1 — PDF/DWG ni qayta yuklash).
+
+**Qoralamada nima qilingan:** 6 ta nostandart stend + 12 guruh (A–F, pastki qator), zonalar, obyektlar
+(registratsiya, kirish, WC, zina, yuk yo'lagi, texnik xona) joylashtirildi; validator xatosiz o'tadi;
+`exports/hall-real-DRAFT.svg` — ko'rish uchun (suv belgisi bilan, chunki qoralama).
+Panelda draft holati ko'rsatiladi va **mijozga havola bloklanadi** — noto'g'ri raqam mijozga ketmasligi uchun.
+
 ## 7. Men sizdan kutayotgan fayl va undan kerak bo'ladigan ma'lumot
 
 Fayl istalgan formatda bo'lishi mumkin (DWG/DXF chizma, PDF, Figma havola, Excel ro'yxat, hatto qo'lda
