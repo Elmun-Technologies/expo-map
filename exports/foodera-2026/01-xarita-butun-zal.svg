@@ -1,14 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="2204" height="1665" viewBox="0 0 2204 1665" font-family="DejaVu Sans, Helvetica, Arial, sans-serif">
 <rect width="2204" height="1665" fill="#ffffff"/>
 <text x="46" y="66" font-size="20" font-weight="bold" fill="#0f2233">FOODERA EXPO 2026 — Крытый павильон (Yopiq pavilyon) · joylashuv xaritasi</text>
-<text x="46" y="87" font-size="13" fill="#5b6b7a">1 250 000 so'm/m² · 1 stend = 3×3 m = 9 m² · 1 blok = 8 stend = 72 m² · layout v1.0.0 · 14.09.2026</text>
-<rect x="277.00" y="105.40" width="1518.00" height="158.40" rx="4" fill="#f0f7f7" fill-opacity="0.9" stroke="#c9d6e2" stroke-width="1" stroke-dasharray="9 6"/>
-<rect x="277.00" y="288.00" width="1056.00" height="385.00" rx="4" fill="#f6f9fc" fill-opacity="0.9" stroke="#c9d6e2" stroke-width="1" stroke-dasharray="9 6"/>
-<rect x="57.00" y="211.00" width="154.00" height="616.00" rx="4" fill="#fff6e5" fill-opacity="0.9" stroke="#c9d6e2" stroke-width="1" stroke-dasharray="9 6"/>
-<rect x="277.00" y="739.00" width="1056.00" height="363.00" rx="4" fill="#f7fbf7" fill-opacity="0.9" stroke="#c9d6e2" stroke-width="1" stroke-dasharray="9 6"/>
-<rect x="1388.00" y="197.80" width="407.00" height="334.40" rx="4" fill="#eef3fb" fill-opacity="0.9" stroke="#c9d6e2" stroke-width="1" stroke-dasharray="9 6"/>
-<rect x="1388.00" y="558.60" width="407.00" height="356.40" rx="4" fill="#f3f0fb" fill-opacity="0.9" stroke="#c9d6e2" stroke-width="1" stroke-dasharray="9 6"/>
-<rect x="1814.80" y="189.00" width="334.40" height="814.00" rx="4" fill="#f0f6ff" fill-opacity="0.9" stroke="#c9d6e2" stroke-width="1" stroke-dasharray="9 6"/>
+<text x="46" y="87" font-size="13" fill="#5b6b7a">1 250 000 so'm/m² · 1 stend = 3×3 m = 9 m² · 1 blok = 8 stend = 72 m² · layout v1.1.0 · 14.09.2026</text>
+<rect x="266.00" y="105.40" width="1155.00" height="101.20" rx="4" fill="#f0f7f7" fill-opacity="0.9" stroke="#c9d6e2" stroke-width="1" stroke-dasharray="9 6"/>
+<rect x="277.00" y="215.40" width="1056.00" height="290.40" rx="4" fill="#f6f9fc" fill-opacity="0.9" stroke="#c9d6e2" stroke-width="1" stroke-dasharray="9 6"/>
+<rect x="431.00" y="523.40" width="770.00" height="290.40" rx="4" fill="#f7fbf7" fill-opacity="0.9" stroke="#c9d6e2" stroke-width="1" stroke-dasharray="9 6"/>
+<rect x="431.00" y="831.40" width="770.00" height="290.40" rx="4" fill="#f6f9fc" fill-opacity="0.9" stroke="#c9d6e2" stroke-width="1" stroke-dasharray="9 6"/>
+<rect x="57.00" y="211.00" width="154.00" height="627.00" rx="4" fill="#fff6e5" fill-opacity="0.9" stroke="#c9d6e2" stroke-width="1" stroke-dasharray="9 6"/>
+<rect x="1388.00" y="211.00" width="407.00" height="330.00" rx="4" fill="#eef3fb" fill-opacity="0.9" stroke="#c9d6e2" stroke-width="1" stroke-dasharray="9 6"/>
+<rect x="1388.00" y="552.00" width="407.00" height="352.00" rx="4" fill="#f3f0fb" fill-opacity="0.9" stroke="#c9d6e2" stroke-width="1" stroke-dasharray="9 6"/>
+<rect x="1814.80" y="211.00" width="334.40" height="792.00" rx="4" fill="#f0f6ff" fill-opacity="0.9" stroke="#c9d6e2" stroke-width="1" stroke-dasharray="9 6"/>
 <rect x="266.00" y="1143.80" width="704.00" height="50.60" rx="4" fill="#f7f7f7" fill-opacity="0.9" stroke="#c9d6e2" stroke-width="1" stroke-dasharray="9 6"/>
 <polygon points="46.00,101.00 2158.00,101.00 2158.00,1201.00 46.00,1201.00" fill="none" stroke="#0f2233" stroke-width="2.4"/>
 <rect x="68.00" y="114.20" width="132.00" height="70.40" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>
@@ -16,286 +17,327 @@
 <text x="134.00" y="158.87" font-size="9.31" fill="#5b6b7a" text-anchor="middle">(Texnik xona)</text>
 <rect x="1850.00" y="114.20" width="286.00" height="70.40" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>
 <text x="1993.00" y="154.05" font-size="12.91" fill="#5b6b7a" text-anchor="middle">Грузовые ворота (Yuk darvozasi)</text>
-<rect x="1443.00" y="228.60" width="297.00" height="123.20" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>
-<text x="1591.50" y="295.60" font-size="15.00" fill="#5b6b7a" text-anchor="middle">Сцена (Sahna)</text>
-<rect x="1836.80" y="197.80" width="299.20" height="250.80" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>
-<text x="1986.40" y="328.60" font-size="15.00" fill="#5b6b7a" text-anchor="middle">Conference-Hall (ochiq)</text>
-<rect x="1836.80" y="466.20" width="299.20" height="167.20" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>
-<text x="1986.40" y="555.20" font-size="15.00" fill="#5b6b7a" text-anchor="middle">Small Conference-Hall</text>
-<rect x="1836.80" y="651.00" width="299.20" height="101.20" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>
-<text x="1986.40" y="707.00" font-size="15.00" fill="#5b6b7a" text-anchor="middle">B2B</text>
-<rect x="1836.80" y="774.20" width="299.20" height="101.20" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>
-<text x="1986.40" y="830.20" font-size="15.00" fill="#5b6b7a" text-anchor="middle">B2B</text>
-<rect x="1836.80" y="897.40" width="299.20" height="101.20" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>
-<text x="1986.40" y="953.03" font-size="13.98" fill="#5b6b7a" text-anchor="middle">Переговорная (Muzokara xonasi)</text>
-<rect x="1836.80" y="1020.60" width="140.80" height="88.00" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>
-<text x="1907.20" y="1069.48" font-size="13.55" fill="#5b6b7a" text-anchor="middle">Винтовой выход</text>
-<rect x="63.60" y="857.80" width="136.40" height="96.80" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>
-<text x="131.80" y="904.23" font-size="10.78" fill="#5b6b7a" text-anchor="middle">Выход к открытому</text>
-<text x="131.80" y="917.01" font-size="10.78" fill="#5b6b7a" text-anchor="middle">павильону</text>
-<rect x="706.00" y="1091.00" width="396.00" height="55.00" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>
-<text x="904.00" y="1123.90" font-size="15.00" fill="#5b6b7a" text-anchor="middle">Регистрация (Ro'yxatga olish)</text>
-<rect x="1014.00" y="1139.40" width="264.00" height="52.80" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>
-<text x="1146.00" y="1170.90" font-size="14.17" fill="#5b6b7a" text-anchor="middle">Главный вход (Bosh kirish)</text>
+<rect x="1443.00" y="244.00" width="297.00" height="123.20" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>
+<text x="1591.50" y="311.00" font-size="15.00" fill="#5b6b7a" text-anchor="middle">Сцена (Sahna)</text>
+<rect x="1836.80" y="211.00" width="299.20" height="250.80" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>
+<text x="1986.40" y="341.80" font-size="15.00" fill="#5b6b7a" text-anchor="middle">Conference-Hall (ochiq)</text>
+<rect x="1836.80" y="479.40" width="299.20" height="167.20" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>
+<text x="1986.40" y="568.40" font-size="15.00" fill="#5b6b7a" text-anchor="middle">Small Conference-Hall</text>
+<rect x="1836.80" y="664.20" width="299.20" height="101.20" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>
+<text x="1986.40" y="720.20" font-size="15.00" fill="#5b6b7a" text-anchor="middle">B2B</text>
+<rect x="1836.80" y="787.40" width="299.20" height="101.20" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>
+<text x="1986.40" y="843.40" font-size="15.00" fill="#5b6b7a" text-anchor="middle">B2B</text>
+<rect x="1836.80" y="910.60" width="299.20" height="101.20" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>
+<text x="1986.40" y="966.23" font-size="13.98" fill="#5b6b7a" text-anchor="middle">Переговорная (Muzokara xonasi)</text>
+<rect x="1836.80" y="1033.80" width="140.80" height="88.00" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>
+<text x="1907.20" y="1082.68" font-size="13.55" fill="#5b6b7a" text-anchor="middle">Винтовой выход</text>
+<rect x="63.60" y="862.20" width="136.40" height="96.80" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>
+<text x="131.80" y="908.63" font-size="10.78" fill="#5b6b7a" text-anchor="middle">Выход к открытому</text>
+<text x="131.80" y="921.41" font-size="10.78" fill="#5b6b7a" text-anchor="middle">павильону</text>
+<rect x="706.00" y="1121.80" width="396.00" height="48.40" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>
+<text x="904.00" y="1151.40" font-size="15.00" fill="#5b6b7a" text-anchor="middle">Регистрация (Ro'yxatga olish)</text>
+<rect x="1014.00" y="1154.80" width="264.00" height="39.60" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>
+<text x="1146.00" y="1179.70" font-size="14.17" fill="#5b6b7a" text-anchor="middle">Главный вход (Bosh kirish)</text>
 <rect x="68.00" y="989.80" width="132.00" height="114.40" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>
 <text x="134.00" y="1052.40" font-size="15.00" fill="#5b6b7a" text-anchor="middle">WC</text>
-<rect x="1995.20" y="1020.60" width="136.40" height="88.00" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>
-<text x="2063.40" y="1070.00" font-size="15.00" fill="#5b6b7a" text-anchor="middle">WC</text>
-<rect x="310.00" y="681.80" width="26.40" height="26.40" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>
-<text x="323.20" y="698.24" font-size="9.00" fill="#5b6b7a" text-anchor="middle">Ustun</text>
-<rect x="574.00" y="681.80" width="26.40" height="26.40" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>
-<text x="587.20" y="698.24" font-size="9.00" fill="#5b6b7a" text-anchor="middle">Ustun</text>
-<rect x="838.00" y="681.80" width="26.40" height="26.40" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>
-<text x="851.20" y="698.24" font-size="9.00" fill="#5b6b7a" text-anchor="middle">Ustun</text>
-<rect x="1102.00" y="681.80" width="26.40" height="26.40" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>
-<text x="1115.20" y="698.24" font-size="9.00" fill="#5b6b7a" text-anchor="middle">Ustun</text>
-<rect x="310.00" y="303.40" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
-<rect x="310.00" y="271.40" width="94.54" height="25" rx="5" fill="#E8A33D"/>
-<text x="357.27" y="288.45" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">A · 72 m²</text>
-<rect x="342.00" y="577.40" width="68" height="7" rx="3.5" fill="#E8A33D"/>
-<text x="376.00" y="603.40" font-size="15.00" font-weight="bold" fill="#0f2233" text-anchor="middle">A bloki</text>
-<text x="376.00" y="621.40" font-size="15.00" fill="#5b6b7a" text-anchor="middle">HoReCa</text>
-<rect x="486.00" y="303.40" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
-<rect x="486.00" y="271.40" width="94.54" height="25" rx="5" fill="#2E8B8B"/>
-<text x="533.27" y="288.45" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">B · 72 m²</text>
-<rect x="486.00" y="501.40" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#2E8B8B" stroke-width="1.1"/>
-<text x="519.00" y="532.40" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">7</text>
-<text x="519.00" y="550.40" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">07</text>
-<rect x="552.00" y="501.40" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#2E8B8B" stroke-width="1.1"/>
-<text x="585.00" y="532.40" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">8</text>
-<text x="585.00" y="550.40" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">08</text>
-<rect x="518.00" y="577.40" width="68" height="7" rx="3.5" fill="#2E8B8B"/>
-<text x="552.00" y="603.40" font-size="15.00" font-weight="bold" fill="#0f2233" text-anchor="middle">B bloki</text>
-<text x="552.00" y="621.40" font-size="15.00" fill="#5b6b7a" text-anchor="middle">Konserva</text>
-<rect x="662.00" y="303.40" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
-<rect x="662.00" y="271.40" width="94.54" height="25" rx="5" fill="#3E7BB6"/>
-<text x="709.27" y="288.45" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">C · 72 m²</text>
-<rect x="662.00" y="435.40" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#3E7BB6" stroke-width="1.1"/>
-<text x="695.00" y="466.40" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">5</text>
-<text x="695.00" y="484.40" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">05</text>
-<rect x="728.00" y="435.40" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#3E7BB6" stroke-width="1.1"/>
-<text x="761.00" y="466.40" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">6</text>
-<text x="761.00" y="484.40" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">06</text>
-<rect x="662.00" y="501.40" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#3E7BB6" stroke-width="1.1"/>
-<text x="695.00" y="532.40" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">7</text>
-<text x="695.00" y="550.40" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">07</text>
-<rect x="728.00" y="501.40" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#3E7BB6" stroke-width="1.1"/>
-<text x="761.00" y="532.40" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">8</text>
-<text x="761.00" y="550.40" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">08</text>
-<rect x="694.00" y="577.40" width="68" height="7" rx="3.5" fill="#3E7BB6"/>
-<text x="728.00" y="603.40" font-size="15.00" font-weight="bold" fill="#0f2233" text-anchor="middle">C bloki</text>
-<text x="728.00" y="621.40" font-size="15.00" fill="#5b6b7a" text-anchor="middle">Baliq</text>
-<rect x="838.00" y="303.40" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
-<rect x="838.00" y="271.40" width="94.54" height="25" rx="5" fill="#B8860B"/>
-<text x="885.27" y="288.45" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">D · 72 m²</text>
-<rect x="838.00" y="369.40" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#B8860B" stroke-width="1.1"/>
-<text x="871.00" y="400.40" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">3</text>
-<text x="871.00" y="418.40" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">03</text>
-<rect x="904.00" y="369.40" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#B8860B" stroke-width="1.1"/>
-<text x="937.00" y="400.40" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">4</text>
-<text x="937.00" y="418.40" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">04</text>
-<rect x="838.00" y="501.40" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#B8860B" stroke-width="1.1"/>
-<text x="871.00" y="532.40" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">7</text>
-<text x="871.00" y="550.40" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">07</text>
-<rect x="904.00" y="501.40" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#B8860B" stroke-width="1.1"/>
-<text x="937.00" y="532.40" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">8</text>
-<text x="937.00" y="550.40" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">08</text>
-<rect x="870.00" y="577.40" width="68" height="7" rx="3.5" fill="#B8860B"/>
-<text x="904.00" y="603.40" font-size="15.00" font-weight="bold" fill="#0f2233" text-anchor="middle">D bloki</text>
-<text x="904.00" y="621.40" font-size="15.00" fill="#5b6b7a" text-anchor="middle">Meva-sabzavot</text>
-<rect x="1014.00" y="303.40" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
-<rect x="1014.00" y="271.40" width="94.54" height="25" rx="5" fill="#3E9B5F"/>
-<text x="1061.27" y="288.45" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">E · 72 m²</text>
-<rect x="1046.00" y="577.40" width="68" height="7" rx="3.5" fill="#3E9B5F"/>
-<text x="1080.00" y="603.40" font-size="15.00" font-weight="bold" fill="#0f2233" text-anchor="middle">E bloki</text>
-<text x="1080.00" y="621.40" font-size="15.00" fill="#5b6b7a" text-anchor="middle">Sport pit</text>
-<rect x="1190.00" y="303.40" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
-<rect x="1190.00" y="271.40" width="94.54" height="25" rx="5" fill="#9B59B6"/>
-<text x="1237.27" y="288.45" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">F · 72 m²</text>
-<rect x="1190.00" y="303.40" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#9B59B6" stroke-width="1.1"/>
-<text x="1223.00" y="334.40" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">1</text>
-<text x="1223.00" y="352.40" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">01</text>
-<rect x="1256.00" y="303.40" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#9B59B6" stroke-width="1.1"/>
-<text x="1289.00" y="334.40" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">2</text>
-<text x="1289.00" y="352.40" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">02</text>
-<rect x="1190.00" y="435.40" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#9B59B6" stroke-width="1.1"/>
-<text x="1223.00" y="466.40" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">5</text>
-<text x="1223.00" y="484.40" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">05</text>
-<rect x="1256.00" y="435.40" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#9B59B6" stroke-width="1.1"/>
-<text x="1289.00" y="466.40" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">6</text>
-<text x="1289.00" y="484.40" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">06</text>
-<rect x="1222.00" y="577.40" width="68" height="7" rx="3.5" fill="#9B59B6"/>
-<text x="1256.00" y="603.40" font-size="15.00" font-weight="bold" fill="#0f2233" text-anchor="middle">F bloki</text>
-<text x="1256.00" y="621.40" font-size="15.00" fill="#5b6b7a" text-anchor="middle">Organika</text>
-<rect x="310.00" y="761.00" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
-<rect x="310.00" y="729.00" width="94.54" height="25" rx="5" fill="#C96F2B"/>
-<text x="357.27" y="746.05" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">G · 72 m²</text>
-<rect x="310.00" y="959.00" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#C96F2B" stroke-width="1.1"/>
-<text x="343.00" y="990.00" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">7</text>
-<text x="343.00" y="1008.00" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">07</text>
-<rect x="376.00" y="959.00" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#C96F2B" stroke-width="1.1"/>
-<text x="409.00" y="990.00" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">8</text>
-<text x="409.00" y="1008.00" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">08</text>
-<rect x="342.00" y="1035.00" width="68" height="7" rx="3.5" fill="#C96F2B"/>
-<text x="376.00" y="1061.00" font-size="15.00" font-weight="bold" fill="#0f2233" text-anchor="middle">G bloki</text>
-<text x="376.00" y="1079.00" font-size="15.00" fill="#5b6b7a" text-anchor="middle">Yarim tayyor</text>
-<rect x="486.00" y="761.00" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
-<rect x="486.00" y="729.00" width="94.54" height="25" rx="5" fill="#C0553E"/>
-<text x="533.27" y="746.05" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">H · 72 m²</text>
-<rect x="486.00" y="893.00" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#C0553E" stroke-width="1.1"/>
-<text x="519.00" y="924.00" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">5</text>
-<text x="519.00" y="942.00" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">05</text>
-<rect x="552.00" y="893.00" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#C0553E" stroke-width="1.1"/>
-<text x="585.00" y="924.00" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">6</text>
-<text x="585.00" y="942.00" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">06</text>
-<rect x="518.00" y="1035.00" width="68" height="7" rx="3.5" fill="#C0553E"/>
-<text x="552.00" y="1061.00" font-size="15.00" font-weight="bold" fill="#0f2233" text-anchor="middle">H bloki</text>
-<text x="552.00" y="1079.00" font-size="15.00" fill="#5b6b7a" text-anchor="middle">Go'sht-sut</text>
-<rect x="662.00" y="761.00" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
-<rect x="662.00" y="729.00" width="94.54" height="25" rx="5" fill="#2A9D8F"/>
-<text x="709.27" y="746.05" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">I · 72 m²</text>
-<rect x="662.00" y="893.00" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#2A9D8F" stroke-width="1.1"/>
-<text x="695.00" y="924.00" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">5</text>
-<text x="695.00" y="942.00" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">05</text>
-<rect x="728.00" y="893.00" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#2A9D8F" stroke-width="1.1"/>
-<text x="761.00" y="924.00" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">6</text>
-<text x="761.00" y="942.00" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">06</text>
-<rect x="662.00" y="959.00" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#2A9D8F" stroke-width="1.1"/>
-<text x="695.00" y="990.00" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">7</text>
-<text x="695.00" y="1008.00" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">07</text>
-<rect x="728.00" y="959.00" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#2A9D8F" stroke-width="1.1"/>
-<text x="761.00" y="990.00" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">8</text>
-<text x="761.00" y="1008.00" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">08</text>
-<rect x="694.00" y="1035.00" width="68" height="7" rx="3.5" fill="#2A9D8F"/>
-<rect x="838.00" y="761.00" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
-<rect x="838.00" y="729.00" width="94.54" height="25" rx="5" fill="#D2691E"/>
-<text x="885.27" y="746.05" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">J · 72 m²</text>
-<rect x="838.00" y="959.00" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#D2691E" stroke-width="1.1"/>
-<text x="871.00" y="990.00" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">7</text>
-<text x="871.00" y="1008.00" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">07</text>
-<rect x="904.00" y="959.00" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#D2691E" stroke-width="1.1"/>
-<text x="937.00" y="990.00" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">8</text>
-<text x="937.00" y="1008.00" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">08</text>
-<rect x="870.00" y="1035.00" width="68" height="7" rx="3.5" fill="#D2691E"/>
-<rect x="1014.00" y="761.00" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
-<rect x="1014.00" y="729.00" width="94.54" height="25" rx="5" fill="#C2185B"/>
-<text x="1061.27" y="746.05" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">K · 72 m²</text>
-<rect x="1046.00" y="1035.00" width="68" height="7" rx="3.5" fill="#C2185B"/>
-<rect x="1190.00" y="761.00" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
-<rect x="1190.00" y="729.00" width="94.54" height="25" rx="5" fill="#5E7A8C"/>
-<text x="1237.27" y="746.05" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">L · 72 m²</text>
-<rect x="1190.00" y="959.00" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#5E7A8C" stroke-width="1.1"/>
-<text x="1223.00" y="990.00" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">7</text>
-<text x="1223.00" y="1008.00" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">07</text>
-<rect x="1256.00" y="959.00" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#5E7A8C" stroke-width="1.1"/>
-<text x="1289.00" y="990.00" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">8</text>
-<text x="1289.00" y="1008.00" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">08</text>
-<rect x="1222.00" y="1035.00" width="68" height="7" rx="3.5" fill="#5E7A8C"/>
-<text x="1256.00" y="1061.00" font-size="15.00" font-weight="bold" fill="#0f2233" text-anchor="middle">L bloki</text>
-<text x="1256.00" y="1079.00" font-size="15.00" fill="#5b6b7a" text-anchor="middle">Ingredientlar</text>
-<rect x="310.00" y="127.40" width="264.00" height="132.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
-<rect x="310.00" y="95.40" width="118.72" height="25" rx="5" fill="#2E8B8B"/>
-<text x="369.36" y="112.45" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">EQ-1 · 72 m²</text>
-<rect x="376.00" y="193.40" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#2E8B8B" stroke-width="1.1"/>
-<text x="409.00" y="224.40" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">5</text>
-<text x="409.00" y="242.40" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">05</text>
-<rect x="442.00" y="193.40" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#2E8B8B" stroke-width="1.1"/>
-<text x="475.00" y="224.40" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">6</text>
-<text x="475.00" y="242.40" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">06</text>
-<rect x="408.00" y="269.40" width="68" height="7" rx="3.5" fill="#2E8B8B"/>
-<rect x="772.00" y="127.40" width="264.00" height="132.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
-<rect x="772.00" y="95.40" width="118.72" height="25" rx="5" fill="#2E8B8B"/>
-<text x="831.36" y="112.45" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">EQ-2 · 72 m²</text>
-<rect x="838.00" y="193.40" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#2E8B8B" stroke-width="1.1"/>
-<text x="871.00" y="224.40" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">5</text>
-<text x="871.00" y="242.40" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">05</text>
-<rect x="904.00" y="193.40" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#2E8B8B" stroke-width="1.1"/>
-<text x="937.00" y="224.40" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">6</text>
-<text x="937.00" y="242.40" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">06</text>
-<rect x="870.00" y="269.40" width="68" height="7" rx="3.5" fill="#2E8B8B"/>
+<rect x="1995.20" y="1033.80" width="136.40" height="88.00" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>
+<text x="2063.40" y="1083.20" font-size="15.00" fill="#5b6b7a" text-anchor="middle">WC</text>
+<rect x="310.00" y="501.40" width="26.40" height="26.40" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>
+<text x="323.20" y="517.84" font-size="9.00" fill="#5b6b7a" text-anchor="middle">Ustun</text>
+<rect x="574.00" y="501.40" width="26.40" height="26.40" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>
+<text x="587.20" y="517.84" font-size="9.00" fill="#5b6b7a" text-anchor="middle">Ustun</text>
+<rect x="838.00" y="501.40" width="26.40" height="26.40" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>
+<text x="851.20" y="517.84" font-size="9.00" fill="#5b6b7a" text-anchor="middle">Ustun</text>
+<rect x="1102.00" y="501.40" width="26.40" height="26.40" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>
+<text x="1115.20" y="517.84" font-size="9.00" fill="#5b6b7a" text-anchor="middle">Ustun</text>
+<rect x="310.00" y="228.60" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
+<rect x="310.00" y="196.60" width="94.54" height="25" rx="5" fill="#ffffff" stroke="#E8A33D" stroke-width="1.4"/>
+<text x="357.27" y="213.65" font-size="13" font-weight="bold" fill="#E8A33D" text-anchor="middle">A · 72 m²</text>
+<rect x="342.00" y="502.60" width="68" height="7" rx="3.5" fill="#E8A33D"/>
+<rect x="486.00" y="228.60" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
+<rect x="486.00" y="196.60" width="94.54" height="25" rx="5" fill="#ffffff" stroke="#2E8B8B" stroke-width="1.4"/>
+<text x="533.27" y="213.65" font-size="13" font-weight="bold" fill="#2E8B8B" text-anchor="middle">B · 72 m²</text>
+<rect x="486.00" y="426.60" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#2E8B8B" stroke-width="1.1"/>
+<rect x="486.00" y="426.60" width="66.00" height="66.00" rx="2" fill="#ffffff" stroke="#2E8B8B" stroke-width="1.05"/>
+<text x="519.00" y="458.60" font-size="15.00" font-weight="bold" fill="#2E8B8B" text-anchor="middle">B7</text>
+<text x="519.00" y="473.85" font-size="9.00" fill="#8a9aa8" text-anchor="middle">9 m²</text>
+<rect x="552.00" y="426.60" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#2E8B8B" stroke-width="1.1"/>
+<rect x="552.00" y="426.60" width="66.00" height="66.00" rx="2" fill="#ffffff" stroke="#2E8B8B" stroke-width="1.05"/>
+<text x="585.00" y="458.60" font-size="15.00" font-weight="bold" fill="#2E8B8B" text-anchor="middle">B8</text>
+<text x="585.00" y="473.85" font-size="9.00" fill="#8a9aa8" text-anchor="middle">9 m²</text>
+<rect x="518.00" y="502.60" width="68" height="7" rx="3.5" fill="#2E8B8B"/>
+<rect x="662.00" y="228.60" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
+<rect x="662.00" y="196.60" width="94.54" height="25" rx="5" fill="#ffffff" stroke="#3E7BB6" stroke-width="1.4"/>
+<text x="709.27" y="213.65" font-size="13" font-weight="bold" fill="#3E7BB6" text-anchor="middle">C · 72 m²</text>
+<rect x="662.00" y="360.60" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#3E7BB6" stroke-width="1.1"/>
+<rect x="662.00" y="360.60" width="66.00" height="66.00" rx="2" fill="#ffffff" stroke="#3E7BB6" stroke-width="1.05"/>
+<text x="695.00" y="392.60" font-size="15.00" font-weight="bold" fill="#3E7BB6" text-anchor="middle">C5</text>
+<text x="695.00" y="407.85" font-size="9.00" fill="#8a9aa8" text-anchor="middle">9 m²</text>
+<rect x="728.00" y="360.60" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#3E7BB6" stroke-width="1.1"/>
+<rect x="728.00" y="360.60" width="66.00" height="66.00" rx="2" fill="#ffffff" stroke="#3E7BB6" stroke-width="1.05"/>
+<text x="761.00" y="392.60" font-size="15.00" font-weight="bold" fill="#3E7BB6" text-anchor="middle">C6</text>
+<text x="761.00" y="407.85" font-size="9.00" fill="#8a9aa8" text-anchor="middle">9 m²</text>
+<rect x="662.00" y="426.60" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#3E7BB6" stroke-width="1.1"/>
+<rect x="662.00" y="426.60" width="66.00" height="66.00" rx="2" fill="#ffffff" stroke="#3E7BB6" stroke-width="1.05"/>
+<text x="695.00" y="458.60" font-size="15.00" font-weight="bold" fill="#3E7BB6" text-anchor="middle">C7</text>
+<text x="695.00" y="473.85" font-size="9.00" fill="#8a9aa8" text-anchor="middle">9 m²</text>
+<rect x="728.00" y="426.60" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#3E7BB6" stroke-width="1.1"/>
+<rect x="728.00" y="426.60" width="66.00" height="66.00" rx="2" fill="#ffffff" stroke="#3E7BB6" stroke-width="1.05"/>
+<text x="761.00" y="458.60" font-size="15.00" font-weight="bold" fill="#3E7BB6" text-anchor="middle">C8</text>
+<text x="761.00" y="473.85" font-size="9.00" fill="#8a9aa8" text-anchor="middle">9 m²</text>
+<rect x="694.00" y="502.60" width="68" height="7" rx="3.5" fill="#3E7BB6"/>
+<rect x="838.00" y="228.60" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
+<rect x="838.00" y="196.60" width="94.54" height="25" rx="5" fill="#ffffff" stroke="#B8860B" stroke-width="1.4"/>
+<text x="885.27" y="213.65" font-size="13" font-weight="bold" fill="#B8860B" text-anchor="middle">D · 72 m²</text>
+<rect x="838.00" y="294.60" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#B8860B" stroke-width="1.1"/>
+<rect x="838.00" y="294.60" width="66.00" height="66.00" rx="2" fill="#ffffff" stroke="#B8860B" stroke-width="1.05"/>
+<text x="871.00" y="326.60" font-size="15.00" font-weight="bold" fill="#B8860B" text-anchor="middle">D3</text>
+<text x="871.00" y="341.85" font-size="9.00" fill="#8a9aa8" text-anchor="middle">9 m²</text>
+<rect x="904.00" y="294.60" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#B8860B" stroke-width="1.1"/>
+<rect x="904.00" y="294.60" width="66.00" height="66.00" rx="2" fill="#ffffff" stroke="#B8860B" stroke-width="1.05"/>
+<text x="937.00" y="326.60" font-size="15.00" font-weight="bold" fill="#B8860B" text-anchor="middle">D4</text>
+<text x="937.00" y="341.85" font-size="9.00" fill="#8a9aa8" text-anchor="middle">9 m²</text>
+<rect x="838.00" y="426.60" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#B8860B" stroke-width="1.1"/>
+<rect x="838.00" y="426.60" width="66.00" height="66.00" rx="2" fill="#ffffff" stroke="#B8860B" stroke-width="1.05"/>
+<text x="871.00" y="458.60" font-size="15.00" font-weight="bold" fill="#B8860B" text-anchor="middle">D7</text>
+<text x="871.00" y="473.85" font-size="9.00" fill="#8a9aa8" text-anchor="middle">9 m²</text>
+<rect x="904.00" y="426.60" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#B8860B" stroke-width="1.1"/>
+<rect x="904.00" y="426.60" width="66.00" height="66.00" rx="2" fill="#ffffff" stroke="#B8860B" stroke-width="1.05"/>
+<text x="937.00" y="458.60" font-size="15.00" font-weight="bold" fill="#B8860B" text-anchor="middle">D8</text>
+<text x="937.00" y="473.85" font-size="9.00" fill="#8a9aa8" text-anchor="middle">9 m²</text>
+<rect x="870.00" y="502.60" width="68" height="7" rx="3.5" fill="#B8860B"/>
+<rect x="1014.00" y="228.60" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
+<rect x="1014.00" y="196.60" width="94.54" height="25" rx="5" fill="#ffffff" stroke="#3E9B5F" stroke-width="1.4"/>
+<text x="1061.27" y="213.65" font-size="13" font-weight="bold" fill="#3E9B5F" text-anchor="middle">E · 72 m²</text>
+<rect x="1046.00" y="502.60" width="68" height="7" rx="3.5" fill="#3E9B5F"/>
+<rect x="1190.00" y="228.60" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
+<rect x="1190.00" y="196.60" width="94.54" height="25" rx="5" fill="#ffffff" stroke="#9B59B6" stroke-width="1.4"/>
+<text x="1237.27" y="213.65" font-size="13" font-weight="bold" fill="#9B59B6" text-anchor="middle">F · 72 m²</text>
+<rect x="1190.00" y="228.60" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#9B59B6" stroke-width="1.1"/>
+<rect x="1190.00" y="228.60" width="66.00" height="66.00" rx="2" fill="#ffffff" stroke="#9B59B6" stroke-width="1.05"/>
+<text x="1223.00" y="260.60" font-size="15.00" font-weight="bold" fill="#9B59B6" text-anchor="middle">F1</text>
+<text x="1223.00" y="275.85" font-size="9.00" fill="#8a9aa8" text-anchor="middle">9 m²</text>
+<rect x="1256.00" y="228.60" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#9B59B6" stroke-width="1.1"/>
+<rect x="1256.00" y="228.60" width="66.00" height="66.00" rx="2" fill="#ffffff" stroke="#9B59B6" stroke-width="1.05"/>
+<text x="1289.00" y="260.60" font-size="15.00" font-weight="bold" fill="#9B59B6" text-anchor="middle">F2</text>
+<text x="1289.00" y="275.85" font-size="9.00" fill="#8a9aa8" text-anchor="middle">9 m²</text>
+<rect x="1190.00" y="360.60" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#9B59B6" stroke-width="1.1"/>
+<rect x="1190.00" y="360.60" width="66.00" height="66.00" rx="2" fill="#ffffff" stroke="#9B59B6" stroke-width="1.05"/>
+<text x="1223.00" y="392.60" font-size="15.00" font-weight="bold" fill="#9B59B6" text-anchor="middle">F5</text>
+<text x="1223.00" y="407.85" font-size="9.00" fill="#8a9aa8" text-anchor="middle">9 m²</text>
+<rect x="1256.00" y="360.60" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#9B59B6" stroke-width="1.1"/>
+<rect x="1256.00" y="360.60" width="66.00" height="66.00" rx="2" fill="#ffffff" stroke="#9B59B6" stroke-width="1.05"/>
+<text x="1289.00" y="392.60" font-size="15.00" font-weight="bold" fill="#9B59B6" text-anchor="middle">F6</text>
+<text x="1289.00" y="407.85" font-size="9.00" fill="#8a9aa8" text-anchor="middle">9 m²</text>
+<rect x="1222.00" y="502.60" width="68" height="7" rx="3.5" fill="#9B59B6"/>
+<text x="1256.00" y="528.60" font-size="15.00" font-weight="bold" fill="#0f2233" text-anchor="middle">F bloki</text>
+<text x="1256.00" y="546.60" font-size="15.00" fill="#5b6b7a" text-anchor="middle">Органика</text>
+<rect x="464.00" y="536.60" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
+<rect x="464.00" y="504.60" width="94.54" height="25" rx="5" fill="#ffffff" stroke="#5E7A8C" stroke-width="1.4"/>
+<text x="511.27" y="521.65" font-size="13" font-weight="bold" fill="#5E7A8C" text-anchor="middle">G · 72 m²</text>
+<rect x="464.00" y="734.60" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#5E7A8C" stroke-width="1.1"/>
+<rect x="464.00" y="734.60" width="66.00" height="66.00" rx="2" fill="#ffffff" stroke="#5E7A8C" stroke-width="1.05"/>
+<text x="497.00" y="766.60" font-size="15.00" font-weight="bold" fill="#5E7A8C" text-anchor="middle">G7</text>
+<text x="497.00" y="781.85" font-size="9.00" fill="#8a9aa8" text-anchor="middle">9 m²</text>
+<rect x="530.00" y="734.60" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#5E7A8C" stroke-width="1.1"/>
+<rect x="530.00" y="734.60" width="66.00" height="66.00" rx="2" fill="#ffffff" stroke="#5E7A8C" stroke-width="1.05"/>
+<text x="563.00" y="766.60" font-size="15.00" font-weight="bold" fill="#5E7A8C" text-anchor="middle">G8</text>
+<text x="563.00" y="781.85" font-size="9.00" fill="#8a9aa8" text-anchor="middle">9 m²</text>
+<rect x="496.00" y="810.60" width="68" height="7" rx="3.5" fill="#5E7A8C"/>
+<rect x="750.00" y="536.60" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
+<rect x="750.00" y="504.60" width="94.54" height="25" rx="5" fill="#ffffff" stroke="#C0553E" stroke-width="1.4"/>
+<text x="797.27" y="521.65" font-size="13" font-weight="bold" fill="#C0553E" text-anchor="middle">H · 72 m²</text>
+<rect x="750.00" y="668.60" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#C0553E" stroke-width="1.1"/>
+<rect x="750.00" y="668.60" width="66.00" height="66.00" rx="2" fill="#ffffff" stroke="#C0553E" stroke-width="1.05"/>
+<text x="783.00" y="700.60" font-size="15.00" font-weight="bold" fill="#C0553E" text-anchor="middle">H5</text>
+<text x="783.00" y="715.85" font-size="9.00" fill="#8a9aa8" text-anchor="middle">9 m²</text>
+<rect x="816.00" y="668.60" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#C0553E" stroke-width="1.1"/>
+<rect x="816.00" y="668.60" width="66.00" height="66.00" rx="2" fill="#ffffff" stroke="#C0553E" stroke-width="1.05"/>
+<text x="849.00" y="700.60" font-size="15.00" font-weight="bold" fill="#C0553E" text-anchor="middle">H6</text>
+<text x="849.00" y="715.85" font-size="9.00" fill="#8a9aa8" text-anchor="middle">9 m²</text>
+<rect x="782.00" y="810.60" width="68" height="7" rx="3.5" fill="#C0553E"/>
+<rect x="1036.00" y="536.60" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
+<rect x="1036.00" y="504.60" width="94.54" height="25" rx="5" fill="#ffffff" stroke="#2A9D8F" stroke-width="1.4"/>
+<text x="1083.27" y="521.65" font-size="13" font-weight="bold" fill="#2A9D8F" text-anchor="middle">I · 72 m²</text>
+<rect x="1036.00" y="668.60" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#2A9D8F" stroke-width="1.1"/>
+<rect x="1036.00" y="668.60" width="66.00" height="66.00" rx="2" fill="#ffffff" stroke="#2A9D8F" stroke-width="1.05"/>
+<text x="1069.00" y="700.60" font-size="15.00" font-weight="bold" fill="#2A9D8F" text-anchor="middle">I5</text>
+<text x="1069.00" y="715.85" font-size="9.00" fill="#8a9aa8" text-anchor="middle">9 m²</text>
+<rect x="1102.00" y="668.60" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#2A9D8F" stroke-width="1.1"/>
+<rect x="1102.00" y="668.60" width="66.00" height="66.00" rx="2" fill="#ffffff" stroke="#2A9D8F" stroke-width="1.05"/>
+<text x="1135.00" y="700.60" font-size="15.00" font-weight="bold" fill="#2A9D8F" text-anchor="middle">I6</text>
+<text x="1135.00" y="715.85" font-size="9.00" fill="#8a9aa8" text-anchor="middle">9 m²</text>
+<rect x="1036.00" y="734.60" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#2A9D8F" stroke-width="1.1"/>
+<rect x="1036.00" y="734.60" width="66.00" height="66.00" rx="2" fill="#ffffff" stroke="#2A9D8F" stroke-width="1.05"/>
+<text x="1069.00" y="766.60" font-size="15.00" font-weight="bold" fill="#2A9D8F" text-anchor="middle">I7</text>
+<text x="1069.00" y="781.85" font-size="9.00" fill="#8a9aa8" text-anchor="middle">9 m²</text>
+<rect x="1102.00" y="734.60" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#2A9D8F" stroke-width="1.1"/>
+<rect x="1102.00" y="734.60" width="66.00" height="66.00" rx="2" fill="#ffffff" stroke="#2A9D8F" stroke-width="1.05"/>
+<text x="1135.00" y="766.60" font-size="15.00" font-weight="bold" fill="#2A9D8F" text-anchor="middle">I8</text>
+<text x="1135.00" y="781.85" font-size="9.00" fill="#8a9aa8" text-anchor="middle">9 m²</text>
+<rect x="1068.00" y="810.60" width="68" height="7" rx="3.5" fill="#2A9D8F"/>
+<rect x="464.00" y="844.60" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
+<rect x="464.00" y="812.60" width="94.54" height="25" rx="5" fill="#ffffff" stroke="#C96F2B" stroke-width="1.4"/>
+<text x="511.27" y="829.65" font-size="13" font-weight="bold" fill="#C96F2B" text-anchor="middle">J · 72 m²</text>
+<rect x="464.00" y="1042.60" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#C96F2B" stroke-width="1.1"/>
+<rect x="464.00" y="1042.60" width="66.00" height="66.00" rx="2" fill="#ffffff" stroke="#C96F2B" stroke-width="1.05"/>
+<text x="497.00" y="1074.60" font-size="15.00" font-weight="bold" fill="#C96F2B" text-anchor="middle">J7</text>
+<text x="497.00" y="1089.85" font-size="9.00" fill="#8a9aa8" text-anchor="middle">9 m²</text>
+<rect x="530.00" y="1042.60" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#C96F2B" stroke-width="1.1"/>
+<rect x="530.00" y="1042.60" width="66.00" height="66.00" rx="2" fill="#ffffff" stroke="#C96F2B" stroke-width="1.05"/>
+<text x="563.00" y="1074.60" font-size="15.00" font-weight="bold" fill="#C96F2B" text-anchor="middle">J8</text>
+<text x="563.00" y="1089.85" font-size="9.00" fill="#8a9aa8" text-anchor="middle">9 m²</text>
+<rect x="496.00" y="1118.60" width="68" height="7" rx="3.5" fill="#C96F2B"/>
+<text x="530.00" y="1144.60" font-size="15.00" font-weight="bold" fill="#0f2233" text-anchor="middle">J bloki</text>
+<text x="530.00" y="1162.60" font-size="15.00" fill="#5b6b7a" text-anchor="middle">Полуфабрикаты</text>
+<rect x="750.00" y="844.60" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
+<rect x="750.00" y="812.60" width="94.54" height="25" rx="5" fill="#ffffff" stroke="#D2691E" stroke-width="1.4"/>
+<text x="797.27" y="829.65" font-size="13" font-weight="bold" fill="#D2691E" text-anchor="middle">K · 72 m²</text>
+<rect x="750.00" y="1042.60" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#D2691E" stroke-width="1.1"/>
+<rect x="750.00" y="1042.60" width="66.00" height="66.00" rx="2" fill="#ffffff" stroke="#D2691E" stroke-width="1.05"/>
+<text x="783.00" y="1074.60" font-size="15.00" font-weight="bold" fill="#D2691E" text-anchor="middle">K7</text>
+<text x="783.00" y="1089.85" font-size="9.00" fill="#8a9aa8" text-anchor="middle">9 m²</text>
+<rect x="816.00" y="1042.60" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#D2691E" stroke-width="1.1"/>
+<rect x="816.00" y="1042.60" width="66.00" height="66.00" rx="2" fill="#ffffff" stroke="#D2691E" stroke-width="1.05"/>
+<text x="849.00" y="1074.60" font-size="15.00" font-weight="bold" fill="#D2691E" text-anchor="middle">K8</text>
+<text x="849.00" y="1089.85" font-size="9.00" fill="#8a9aa8" text-anchor="middle">9 m²</text>
+<rect x="782.00" y="1118.60" width="68" height="7" rx="3.5" fill="#D2691E"/>
+<rect x="1036.00" y="844.60" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
+<rect x="1036.00" y="812.60" width="94.54" height="25" rx="5" fill="#ffffff" stroke="#C2185B" stroke-width="1.4"/>
+<text x="1083.27" y="829.65" font-size="13" font-weight="bold" fill="#C2185B" text-anchor="middle">L · 72 m²</text>
+<rect x="1068.00" y="1118.60" width="68" height="7" rx="3.5" fill="#C2185B"/>
+<rect x="288.00" y="118.60" width="528.00" height="66.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
+<rect x="288.00" y="86.60" width="118.72" height="25" rx="5" fill="#ffffff" stroke="#2E8B8B" stroke-width="1.4"/>
+<text x="347.36" y="103.65" font-size="13" font-weight="bold" fill="#2E8B8B" text-anchor="middle">EQ-1 · 72 m²</text>
+<rect x="684.00" y="118.60" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#2E8B8B" stroke-width="1.1"/>
+<rect x="684.00" y="118.60" width="66.00" height="66.00" rx="2" fill="#ffffff" stroke="#2E8B8B" stroke-width="1.05"/>
+<text x="717.00" y="150.60" font-size="15.00" font-weight="bold" fill="#2E8B8B" text-anchor="middle">EQ7</text>
+<text x="717.00" y="165.85" font-size="9.00" fill="#8a9aa8" text-anchor="middle">9 m²</text>
+<rect x="750.00" y="118.60" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#2E8B8B" stroke-width="1.1"/>
+<rect x="750.00" y="118.60" width="66.00" height="66.00" rx="2" fill="#ffffff" stroke="#2E8B8B" stroke-width="1.05"/>
+<text x="783.00" y="150.60" font-size="15.00" font-weight="bold" fill="#2E8B8B" text-anchor="middle">EQ8</text>
+<text x="783.00" y="165.85" font-size="9.00" fill="#8a9aa8" text-anchor="middle">9 m²</text>
+<rect x="518.00" y="194.60" width="68" height="7" rx="3.5" fill="#2E8B8B"/>
+<rect x="860.00" y="118.60" width="528.00" height="66.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
+<rect x="860.00" y="86.60" width="118.72" height="25" rx="5" fill="#ffffff" stroke="#2E8B8B" stroke-width="1.4"/>
+<text x="919.36" y="103.65" font-size="13" font-weight="bold" fill="#2E8B8B" text-anchor="middle">EQ-2 · 72 m²</text>
+<rect x="1256.00" y="118.60" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#2E8B8B" stroke-width="1.1"/>
+<rect x="1256.00" y="118.60" width="66.00" height="66.00" rx="2" fill="#ffffff" stroke="#2E8B8B" stroke-width="1.05"/>
+<text x="1289.00" y="150.60" font-size="15.00" font-weight="bold" fill="#2E8B8B" text-anchor="middle">EQ7</text>
+<text x="1289.00" y="165.85" font-size="9.00" fill="#8a9aa8" text-anchor="middle">9 m²</text>
+<rect x="1322.00" y="118.60" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#2E8B8B" stroke-width="1.1"/>
+<rect x="1322.00" y="118.60" width="66.00" height="66.00" rx="2" fill="#ffffff" stroke="#2E8B8B" stroke-width="1.05"/>
+<text x="1355.00" y="150.60" font-size="15.00" font-weight="bold" fill="#2E8B8B" text-anchor="middle">EQ8</text>
+<text x="1355.00" y="165.85" font-size="9.00" fill="#8a9aa8" text-anchor="middle">9 m²</text>
+<rect x="1090.00" y="194.60" width="68" height="7" rx="3.5" fill="#2E8B8B"/>
 <rect x="68.00" y="488.20" width="132.00" height="93.13" rx="3" fill="#eaf6ec" stroke="#E8A33D" stroke-width="1.1" stroke-dasharray="6 4"/>
-<text x="134.00" y="531.13" font-size="18.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">A3</text>
-<text x="134.00" y="550.63" font-size="10.00" fill="#1b5e20" text-anchor="middle" opacity="0.9">25,4 m²</text>
+<rect x="68.00" y="488.20" width="132.00" height="93.13" rx="2" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6"/>
+<text x="134.00" y="533.76" font-size="18.00" font-weight="bold" fill="#2b3a45" text-anchor="middle">A3</text>
+<text x="134.00" y="558.16" font-size="12.96" fill="#8a9aa8" text-anchor="middle">25,4 m²</text>
 <rect x="68.00" y="695.00" width="132.00" height="100.50" rx="3" fill="#eaf6ec" stroke="#E8A33D" stroke-width="1.1" stroke-dasharray="6 4"/>
-<text x="134.00" y="741.62" font-size="18.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">A1</text>
-<text x="134.00" y="761.12" font-size="10.00" fill="#1b5e20" text-anchor="middle" opacity="0.9">27,41 m²</text>
-<path d="M310 127.4L376 127.4L442 127.4L508 127.4L508 193.4L442 193.4L376 193.4L376 259.4L310 259.4L310 193.4Z" fill="#fff3d6" stroke="#f59e0b" stroke-width="2"/>
-<text x="409.00" y="161.96" font-size="18.53" font-weight="bold" fill="#8a5a00" text-anchor="middle">UzPack Equipment</text>
-<text x="409.00" y="183.52" font-size="10.19" fill="#8a5a00" text-anchor="middle" opacity="0.92">4 stend · 36 m²</text>
-<path d="M508 127.4L574 127.4L574 193.4L574 259.4L508 259.4L508 193.4Z" fill="#c62828" stroke="#8e1b1b" stroke-width="2"/>
-<text x="541.00" y="185.39" font-size="10.48" font-weight="bold" fill="#ffffff" text-anchor="middle">Rus Expo</text>
-<text x="541.00" y="197.96" font-size="10.48" font-weight="bold" fill="#ffffff" text-anchor="middle">Group</text>
-<text x="541.00" y="217.98" font-size="8.00" fill="#ffffff" text-anchor="middle" opacity="0.92">18 m²</text>
-<path d="M772 127.4L838 127.4L904 127.4L970 127.4L970 193.4L904 193.4L838 193.4L838 259.4L772 259.4L772 193.4Z" fill="#c62828" stroke="#8e1b1b" stroke-width="2"/>
-<text x="871.00" y="160.17" font-size="14.13" font-weight="bold" fill="#ffffff" text-anchor="middle">Konserv Liniya Servis</text>
-<text x="871.00" y="180.88" font-size="8.00" fill="#ffffff" text-anchor="middle" opacity="0.92">4 stend · 36 m²</text>
-<path d="M970 127.4L1036 127.4L1036 193.4L1036 259.4L970 259.4L970 193.4Z" fill="#fff3d6" stroke="#f59e0b" stroke-width="2"/>
-<text x="1003.00" y="185.62" font-size="9.28" font-weight="bold" fill="#8a5a00" text-anchor="middle">KazPack</text>
-<text x="1003.00" y="196.75" font-size="9.28" font-weight="bold" fill="#8a5a00" text-anchor="middle">Machinery</text>
-<text x="1003.00" y="216.54" font-size="8.00" fill="#8a5a00" text-anchor="middle" opacity="0.92">18 m²</text>
-<path d="M68 233L200 233L200 303.224L68 303.224Z" fill="#c62828" stroke="#8e1b1b" stroke-width="2"/>
-<text x="134.00" y="267.32" font-size="11.19" font-weight="bold" fill="#ffffff" text-anchor="middle">Milliy Ziravorlar</text>
-<text x="134.00" y="287.46" font-size="8.00" fill="#ffffff" text-anchor="middle" opacity="0.92">19,15 m²</text>
-<path d="M310 303.4L376 303.4L442 303.4L442 369.4L442 435.4L442 501.4L442 567.4L376 567.4L310 567.4L310 501.4L310 435.4L310 369.4Z" fill="#c62828" stroke="#8e1b1b" stroke-width="2"/>
-<text x="376.00" y="433.95" font-size="11.16" font-weight="bold" fill="#ffffff" text-anchor="middle">Orient Food Group</text>
-<text x="376.00" y="454.10" font-size="8.00" fill="#ffffff" text-anchor="middle" opacity="0.92">8 stend · 72 m²</text>
-<path d="M486 303.4L552 303.4L618 303.4L618 369.4L618 435.4L552 435.4L486 435.4L486 369.4Z" fill="#c62828" stroke="#8e1b1b" stroke-width="2"/>
-<text x="552.00" y="366.93" font-size="8.64" font-weight="bold" fill="#ffffff" text-anchor="middle">Navoiy Konserva Zavodi</text>
-<text x="552.00" y="386.58" font-size="8.00" fill="#ffffff" text-anchor="middle" opacity="0.92">4 stend · 36 m²</text>
-<path d="M662 303.4L728 303.4L794 303.4L794 369.4L794 435.4L728 435.4L662 435.4L662 369.4Z" fill="#fff3d6" stroke="#f59e0b" stroke-width="2"/>
-<text x="728.00" y="367.95" font-size="11.16" font-weight="bold" fill="#8a5a00" text-anchor="middle">Silk Road Seafood</text>
-<text x="728.00" y="388.10" font-size="8.00" fill="#8a5a00" text-anchor="middle" opacity="0.92">4 stend · 36 m²</text>
-<path d="M838 303.4L904 303.4L970 303.4L970 369.4L904 369.4L838 369.4Z" fill="#c62828" stroke="#8e1b1b" stroke-width="2"/>
-<text x="904.00" y="334.27" font-size="9.49" font-weight="bold" fill="#ffffff" text-anchor="middle">Fergana Fruit Export</text>
-<text x="904.00" y="354.10" font-size="8.00" fill="#ffffff" text-anchor="middle" opacity="0.92">2 stend · 18 m²</text>
-<path d="M1014 303.4L1080 303.4L1146 303.4L1146 369.4L1146 435.4L1146 501.4L1146 567.4L1080 567.4L1014 567.4L1014 501.4L1014 435.4L1014 369.4Z" fill="#c62828" stroke="#8e1b1b" stroke-width="2"/>
-<text x="1080.00" y="434.25" font-size="11.88" font-weight="bold" fill="#ffffff" text-anchor="middle">Biosifat Organik</text>
-<text x="1080.00" y="454.53" font-size="8.00" fill="#ffffff" text-anchor="middle" opacity="0.92">8 stend · 72 m²</text>
-<path d="M68 312.2L200 312.2L200 386.714L68 386.714Z" fill="#fff3d6" stroke="#f59e0b" stroke-width="2"/>
-<text x="134.00" y="349.01" font-size="10.57" font-weight="bold" fill="#8a5a00" text-anchor="middle">Andijon Meva Savdo</text>
-<text x="134.00" y="369.04" font-size="8.00" fill="#8a5a00" text-anchor="middle" opacity="0.92">20,32 m²</text>
-<path d="M1190 369.4L1256 369.4L1322 369.4L1322 435.4L1256 435.4L1190 435.4Z" fill="#fff3d6" stroke="#f59e0b" stroke-width="2"/>
-<text x="1256.00" y="400.71" font-size="10.57" font-weight="bold" fill="#8a5a00" text-anchor="middle">EcoFood Uzbekistan</text>
-<text x="1256.00" y="420.74" font-size="8.00" fill="#8a5a00" text-anchor="middle" opacity="0.92">2 stend · 18 m²</text>
-<path d="M68 395.8L200 395.8L200 478.916L68 478.916Z" fill="#c62828" stroke="#8e1b1b" stroke-width="2"/>
-<text x="134.00" y="434.93" font-size="9.51" font-weight="bold" fill="#ffffff" text-anchor="middle">Samarqand Non Zavodi</text>
-<text x="134.00" y="454.75" font-size="8.00" fill="#ffffff" text-anchor="middle" opacity="0.92">22,67 m²</text>
-<path d="M486 435.4L552 435.4L618 435.4L618 501.4L552 501.4L486 501.4Z" fill="#fff3d6" stroke="#f59e0b" stroke-width="2"/>
-<text x="552.00" y="465.77" font-size="8.25" font-weight="bold" fill="#8a5a00" text-anchor="middle">Buxoro Sut Mahsulotlari</text>
-<text x="552.00" y="485.35" font-size="8.00" fill="#8a5a00" text-anchor="middle" opacity="0.92">2 stend · 18 m²</text>
-<path d="M838 435.4L904 435.4L970 435.4L970 501.4L904 501.4L838 501.4Z" fill="#c62828" stroke="#8e1b1b" stroke-width="2"/>
-<text x="904.00" y="466.27" font-size="9.49" font-weight="bold" fill="#ffffff" text-anchor="middle">Fergana Fruit Export</text>
-<text x="904.00" y="486.10" font-size="8.00" fill="#ffffff" text-anchor="middle" opacity="0.92">2 stend · 18 m²</text>
-<path d="M1190 501.4L1256 501.4L1322 501.4L1322 567.4L1256 567.4L1190 567.4Z" fill="#fff3d6" stroke="#f59e0b" stroke-width="2"/>
-<text x="1256.00" y="532.71" font-size="10.57" font-weight="bold" fill="#8a5a00" text-anchor="middle">EcoFood Uzbekistan</text>
-<text x="1256.00" y="552.74" font-size="8.00" fill="#8a5a00" text-anchor="middle" opacity="0.92">2 stend · 18 m²</text>
-<path d="M68 589.4L200 589.4L200 685.584L68 685.584Z" fill="#fff3d6" stroke="#f59e0b" stroke-width="2"/>
-<text x="134.00" y="635.00" font-size="11.88" font-weight="bold" fill="#8a5a00" text-anchor="middle">Qarshi Sifat Sut</text>
-<text x="134.00" y="655.28" font-size="8.00" fill="#8a5a00" text-anchor="middle" opacity="0.92">26,23 m²</text>
-<path d="M310 761L376 761L442 761L442 827L442 893L442 959L376 959L310 959L310 893L310 827Z" fill="#c62828" stroke="#8e1b1b" stroke-width="2"/>
-<text x="376.00" y="857.69" font-size="9.04" font-weight="bold" fill="#ffffff" text-anchor="middle">Toshkent Yarim Tayyor</text>
-<text x="376.00" y="877.42" font-size="8.00" fill="#ffffff" text-anchor="middle" opacity="0.92">6 stend · 54 m²</text>
-<path d="M486 761L552 761L618 761L618 827L618 893L552 893L486 893L486 827Z" fill="#c62828" stroke="#8e1b1b" stroke-width="2"/>
-<text x="552.00" y="824.10" font-size="7.60" font-weight="bold" fill="#ffffff" text-anchor="middle">Namangan Go'sht Kombinati</text>
-<text x="552.00" y="843.56" font-size="8.00" fill="#ffffff" text-anchor="middle" opacity="0.92">4 stend · 36 m²</text>
-<path d="M662 761L728 761L794 761L794 827L794 893L728 893L662 893L662 827Z" fill="#c62828" stroke="#8e1b1b" stroke-width="2"/>
-<text x="728.00" y="825.31" font-size="10.56" font-weight="bold" fill="#ffffff" text-anchor="middle">Aqua Water Company</text>
-<text x="728.00" y="845.34" font-size="8.00" fill="#ffffff" text-anchor="middle" opacity="0.92">4 stend · 36 m²</text>
-<path d="M838 761L904 761L970 761L970 827L970 893L970 959L904 959L838 959L838 893L838 827Z" fill="#fff3d6" stroke="#f59e0b" stroke-width="2"/>
-<text x="904.00" y="857.53" font-size="8.64" font-weight="bold" fill="#8a5a00" text-anchor="middle">Galla Bakaleya Savdosi</text>
-<text x="904.00" y="877.18" font-size="8.00" fill="#8a5a00" text-anchor="middle" opacity="0.92">6 stend · 54 m²</text>
-<path d="M1014 761L1080 761L1146 761L1146 827L1146 893L1080 893L1014 893L1014 827Z" fill="#c62828" stroke="#8e1b1b" stroke-width="2"/>
-<text x="1080.00" y="824.87" font-size="9.48" font-weight="bold" fill="#ffffff" text-anchor="middle">Shirin Ta'm Qandolat</text>
-<text x="1080.00" y="844.69" font-size="8.00" fill="#ffffff" text-anchor="middle" opacity="0.92">4 stend · 36 m²</text>
-<path d="M1190 761L1256 761L1322 761L1322 827L1322 893L1322 959L1256 959L1190 959L1190 893L1190 827Z" fill="#c62828" stroke="#8e1b1b" stroke-width="2"/>
-<text x="1256.00" y="857.69" font-size="9.04" font-weight="bold" fill="#ffffff" text-anchor="middle">Osiyo Ingredient MChJ</text>
-<text x="1256.00" y="877.42" font-size="8.00" fill="#ffffff" text-anchor="middle" opacity="0.92">6 stend · 54 m²</text>
-<path d="M1014 893L1080 893L1146 893L1146 959L1146 1025L1080 1025L1014 1025L1014 959Z" fill="#c62828" stroke="#8e1b1b" stroke-width="2"/>
-<text x="1080.00" y="958.97" font-size="14.64" font-weight="bold" fill="#ffffff" text-anchor="middle">Qandolat Olam</text>
-<text x="1080.00" y="979.78" font-size="8.05" fill="#ffffff" text-anchor="middle" opacity="0.92">4 stend · 36 m²</text>
-<path d="M486 959L552 959L618 959L618 1025L552 1025L486 1025Z" fill="#fff3d6" stroke="#f59e0b" stroke-width="2"/>
-<text x="552.00" y="989.51" font-size="8.61" font-weight="bold" fill="#8a5a00" text-anchor="middle">Qashqadaryo Sut Zavodi</text>
-<text x="552.00" y="1009.17" font-size="8.00" fill="#8a5a00" text-anchor="middle" opacity="0.92">2 stend · 18 m²</text>
+<rect x="68.00" y="695.00" width="132.00" height="100.50" rx="2" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6"/>
+<text x="134.00" y="744.25" font-size="18.00" font-weight="bold" fill="#2b3a45" text-anchor="middle">A1</text>
+<text x="134.00" y="768.65" font-size="12.96" fill="#8a9aa8" text-anchor="middle">27,41 m²</text>
+<path d="M288 118.6L354 118.6L420 118.6L486 118.6L552 118.6L552 184.6L486 184.6L420 184.6L354 184.6L288 184.6Z" fill="#fff8e6" stroke="#e0a300" stroke-width="2"/>
+<rect x="288.00" y="118.60" width="264.00" height="4" rx="1.5" fill="#e0a300"/>
+<text x="420.00" y="153.52" font-size="19.41" font-weight="bold" fill="#7a4f00" text-anchor="middle">UzPack Equipment</text>
+<text x="420.00" y="175.25" font-size="10.68" fill="#7a4f00" text-anchor="middle" opacity="0.85">4 stend · 36 m²</text>
+<path d="M552 118.6L618 118.6L684 118.6L684 184.6L618 184.6L552 184.6Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
+<rect x="552.00" y="118.60" width="132.00" height="4" rx="1.5" fill="#c62828"/>
+<text x="618.00" y="151.14" font-size="13.57" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Rus Expo Group</text>
+<text x="618.00" y="171.74" font-size="8.00" fill="#8e1b1b" text-anchor="middle" opacity="0.85">2 stend · 18 m²</text>
+<path d="M860 118.6L926 118.6L992 118.6L1058 118.6L1124 118.6L1124 184.6L1058 184.6L992 184.6L926 184.6L860 184.6Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
+<rect x="860.00" y="118.60" width="264.00" height="4" rx="1.5" fill="#c62828"/>
+<text x="992.00" y="153.42" font-size="19.17" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Konserv Liniya Servis</text>
+<text x="992.00" y="175.10" font-size="10.54" fill="#8e1b1b" text-anchor="middle" opacity="0.85">4 stend · 36 m²</text>
+<path d="M1124 118.6L1190 118.6L1256 118.6L1256 184.6L1190 184.6L1124 184.6Z" fill="#fff8e6" stroke="#e0a300" stroke-width="2"/>
+<rect x="1124.00" y="118.60" width="132.00" height="4" rx="1.5" fill="#e0a300"/>
+<text x="1190.00" y="150.16" font-size="11.17" font-weight="bold" fill="#7a4f00" text-anchor="middle">KazPack Machinery</text>
+<text x="1190.00" y="170.30" font-size="8.00" fill="#7a4f00" text-anchor="middle" opacity="0.85">2 stend · 18 m²</text>
+<path d="M310 228.6L376 228.6L442 228.6L442 294.6L442 360.6L442 426.6L442 492.6L376 492.6L310 492.6L310 426.6L310 360.6L310 294.6Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
+<rect x="310.00" y="228.60" width="132.00" height="4" rx="1.5" fill="#c62828"/>
+<text x="376.00" y="359.15" font-size="11.16" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Orient Food Group</text>
+<text x="376.00" y="379.30" font-size="8.00" fill="#8e1b1b" text-anchor="middle" opacity="0.85">8 stend · 72 m²</text>
+<path d="M486 228.6L552 228.6L618 228.6L618 294.6L618 360.6L552 360.6L486 360.6L486 294.6Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
+<rect x="486.00" y="228.60" width="132.00" height="4" rx="1.5" fill="#c62828"/>
+<text x="552.00" y="292.13" font-size="8.64" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Navoiy Konserva Zavodi</text>
+<text x="552.00" y="311.78" font-size="8.00" fill="#8e1b1b" text-anchor="middle" opacity="0.85">4 stend · 36 m²</text>
+<path d="M662 228.6L728 228.6L794 228.6L794 294.6L794 360.6L728 360.6L662 360.6L662 294.6Z" fill="#fff8e6" stroke="#e0a300" stroke-width="2"/>
+<rect x="662.00" y="228.60" width="132.00" height="4" rx="1.5" fill="#e0a300"/>
+<text x="728.00" y="293.15" font-size="11.16" font-weight="bold" fill="#7a4f00" text-anchor="middle">Silk Road Seafood</text>
+<text x="728.00" y="313.30" font-size="8.00" fill="#7a4f00" text-anchor="middle" opacity="0.85">4 stend · 36 m²</text>
+<path d="M838 228.6L904 228.6L970 228.6L970 294.6L904 294.6L838 294.6Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
+<rect x="838.00" y="228.60" width="132.00" height="4" rx="1.5" fill="#c62828"/>
+<text x="904.00" y="259.47" font-size="9.49" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Fergana Fruit Export</text>
+<text x="904.00" y="279.30" font-size="8.00" fill="#8e1b1b" text-anchor="middle" opacity="0.85">2 stend · 18 m²</text>
+<path d="M1014 228.6L1080 228.6L1146 228.6L1146 294.6L1146 360.6L1146 426.6L1146 492.6L1080 492.6L1014 492.6L1014 426.6L1014 360.6L1014 294.6Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
+<rect x="1014.00" y="228.60" width="132.00" height="4" rx="1.5" fill="#c62828"/>
+<text x="1080.00" y="359.45" font-size="11.88" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Biosifat Organik</text>
+<text x="1080.00" y="379.73" font-size="8.00" fill="#8e1b1b" text-anchor="middle" opacity="0.85">8 stend · 72 m²</text>
+<path d="M68 233L200 233L200 303.224L68 303.224Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
+<rect x="68.00" y="233.00" width="132.00" height="4" rx="1.5" fill="#c62828"/>
+<text x="134.00" y="267.32" font-size="11.19" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Milliy Ziravorlar</text>
+<text x="134.00" y="287.46" font-size="8.00" fill="#8e1b1b" text-anchor="middle" opacity="0.85">19,15 m²</text>
+<path d="M1190 294.6L1256 294.6L1322 294.6L1322 360.6L1256 360.6L1190 360.6Z" fill="#fff8e6" stroke="#e0a300" stroke-width="2"/>
+<rect x="1190.00" y="294.60" width="132.00" height="4" rx="1.5" fill="#e0a300"/>
+<text x="1256.00" y="325.91" font-size="10.57" font-weight="bold" fill="#7a4f00" text-anchor="middle">EcoFood Uzbekistan</text>
+<text x="1256.00" y="345.94" font-size="8.00" fill="#7a4f00" text-anchor="middle" opacity="0.85">2 stend · 18 m²</text>
+<path d="M68 312.2L200 312.2L200 386.714L68 386.714Z" fill="#fff8e6" stroke="#e0a300" stroke-width="2"/>
+<rect x="68.00" y="312.20" width="132.00" height="4" rx="1.5" fill="#e0a300"/>
+<text x="134.00" y="349.01" font-size="10.57" font-weight="bold" fill="#7a4f00" text-anchor="middle">Andijon Meva Savdo</text>
+<text x="134.00" y="369.04" font-size="8.00" fill="#7a4f00" text-anchor="middle" opacity="0.85">20,32 m²</text>
+<path d="M486 360.6L552 360.6L618 360.6L618 426.6L552 426.6L486 426.6Z" fill="#fff8e6" stroke="#e0a300" stroke-width="2"/>
+<rect x="486.00" y="360.60" width="132.00" height="4" rx="1.5" fill="#e0a300"/>
+<text x="552.00" y="390.97" font-size="8.25" font-weight="bold" fill="#7a4f00" text-anchor="middle">Buxoro Sut Mahsulotlari</text>
+<text x="552.00" y="410.55" font-size="8.00" fill="#7a4f00" text-anchor="middle" opacity="0.85">2 stend · 18 m²</text>
+<path d="M838 360.6L904 360.6L970 360.6L970 426.6L904 426.6L838 426.6Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
+<rect x="838.00" y="360.60" width="132.00" height="4" rx="1.5" fill="#c62828"/>
+<text x="904.00" y="391.47" font-size="9.49" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Fergana Fruit Export</text>
+<text x="904.00" y="411.30" font-size="8.00" fill="#8e1b1b" text-anchor="middle" opacity="0.85">2 stend · 18 m²</text>
+<path d="M68 395.8L200 395.8L200 478.916L68 478.916Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
+<rect x="68.00" y="395.80" width="132.00" height="4" rx="1.5" fill="#c62828"/>
+<text x="134.00" y="434.93" font-size="9.51" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Samarqand Non Zavodi</text>
+<text x="134.00" y="454.75" font-size="8.00" fill="#8e1b1b" text-anchor="middle" opacity="0.85">22,67 m²</text>
+<path d="M1190 426.6L1256 426.6L1322 426.6L1322 492.6L1256 492.6L1190 492.6Z" fill="#fff8e6" stroke="#e0a300" stroke-width="2"/>
+<rect x="1190.00" y="426.60" width="132.00" height="4" rx="1.5" fill="#e0a300"/>
+<text x="1256.00" y="457.91" font-size="10.57" font-weight="bold" fill="#7a4f00" text-anchor="middle">EcoFood Uzbekistan</text>
+<text x="1256.00" y="477.94" font-size="8.00" fill="#7a4f00" text-anchor="middle" opacity="0.85">2 stend · 18 m²</text>
+<path d="M464 536.6L530 536.6L596 536.6L596 602.6L596 668.6L596 734.6L530 734.6L464 734.6L464 668.6L464 602.6Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
+<rect x="464.00" y="536.60" width="132.00" height="4" rx="1.5" fill="#c62828"/>
+<text x="530.00" y="633.29" font-size="9.04" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Osiyo Ingredient MChJ</text>
+<text x="530.00" y="653.02" font-size="8.00" fill="#8e1b1b" text-anchor="middle" opacity="0.85">6 stend · 54 m²</text>
+<path d="M750 536.6L816 536.6L882 536.6L882 602.6L882 668.6L816 668.6L750 668.6L750 602.6Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
+<rect x="750.00" y="536.60" width="132.00" height="4" rx="1.5" fill="#c62828"/>
+<text x="816.00" y="599.70" font-size="7.60" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Namangan Go'sht Kombinati</text>
+<text x="816.00" y="619.16" font-size="8.00" fill="#8e1b1b" text-anchor="middle" opacity="0.85">4 stend · 36 m²</text>
+<path d="M1036 536.6L1102 536.6L1168 536.6L1168 602.6L1168 668.6L1102 668.6L1036 668.6L1036 602.6Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
+<rect x="1036.00" y="536.60" width="132.00" height="4" rx="1.5" fill="#c62828"/>
+<text x="1102.00" y="600.91" font-size="10.56" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Aqua Water Company</text>
+<text x="1102.00" y="620.94" font-size="8.00" fill="#8e1b1b" text-anchor="middle" opacity="0.85">4 stend · 36 m²</text>
+<path d="M68 589.4L200 589.4L200 685.584L68 685.584Z" fill="#fff8e6" stroke="#e0a300" stroke-width="2"/>
+<rect x="68.00" y="589.40" width="132.00" height="4" rx="1.5" fill="#e0a300"/>
+<text x="134.00" y="635.00" font-size="11.88" font-weight="bold" fill="#7a4f00" text-anchor="middle">Qarshi Sifat Sut</text>
+<text x="134.00" y="655.28" font-size="8.00" fill="#7a4f00" text-anchor="middle" opacity="0.85">26,23 m²</text>
+<path d="M750 734.6L816 734.6L882 734.6L882 800.6L816 800.6L750 800.6Z" fill="#fff8e6" stroke="#e0a300" stroke-width="2"/>
+<rect x="750.00" y="734.60" width="132.00" height="4" rx="1.5" fill="#e0a300"/>
+<text x="816.00" y="765.11" font-size="8.61" font-weight="bold" fill="#7a4f00" text-anchor="middle">Qashqadaryo Sut Zavodi</text>
+<text x="816.00" y="784.77" font-size="8.00" fill="#7a4f00" text-anchor="middle" opacity="0.85">2 stend · 18 m²</text>
+<path d="M464 844.6L530 844.6L596 844.6L596 910.6L596 976.6L596 1042.6L530 1042.6L464 1042.6L464 976.6L464 910.6Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
+<rect x="464.00" y="844.60" width="132.00" height="4" rx="1.5" fill="#c62828"/>
+<text x="530.00" y="941.29" font-size="9.04" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Toshkent Yarim Tayyor</text>
+<text x="530.00" y="961.02" font-size="8.00" fill="#8e1b1b" text-anchor="middle" opacity="0.85">6 stend · 54 m²</text>
+<path d="M750 844.6L816 844.6L882 844.6L882 910.6L882 976.6L882 1042.6L816 1042.6L750 1042.6L750 976.6L750 910.6Z" fill="#fff8e6" stroke="#e0a300" stroke-width="2"/>
+<rect x="750.00" y="844.60" width="132.00" height="4" rx="1.5" fill="#e0a300"/>
+<text x="816.00" y="941.13" font-size="8.64" font-weight="bold" fill="#7a4f00" text-anchor="middle">Galla Bakaleya Savdosi</text>
+<text x="816.00" y="960.78" font-size="8.00" fill="#7a4f00" text-anchor="middle" opacity="0.85">6 stend · 54 m²</text>
+<path d="M1036 844.6L1102 844.6L1168 844.6L1168 910.6L1168 976.6L1102 976.6L1036 976.6L1036 910.6Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
+<rect x="1036.00" y="844.60" width="132.00" height="4" rx="1.5" fill="#c62828"/>
+<text x="1102.00" y="908.47" font-size="9.48" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Shirin Ta'm Qandolat</text>
+<text x="1102.00" y="928.29" font-size="8.00" fill="#8e1b1b" text-anchor="middle" opacity="0.85">4 stend · 36 m²</text>
+<path d="M1036 976.6L1102 976.6L1168 976.6L1168 1042.6L1168 1108.6L1102 1108.6L1036 1108.6L1036 1042.6Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
+<rect x="1036.00" y="976.60" width="132.00" height="4" rx="1.5" fill="#c62828"/>
+<text x="1102.00" y="1042.57" font-size="14.64" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Qandolat Olam</text>
+<text x="1102.00" y="1063.38" font-size="8.05" fill="#8e1b1b" text-anchor="middle" opacity="0.85">4 stend · 36 m²</text>
 <rect x="46.00" y="1217.00" width="15" height="15" rx="3" fill="#eaf6ec" stroke="#2e7d32" stroke-width="1.4"/>
 <text x="69.00" y="1230.00" font-size="13" fill="#33454f">Bo'sh: 32 stend · 322,81 m²</text>
 <rect x="301.62" y="1217.00" width="15" height="15" rx="3" fill="#fff3d6" stroke="#f59e0b" stroke-width="1.4"/>
@@ -321,8 +363,8 @@
 <rect x="46" y="1400.00" width="13" height="13" rx="2" fill="#9B59B6"/>
 <text x="67" y="1412.00" font-size="13" fill="#33454f">Organika mahsulotlari · Органика</text>
 <text x="746.00" y="1412.00" font-size="13" fill="#33454f">8 stend · 72 m² · bo'sh: 4 (36 m²)</text>
-<rect x="46" y="1422.00" width="13" height="13" rx="2" fill="#C96F2B"/>
-<text x="67" y="1434.00" font-size="13" fill="#33454f">Yarim tayyor mahsulotlar · Полуфабрикаты</text>
+<rect x="46" y="1422.00" width="13" height="13" rx="2" fill="#5E7A8C"/>
+<text x="67" y="1434.00" font-size="13" fill="#33454f">Ingredientlar va komponentlar · Ингредиенты и компоненты</text>
 <text x="746.00" y="1434.00" font-size="13" fill="#33454f">8 stend · 72 m² · bo'sh: 2 (18 m²)</text>
 <rect x="46" y="1444.00" width="13" height="13" rx="2" fill="#C0553E"/>
 <text x="67" y="1456.00" font-size="13" fill="#33454f">Go'sht va sut sanoati · Мясная и молочная индустрия</text>
@@ -330,26 +372,26 @@
 <rect x="46" y="1466.00" width="13" height="13" rx="2" fill="#2A9D8F"/>
 <text x="67" y="1478.00" font-size="13" fill="#33454f">Ichimliklar · Напитки</text>
 <text x="746.00" y="1478.00" font-size="13" fill="#33454f">8 stend · 72 m² · bo'sh: 4 (36 m²)</text>
-<rect x="46" y="1488.00" width="13" height="13" rx="2" fill="#D2691E"/>
-<text x="67" y="1500.00" font-size="13" fill="#33454f">Bakaleya · Бакалея</text>
+<rect x="46" y="1488.00" width="13" height="13" rx="2" fill="#C96F2B"/>
+<text x="67" y="1500.00" font-size="13" fill="#33454f">Yarim tayyor mahsulotlar · Полуфабрикаты</text>
 <text x="746.00" y="1500.00" font-size="13" fill="#33454f">8 stend · 72 m² · bo'sh: 2 (18 m²)</text>
-<rect x="46" y="1510.00" width="13" height="13" rx="2" fill="#C2185B"/>
-<text x="67" y="1522.00" font-size="13" fill="#33454f">Qandolat mahsulotlari · Кондитерские изделия</text>
-<text x="746.00" y="1522.00" font-size="13" fill="#33454f">8 stend · 72 m² · bo'sh: 0 (0 m²)</text>
-<rect x="46" y="1532.00" width="13" height="13" rx="2" fill="#5E7A8C"/>
-<text x="67" y="1544.00" font-size="13" fill="#33454f">Ingredientlar va komponentlar · Ингредиенты и компоненты</text>
-<text x="746.00" y="1544.00" font-size="13" fill="#33454f">8 stend · 72 m² · bo'sh: 2 (18 m²)</text>
+<rect x="46" y="1510.00" width="13" height="13" rx="2" fill="#D2691E"/>
+<text x="67" y="1522.00" font-size="13" fill="#33454f">Bakaleya · Бакалея</text>
+<text x="746.00" y="1522.00" font-size="13" fill="#33454f">8 stend · 72 m² · bo'sh: 2 (18 m²)</text>
+<rect x="46" y="1532.00" width="13" height="13" rx="2" fill="#C2185B"/>
+<text x="67" y="1544.00" font-size="13" fill="#33454f">Qandolat mahsulotlari · Кондитерские изделия</text>
+<text x="746.00" y="1544.00" font-size="13" fill="#33454f">8 stend · 72 m² · bo'sh: 0 (0 m²)</text>
 <rect x="46" y="1554.00" width="13" height="13" rx="2" fill="#2E8B8B"/>
 <text x="67" y="1566.00" font-size="13" fill="#33454f">Uskunalar va qadoqlash · Оборудование, консервные линии, упаковка</text>
-<text x="746.00" y="1566.00" font-size="13" fill="#33454f">12 stend + 4 katak · 144 m² · bo'sh: 4 (36 m²)</text>
+<text x="746.00" y="1566.00" font-size="13" fill="#33454f">16 stend · 144 m² · bo'sh: 4 (36 m²)</text>
 <rect x="46" y="1576.00" width="13" height="13" rx="2" fill="#E8A33D"/>
 <text x="67" y="1588.00" font-size="13" fill="#33454f">Chap qanot — A1–A6 · Левое крыло — A1–A6</text>
 <text x="746.00" y="1588.00" font-size="13" fill="#33454f">6 stend · 141,18 m² · bo'sh: 2 (52,81 m²)</text>
-<text x="1036.00" y="253.80" font-size="15" font-weight="bold" fill="#8fa0af" text-anchor="middle" letter-spacing="0.4">Uskunalar qatori (Оборудование, консервные линии, упаковка)</text>
+<text x="843.50" y="196.60" font-size="15" font-weight="bold" fill="#8fa0af" text-anchor="middle" letter-spacing="0.4">Uskunalar qatori (Оборудование, консервные линии, упаковка)</text>
 <text x="134.00" y="203.00" font-size="15" font-weight="bold" fill="#8fa0af" text-anchor="middle" letter-spacing="0.4">Chap qanot — A1–A6</text>
-<text x="1591.50" y="189.80" font-size="15" font-weight="bold" fill="#8fa0af" text-anchor="middle" letter-spacing="0.4">Seminarlar va forum zonasi (Зона семинаров и форум)</text>
-<text x="1591.50" y="550.60" font-size="15" font-weight="bold" fill="#8fa0af" text-anchor="middle" letter-spacing="0.4">B2B zona</text>
-<text x="1982.00" y="181.00" font-size="15" font-weight="bold" fill="#8fa0af" text-anchor="middle" letter-spacing="0.4">Conference-Hall va B2B zonalari</text>
+<text x="1591.50" y="203.00" font-size="15" font-weight="bold" fill="#8fa0af" text-anchor="middle" letter-spacing="0.4">Seminarlar va forum zonasi (Зона семинаров и форум)</text>
+<text x="1591.50" y="544.00" font-size="15" font-weight="bold" fill="#8fa0af" text-anchor="middle" letter-spacing="0.4">B2B zona</text>
+<text x="1982.00" y="203.00" font-size="15" font-weight="bold" fill="#8fa0af" text-anchor="middle" letter-spacing="0.4">Conference-Hall va B2B zonalari</text>
 <text x="618.00" y="1169.80" font-size="15" font-weight="bold" fill="#8fa0af" text-anchor="middle" letter-spacing="0.4">PARKING</text>
-<text x="2158" y="1647" font-size="12" fill="#33454f" text-anchor="end">Jami: 114 stend + 4 katak · 1 149,18 m² · bo'sh: 32 (322,81 m²)</text>
+<text x="2158" y="1647" font-size="12" fill="#33454f" text-anchor="end">Jami: 118 stend · 1 149,18 m² · bo'sh: 32 (322,81 m²)</text>
 </svg>

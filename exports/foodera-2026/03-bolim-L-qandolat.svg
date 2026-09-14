@@ -1,15 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="721" height="659" viewBox="0 0 721 659" font-family="DejaVu Sans, Helvetica, Arial, sans-serif">
 <rect width="721" height="659" fill="#ffffff"/>
-<text x="46" y="66" font-size="20" font-weight="bold" fill="#0f2233">HoReCa mahsulotlari — Продукция для HoReCa</text>
+<text x="46" y="66" font-size="20" font-weight="bold" fill="#0f2233">Qandolat mahsulotlari — Кондитерские изделия</text>
 <text x="46" y="87" font-size="13" fill="#5b6b7a">1 stend = 3×3 m = 9 m² · 1 blok = 8 stend = 72 m² · layout v1.1.0 · 14.09.2026</text>
 <rect x="123.00" y="178.00" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
-<rect x="123.00" y="146.00" width="94.54" height="25" rx="5" fill="#ffffff" stroke="#E8A33D" stroke-width="1.4"/>
-<text x="170.27" y="163.05" font-size="13" font-weight="bold" fill="#E8A33D" text-anchor="middle">A · 72 m²</text>
-<rect x="155.00" y="452.00" width="68" height="7" rx="3.5" fill="#E8A33D"/>
-<path d="M123 178L189 178L255 178L255 244L255 310L255 376L255 442L189 442L123 442L123 376L123 310L123 244Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
+<rect x="123.00" y="146.00" width="94.54" height="25" rx="5" fill="#ffffff" stroke="#C2185B" stroke-width="1.4"/>
+<text x="170.27" y="163.05" font-size="13" font-weight="bold" fill="#C2185B" text-anchor="middle">L · 72 m²</text>
+<rect x="155.00" y="452.00" width="68" height="7" rx="3.5" fill="#C2185B"/>
+<path d="M123 178L189 178L255 178L255 244L255 310L189 310L123 310L123 244Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
 <rect x="123.00" y="178.00" width="132.00" height="4" rx="1.5" fill="#c62828"/>
-<text x="189.00" y="308.55" font-size="11.16" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Orient Food Group</text>
-<text x="189.00" y="328.70" font-size="8.00" fill="#8e1b1b" text-anchor="middle" opacity="0.85">8 stend · 72 m²</text>
+<text x="189.00" y="241.87" font-size="9.48" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Shirin Ta'm Qandolat</text>
+<text x="189.00" y="261.69" font-size="8.00" fill="#8e1b1b" text-anchor="middle" opacity="0.85">4 stend · 36 m²</text>
+<path d="M123 310L189 310L255 310L255 376L255 442L189 442L123 442L123 376Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
+<rect x="123.00" y="310.00" width="132.00" height="4" rx="1.5" fill="#c62828"/>
+<text x="189.00" y="375.97" font-size="14.64" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Qandolat Olam</text>
+<text x="189.00" y="396.78" font-size="8.05" fill="#8e1b1b" text-anchor="middle" opacity="0.85">4 stend · 36 m²</text>
 <rect x="46.00" y="535.00" width="15" height="15" rx="3" fill="#eaf6ec" stroke="#2e7d32" stroke-width="1.4"/>
 <text x="69.00" y="548.00" font-size="13" fill="#33454f">Bo'sh: 0 stend · 0 m²</text>
 <rect x="253.26" y="535.00" width="15" height="15" rx="3" fill="#fff3d6" stroke="#f59e0b" stroke-width="1.4"/>

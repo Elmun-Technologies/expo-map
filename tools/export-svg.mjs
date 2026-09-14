@@ -68,6 +68,16 @@ const STATUS = {
   sold: { fill: '#c62828', stroke: '#8e1b1b', ink: '#ffffff', label: 'Sotilgan' },
   blocked: { fill: '#eceff1', stroke: '#607d8b', ink: '#37474f', label: 'Bloklangan' },
 };
+/** TOZA (plan/shablon) uslubi — oq kataklar, yupqa rangli ramkalar, och status fonlari. */
+const CLEAN = {
+  free:     { fill: '#ffffff', bar: null,      ink: '#2b3a45', sub: '#8a9aa8', label: "Bo'sh" },
+  reserved: { fill: '#fff8e6', bar: '#e0a300', ink: '#7a4f00', sub: '#a08243', label: 'Bron' },
+  sold:     { fill: '#fdeceb', bar: '#c62828', ink: '#8e1b1b', sub: '#a86666', label: 'Sotilgan' },
+  blocked:  { fill: '#f2f4f6', bar: '#607d8b', ink: '#37474f', sub: '#7a8a94', label: 'Bloklangan' },
+};
+const STYLE = (process.argv.includes('--style=status') || process.env.STYLE === 'status') ? 'status' : 'clean';
+const tint = (k) => (STYLE === 'clean' ? CLEAN[k] || CLEAN.free : STATUS[k] || STATUS.free);
+const inkOf = (k) => tint(k).ink;
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const statusOf = (id) => items[id]?.status || 'free';
 const fmtNum = (n) => Number(n || 0).toLocaleString('ru-RU').replace(/\u00A0/g, ' ');
@@ -269,8 +279,8 @@ for (const b of blocks) {
     const chipW = Math.min(S(b.w) + 70, txtW(chipText, F.chip) + 22);
     const chipH = F.chip + 12;
     const chipX = X(b.x), chipY = Y(b.y) - chipH - 7;
-    out.push(`<rect x="${R(chipX)}" y="${R(chipY)}" width="${R(chipW)}" height="${chipH}" rx="5" fill="${b.color || '#0f2233'}"/>`);
-    out.push(`<text x="${R(chipX + chipW / 2)}" y="${R(chipY + chipH / 2 + F.chip * 0.35)}" font-size="${F.chip}" font-weight="bold" fill="#ffffff" text-anchor="middle">${esc(chipText)}</text>`);
+    out.push(`<rect x="${R(chipX)}" y="${R(chipY)}" width="${R(chipW)}" height="${chipH}" rx="5" fill="${STYLE === 'clean' ? '#ffffff' : (b.color || '#0f2233')}" stroke="${b.color || '#0f2233'}" stroke-width="${STYLE === 'clean' ? 1.4 : 0}"/>`);
+    out.push(`<text x="${R(chipX + chipW / 2)}" y="${R(chipY + chipH / 2 + F.chip * 0.35)}" font-size="${F.chip}" font-weight="bold" fill="${STYLE === 'clean' ? (b.color || '#0f2233') : '#ffffff'}" text-anchor="middle">${esc(chipText)}</text>`);
     for (const s of b.stands) if (!bookedIds.has(s.id)) drawStand(s, false, b);
     const sec = sectionById(b.section);
     if (sec) {
@@ -280,7 +290,7 @@ for (const b of blocks) {
       if (room > 4.6) {
         const fitFs = (txt) => Math.max(7, Math.min(F.secbar, (S(b.w) - 14) / Math.max(4, txt.length) / 0.6));
         out.push(`<text x="${R(cx)}" y="${R(Y(b.y + b.h) + 36)}" font-size="${R(fitFs(`${b.label} bloki`))}" font-weight="bold" fill="#0f2233" text-anchor="middle">${esc(b.label)} bloki</text>`);
-        out.push(`<text x="${R(cx)}" y="${R(Y(b.y + b.h) + 54)}" font-size="${R(fitFs(sec.short || sec.label))}" fill="#5b6b7a" text-anchor="middle">${esc(sec.short || sec.label)}</text>`);
+        out.push(`<text x="${R(cx)}" y="${R(Y(b.y + b.h) + 54)}" font-size="${R(fitFs(sec.short || sec.label))}" fill="#5b6b7a" text-anchor="middle">${esc(STYLE === 'clean' ? (sec.labelRu || sec.short || sec.label) : (sec.short || sec.label))}</text>`);
       }
     }
     // birlashtirilgan (stendlar olib tashlangan) kataklar
@@ -317,8 +327,9 @@ for (const b of blocks) {
 /** Kompaniyaning band joyi — bitta quti + nomi ichida. */
 function drawUnit(u) {
   const st = STATUS[u.status] || STATUS.sold;
+  const cl = tint(u.status || 'sold');
   const d = unionPath(u.stands.map((s) => ({ x: X(s.x), y: Y(s.y), w: S(s.w), h: S(s.h) })));
-  out.push(`<path d="${d}" fill="${st.fill}" stroke="${st.stroke}" stroke-width="2"/>`);
+  out.push(`<path d="${d}" fill="${cl.fill}" stroke="${STYLE === 'clean' ? (cl.bar || '#c62828') : st.stroke}" stroke-width="2"/>`);
   const boxes = largestRect(u.stands.map((s) => ({ x: s.x, y: s.y, w: s.w, h: s.h })), 0.25);
   const boxW = S(boxes.w), boxH = S(boxes.h);
   const onlyMerged = u.stands.every((st) => st.mergedCell);
@@ -331,14 +342,17 @@ function drawUnit(u) {
   const label = u.label || st.label;
   const fit = fitText(label, boxW - 14, boxH - (withMeta ? 26 : 8), { maxLines: boxH > 120 ? 3 : boxH > 58 ? 2 : 1, minFs: 7, maxFs: Math.min(26, boxH / (withMeta ? 3.4 : 2.6)), cw: 0.62, lh: 1.2 });
   const cx = X(boxes.x + boxes.w / 2), cy = Y(boxes.y + boxes.h / 2);
+  if (STYLE === 'clean' && cl.bar) {
+    out.push(`<rect x="${R(X(boxes.x))}" y="${R(Y(boxes.y))}" width="${R(boxW)}" height="4" rx="1.5" fill="${cl.bar}"/>`);
+  }
   const lh = fit.fs * 1.2;
   const shift = (fit.lines.length * lh) / 2;
   fit.lines.forEach((ln, i) => {
     const yy = cy - shift + lh * (i + 0.84) + (withMeta ? -6 : 1);
-    out.push(`<text x="${R(cx)}" y="${R(yy)}" font-size="${R(fit.fs)}" font-weight="bold" fill="${st.ink}" text-anchor="middle">${esc(ln)}</text>`);
+    out.push(`<text x="${R(cx)}" y="${R(yy)}" font-size="${R(fit.fs)}" font-weight="bold" fill="${inkOf(u.status || 'sold')}" text-anchor="middle">${esc(ln)}</text>`);
   });
   if (withMeta) {
-    out.push(`<text x="${R(cx)}" y="${R(cy + shift + (fit.lines.length ? 12 : 5))}" font-size="${R(Math.max(8, fit.fs * 0.55))}" fill="${st.ink}" text-anchor="middle" opacity="0.92">${esc(metaTxt)}</text>`);
+    out.push(`<text x="${R(cx)}" y="${R(cy + shift + (fit.lines.length ? 12 : 5))}" font-size="${R(Math.max(8, fit.fs * 0.55))}" fill="${inkOf(u.status || 'sold')}" text-anchor="middle" opacity="${STYLE === 'clean' ? 0.85 : 0.92}">${esc(metaTxt)}</text>`);
   }
 }
 
@@ -363,6 +377,41 @@ function drawStand(s, custom, b0) {
   out.push(`<rect x="${R(X(s.x))}" y="${R(Y(s.y))}" width="${R(S(s.w))}" height="${R(S(s.h))}" rx="3" fill="${st.fill}" stroke="${s.color || st.stroke}" stroke-width="1.1"${custom ? ' stroke-dasharray="6 4"' : ''}/>`);
   const cx = X(s.x + s.w / 2), cy = Y(s.y + s.h / 2);
   const fs = Math.max(9, Math.min(F.num, S(s.w) / 4.2));
+  if (STYLE === 'clean') {
+    // TOZA uslub: oq katak + bo'lim rangidagi yupqa ramka, status — och fon + pastdagi tasma
+    const key2 = statusOf(s.id);
+    const cl = CLEAN[key2] || CLEAN.free;
+    const edge = custom ? '#E8A33D' : ((b0 && b0.color) || s.color || '#90a4b5');
+    out.push(`<rect x="${R(X(s.x))}" y="${R(Y(s.y))}" width="${R(S(s.w))}" height="${R(S(s.h))}" rx="2" fill="${cl.fill}" stroke="${edge}" stroke-width="${custom ? 1.6 : 1.05}"/>`);
+    if (cl.bar) out.push(`<rect x="${R(X(s.x))}" y="${R(Y(s.y + s.h) - 3)}" width="${R(S(s.w))}" height="3" fill="${cl.bar}" opacity="0.8"/>`);
+    const buyer2 = items[s.id]?.buyer ? String(items[s.id].buyer) : '';
+    if (custom) {
+      const h2 = S(s.h);
+      const name = String(s.label || s.id);
+      const fsName = Math.max(8, Math.min(F.num + 3, (S(s.w) - 12) / Math.max(2, name.length) / 0.66, h2 / 3.2));
+      out.push(`<text x="${R(cx)}" y="${R(cy - 1)}" font-size="${R(fsName)}" font-weight="bold" fill="${cl.ink}" text-anchor="middle">${esc(name)}</text>`);
+      out.push(`<text x="${R(cx)}" y="${R(cy + fsName * 1.3)}" font-size="${R(Math.max(7, fsName * 0.72))}" fill="${cl.sub}" text-anchor="middle">${esc(fmtNum(s.areaM2))} m²</text>`);
+      if (buyer2) {
+        const bfs = Math.min(fsName * 0.8, (S(s.w) - 10) / Math.max(4, buyer2.length) / 0.6);
+        if (bfs > 6.5) out.push(`<text x="${R(cx)}" y="${R(cy + fsName * 2.6)}" font-size="${R(bfs)}" font-weight="bold" fill="${cl.ink}" text-anchor="middle">${esc(buyer2)}</text>`);
+      }
+    } else if (buyer2) {
+      const avail = S(s.w) - 8;
+      const lines = wrapText(buyer2, avail, S(s.h) * 0.6, 2, 13);
+      const widest = Math.max(...lines.map((l) => txtW(l, 1)), 1);
+      const bfs = Math.max(7.5, Math.min(13, avail / widest));
+      const lh2 = bfs * 1.15;
+      lines.forEach((ln, i) => {
+        out.push(`<text x="${R(cx)}" y="${R(cy - (lines.length - 1) * lh2 / 2 + i * lh2 + bfs * 0.34)}" font-size="${R(bfs)}" font-weight="bold" fill="${cl.ink}" text-anchor="middle">${esc(ln)}</text>`);
+      });
+    } else {
+      const noTxt = `${(b0 && (b0.section || b0.label)) || ''}${s.no}`;
+      const fsN = Math.max(9, Math.min(F.num, S(s.w) / 3.2));
+      out.push(`<text x="${R(cx)}" y="${R(cy - 1)}" font-size="${R(fsN)}" font-weight="bold" fill="${edge}" text-anchor="middle">${esc(noTxt)}</text>`);
+      out.push(`<text x="${R(cx)}" y="${R(cy + fsN * 0.95)}" font-size="${R(Math.max(7, F.sid - 1))}" fill="${cl.sub}" text-anchor="middle">${esc(fmtNum(s.areaM2))} m²</text>`);
+    }
+    return;
+  }
   if (custom) {
     // nostandart stend: nomi + maydoni + mijoz — barchasi karta ichida, ustma-ust tushmaydi
     const h = S(s.h);
