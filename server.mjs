@@ -205,6 +205,27 @@ function applyAction(sess, body) {
   }
 
   const ttlHours = Number(body.ttlHours || ttlDefault);
+  // Bitta kompaniya nechta joy olsa — bitta guruh (xaritada ham, boshqaruvda ham bitta quti).
+  // Yonma-yon tushgan joylar avtomatik shu guruhga qo'shiladi.
+  const buyerKey = (company || buyer).trim().toLowerCase();
+  const adj = (a, b) => {
+    const vx = Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x);
+    const hy = Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y);
+    return (Math.abs(a.x + a.w - b.x) < 0.02 || Math.abs(b.x + b.w - a.x) < 0.02) ? vx > 0.02
+      : (Math.abs(a.y + a.h - b.y) < 0.02 || Math.abs(b.y + b.h - a.y) < 0.02) ? hy > 0.02 : false;
+  };
+  let groupId = null;
+  if (action === 'sell' || action === 'reserve') {
+    const mine = ids.map((id) => standsById.get(id));
+    for (const [sid, it] of Object.entries(state.items)) {
+      if (!it.groupId) continue;
+      if (String(it.company || it.buyer || '').trim().toLowerCase() !== buyerKey) continue;
+      if (it.status !== (action === 'sell' ? 'sold' : 'reserved')) continue;
+      const other = standsById.get(sid);
+      if (other && mine.some((m) => adj(m, other))) { groupId = it.groupId; break; }
+    }
+    if (!groupId) groupId = `g${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
+  }
   const result = {};
   for (const id of ids) {
     const stand = standsById.get(id);
@@ -229,6 +250,7 @@ function applyAction(sess, body) {
       updatedAt: now,
       reservedUntil: action === 'reserve' ? new Date(Date.now() + ttlHours * 3600_000).toISOString() : null,
       note: (body.note || '').toString().trim() || null,
+      groupId: action === 'block' ? prev.groupId || null : groupId,
     };
     state.items[id] = item;
     result[id] = item;
@@ -237,7 +259,7 @@ function applyAction(sess, body) {
   state.revision++;
   state.updatedAt = now;
   persist();
-  audit({ ts: now, action, standIds: ids, buyer: buyer || null, phone: phone || null, company: company || null, sellerId: sess.id, sellerName: sess.name, revision: state.revision, ttlHours: action === 'reserve' ? ttlHours : null });
+  audit({ ts: now, action, standIds: ids, buyer: buyer || null, phone: phone || null, company: company || null, groupId: action === 'release' ? null : groupId, sellerId: sess.id, sellerName: sess.name, revision: state.revision, ttlHours: action === 'reserve' ? ttlHours : null });
   console.log(`→ ${sess.name}: ${action} ${ids.join(', ')}${buyer ? ' · ' + buyer : ''}`);
   return { code: 200, body: { ok: true, revision: state.revision, items: result } };
 }

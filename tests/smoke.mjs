@@ -19,6 +19,7 @@ const BASE = process.env.BASE || 'http://localhost:4173';
 
 const html = fs.readFileSync(path.join(APP, 'index.html'), 'utf8');
 const appJs = fs.readFileSync(path.join(APP, 'app.js'), 'utf8');
+const groupsJs = fs.readFileSync(path.join(APP, 'groups.js'), 'utf8');
 const css = fs.readFileSync(path.join(APP, 'style.css'), 'utf8');
 
 // --- server tirikmi
@@ -82,6 +83,8 @@ window.onunhandledrejection = (e) => errors.push('unhandled: ' + (e.reason?.stac
 const nativeErr = console.error;
 console.error = (...a) => { errors.push('console.error: ' + a.join(' ')); nativeErr(...a); };
 
+// index.html'dagi skriptlar tartibi: avval groups.js, keyin app.js
+window.eval(groupsJs);
 window.eval(appJs);
 
 const tick = (ms = 120) => new Promise((r) => setTimeout(r, ms));
@@ -104,12 +107,17 @@ await tick(600);
 assert(errors.length === 0, 'ilova xatosiz yuklandi' + (errors.length ? ' → ' + errors.join(' | ') : ''));
 assert($('#hallTitle').textContent.includes(layout.meta.project) || $('#hallTitle').textContent.includes(layout.meta.hall),
   'layout yuklandi: ' + $('#hallTitle').textContent);
-assert(!layout.customStands?.length || doc.querySelectorAll('#world .stand.custom').length === layout.customStands.length,
-  `nostandart stendlar chizildi (${doc.querySelectorAll('#world .stand.custom').length}/${layout.customStands?.length || 0})`);
+// band joylar endi bitta quti bo'lib chiziladi — stendlar soni = bo'sh yacheykalar + qutilar ichidagi stendlar
+const unitStands = $$('#world .booking-unit').flatMap((u) => u.dataset.ids.split(',').filter((id) => !id.includes('~m')));
+const customUnitStands = unitStands.filter((id) => (layout.customStands || []).some((c) => c.id === id));
+assert(!layout.customStands?.length
+  || doc.querySelectorAll('#world .stand.custom').length + customUnitStands.length === layout.customStands.length,
+  `nostandart stendlar chizildi (${doc.querySelectorAll('#world .stand.custom').length + customUnitStands.length}/${layout.customStands?.length || 0})`);
 if ((layout.meta.status || 'draft') !== 'approved') {
   assert(!$('#draftBanner').hidden, 'QORALAMA banneri ko\'rsatildi');
 }
-assert($$('#world .stand').length === layout.stands.length, `xaritada ${layout.stands.length} stend chizildi (${$$('#world .stand').length})`);
+assert($$('#world .stand').length + unitStands.length === layout.stands.length,
+  `xaritada ${layout.stands.length} stend chizildi (bo'sh ${$$('#world .stand').length} + qutilarda ${unitStands.length})`);
 assert($('#stats').textContent.includes("bo'sh"), 'statistika ko\'rsatildi');
 
 // --- login
@@ -156,6 +164,18 @@ st = await (await fetch(BASE + '/api/state')).json();
 const sold = Object.values(st.items).filter((i) => i.blockId === freeBlock.id && i.status === 'sold');
 assert(sold.length === freeBlock.stands.length, `serverda ${freeBlock.id} ning ${freeBlock.stands.length} stendi "sold" (${sold.length})`);
 
+// --- bitta kompaniya = xaritada BITTA quti, nomi ichida
+const unit = $$('#world .booking-unit').find((u) => u.dataset.ids.split(',').includes(freeBlock.stands[0].id));
+assert(!!unit, 'band joy bitta quti bo\'lib chiqdi (.booking-unit)');
+assert(unit.dataset.ids.split(',').length === freeBlock.stands.length,
+  `quti butun guruhni o\'z ichiga oldi (${unit.dataset.ids.split(',').length}/${freeBlock.stands.length})`);
+const unitText = unit.textContent.replace(/\s+/g, ' ');
+assert(unitText.includes('Smoke Test MChJ'), 'kompaniya nomi qutining ICHIDA yozilgan: ' + unitText.slice(0, 60));
+assert($$('#world .stand').every((g) => !g.dataset.id.startsWith(freeBlock.id + '-')), 'band stendlar alohida yacheyka bo\'lib qolmadi');
+const row = $$('#bookingsList .booking-row').find((r) => r.textContent.includes('Smoke Test MChJ'));
+assert(!!row, 'boshqaruv ro\'yxatida ham bitta qator');
+assert(row.textContent.replace(/\s+/g, ' ').includes(`${freeBlock.stands.length} stend`), 'qatorda stendlar soni bitta yozuvda');
+
 // --- sotilgan blok qayta tanlanganda "Sotish" o'chirilgan
 $('#clearSel').click();
 await tick(50);
@@ -180,11 +200,15 @@ const dom2 = new JSDOM(html, { url: BASE + '/?mode=client', runScripts: 'outside
 dom2.window.fetch = (p, o) => fetch(new URL(p, BASE), o);
 dom2.window.SVGElement.prototype.createSVGPoint = mkPoint;
 dom2.window.SVGElement.prototype.getScreenCTM = () => ({ inverse: () => ({}) });
+// index.html'dagi skriptlar tartibi: avval groups.js, keyin app.js
+dom2.window.eval(groupsJs);
 dom2.window.eval(appJs);
 await new Promise((r) => setTimeout(r, 800));
 const d2 = dom2.window.document;
 assert(d2.querySelector('#login').style.display === 'none', 'mijoz rejimida login yo\'q');
-assert(d2.querySelectorAll('#world .stand').length === layout.stands.length, 'mijoz rejimida xarita chizildi');
+const drawnStands = d2.querySelectorAll('#world .stand').length;
+const drawnUnits = d2.querySelectorAll('#world .booking-unit').length;
+assert(drawnStands + drawnUnits > 0 && drawnUnits > 0, `mijoz rejimida xarita chizildi (${drawnStands} bo'sh stend + ${drawnUnits} band quti)`);
 assert(d2.querySelector('#stats').textContent.includes('sotilgan'), 'mijoz rejimida statistika ko\'rinadi');
 
 window.close();

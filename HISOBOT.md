@@ -187,6 +187,15 @@ Chizma bo'yicha zal qayta chizildi va **hamma narsa bitta manbadan** (`layout/fo
 | Narx | 1 250 000 so'm/m² (tasdiqlash kutilmoqda) |
 | Band joylar | Panel orqali kiritiladi; hozircha 18 ta **namunaviy** kompaniya bilan ko'rsatilgan |
 
+### Xarita o'qilishi (mijoz talabi bo'yicha)
+
+- Bitta kompaniya nechta joy olgan bo'lsa — **bitta umumiy quti**, ichida kompaniya nomi va
+  "N stend · X m²". 4 ta yacheyka emas, 1 ta quti; 8 ta bo'lsa ham 1 ta.
+- Kompaniya nomi endi **stendning o'zida** yoziladi (umumiy ro'yxatga chiqarilmaydi).
+- Bo'sh joylar stend raqami bilan yacheyka bo'lib qoladi — sotuvchi qaysi joy bo'shligini darhol ko'radi.
+- Boshqaruvda ham xuddi shunday: yon panelda «Band joylar» ro'yxati — har bir kompaniya uchun bitta qator.
+- Bron tugasa yoki joy bo'shatilsa quti avtomatik yacheykalarga bo'linadi.
+
 ### Mijozga yuboriladigan tayyor paket
 
 ```bash

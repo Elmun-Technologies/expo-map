@@ -19,6 +19,7 @@ import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { expandLayout, validateLayout } from '../lib/layout.mjs';
+import { groupBookings, mergedAsStands } from '../lib/groups.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
@@ -77,15 +78,18 @@ for (const sec of exp.sections || []) {
   if (run(['--section', sec.id, '--out', f])) made.push(f);
 }
 
-// 4) kompaniyalar CSV (band qilingan joylar)
-const rows = [['Bolim', 'Blok', 'Stend', 'Holat', 'm2', 'Summa', 'Kompaniya', 'Mijoz', 'Telefon', 'Sotuvchi', 'Yangilangan']];
-const blkById = new Map(exp.blocks.map((b) => [b.id, b]));
-for (const s of exp.stands) {
-  const it = items[s.id];
-  if (!it) continue;
-  const sec = (exp.sections || []).find((x) => x.id === s.section);
-  rows.push([sec ? sec.label : '', s.blockId, s.id, { sold: 'Sotilgan', reserved: 'Bron', blocked: 'Bloklangan' }[it.status] || it.status,
-    String(s.areaM2), String(it.amount ?? ''), it.company || '', it.buyer || '', it.phone || '', it.sellerName || '', it.updatedAt || '']);
+// 4) kompaniyalar CSV — BITTA kompaniya = BITTA qator (nechta stend olgan bo'lsa ham)
+const rows = [['Bolim', 'Kompaniya', 'Mijoz', 'Telefon', 'Holat', 'Stendlar soni', 'm2', 'Summa', 'Stend ID lari', 'Sotuvchi', 'Yangilangan']];
+const extra = mergedAsStands(exp.blocks);
+const units = groupBookings([...exp.stands, ...extra.stands], Object.assign({}, items, extra.items))
+  .sort((a, b) => (a.section || '').localeCompare(b.section || '') || b.areaM2 - a.areaM2);
+for (const u of units) {
+  const sec = (exp.sections || []).find((x) => x.id === u.section);
+  const first = items[u.ids[0]] || {};
+  const sum = u.ids.reduce((a, id) => a + (Number(items[id]?.amount) || 0), 0);
+  rows.push([sec ? sec.label : '', u.company || u.buyer || '', u.buyer || '', u.phone || '',
+    { sold: 'Sotilgan', reserved: 'Bron', blocked: 'Bloklangan' }[u.status] || u.status,
+    String(u.stands.length), String(u.areaM2), String(sum || ''), u.ids.join(', '), first.sellerName || '', first.updatedAt || '']);
 }
 const csv = '\uFEFF' + rows.map((r) => r.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(';')).join('\n');
 const f4 = path.join(outDir, '04-kompaniyalar.csv');

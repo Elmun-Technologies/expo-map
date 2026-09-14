@@ -70,7 +70,7 @@
       <g id="world"></g>
     </svg>
     <div class="legend" id="legend"></div>
-    <p class="map-note">Koordinatalar <code>layout/hall-A.json</code> faylidan olinadi — xarita qo'lda chizilmaydi.</p>
+    <p class="map-note">Xarita <code>layout/*.json</code> faylidan avtomatik chiziladi. Bitta kompaniya nechta joy olgan bo'lsa — <b>bitta quti</b>, nomi ichida yoziladi.</p>
   </section>
 
   <aside class="panel">
@@ -85,6 +85,11 @@
         <button class="btn ghost" id="secClear">Filtrni tozalash</button>
       </div>
       <p class="muted" id="secHint">Bo'lim nomini bosing — xaritada faqat o'sha bo'lim yorqin ko'rinadi.</p>
+    </div>
+    <div id="bookingsCard" class="card" hidden>
+      <h2>Band joylar (kompaniyalar)</h2>
+      <p class="muted">Bitta kompaniya nechta stend olgan bo'lsa — bitta qator. Bosilsa xaritada ko'rsatiladi.</p>
+      <div id="bookingsList" class="bookings"></div>
     </div>
     <div id="selectionBox" class="card">
       <h2>Tanlov</h2>
@@ -134,6 +139,7 @@
   </div>
 </div>
 
+<script src="./groups.js"></script>
 <script src="./app.js"></script>
 </body>
 </html>

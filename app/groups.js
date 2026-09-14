@@ -1,0 +1,248 @@
+/*
+ * Band joylarni BIRLASHTIRISH.
+ *
+ * Qoida (mijoz talabi): bitta kompaniya nechta stend olsa (9, 18, 36 m² yoki butun blok) —
+ * xaritada ular alohida yacheykalar emas, BITTA umumiy quti bo'lib ko'rinadi va
+ * kompaniya nomi o'sha qutining ichida yoziladi.
+ *
+ * Guruh = bir xil mijoz (kompaniya) + bir xil holat (bron/sotilgan) + qirra bilan
+ * tutashib turgan stendlar. Mijoz ro'yxatda bo'lmasa (bo'sh stend) — guruh yo'q.
+ *
+ * Bu fayl ikki joyda ishlatiladi:
+ *   - brauzer: app/index.html → <script src="./groups.js"> (window.ExpoGroups)
+ *   - Node:    lib/groups.mjs orqali (export-svg, package, server)
+ * Shuning uchun bu yerda faqat sof hisob-kitob, hech qanday DOM ishlatilmaydi.
+ */
+(function (root) {
+  'use strict';
+  const EPS = 0.02;
+  const r3 = (v) => Math.round(v * 1000) / 1000;
+  const span = (a1, a2, b1, b2) => Math.min(a2, b2) - Math.max(a1, b1);
+
+  /** Ikki to'rtburchak qirra bilan tutashib turadimi (burchak bilan emas). */
+  function touches(a, b) {
+    const vOverlap = span(a.y, a.y + a.h, b.y, b.y + b.h) > EPS;
+    const hOverlap = span(a.x, a.x + a.w, b.x, b.x + b.w) > EPS;
+    if (Math.abs(a.x + a.w - b.x) < EPS || Math.abs(b.x + b.w - a.x) < EPS) return vOverlap;
+    if (Math.abs(a.y + a.h - b.y) < EPS || Math.abs(b.y + b.h - a.y) < EPS) return hOverlap;
+    return false;
+  }
+
+  const unitKey = (it) => `${it.status}|${String(it.company || it.buyer || '').trim().toLowerCase()}`;
+
+  /**
+   * Band stendlarni guruhlarga ajratadi.
+   * @param {Array} stands — layout.stands (id, x, y, w, h, areaM2, blockId, section, ...)
+   * @param {Object} items — standId -> {status, buyer, company, phone, ...}
+   * @returns {Array} guruhlar: {ids, stands, x, y, w, h, areaM2, label, status, ...}
+   */
+  function groupBookings(stands, items) {
+    const booked = stands.filter((s) => items[s.id] && items[s.id].status && items[s.id].status !== 'free');
+    const used = new Set();
+    const out = [];
+    for (const s of booked) {
+      if (used.has(s.id)) continue;
+      const key = unitKey(items[s.id]);
+      const stack = [s];
+      const mem = [s];
+      used.add(s.id);
+      while (stack.length) {
+        const cur = stack.pop();
+        for (const o of booked) {
+          if (used.has(o.id)) continue;
+          if (unitKey(items[o.id]) !== key) continue;
+          if (!touches(cur, o)) continue;
+          used.add(o.id);
+          stack.push(o);
+          mem.push(o);
+        }
+      }
+      mem.sort((a, b) => a.y - b.y || a.x - b.x);
+      out.push(makeCluster(mem, items));
+    }
+    return out.sort((a, b) => a.y - b.y || a.x - b.x);
+  }
+
+  function makeCluster(mem, items) {
+    const x = Math.min(...mem.map((s) => s.x));
+    const y = Math.min(...mem.map((s) => s.y));
+    const x2 = Math.max(...mem.map((s) => s.x + s.w));
+    const y2 = Math.max(...mem.map((s) => s.y + s.h));
+    const it = items[mem[0].id] || {};
+    const ids = mem.map((s) => s.id);
+    const label = String(it.company || it.buyer || '').trim();
+    return {
+      ids,
+      stands: mem,
+      x, y, w: x2 - x, h: y2 - y,
+      areaM2: mem.reduce((a, s) => a + (s.areaM2 || 0), 0),
+      status: it.status || 'sold',
+      label,
+      buyer: it.buyer || '',
+      company: it.company || '',
+      phone: it.phone || '',
+      sellerName: it.sellerName || '',
+      note: it.note || '',
+      blockIds: [...new Set(mem.map((s) => s.blockId))],
+      section: mem[0].section || null,
+    };
+  }
+
+  /**
+   * Kataklar birlashmasining TASHQI konturi (bitta yopiq ko'p qirrali chiziq).
+   * Ichki qirralar yo'qoladi — natijada bitta quti chiziladi.
+   * @returns {string} SVG path ("M…Z")
+   */
+  function unionPath(cells) {
+    const keyOf = (a, b) => `${r3(a[0])},${r3(a[1])}>${r3(b[0])},${r3(b[1])}`;
+    const edges = new Map();
+    for (const c of cells) {
+      const p = [[c.x, c.y], [c.x + c.w, c.y], [c.x + c.w, c.y + c.h], [c.x, c.y + c.h]];
+      for (let i = 0; i < 4; i++) {
+        const a = p[i], b = p[(i + 1) % 4];
+        const opposite = keyOf(b, a);
+        if (edges.has(opposite)) edges.delete(opposite);      // umumiy qirra — ichki, olib tashlanadi
+        else edges.set(keyOf(a, b), [a, b]);
+      }
+    }
+    const from = new Map();                                  // nuqta -> chiqish qirralari kalitlari
+    for (const [k, [a]] of edges) {
+      const pt = `${r3(a[0])},${r3(a[1])}`;
+      if (!from.has(pt)) from.set(pt, []);
+      from.get(pt).push(k);
+    }
+    const polys = [];
+    const done = new Set();
+    for (const startKey of edges.keys()) {
+      if (done.has(startKey)) continue;
+      const pts = [];
+      let k = startKey;
+      let guard = 0;
+      while (k && !done.has(k) && guard++ < 10000) {
+        done.add(k);
+        const [a, b] = edges.get(k);
+        pts.push(a);
+        const nextPt = `${r3(b[0])},${r3(b[1])}`;
+        const outs = (from.get(nextPt) || []).filter((x) => !done.has(x));
+        if (!outs.length) { k = null; break; }
+        // eng "to'g'ri" davomini tanlaymiz (burilishni kamaytiradi)
+        const cur = { x: b[0] - a[0], y: b[1] - a[1] };
+        outs.sort((x, y) => {
+          const e1 = edges.get(x), e2 = edges.get(y);
+          const d1 = { x: e1[1][0] - e1[0][0], y: e1[1][1] - e1[0][1] };
+          const d2 = { x: e2[1][0] - e2[0][0], y: e2[1][1] - e2[0][1] };
+          return (cur.x * d2.x + cur.y * d2.y) - (cur.x * d1.x + cur.y * d1.y);
+        });
+        k = outs[0];
+      }
+      if (pts.length >= 3) polys.push(pts);
+    }
+    return polys.map((p) => 'M' + p.map((q) => `${r3(q[0])} ${r3(q[1])}`).join('L') + 'Z').join('');
+  }
+
+  /**
+   * Birlashma ichidagi ENG KATTA to'g'ri to'rtburchak — nom shu yerga yoziladi
+   * (L shaklidagi guruhlarda nom yonidagi bo'sh yacheykaga chiqib ketmasligi uchun).
+   * 0.25 m qadam bilan hisoblanadi.
+   */
+  function largestRect(cells, step) {
+    if (!cells.length) return { x: 0, y: 0, w: 0, h: 0, area: 0 };
+    const s = step || 0.25;
+    const x0 = Math.min(...cells.map((c) => c.x));
+    const y0 = Math.min(...cells.map((c) => c.y));
+    const x1 = Math.max(...cells.map((c) => c.x + c.w));
+    const y1 = Math.max(...cells.map((c) => c.y + c.h));
+    const nx = Math.max(1, Math.round((x1 - x0) / s));
+    const ny = Math.max(1, Math.round((y1 - y0) / s));
+    const grid = [];
+    for (let i = 0; i < nx; i++) {
+      const col = [];
+      for (let j = 0; j < ny; j++) {
+        const mx = x0 + (i + 0.5) * s, my = y0 + (j + 0.5) * s;
+        col.push(cells.some((c) => mx > c.x + 1e-6 && mx < c.x + c.w - 1e-6 && my > c.y + 1e-6 && my < c.y + c.h - 1e-6) ? 1 : 0);
+      }
+      grid.push(col);
+    }
+    const heights = new Array(nx).fill(0);
+    let best = { area: 0, x: x0, y: y0, w: 0, h: 0 };
+    for (let j = 0; j < ny; j++) {
+      for (let i = 0; i < nx; i++) heights[i] = grid[i][j] ? heights[i] + 1 : 0;
+      const stack = [];
+      for (let i = 0; i <= nx; i++) {
+        const cur = i === nx ? 0 : heights[i];
+        while (stack.length && heights[stack[stack.length - 1]] >= cur) {
+          const hh = heights[stack.pop()];
+          const left = stack.length ? stack[stack.length - 1] + 1 : 0;
+          const ww = i - left;
+          if (hh * ww > best.area) best = { area: hh * ww, x: x0 + left * s, y: y0 + (j - hh + 1) * s, w: ww * s, h: hh * s };
+        }
+        stack.push(i);
+      }
+    }
+    return best;
+  }
+
+  /**
+   * Layout'dagi "birlashtirilgan kataklar" (kompaniya bir necha stendni birlashtirgan)
+   * ham xuddi stend kabi guruhlanadi — natijada bitta quti, bitta nom.
+   */
+  function mergedAsStands(blocks) {
+    const stands = [], items = {};
+    for (const b of blocks || []) {
+      (b.merged || []).forEach((m, i) => {
+        if (!m.status && !m.buyer && !m.label) return;
+        const id = `${b.id}~m${i}`;
+        stands.push({ id, x: m.x, y: m.y, w: m.w, h: m.h, areaM2: m.w * m.h, blockId: b.id, section: b.section || null, label: m.label || id, mergedCell: true });
+        items[id] = { status: m.status || 'sold', buyer: m.buyer || m.label || '', company: m.buyer || m.label || '' };
+      });
+    }
+    return { stands, items };
+  }
+
+  /** Matnni berilgan kenglik/balandlikka sig'adigan qatorlarga bo'ladi va shrift o'lchamini tanlaydi. */
+  function fitText(text, maxW, maxH, o) {
+    const opt = o || {};
+    const minFs = opt.minFs || 0.7;
+    const maxFs = opt.maxFs || 3;
+    const maxLines = opt.maxLines || 3;
+    const cw = opt.cw || 0.6;          // belgi kengligi / shrift
+    const lh = opt.lh || 1.22;         // qator balandligi / shrift
+    const words = String(text).trim().split(/\s+/).filter(Boolean);
+    if (!words.length) return { lines: [], fs: minFs };
+    const wrap = (fs, limit) => {
+      const lines = [];
+      let cur = '';
+      for (const w of words) {
+        const next = cur ? cur + ' ' + w : w;
+        if (next.length * fs * cw > maxW && cur) { lines.push(cur); cur = w; }
+        else cur = next;
+        if (lines.length >= limit) return null;
+      }
+      if (cur) lines.push(cur);
+      if (lines.length > limit) return null;
+      if (lines.some((l) => l.length * fs * cw > maxW)) return null;
+      if (lines.length * lh * fs > maxH) return null;
+      return lines;
+    };
+    for (let n = 1; n <= maxLines; n++) {
+      let best = null;
+      for (let fs = maxFs; fs >= minFs; fs -= 0.04) {
+        const lines = wrap(fs, n);
+        if (lines) { best = { lines, fs: r3(fs) }; break; }
+      }
+      if (best) return best;
+    }
+    // sig'madi — eng katta shriftda qisqartiramiz
+    const fs = Math.max(minFs, Math.min(maxFs, maxW / Math.max(4, words[0].length) / cw, maxH / (2 * lh)));
+    let out = '';
+    for (const w of words) {
+      const next = out ? out + ' ' + w : w;
+      if (next.length * fs * cw > maxW) break;
+      out = next;
+    }
+    if (out.length < String(text).trim().length) out = out.replace(/.$/, '') + '…';
+    return { lines: out ? [out] : [], fs: r3(fs) };
+  }
+
+  root.ExpoGroups = { groupBookings, unionPath, fitText, largestRect, mergedAsStands, touches };
+})(typeof globalThis !== 'undefined' ? globalThis : this);

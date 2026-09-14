@@ -76,9 +76,9 @@
     $('#hallSub').textContent = `${layout.blocks.length} blok · ${layout.stands.length} stend · ${fmtNum(layout.stands.length * 9)} m² · layout v${layout.meta.version || '?'}`;
   }
 
-  async function refreshState() {
+  async function refreshState(force) {
     const s = await api('/api/state');
-    const changed = s.revision !== revision;
+    const changed = force || s.revision !== revision;
     revision = s.revision;
     items = s.items || {};
     if (changed) {
@@ -90,7 +90,7 @@
           toast(`Diqqat: ${taken.join(', ')} boshqa sotuvchi tomonidan band qilindi — tanlovdan chiqarildi.`, 'err');
         }
       }
-      renderMap(); renderStats(); renderLegend(); renderSections(); renderSelection();
+      renderMap(); renderStats(); renderLegend(); renderSections(); renderBookings(); renderSelection();
     }
   }
 
@@ -185,6 +185,12 @@
 
     const blockG = el('g');
     const standG = el('g');
+    // BAND joylar: bitta kompaniya nechta stend olgan bo'lsa — bitta umumiy quti
+    const extra = ExpoGroups.mergedAsStands(layout.blocks || []);
+    const allStands = [...(layout.stands || []), ...extra.stands];
+    const allItems = Object.assign({}, items, extra.items);
+    const units = ExpoGroups.groupBookings(allStands, allItems);
+    const bookedIds = new Set(units.flatMap((u) => u.ids.filter((id) => !id.includes('~m'))));
     for (const b of layout.blocks) {
       blockG.appendChild(el('rect', { x: b.x, y: b.y, width: b.w, height: b.h, class: 'block-outline', rx: 0.3, stroke: b.color || '#90a4b5' }));
 
@@ -199,9 +205,10 @@
       blockG.appendChild(chip);
 
       if (b.kind === 'custom') continue; // nostandart stendlar pastda alohida chiziladi
-      for (const s of b.stands) standG.appendChild(standNode(s));
-      // birlashtirilgan kataklar (masalan bitta kompaniya 2 stendni birlashtirgan)
-      for (const m of b.merged || []) {
+      for (const s of b.stands) if (!bookedIds.has(s.id)) standG.appendChild(standNode(s));
+      // birlashtirilgan kataklar — holati/egasi bo'lsa yuqorida bitta quti bo'lib chiqadi,
+      // bu yerda faqat bo'sh (texnik) kataklar qoladi
+      for (const m of (b.merged || []).filter((m) => !m.status && !m.buyer)) {
         const g = el('g', { class: 'merged', 'data-block': b.id });
         const st = m.status ? STATUS_LABEL[m.status] : null;
         const fill = m.status === 'sold' ? 'url(#hatchSold)' : m.status === 'reserved' ? 'url(#hatchReserved)' : (b.color || '#0f2233');
@@ -229,7 +236,8 @@
       }
     }
     // nostandart o'lchamdagi stendlar (A1–A6 kabi)
-    for (const s of layout.customStands || []) standG.appendChild(standNode(s, true));
+    for (const s of layout.customStands || []) if (!bookedIds.has(s.id)) standG.appendChild(standNode(s, true));
+    for (const u of units) standG.appendChild(unitNode(u));
     world.appendChild(blockG);
     world.appendChild(standG);
     // zona yorliqlari eng ustida (hech narsa bosmasin)
@@ -257,6 +265,46 @@
     }
     g.appendChild(el('title', {}, `${s.id} · ${fmtNum(s.areaM2)} m² · ${STATUS_LABEL[st]}${items[s.id]?.buyer ? ' · ' + items[s.id].buyer : ''}${s.note ? ' · ' + s.note : ''}`));
     return g;
+  }
+
+  /** Bitta kompaniyaning band joyi — bitta quti, nomi ichida. */
+  function unitNode(u) {
+    const g = el('g', { class: 'booking-unit', 'data-ids': u.ids.join(','), 'data-status': u.status, 'data-buyer': (u.label || '').toUpperCase() });
+    const d = ExpoGroups.unionPath(u.stands.map((s) => ({ x: s.x, y: s.y, w: s.w, h: s.h })));
+    const fill = u.status === 'sold' ? 'url(#hatchSold)' : u.status === 'reserved' ? 'url(#hatchReserved)' : 'url(#hatchBlocked)';
+    g.appendChild(el('path', { d, class: 'unit-fill', fill }));
+    g.appendChild(el('path', { d, class: 'unit-line' }));
+    // nom guruh ichidagi eng katta to'rtburchakka yoziladi (L shaklda ham to'g'ri joy)
+    const boxes = ExpoGroups.largestRect(u.stands.map((s) => ({ x: s.x, y: s.y, w: s.w, h: s.h })), 0.25);
+    const onlyMerged = u.stands.every((st) => st.mergedCell);
+    const metaTxt = onlyMerged
+      ? `${fmtNum(u.areaM2)} m²`
+      : u.stands.length > 1
+        ? `${u.stands.length} stend · ${fmtNum(u.areaM2)} m²`
+        : (Math.abs(u.areaM2 - 9) > 0.01 ? `${fmtNum(u.areaM2)} m²` : '');
+    const withMeta = !!metaTxt && boxes.h > 2.4;
+    const fit = ExpoGroups.fitText(u.label || STATUS_LABEL[u.status], boxes.w - 0.7, boxes.h - (withMeta ? 1.5 : 0.5), {
+      maxLines: boxes.h > 5 ? 3 : boxes.h > 3.1 ? 2 : 1,
+      minFs: 0.72,
+      maxFs: Math.min(2.4, boxes.h / (withMeta ? 2.9 : 2.3)),
+    });
+    const cx = boxes.x + boxes.w / 2, cy = boxes.y + boxes.h / 2;
+    const lh = fit.fs * 1.22;
+    const shift = (fit.lines.length * lh) / 2;
+    fit.lines.forEach((ln, i) => g.appendChild(el('text', { x: cx, y: cy - shift + lh * (i + 0.85) + (withMeta ? -0.4 : 0), class: 'unit-name', 'font-size': fit.fs }, ln)));
+    if (withMeta) {
+      g.appendChild(el('text', { x: cx, y: cy + shift + (fit.lines.length ? 1.0 : 0.4), class: 'unit-meta', 'font-size': Math.max(0.68, fit.fs * 0.58) }, metaTxt));
+    }
+    g.appendChild(el('title', {}, `${u.label || 'Band joy'} — ${STATUS_LABEL[u.status]} · ${u.ids.length} stend · ${fmtNum(u.areaM2)} m²`
+      + `\nStendlar: ${u.ids.join(', ')}${u.sellerName ? '\nSotuvchi: ' + u.sellerName : ''}${u.phone ? ' · ' + u.phone : ''}`));
+    return g;
+  }
+
+  function toggleUnit(ids) {
+    const all = ids.every((id) => selection.has(id));
+    ids.forEach((id) => (all ? selection.delete(id) : selection.add(id)));
+    renderSelection();
+    paintSelection();
   }
 
   function applyView() { $('#world').setAttribute('transform', `translate(${view.tx} ${view.ty}) scale(${view.k})`); }
@@ -304,9 +352,14 @@
     drag = null;
     if (moved > 4) return; // bu pan edi, klik emas
     const hit = document.elementFromPoint(ev.clientX, ev.clientY);
+    const unit = hit?.closest?.('.booking-unit');
     const stand = hit?.closest?.('.stand');
     const chip = hit?.closest?.('.block-chip');
-    if (stand) toggleStand(stand.dataset.id);
+    if (unit) {
+      if (CLIENT) showClientInfo(unit.dataset.ids.split(',')[0]);
+      else toggleUnit(unit.dataset.ids.split(','));
+    }
+    else if (stand) toggleStand(stand.dataset.id);
     else if (chip) selectBlock(chip.dataset.block);
     else { selection.clear(); renderSelection(); paintSelection(); }
   });
@@ -328,6 +381,11 @@
   }
   function paintSelection() {
     $$('#world .stand').forEach((g) => g.classList.toggle('selected', selection.has(g.dataset.id)));
+    $$('#world .booking-unit').forEach((g) => {
+      const ids = g.dataset.ids.split(',');
+      g.classList.toggle('selected', ids.every((id) => selection.has(id)));
+      g.classList.toggle('part', ids.some((id) => selection.has(id)) && !ids.every((id) => selection.has(id)));
+    });
   }
 
   // ------------------------------------------------------------ panel
@@ -377,17 +435,51 @@
     $('#details').innerHTML = (isAdmin() || !CLIENT ? rows : '');
   }
 
+  function renderBookings() {
+    const card = $('#bookingsCard');
+    if (!card || !layout) return;
+    const units = ExpoGroups.groupBookings(layout.stands || [], items);
+    card.hidden = !units.length;
+    if (!units.length) return;
+    $('#bookingsList').innerHTML = units.map((u) => `
+      <div class="booking-row" data-ids="${u.ids.join(',')}" data-x="${u.x}" data-y="${u.y}" data-w="${u.w}" data-h="${u.h}">
+        <span class="sw" style="background:${STATUS_COLOR[u.status]}"></span>
+        <b title="${u.ids.join(', ')}">${u.label || 'Band joy'}</b>
+        <span class="bmuted">${u.ids.length} stend · ${fmtNum(u.areaM2)} m²</span>
+        <span class="bids">${u.ids.length > 6 ? u.ids.slice(0, 6).join(', ') + ' +' + (u.ids.length - 6) : u.ids.join(', ')}</span>
+      </div>`).join('');
+    $$('#bookingsList .booking-row').forEach((r) => r.addEventListener('click', () => {
+      selection = new Set(r.dataset.ids.split(','));
+      const x = +r.dataset.x, y = +r.dataset.y, w = +r.dataset.w, h = +r.dataset.h;
+      zoomToBox(x - 4, y - 4, w + 8, h + 8);
+      renderSelection();
+      paintSelection();
+    }));
+  }
+
+  function zoomToBox(x, y, w, h) {
+    const vw = layout.hall.width, vh = layout.hall.height;
+    view.k = Math.min(8, Math.max(0.5, Math.min(vw / w, vh / h) * 0.85));
+    view.tx = (vw / 2 - x) * view.k;
+    view.ty = (vh / 2 - y) * view.k;
+    applyView();
+  }
+
   function renderStats() {
     const by = { free: 0, reserved: 0, sold: 0, blocked: 0 };
     const area = { free: 0, reserved: 0, sold: 0, blocked: 0 };
     let revenue = 0;
-    for (const s of layout.stands) {
+    // birlashgan kataklar ham zal maydonining bir qismi
+    const merged = (layout.blocks || []).flatMap((b) => (b.merged || []).map((m) => ({
+      id: `${b.id}~m`, areaM2: m.w * m.h, status: m.status || 'sold',
+    })));
+    for (const s of [...layout.stands, ...merged]) {
       const st = statusOf(s.id);
       by[st] = (by[st] || 0) + 1;
       area[st] = (area[st] || 0) + s.areaM2;
       if (st === 'sold') revenue += items[s.id]?.amount || 0;
     }
-    const totalArea = layout.stands.reduce((a, s) => a + s.areaM2, 0);
+    const totalArea = [...layout.stands, ...merged].reduce((a, s) => a + s.areaM2, 0);
     $('#stats').innerHTML = `
       <div class="stat"><b>${by.free}</b><span>bo'sh stend · ${fmtNum(area.free)} m²</span></div>
       <div class="stat"><b>${by.reserved}</b><span>bron · ${fmtNum(area.reserved)} m²</span></div>
@@ -411,6 +503,11 @@
     }));
   }
   function applyFilters() {
+    $$('#world .booking-unit').forEach((g) => {
+      g.style.display = hiddenStatuses.has(g.dataset.status) ? 'none' : '';
+      const secOk = !activeSection || layout.stands.find((x) => x.id === g.dataset.ids.split(',')[0])?.section === activeSection;
+      g.classList.toggle('sec-off', !secOk);
+    });
     $$('#world .stand').forEach((g) => {
       g.style.display = hiddenStatuses.has(g.dataset.status) ? 'none' : '';
       const st = layout.stands.find((x) => x.id === g.dataset.id);
@@ -501,6 +598,7 @@
     const secHit = (layout.sections || []).find((s) => s.short?.toUpperCase() === q || s.id.toUpperCase() === q);
     if (secHit && activeSection !== secHit.id) { activeSection = secHit.id; renderSections(); applyFilters(); }
     $$('#world .stand').forEach((g) => g.classList.toggle('dim', !!q && !g.dataset.id.includes(q) && !g.dataset.block.includes(q)));
+    $$('#world .booking-unit').forEach((g) => g.classList.toggle('dim', !!q && !g.dataset.ids.includes(q) && !g.dataset.buyer.includes(q)));
     if (q && layout.stands.some((s) => s.id === q)) { selection = new Set([q]); paintSelection(); renderSelection(); }
   }
 
@@ -519,8 +617,7 @@
   async function doAction(action, standIds, extra = {}) {
     try {
       const r = await api('/api/action', { method: 'POST', body: { action, standIds, expectedRevision: revision, ...extra } });
-      revision = r.revision;
-      await refreshState();
+      await refreshState(true);   // xarita darhol yangilanadi (bitta kompaniya = bitta quti)
       renderStats(); renderLegend();
       const ids = standIds;
       if (action === 'sell') showReceipt(ids, extra, r.items);

@@ -130,7 +130,7 @@ Paket ichida:
 | `01-xarita-butun-zal.svg` | mijoz/rahbariyat: bo'limlar, bron va sotilgan joylar bilan |
 | `02-xarita-bosh-joylar.svg` | sotuvchi: faqat bo'sh joylar |
 | `03-bolim-<ID>-*.svg` | mijozga aynan o'z bo'limi (A, B, ... EQ, WING) |
-| `04-kompaniyalar.csv` | band joylar: kompaniya, stend ID, summa (Excel) |
+| `04-kompaniyalar.csv` | band joylar: kompaniya, stend ID lari, summa — **bitta kompaniya = bitta qator** (Excel) |
 | `05-bosh-joylar.csv` | bo'sh joylar ro'yxati narxi bilan |
 | `00-IZOH.txt` | versiya, qoidalar, bo'limlar jadvali |
 
@@ -148,6 +148,12 @@ node tools/export-svg.mjs --no-state               # barcha joylar bo'sh holda (
 
 SVG har qanday brauzerda ochiladi; undan PNG/PDF olish mumkin. Chop etishda "xarita versiyasi"
 (`layout v1.0.0`) va sana faylda ko'rinadi — qaysi fayl yuborilganini keyin aniqlash oson.
+
+**Asosiy qoida (xarita o'qilishi):** bitta kompaniya nechta joy olgan bo'lsa (9, 18, 36 m² yoki
+butun blok) — xaritada ular alohida yacheykalar emas, **bitta umumiy quti** bo'lib chiziladi va
+kompaniya nomi o'sha qutining **ichida** yoziladi. Yonma-yon tushgan keyingi xaridlar ham shu
+qutiga qo'shiladi. Buni `app/groups.js` hisoblaydi (brauzer ham, eksport ham, boshqaruv ro'yxati ham
+shu bitta hisobdan foydalanadi).
 
 **Qoida:** mijozga faqat shu skript chiqargan fayl yuboriladi. Figma/Photoshop'dan saqlangan
 rasm yuborilmaydi — aks holda xarita bilan holat yana ajralib ketadi.
@@ -255,6 +261,8 @@ server.mjs              # API + statik fayllar (bog'liqliksiz)
 lib/layout.mjs          # layout yadrosi: 9 m²/72 m² qoidalari, expand + validate
 layout/hall-A.json      # A zalning yagona manbasi (namuna)
 app/index.html|style.css|app.js   # sotuv paneli (vanilla JS, build yo'q)
+app/groups.js                     # band joylarni birlashtirish: bitta kompaniya = bitta quti
+lib/groups.mjs                    # app/groups.js ni Node'dan ishlatish (eksport, paket)
 tools/validate-layout.mjs         # CLI validator (CI uchun)
 docs/CHIZMA-ANKETA.md             # real chizma bo'yicha tasdiqlash savollari
 tools/test-validator.mjs          # 18 ta buzilgan layout testi
