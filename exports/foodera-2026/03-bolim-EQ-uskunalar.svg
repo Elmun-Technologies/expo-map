@@ -28,20 +28,22 @@
 <rect x="925.00" y="254.00" width="68" height="7" rx="3.5" fill="#2E8B8B"/>
 <path d="M123 178L189 178L255 178L321 178L387 178L387 244L321 244L255 244L189 244L123 244Z" fill="#fff8e6" stroke="#e0a300" stroke-width="2"/>
 <rect x="123.00" y="178.00" width="264.00" height="4" rx="1.5" fill="#e0a300"/>
-<text x="255.00" y="212.92" font-size="19.41" font-weight="bold" fill="#7a4f00" text-anchor="middle">UzPack Equipment</text>
-<text x="255.00" y="234.65" font-size="10.68" fill="#7a4f00" text-anchor="middle" opacity="0.85">4 stend · 36 m²</text>
+<text x="255.00" y="213.41" font-size="20.63" font-weight="bold" fill="#7a4f00" text-anchor="middle">UzPack Equipment</text>
+<text x="255.00" y="235.38" font-size="11.34" fill="#7a4f00" text-anchor="middle" opacity="0.85">4 stend · 36 m²</text>
 <path d="M387 178L453 178L519 178L519 244L453 244L387 244Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
 <rect x="387.00" y="178.00" width="132.00" height="4" rx="1.5" fill="#c62828"/>
-<text x="453.00" y="210.54" font-size="13.57" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Rus Expo Group</text>
-<text x="453.00" y="231.14" font-size="8.00" fill="#8e1b1b" text-anchor="middle" opacity="0.85">2 stend · 18 m²</text>
+<text x="453.00" y="201.66" font-size="17.39" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Rus Expo</text>
+<text x="453.00" y="222.53" font-size="17.39" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Group</text>
+<text x="453.00" y="243.87" font-size="9.57" fill="#8e1b1b" text-anchor="middle" opacity="0.85">2 stend · 18 m²</text>
 <path d="M695 178L761 178L827 178L893 178L959 178L959 244L893 244L827 244L761 244L695 244Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
 <rect x="695.00" y="178.00" width="264.00" height="4" rx="1.5" fill="#c62828"/>
-<text x="827.00" y="212.82" font-size="19.17" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Konserv Liniya Servis</text>
-<text x="827.00" y="234.50" font-size="10.54" fill="#8e1b1b" text-anchor="middle" opacity="0.85">4 stend · 36 m²</text>
+<text x="827.00" y="212.10" font-size="17.39" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Konserv Liniya Servis</text>
+<text x="827.00" y="233.43" font-size="9.57" fill="#8e1b1b" text-anchor="middle" opacity="0.85">4 stend · 36 m²</text>
 <path d="M959 178L1025 178L1091 178L1091 244L1025 244L959 244Z" fill="#fff8e6" stroke="#e0a300" stroke-width="2"/>
 <rect x="959.00" y="178.00" width="132.00" height="4" rx="1.5" fill="#e0a300"/>
-<text x="1025.00" y="209.56" font-size="11.17" font-weight="bold" fill="#7a4f00" text-anchor="middle">KazPack Machinery</text>
-<text x="1025.00" y="229.70" font-size="8.00" fill="#7a4f00" text-anchor="middle" opacity="0.85">2 stend · 18 m²</text>
+<text x="1025.00" y="201.66" font-size="17.39" font-weight="bold" fill="#7a4f00" text-anchor="middle">KazPack</text>
+<text x="1025.00" y="222.53" font-size="17.39" font-weight="bold" fill="#7a4f00" text-anchor="middle">Machinery</text>
+<text x="1025.00" y="243.87" font-size="9.57" fill="#7a4f00" text-anchor="middle" opacity="0.85">2 stend · 18 m²</text>
 <rect x="46.00" y="337.00" width="15" height="15" rx="3" fill="#eaf6ec" stroke="#2e7d32" stroke-width="1.4"/>
 <text x="69.00" y="350.00" font-size="13" fill="#33454f">Bo'sh: 4 stend · 36 m²</text>
 <rect x="261.32" y="337.00" width="15" height="15" rx="3" fill="#fff3d6" stroke="#f59e0b" stroke-width="1.4"/>

@@ -179,13 +179,15 @@ Chizma bo'yicha zal qayta chizildi va **hamma narsa bitta manbadan** (`layout/fo
 | Nima | Holat |
 |---|---|
 | Zal o'lchami | 96 × 50 m (chizmadagi o'lchamlarni 72 m² shablonga moslab tekisladik) |
-| Bloklar | **12 blok** (A–F yuqori qator, G–L pastki qator) — har biri 8 stend · 72 m² (FOODERA chizmasidagi 12 sarlavha) |
-| Uskunalar qatori | EQ-1, EQ-2: 6 stend + bitta birlashtirilgan katak (kompaniya bir necha joyni qo'shib olgan) = 72 m² |
+| Bloklar | **12 blok, 3 qatorda**: 1-qator A–F, **2-qator (o'rta) G–I**, 3-qator J–L — har biri 8 stend · 72 m² |
+| Uskunalar qatori | EQ-1, EQ-2 — har biri 8 × 9 m² katak (8 × 1 qator) = 72 m² (birlashtirilgan kataklar olib tashlandi) |
 | Chap qanot | A1–A6 nostandart stendlar (19,15–27,41 m², chizmadan olingan) |
 | Bo'limlar | A HoReCa · B Konserva · C Baliq va dengiz mahsulotlari · D Meva-sabzavot · E Sog'lom taom, Sport Pit · F Organika · G Yarim tayyor · H Go'sht va sut sanoati · I Ichimliklar · J Bakaleya · K Qandolat · L Ingredientlar · EQ Uskunalar · WING Chap qanot |
 | Zonalar (FOODERA chizmasi bo'yicha) | Sena (Sahna) · Zona seminarov i forum · B2B zona · Conference-Hall · Small Conference-Hall · 2× B2B · Peregovornaya · Gruzovye vorota · Vintovoy vyxod · Texnik xona · 2× WC · Registratsiya · Glavniy vxod |
 | Sarlavhalar | Har bir bo'lim nomi chizmadagidek **ruscha + o'zbekcha** yoziladi (masalan, «A bloki · HoReCa / Продукция для HoReCa») |
-| Jami | **114 stend · 1 113,18 m²** (+ 4 birlashtirilgan katak = 1 149,18 m²) · eng tor yo'lak 2 m · validator: xato yo'q |
+| Jami | **118 stend · 1 149,18 m²** · eng tor yo'lak 2 m · validator: xato yo'q |
+| Qoida | Shablon: **faqat 72 m² bloklar va 9 m² qismlar** — nostandart katak yo'q; chap qanot A1–A6 chizmadagi maydonlari bilan (19,15–27,41 m²) |
+| Dizayn | Mijoz xaritasi „toza" uslubda: oq kataklar, bo'lim rangidagi yupqa ramka, och status fonlari (sotilgan/bron), nomlar quti ichida. Panel (sotuvchilar uchun) status ranglarini saqlaydi |
 | Narx | 1 250 000 so'm/m² (tasdiqlash kutilmoqda) |
 | Band joylar | Panel orqali kiritiladi; hozircha 18 ta **namunaviy** kompaniya bilan ko'rsatilgan |
 

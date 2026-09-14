@@ -10,7 +10,7 @@
 <rect x="1388.00" y="211.00" width="407.00" height="330.00" rx="4" fill="#eef3fb" fill-opacity="0.9" stroke="#c9d6e2" stroke-width="1" stroke-dasharray="9 6"/>
 <rect x="1388.00" y="552.00" width="407.00" height="352.00" rx="4" fill="#f3f0fb" fill-opacity="0.9" stroke="#c9d6e2" stroke-width="1" stroke-dasharray="9 6"/>
 <rect x="1814.80" y="211.00" width="334.40" height="792.00" rx="4" fill="#f0f6ff" fill-opacity="0.9" stroke="#c9d6e2" stroke-width="1" stroke-dasharray="9 6"/>
-<rect x="266.00" y="1143.80" width="704.00" height="50.60" rx="4" fill="#f7f7f7" fill-opacity="0.9" stroke="#c9d6e2" stroke-width="1" stroke-dasharray="9 6"/>
+<rect x="1410.00" y="1143.80" width="396.00" height="50.60" rx="4" fill="#f7f7f7" fill-opacity="0.9" stroke="#c9d6e2" stroke-width="1" stroke-dasharray="9 6"/>
 <polygon points="46.00,101.00 2158.00,101.00 2158.00,1201.00 46.00,1201.00" fill="none" stroke="#0f2233" stroke-width="2.4"/>
 <rect x="68.00" y="114.20" width="132.00" height="70.40" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>
 <text x="134.00" y="147.56" font-size="9.31" fill="#5b6b7a" text-anchor="middle">Техническая комната</text>
@@ -240,104 +240,136 @@
 <text x="134.00" y="768.65" font-size="12.96" fill="#8a9aa8" text-anchor="middle">27,41 m²</text>
 <path d="M288 118.6L354 118.6L420 118.6L486 118.6L552 118.6L552 184.6L486 184.6L420 184.6L354 184.6L288 184.6Z" fill="#fff8e6" stroke="#e0a300" stroke-width="2"/>
 <rect x="288.00" y="118.60" width="264.00" height="4" rx="1.5" fill="#e0a300"/>
-<text x="420.00" y="153.52" font-size="19.41" font-weight="bold" fill="#7a4f00" text-anchor="middle">UzPack Equipment</text>
-<text x="420.00" y="175.25" font-size="10.68" fill="#7a4f00" text-anchor="middle" opacity="0.85">4 stend · 36 m²</text>
+<text x="420.00" y="154.01" font-size="20.63" font-weight="bold" fill="#7a4f00" text-anchor="middle">UzPack Equipment</text>
+<text x="420.00" y="175.97" font-size="11.34" fill="#7a4f00" text-anchor="middle" opacity="0.85">4 stend · 36 m²</text>
 <path d="M552 118.6L618 118.6L684 118.6L684 184.6L618 184.6L552 184.6Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
 <rect x="552.00" y="118.60" width="132.00" height="4" rx="1.5" fill="#c62828"/>
-<text x="618.00" y="151.14" font-size="13.57" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Rus Expo Group</text>
-<text x="618.00" y="171.74" font-size="8.00" fill="#8e1b1b" text-anchor="middle" opacity="0.85">2 stend · 18 m²</text>
+<text x="618.00" y="142.26" font-size="17.39" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Rus Expo</text>
+<text x="618.00" y="163.13" font-size="17.39" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Group</text>
+<text x="618.00" y="184.47" font-size="9.57" fill="#8e1b1b" text-anchor="middle" opacity="0.85">2 stend · 18 m²</text>
 <path d="M860 118.6L926 118.6L992 118.6L1058 118.6L1124 118.6L1124 184.6L1058 184.6L992 184.6L926 184.6L860 184.6Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
 <rect x="860.00" y="118.60" width="264.00" height="4" rx="1.5" fill="#c62828"/>
-<text x="992.00" y="153.42" font-size="19.17" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Konserv Liniya Servis</text>
-<text x="992.00" y="175.10" font-size="10.54" fill="#8e1b1b" text-anchor="middle" opacity="0.85">4 stend · 36 m²</text>
+<text x="992.00" y="152.70" font-size="17.39" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Konserv Liniya Servis</text>
+<text x="992.00" y="174.03" font-size="9.57" fill="#8e1b1b" text-anchor="middle" opacity="0.85">4 stend · 36 m²</text>
 <path d="M1124 118.6L1190 118.6L1256 118.6L1256 184.6L1190 184.6L1124 184.6Z" fill="#fff8e6" stroke="#e0a300" stroke-width="2"/>
 <rect x="1124.00" y="118.60" width="132.00" height="4" rx="1.5" fill="#e0a300"/>
-<text x="1190.00" y="150.16" font-size="11.17" font-weight="bold" fill="#7a4f00" text-anchor="middle">KazPack Machinery</text>
-<text x="1190.00" y="170.30" font-size="8.00" fill="#7a4f00" text-anchor="middle" opacity="0.85">2 stend · 18 m²</text>
+<text x="1190.00" y="142.26" font-size="17.39" font-weight="bold" fill="#7a4f00" text-anchor="middle">KazPack</text>
+<text x="1190.00" y="163.13" font-size="17.39" font-weight="bold" fill="#7a4f00" text-anchor="middle">Machinery</text>
+<text x="1190.00" y="184.47" font-size="9.57" fill="#7a4f00" text-anchor="middle" opacity="0.85">2 stend · 18 m²</text>
 <path d="M310 228.6L376 228.6L442 228.6L442 294.6L442 360.6L442 426.6L442 492.6L376 492.6L310 492.6L310 426.6L310 360.6L310 294.6Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
 <rect x="310.00" y="228.60" width="132.00" height="4" rx="1.5" fill="#c62828"/>
-<text x="376.00" y="359.15" font-size="11.16" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Orient Food Group</text>
-<text x="376.00" y="379.30" font-size="8.00" fill="#8e1b1b" text-anchor="middle" opacity="0.85">8 stend · 72 m²</text>
+<text x="376.00" y="334.01" font-size="26.00" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Orient</text>
+<text x="376.00" y="365.21" font-size="26.00" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Food</text>
+<text x="376.00" y="396.41" font-size="26.00" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Group</text>
+<text x="376.00" y="419.40" font-size="14.30" fill="#8e1b1b" text-anchor="middle" opacity="0.85">8 stend · 72 m²</text>
 <path d="M486 228.6L552 228.6L618 228.6L618 294.6L618 360.6L552 360.6L486 360.6L486 294.6Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
 <rect x="486.00" y="228.60" width="132.00" height="4" rx="1.5" fill="#c62828"/>
-<text x="552.00" y="292.13" font-size="8.64" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Navoiy Konserva Zavodi</text>
-<text x="552.00" y="311.78" font-size="8.00" fill="#8e1b1b" text-anchor="middle" opacity="0.85">4 stend · 36 m²</text>
+<text x="552.00" y="270.07" font-size="23.40" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Navoiy</text>
+<text x="552.00" y="298.15" font-size="23.40" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Konserva</text>
+<text x="552.00" y="326.23" font-size="23.40" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Zavodi</text>
+<text x="552.00" y="348.72" font-size="12.87" fill="#8e1b1b" text-anchor="middle" opacity="0.85">4 stend · 36 m²</text>
 <path d="M662 228.6L728 228.6L794 228.6L794 294.6L794 360.6L728 360.6L662 360.6L662 294.6Z" fill="#fff8e6" stroke="#e0a300" stroke-width="2"/>
 <rect x="662.00" y="228.60" width="132.00" height="4" rx="1.5" fill="#e0a300"/>
-<text x="728.00" y="293.15" font-size="11.16" font-weight="bold" fill="#7a4f00" text-anchor="middle">Silk Road Seafood</text>
-<text x="728.00" y="313.30" font-size="8.00" fill="#7a4f00" text-anchor="middle" opacity="0.85">4 stend · 36 m²</text>
+<text x="728.00" y="268.01" font-size="26.00" font-weight="bold" fill="#7a4f00" text-anchor="middle">Silk</text>
+<text x="728.00" y="299.21" font-size="26.00" font-weight="bold" fill="#7a4f00" text-anchor="middle">Road</text>
+<text x="728.00" y="330.41" font-size="26.00" font-weight="bold" fill="#7a4f00" text-anchor="middle">Seafood</text>
+<text x="728.00" y="353.40" font-size="14.30" fill="#7a4f00" text-anchor="middle" opacity="0.85">4 stend · 36 m²</text>
 <path d="M838 228.6L904 228.6L970 228.6L970 294.6L904 294.6L838 294.6Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
 <rect x="838.00" y="228.60" width="132.00" height="4" rx="1.5" fill="#c62828"/>
-<text x="904.00" y="259.47" font-size="9.49" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Fergana Fruit Export</text>
-<text x="904.00" y="279.30" font-size="8.00" fill="#8e1b1b" text-anchor="middle" opacity="0.85">2 stend · 18 m²</text>
+<text x="904.00" y="252.59" font-size="15.65" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Fergana</text>
+<text x="904.00" y="271.38" font-size="15.65" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Fruit Export</text>
+<text x="904.00" y="292.38" font-size="8.61" fill="#8e1b1b" text-anchor="middle" opacity="0.85">2 stend · 18 m²</text>
 <path d="M1014 228.6L1080 228.6L1146 228.6L1146 294.6L1146 360.6L1146 426.6L1146 492.6L1080 492.6L1014 492.6L1014 426.6L1014 360.6L1014 294.6Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
 <rect x="1014.00" y="228.60" width="132.00" height="4" rx="1.5" fill="#c62828"/>
-<text x="1080.00" y="359.45" font-size="11.88" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Biosifat Organik</text>
-<text x="1080.00" y="379.73" font-size="8.00" fill="#8e1b1b" text-anchor="middle" opacity="0.85">8 stend · 72 m²</text>
+<text x="1080.00" y="350.11" font-size="23.40" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Biosifat</text>
+<text x="1080.00" y="378.19" font-size="23.40" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Organik</text>
+<text x="1080.00" y="400.68" font-size="12.87" fill="#8e1b1b" text-anchor="middle" opacity="0.85">8 stend · 72 m²</text>
 <path d="M68 233L200 233L200 303.224L68 303.224Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
 <rect x="68.00" y="233.00" width="132.00" height="4" rx="1.5" fill="#c62828"/>
-<text x="134.00" y="267.32" font-size="11.19" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Milliy Ziravorlar</text>
-<text x="134.00" y="287.46" font-size="8.00" fill="#8e1b1b" text-anchor="middle" opacity="0.85">19,15 m²</text>
+<text x="134.00" y="259.33" font-size="17.80" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Milliy</text>
+<text x="134.00" y="280.70" font-size="17.80" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Ziravorlar</text>
+<text x="134.00" y="302.12" font-size="9.79" fill="#8e1b1b" text-anchor="middle" opacity="0.85">19,15 m²</text>
 <path d="M1190 294.6L1256 294.6L1322 294.6L1322 360.6L1256 360.6L1190 360.6Z" fill="#fff8e6" stroke="#e0a300" stroke-width="2"/>
 <rect x="1190.00" y="294.60" width="132.00" height="4" rx="1.5" fill="#e0a300"/>
-<text x="1256.00" y="325.91" font-size="10.57" font-weight="bold" fill="#7a4f00" text-anchor="middle">EcoFood Uzbekistan</text>
-<text x="1256.00" y="345.94" font-size="8.00" fill="#7a4f00" text-anchor="middle" opacity="0.85">2 stend · 18 m²</text>
+<text x="1256.00" y="318.26" font-size="17.39" font-weight="bold" fill="#7a4f00" text-anchor="middle">EcoFood</text>
+<text x="1256.00" y="339.13" font-size="17.39" font-weight="bold" fill="#7a4f00" text-anchor="middle">Uzbekistan</text>
+<text x="1256.00" y="360.47" font-size="9.57" fill="#7a4f00" text-anchor="middle" opacity="0.85">2 stend · 18 m²</text>
 <path d="M68 312.2L200 312.2L200 386.714L68 386.714Z" fill="#fff8e6" stroke="#e0a300" stroke-width="2"/>
 <rect x="68.00" y="312.20" width="132.00" height="4" rx="1.5" fill="#e0a300"/>
-<text x="134.00" y="349.01" font-size="10.57" font-weight="bold" fill="#7a4f00" text-anchor="middle">Andijon Meva Savdo</text>
-<text x="134.00" y="369.04" font-size="8.00" fill="#7a4f00" text-anchor="middle" opacity="0.85">20,32 m²</text>
+<text x="134.00" y="341.25" font-size="17.96" font-weight="bold" fill="#7a4f00" text-anchor="middle">Andijon</text>
+<text x="134.00" y="362.80" font-size="17.96" font-weight="bold" fill="#7a4f00" text-anchor="middle">Meva Savdo</text>
+<text x="134.00" y="384.25" font-size="9.88" fill="#7a4f00" text-anchor="middle" opacity="0.85">20,32 m²</text>
 <path d="M486 360.6L552 360.6L618 360.6L618 426.6L552 426.6L486 426.6Z" fill="#fff8e6" stroke="#e0a300" stroke-width="2"/>
 <rect x="486.00" y="360.60" width="132.00" height="4" rx="1.5" fill="#e0a300"/>
-<text x="552.00" y="390.97" font-size="8.25" font-weight="bold" fill="#7a4f00" text-anchor="middle">Buxoro Sut Mahsulotlari</text>
-<text x="552.00" y="410.55" font-size="8.00" fill="#7a4f00" text-anchor="middle" opacity="0.85">2 stend · 18 m²</text>
+<text x="552.00" y="384.59" font-size="15.65" font-weight="bold" fill="#7a4f00" text-anchor="middle">Buxoro Sut</text>
+<text x="552.00" y="403.38" font-size="15.65" font-weight="bold" fill="#7a4f00" text-anchor="middle">Mahsulotlari</text>
+<text x="552.00" y="424.38" font-size="8.61" fill="#7a4f00" text-anchor="middle" opacity="0.85">2 stend · 18 m²</text>
 <path d="M838 360.6L904 360.6L970 360.6L970 426.6L904 426.6L838 426.6Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
 <rect x="838.00" y="360.60" width="132.00" height="4" rx="1.5" fill="#c62828"/>
-<text x="904.00" y="391.47" font-size="9.49" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Fergana Fruit Export</text>
-<text x="904.00" y="411.30" font-size="8.00" fill="#8e1b1b" text-anchor="middle" opacity="0.85">2 stend · 18 m²</text>
+<text x="904.00" y="384.59" font-size="15.65" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Fergana</text>
+<text x="904.00" y="403.38" font-size="15.65" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Fruit Export</text>
+<text x="904.00" y="424.38" font-size="8.61" fill="#8e1b1b" text-anchor="middle" opacity="0.85">2 stend · 18 m²</text>
 <path d="M68 395.8L200 395.8L200 478.916L68 478.916Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
 <rect x="68.00" y="395.80" width="132.00" height="4" rx="1.5" fill="#c62828"/>
-<text x="134.00" y="434.93" font-size="9.51" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Samarqand Non Zavodi</text>
-<text x="134.00" y="454.75" font-size="8.00" fill="#8e1b1b" text-anchor="middle" opacity="0.85">22,67 m²</text>
+<text x="134.00" y="427.61" font-size="17.91" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Samarqand</text>
+<text x="134.00" y="449.10" font-size="17.91" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Non Zavodi</text>
+<text x="134.00" y="470.54" font-size="9.85" fill="#8e1b1b" text-anchor="middle" opacity="0.85">22,67 m²</text>
 <path d="M1190 426.6L1256 426.6L1322 426.6L1322 492.6L1256 492.6L1190 492.6Z" fill="#fff8e6" stroke="#e0a300" stroke-width="2"/>
 <rect x="1190.00" y="426.60" width="132.00" height="4" rx="1.5" fill="#e0a300"/>
-<text x="1256.00" y="457.91" font-size="10.57" font-weight="bold" fill="#7a4f00" text-anchor="middle">EcoFood Uzbekistan</text>
-<text x="1256.00" y="477.94" font-size="8.00" fill="#7a4f00" text-anchor="middle" opacity="0.85">2 stend · 18 m²</text>
+<text x="1256.00" y="450.26" font-size="17.39" font-weight="bold" fill="#7a4f00" text-anchor="middle">EcoFood</text>
+<text x="1256.00" y="471.13" font-size="17.39" font-weight="bold" fill="#7a4f00" text-anchor="middle">Uzbekistan</text>
+<text x="1256.00" y="492.47" font-size="9.57" fill="#7a4f00" text-anchor="middle" opacity="0.85">2 stend · 18 m²</text>
 <path d="M464 536.6L530 536.6L596 536.6L596 602.6L596 668.6L596 734.6L530 734.6L464 734.6L464 668.6L464 602.6Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
 <rect x="464.00" y="536.60" width="132.00" height="4" rx="1.5" fill="#c62828"/>
-<text x="530.00" y="633.29" font-size="9.04" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Osiyo Ingredient MChJ</text>
-<text x="530.00" y="653.02" font-size="8.00" fill="#8e1b1b" text-anchor="middle" opacity="0.85">6 stend · 54 m²</text>
+<text x="530.00" y="614.59" font-size="18.95" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Osiyo</text>
+<text x="530.00" y="637.33" font-size="18.95" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Ingredient</text>
+<text x="530.00" y="660.08" font-size="18.95" font-weight="bold" fill="#8e1b1b" text-anchor="middle">MChJ</text>
+<text x="530.00" y="681.72" font-size="10.42" fill="#8e1b1b" text-anchor="middle" opacity="0.85">6 stend · 54 m²</text>
 <path d="M750 536.6L816 536.6L882 536.6L882 602.6L882 668.6L816 668.6L750 668.6L750 602.6Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
 <rect x="750.00" y="536.60" width="132.00" height="4" rx="1.5" fill="#c62828"/>
-<text x="816.00" y="599.70" font-size="7.60" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Namangan Go'sht Kombinati</text>
-<text x="816.00" y="619.16" font-size="8.00" fill="#8e1b1b" text-anchor="middle" opacity="0.85">4 stend · 36 m²</text>
+<text x="816.00" y="579.92" font-size="21.06" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Namangan</text>
+<text x="816.00" y="605.19" font-size="21.06" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Go'sht</text>
+<text x="816.00" y="630.46" font-size="21.06" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Kombinati</text>
+<text x="816.00" y="652.51" font-size="11.58" fill="#8e1b1b" text-anchor="middle" opacity="0.85">4 stend · 36 m²</text>
 <path d="M1036 536.6L1102 536.6L1168 536.6L1168 602.6L1168 668.6L1102 668.6L1036 668.6L1036 602.6Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
 <rect x="1036.00" y="536.60" width="132.00" height="4" rx="1.5" fill="#c62828"/>
-<text x="1102.00" y="600.91" font-size="10.56" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Aqua Water Company</text>
-<text x="1102.00" y="620.94" font-size="8.00" fill="#8e1b1b" text-anchor="middle" opacity="0.85">4 stend · 36 m²</text>
+<text x="1102.00" y="576.01" font-size="26.00" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Aqua</text>
+<text x="1102.00" y="607.21" font-size="26.00" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Water</text>
+<text x="1102.00" y="638.41" font-size="26.00" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Company</text>
+<text x="1102.00" y="661.40" font-size="14.30" fill="#8e1b1b" text-anchor="middle" opacity="0.85">4 stend · 36 m²</text>
 <path d="M68 589.4L200 589.4L200 685.584L68 685.584Z" fill="#fff8e6" stroke="#e0a300" stroke-width="2"/>
 <rect x="68.00" y="589.40" width="132.00" height="4" rx="1.5" fill="#e0a300"/>
-<text x="134.00" y="635.00" font-size="11.88" font-weight="bold" fill="#7a4f00" text-anchor="middle">Qarshi Sifat Sut</text>
-<text x="134.00" y="655.28" font-size="8.00" fill="#7a4f00" text-anchor="middle" opacity="0.85">26,23 m²</text>
+<text x="134.00" y="626.11" font-size="21.06" font-weight="bold" fill="#7a4f00" text-anchor="middle">Qarshi</text>
+<text x="134.00" y="651.38" font-size="21.06" font-weight="bold" fill="#7a4f00" text-anchor="middle">Sifat Sut</text>
+<text x="134.00" y="673.42" font-size="11.58" fill="#7a4f00" text-anchor="middle" opacity="0.85">26,23 m²</text>
 <path d="M750 734.6L816 734.6L882 734.6L882 800.6L816 800.6L750 800.6Z" fill="#fff8e6" stroke="#e0a300" stroke-width="2"/>
 <rect x="750.00" y="734.60" width="132.00" height="4" rx="1.5" fill="#e0a300"/>
-<text x="816.00" y="765.11" font-size="8.61" font-weight="bold" fill="#7a4f00" text-anchor="middle">Qashqadaryo Sut Zavodi</text>
-<text x="816.00" y="784.77" font-size="8.00" fill="#7a4f00" text-anchor="middle" opacity="0.85">2 stend · 18 m²</text>
+<text x="816.00" y="758.26" font-size="17.39" font-weight="bold" fill="#7a4f00" text-anchor="middle">Qashqadaryo</text>
+<text x="816.00" y="779.13" font-size="17.39" font-weight="bold" fill="#7a4f00" text-anchor="middle">Sut Zavodi</text>
+<text x="816.00" y="800.47" font-size="9.57" fill="#7a4f00" text-anchor="middle" opacity="0.85">2 stend · 18 m²</text>
 <path d="M464 844.6L530 844.6L596 844.6L596 910.6L596 976.6L596 1042.6L530 1042.6L464 1042.6L464 976.6L464 910.6Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
 <rect x="464.00" y="844.60" width="132.00" height="4" rx="1.5" fill="#c62828"/>
-<text x="530.00" y="941.29" font-size="9.04" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Toshkent Yarim Tayyor</text>
-<text x="530.00" y="961.02" font-size="8.00" fill="#8e1b1b" text-anchor="middle" opacity="0.85">6 stend · 54 m²</text>
+<text x="530.00" y="919.07" font-size="23.40" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Toshkent</text>
+<text x="530.00" y="947.15" font-size="23.40" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Yarim</text>
+<text x="530.00" y="975.23" font-size="23.40" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Tayyor</text>
+<text x="530.00" y="997.72" font-size="12.87" fill="#8e1b1b" text-anchor="middle" opacity="0.85">6 stend · 54 m²</text>
 <path d="M750 844.6L816 844.6L882 844.6L882 910.6L882 976.6L882 1042.6L816 1042.6L750 1042.6L750 976.6L750 910.6Z" fill="#fff8e6" stroke="#e0a300" stroke-width="2"/>
 <rect x="750.00" y="844.60" width="132.00" height="4" rx="1.5" fill="#e0a300"/>
-<text x="816.00" y="941.13" font-size="8.64" font-weight="bold" fill="#7a4f00" text-anchor="middle">Galla Bakaleya Savdosi</text>
-<text x="816.00" y="960.78" font-size="8.00" fill="#7a4f00" text-anchor="middle" opacity="0.85">6 stend · 54 m²</text>
+<text x="816.00" y="919.07" font-size="23.40" font-weight="bold" fill="#7a4f00" text-anchor="middle">Galla</text>
+<text x="816.00" y="947.15" font-size="23.40" font-weight="bold" fill="#7a4f00" text-anchor="middle">Bakaleya</text>
+<text x="816.00" y="975.23" font-size="23.40" font-weight="bold" fill="#7a4f00" text-anchor="middle">Savdosi</text>
+<text x="816.00" y="997.72" font-size="12.87" fill="#7a4f00" text-anchor="middle" opacity="0.85">6 stend · 54 m²</text>
 <path d="M1036 844.6L1102 844.6L1168 844.6L1168 910.6L1168 976.6L1102 976.6L1036 976.6L1036 910.6Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
 <rect x="1036.00" y="844.60" width="132.00" height="4" rx="1.5" fill="#c62828"/>
-<text x="1102.00" y="908.47" font-size="9.48" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Shirin Ta'm Qandolat</text>
-<text x="1102.00" y="928.29" font-size="8.00" fill="#8e1b1b" text-anchor="middle" opacity="0.85">4 stend · 36 m²</text>
+<text x="1102.00" y="886.07" font-size="23.40" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Shirin</text>
+<text x="1102.00" y="914.15" font-size="23.40" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Ta'm</text>
+<text x="1102.00" y="942.23" font-size="23.40" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Qandolat</text>
+<text x="1102.00" y="964.72" font-size="12.87" fill="#8e1b1b" text-anchor="middle" opacity="0.85">4 stend · 36 m²</text>
 <path d="M1036 976.6L1102 976.6L1168 976.6L1168 1042.6L1168 1108.6L1102 1108.6L1036 1108.6L1036 1042.6Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
 <rect x="1036.00" y="976.60" width="132.00" height="4" rx="1.5" fill="#c62828"/>
-<text x="1102.00" y="1042.57" font-size="14.64" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Qandolat Olam</text>
-<text x="1102.00" y="1063.38" font-size="8.05" fill="#8e1b1b" text-anchor="middle" opacity="0.85">4 stend · 36 m²</text>
+<text x="1102.00" y="1032.11" font-size="23.40" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Qandolat</text>
+<text x="1102.00" y="1060.19" font-size="23.40" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Olam</text>
+<text x="1102.00" y="1082.68" font-size="12.87" fill="#8e1b1b" text-anchor="middle" opacity="0.85">4 stend · 36 m²</text>
 <rect x="46.00" y="1217.00" width="15" height="15" rx="3" fill="#eaf6ec" stroke="#2e7d32" stroke-width="1.4"/>
 <text x="69.00" y="1230.00" font-size="13" fill="#33454f">Bo'sh: 32 stend · 322,81 m²</text>
 <rect x="301.62" y="1217.00" width="15" height="15" rx="3" fill="#fff3d6" stroke="#f59e0b" stroke-width="1.4"/>
@@ -392,6 +424,6 @@
 <text x="1591.50" y="203.00" font-size="15" font-weight="bold" fill="#8fa0af" text-anchor="middle" letter-spacing="0.4">Seminarlar va forum zonasi (Зона семинаров и форум)</text>
 <text x="1591.50" y="544.00" font-size="15" font-weight="bold" fill="#8fa0af" text-anchor="middle" letter-spacing="0.4">B2B zona</text>
 <text x="1982.00" y="203.00" font-size="15" font-weight="bold" fill="#8fa0af" text-anchor="middle" letter-spacing="0.4">Conference-Hall va B2B zonalari</text>
-<text x="618.00" y="1169.80" font-size="15" font-weight="bold" fill="#8fa0af" text-anchor="middle" letter-spacing="0.4">PARKING</text>
+<text x="1608.00" y="1169.80" font-size="15" font-weight="bold" fill="#8fa0af" text-anchor="middle" letter-spacing="0.4">PARKING</text>
 <text x="2158" y="1647" font-size="12" fill="#33454f" text-anchor="end">Jami: 118 stend · 1 149,18 m² · bo'sh: 32 (322,81 m²)</text>
 </svg>

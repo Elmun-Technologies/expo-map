@@ -240,9 +240,9 @@
       "id": "parking",
       "label": "PARKING",
       "color": "#f7f7f7",
-      "x": 10,
+      "x": 62,
       "y": 47.4,
-      "w": 32,
+      "w": 18,
       "h": 2.3,
       "kind": "parking",
       "labelPos": "inside-top"

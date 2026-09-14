@@ -16,12 +16,15 @@
 <rect x="155.00" y="452.00" width="68" height="7" rx="3.5" fill="#C0553E"/>
 <path d="M123 178L189 178L255 178L255 244L255 310L189 310L123 310L123 244Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
 <rect x="123.00" y="178.00" width="132.00" height="4" rx="1.5" fill="#c62828"/>
-<text x="189.00" y="241.10" font-size="7.60" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Namangan Go'sht Kombinati</text>
-<text x="189.00" y="260.56" font-size="8.00" fill="#8e1b1b" text-anchor="middle" opacity="0.85">4 stend · 36 m²</text>
+<text x="189.00" y="221.32" font-size="21.06" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Namangan</text>
+<text x="189.00" y="246.59" font-size="21.06" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Go'sht</text>
+<text x="189.00" y="271.86" font-size="21.06" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Kombinati</text>
+<text x="189.00" y="293.91" font-size="11.58" fill="#8e1b1b" text-anchor="middle" opacity="0.85">4 stend · 36 m²</text>
 <path d="M123 376L189 376L255 376L255 442L189 442L123 442Z" fill="#fff8e6" stroke="#e0a300" stroke-width="2"/>
 <rect x="123.00" y="376.00" width="132.00" height="4" rx="1.5" fill="#e0a300"/>
-<text x="189.00" y="406.51" font-size="8.61" font-weight="bold" fill="#7a4f00" text-anchor="middle">Qashqadaryo Sut Zavodi</text>
-<text x="189.00" y="426.17" font-size="8.00" fill="#7a4f00" text-anchor="middle" opacity="0.85">2 stend · 18 m²</text>
+<text x="189.00" y="399.66" font-size="17.39" font-weight="bold" fill="#7a4f00" text-anchor="middle">Qashqadaryo</text>
+<text x="189.00" y="420.53" font-size="17.39" font-weight="bold" fill="#7a4f00" text-anchor="middle">Sut Zavodi</text>
+<text x="189.00" y="441.87" font-size="9.57" fill="#7a4f00" text-anchor="middle" opacity="0.85">2 stend · 18 m²</text>
 <rect x="46.00" y="535.00" width="15" height="15" rx="3" fill="#eaf6ec" stroke="#2e7d32" stroke-width="1.4"/>
 <text x="69.00" y="548.00" font-size="13" fill="#33454f">Bo'sh: 2 stend · 18 m²</text>
 <rect x="261.32" y="535.00" width="15" height="15" rx="3" fill="#fff3d6" stroke="#f59e0b" stroke-width="1.4"/>

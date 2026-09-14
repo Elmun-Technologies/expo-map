@@ -16,8 +16,10 @@
 <rect x="155.00" y="452.00" width="68" height="7" rx="3.5" fill="#5E7A8C"/>
 <path d="M123 178L189 178L255 178L255 244L255 310L255 376L189 376L123 376L123 310L123 244Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
 <rect x="123.00" y="178.00" width="132.00" height="4" rx="1.5" fill="#c62828"/>
-<text x="189.00" y="274.69" font-size="9.04" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Osiyo Ingredient MChJ</text>
-<text x="189.00" y="294.42" font-size="8.00" fill="#8e1b1b" text-anchor="middle" opacity="0.85">6 stend · 54 m²</text>
+<text x="189.00" y="255.99" font-size="18.95" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Osiyo</text>
+<text x="189.00" y="278.73" font-size="18.95" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Ingredient</text>
+<text x="189.00" y="301.48" font-size="18.95" font-weight="bold" fill="#8e1b1b" text-anchor="middle">MChJ</text>
+<text x="189.00" y="323.12" font-size="10.42" fill="#8e1b1b" text-anchor="middle" opacity="0.85">6 stend · 54 m²</text>
 <rect x="46.00" y="535.00" width="15" height="15" rx="3" fill="#eaf6ec" stroke="#2e7d32" stroke-width="1.4"/>
 <text x="69.00" y="548.00" font-size="13" fill="#33454f">Bo'sh: 2 stend · 18 m²</text>
 <rect x="261.32" y="535.00" width="15" height="15" rx="3" fill="#fff3d6" stroke="#f59e0b" stroke-width="1.4"/>

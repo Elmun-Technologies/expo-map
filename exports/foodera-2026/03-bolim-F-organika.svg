@@ -26,12 +26,14 @@
 <text x="189.00" y="496.00" font-size="15.00" fill="#5b6b7a" text-anchor="middle">Органика</text>
 <path d="M123 244L189 244L255 244L255 310L189 310L123 310Z" fill="#fff8e6" stroke="#e0a300" stroke-width="2"/>
 <rect x="123.00" y="244.00" width="132.00" height="4" rx="1.5" fill="#e0a300"/>
-<text x="189.00" y="275.31" font-size="10.57" font-weight="bold" fill="#7a4f00" text-anchor="middle">EcoFood Uzbekistan</text>
-<text x="189.00" y="295.34" font-size="8.00" fill="#7a4f00" text-anchor="middle" opacity="0.85">2 stend · 18 m²</text>
+<text x="189.00" y="267.66" font-size="17.39" font-weight="bold" fill="#7a4f00" text-anchor="middle">EcoFood</text>
+<text x="189.00" y="288.53" font-size="17.39" font-weight="bold" fill="#7a4f00" text-anchor="middle">Uzbekistan</text>
+<text x="189.00" y="309.87" font-size="9.57" fill="#7a4f00" text-anchor="middle" opacity="0.85">2 stend · 18 m²</text>
 <path d="M123 376L189 376L255 376L255 442L189 442L123 442Z" fill="#fff8e6" stroke="#e0a300" stroke-width="2"/>
 <rect x="123.00" y="376.00" width="132.00" height="4" rx="1.5" fill="#e0a300"/>
-<text x="189.00" y="407.31" font-size="10.57" font-weight="bold" fill="#7a4f00" text-anchor="middle">EcoFood Uzbekistan</text>
-<text x="189.00" y="427.34" font-size="8.00" fill="#7a4f00" text-anchor="middle" opacity="0.85">2 stend · 18 m²</text>
+<text x="189.00" y="399.66" font-size="17.39" font-weight="bold" fill="#7a4f00" text-anchor="middle">EcoFood</text>
+<text x="189.00" y="420.53" font-size="17.39" font-weight="bold" fill="#7a4f00" text-anchor="middle">Uzbekistan</text>
+<text x="189.00" y="441.87" font-size="9.57" fill="#7a4f00" text-anchor="middle" opacity="0.85">2 stend · 18 m²</text>
 <rect x="46.00" y="535.00" width="15" height="15" rx="3" fill="#eaf6ec" stroke="#2e7d32" stroke-width="1.4"/>
 <text x="69.00" y="548.00" font-size="13" fill="#33454f">Bo'sh: 4 stend · 36 m²</text>
 <rect x="261.32" y="535.00" width="15" height="15" rx="3" fill="#fff3d6" stroke="#f59e0b" stroke-width="1.4"/>

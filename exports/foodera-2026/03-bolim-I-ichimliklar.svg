@@ -24,8 +24,10 @@
 <rect x="155.00" y="452.00" width="68" height="7" rx="3.5" fill="#2A9D8F"/>
 <path d="M123 178L189 178L255 178L255 244L255 310L189 310L123 310L123 244Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
 <rect x="123.00" y="178.00" width="132.00" height="4" rx="1.5" fill="#c62828"/>
-<text x="189.00" y="242.31" font-size="10.56" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Aqua Water Company</text>
-<text x="189.00" y="262.34" font-size="8.00" fill="#8e1b1b" text-anchor="middle" opacity="0.85">4 stend · 36 m²</text>
+<text x="189.00" y="217.41" font-size="26.00" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Aqua</text>
+<text x="189.00" y="248.61" font-size="26.00" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Water</text>
+<text x="189.00" y="279.81" font-size="26.00" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Company</text>
+<text x="189.00" y="302.80" font-size="14.30" fill="#8e1b1b" text-anchor="middle" opacity="0.85">4 stend · 36 m²</text>
 <rect x="46.00" y="535.00" width="15" height="15" rx="3" fill="#eaf6ec" stroke="#2e7d32" stroke-width="1.4"/>
 <text x="69.00" y="548.00" font-size="13" fill="#33454f">Bo'sh: 4 stend · 36 m²</text>
 <rect x="261.32" y="535.00" width="15" height="15" rx="3" fill="#fff3d6" stroke="#f59e0b" stroke-width="1.4"/>

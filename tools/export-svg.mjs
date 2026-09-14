@@ -340,7 +340,28 @@ function drawUnit(u) {
       : (Math.abs(u.areaM2 - 9) > 0.01 ? `${fmtNum(u.areaM2)} m²` : '');
   const withMeta = !!metaTxt && boxH > 52;
   const label = u.label || st.label;
-  const fit = fitText(label, boxW - 14, boxH - (withMeta ? 26 : 8), { maxLines: boxH > 120 ? 3 : boxH > 58 ? 2 : 1, minFs: 7, maxFs: Math.min(26, boxH / (withMeta ? 3.4 : 2.6)), cw: 0.62, lh: 1.2 });
+  // nom qutiga aniq sig'sin: qatorlar soni va shrift birgalikda moslashadi
+  const maxW = boxW - 12;
+  const maxH = boxH - (withMeta ? 26 : 8);
+  let fsTry = Math.max(8, Math.min(26, boxH / (withMeta ? 3.2 : 2.4), maxW / 3));
+  // bir qatorga sig'masa — 2 qatorga tushirishga ruxsat (yozuv qirqilib qolmasin)
+  let linesGuess = Math.max(1, Math.min(3, Math.floor(maxH / (fsTry * 1.15))));
+  if (linesGuess < 2 && txtW(label, fsTry) > maxW && maxH >= 16) {
+    fsTry = Math.max(7, Math.min(fsTry, maxH / (2 * 1.15)));
+    linesGuess = 2;
+  }
+  const fit = { lines: [label], fs: fsTry };
+  for (let i = 0; i < 18; i++) {
+    const maxLines = Math.max(1, Math.min(3, Math.max(linesGuess, Math.floor(maxH / (fsTry * 1.15)))));
+    const cand = wrapText(label, maxW, maxH, maxLines, fsTry);
+    const widest = Math.max(...cand.map((l) => txtW(l, 1)), 1);
+    const fitW = maxW / widest;
+    const cut = cand.some((l) => l.endsWith('…'));
+    fit.lines = cand;
+    fit.fs = Math.min(fsTry, fitW);
+    if (!cut && fitW >= fsTry) break;
+    fsTry = Math.max(6, fsTry * 0.9);
+  }
   const cx = X(boxes.x + boxes.w / 2), cy = Y(boxes.y + boxes.h / 2);
   if (STYLE === 'clean' && cl.bar) {
     out.push(`<rect x="${R(X(boxes.x))}" y="${R(Y(boxes.y))}" width="${R(boxW)}" height="4" rx="1.5" fill="${cl.bar}"/>`);
@@ -388,9 +409,22 @@ function drawStand(s, custom, b0) {
     if (custom) {
       const h2 = S(s.h);
       const name = String(s.label || s.id);
-      const fsName = Math.max(8, Math.min(F.num + 3, (S(s.w) - 12) / Math.max(2, name.length) / 0.66, h2 / 3.2));
-      out.push(`<text x="${R(cx)}" y="${R(cy - 1)}" font-size="${R(fsName)}" font-weight="bold" fill="${cl.ink}" text-anchor="middle">${esc(name)}</text>`);
-      out.push(`<text x="${R(cx)}" y="${R(cy + fsName * 1.3)}" font-size="${R(Math.max(7, fsName * 0.72))}" fill="${cl.sub}" text-anchor="middle">${esc(fmtNum(s.areaM2))} m²</text>`);
+      let fsName = Math.max(8, Math.min(F.num + 3, (S(s.w) - 12) / Math.max(2, name.length) / 0.66, h2 / 3.2));
+      let nameLines = [name];
+      if (txtW(name, fsName) > S(s.w) - 14 && name.includes(' ') && h2 >= 70) {
+        const w0 = name.split(' ');
+        let best = null;
+        for (let i = 1; i < w0.length; i++) {
+          const a = w0.slice(0, i).join(' '), b2 = w0.slice(i).join(' ');
+          const worst = Math.max(a.length, b2.length);
+          if (!best || worst < best.worst) best = { a, b: b2, worst };
+        }
+        if (best) { nameLines = [best.a, best.b]; fsName = Math.max(8, Math.min(fsName, (S(s.w) - 12) / Math.max(3, best.worst) / 0.62, h2 / 4.4)); }
+      }
+      nameLines.forEach((ln, i) => {
+        out.push(`<text x="${R(cx)}" y="${R(cy - (nameLines.length > 1 ? fsName * 0.85 : 1) + i * fsName * 1.2)}" font-size="${R(fsName)}" font-weight="bold" fill="${cl.ink}" text-anchor="middle">${esc(ln)}</text>`);
+      });
+      out.push(`<text x="${R(cx)}" y="${R(cy + fsName * (nameLines.length > 1 ? 1.5 : 1.3))}" font-size="${R(Math.max(7, fsName * 0.72))}" fill="${cl.sub}" text-anchor="middle">${esc(fmtNum(s.areaM2))} m²</text>`);
       if (buyer2) {
         const bfs = Math.min(fsName * 0.8, (S(s.w) - 10) / Math.max(4, buyer2.length) / 0.6);
         if (bfs > 6.5) out.push(`<text x="${R(cx)}" y="${R(cy + fsName * 2.6)}" font-size="${R(bfs)}" font-weight="bold" fill="${cl.ink}" text-anchor="middle">${esc(buyer2)}</text>`);
