@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="972" height="634" viewBox="0 0 972 634" font-family="DejaVu Sans, Helvetica, Arial, sans-serif">
-<rect width="972" height="634" fill="#ffffff"/>
-<text x="46" y="66" font-size="20" font-weight="bold" fill="#0f2233">Konserva, go'sht va sut — Консервация, Мясная и молочная промышленность</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="721" height="659" viewBox="0 0 721 659" font-family="DejaVu Sans, Helvetica, Arial, sans-serif">
+<rect width="721" height="659" fill="#ffffff"/>
+<text x="46" y="66" font-size="20" font-weight="bold" fill="#0f2233">Konserva mahsulotlari — Консервация</text>
 <text x="46" y="87" font-size="13" fill="#5b6b7a">1 stend = 3×3 m = 9 m² · 1 blok = 8 stend = 72 m² · layout v1.0.0 · 14.09.2026</text>
 <rect x="123.00" y="178.00" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
 <rect x="123.00" y="146.00" width="94.54" height="25" rx="5" fill="#2E8B8B"/>
@@ -24,7 +24,7 @@
 <text x="69.00" y="548.00" font-size="13" fill="#33454f">Bo'sh: 2 stend · 18 m²</text>
 <rect x="261.32" y="535.00" width="15" height="15" rx="3" fill="#fff3d6" stroke="#f59e0b" stroke-width="1.4"/>
 <text x="284.32" y="548.00" font-size="13" fill="#33454f">Bron: 2 stend · 18 m²</text>
-<rect x="468.58" y="535.00" width="15" height="15" rx="3" fill="#c62828" stroke="#8e1b1b" stroke-width="1.4"/>
-<text x="491.58" y="548.00" font-size="13" fill="#33454f">Sotilgan: 4 stend · 36 m²</text>
-<text x="926.4" y="616" font-size="12" fill="#33454f" text-anchor="end">Jami: 8 stend · 72 m² · bo'sh: 2 (18 m²)</text>
+<rect x="46.00" y="560.00" width="15" height="15" rx="3" fill="#c62828" stroke="#8e1b1b" stroke-width="1.4"/>
+<text x="69.00" y="573.00" font-size="13" fill="#33454f">Sotilgan: 4 stend · 36 m²</text>
+<text x="674.68" y="641" font-size="12" fill="#33454f" text-anchor="end">Jami: 8 stend · 72 m² · bo'sh: 2 (18 m²)</text>
 </svg>

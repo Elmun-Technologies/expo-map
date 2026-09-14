@@ -50,43 +50,43 @@
     {
       "id": "A",
       "short": "HoReCa",
-      "label": "HoReCa va ingredientlar",
-      "labelRu": "Продукция для HoReCa, Пищевые ингредиенты",
+      "label": "HoReCa mahsulotlari",
+      "labelRu": "Продукция для HoReCa",
       "color": "#E8A33D"
     },
     {
       "id": "B",
       "short": "Konserva",
-      "label": "Konserva, go'sht va sut",
-      "labelRu": "Консервация, Мясная и молочная промышленность",
+      "label": "Konserva mahsulotlari",
+      "labelRu": "Консервация",
       "color": "#2E8B8B"
     },
     {
       "id": "C",
       "short": "Baliq",
       "label": "Baliq va dengiz mahsulotlari",
-      "labelRu": "Рыба и морепродукты, Напитки",
+      "labelRu": "Рыба и морепродукты",
       "color": "#3E7BB6"
     },
     {
       "id": "D",
       "short": "Meva-sabzavot",
-      "label": "Meva-sabzavot",
-      "labelRu": "Фрукты и овощи, Напитки",
+      "label": "Meva va sabzavotlar",
+      "labelRu": "Фрукты и овощи",
       "color": "#B8860B"
     },
     {
       "id": "E",
-      "short": "Sog'lom taom",
-      "label": "Sog'lom ovqat va organika",
-      "labelRu": "Продукты для здорового питания, Органика",
+      "short": "Sport pit",
+      "label": "Sog'lom taom va Sport Pit",
+      "labelRu": "Продукты для здорового питания, Спорт Пит",
       "color": "#3E9B5F"
     },
     {
       "id": "F",
-      "short": "Eko",
-      "label": "Eko mahsulotlar",
-      "labelRu": "Эко продукты",
+      "short": "Organika",
+      "label": "Organika mahsulotlari",
+      "labelRu": "Органика",
       "color": "#9B59B6"
     },
     {
@@ -94,14 +94,21 @@
       "short": "Yarim tayyor",
       "label": "Yarim tayyor mahsulotlar",
       "labelRu": "Полуфабрикаты",
-      "color": "#E8A33D"
+      "color": "#C96F2B"
+    },
+    {
+      "id": "H",
+      "short": "Go'sht-sut",
+      "label": "Go'sht va sut sanoati",
+      "labelRu": "Мясная и молочная индустрия",
+      "color": "#C0553E"
     },
     {
       "id": "I",
       "short": "Ichimliklar",
       "label": "Ichimliklar",
       "labelRu": "Напитки",
-      "color": "#3E7BB6"
+      "color": "#2A9D8F"
     },
     {
       "id": "J",
@@ -115,14 +122,14 @@
       "short": "Qandolat",
       "label": "Qandolat mahsulotlari",
       "labelRu": "Кондитерские изделия",
-      "color": "#3E9B5F"
+      "color": "#C2185B"
     },
     {
       "id": "L",
-      "short": "Shirinliklar",
-      "label": "Shirinliklar",
-      "labelRu": "Кондитерские изделия и сладости",
-      "color": "#9B59B6"
+      "short": "Ingredientlar",
+      "label": "Ingredientlar va komponentlar",
+      "labelRu": "Ингредиенты и компоненты",
+      "color": "#5E7A8C"
     },
     {
       "id": "EQ",
@@ -146,14 +153,14 @@
       "color": "#f0f7f7",
       "x": 10.5,
       "y": 0.2,
-      "w": 57,
+      "w": 69,
       "h": 7.2,
       "kind": "equipment",
-      "labelPos": "none"
+      "labelPos": "bottom"
     },
     {
       "id": "top",
-      "label": "1-qator bo'limlari",
+      "label": "1-qator bo'limlari (A–F)",
       "color": "#f6f9fc",
       "x": 10.5,
       "y": 8.5,
@@ -171,27 +178,27 @@
       "w": 7,
       "h": 28,
       "kind": "wing",
-      "labelPos": "inside-top"
+      "labelPos": "above"
     },
     {
       "id": "bottom",
-      "label": "2-qator bo'limlari",
+      "label": "2-qator bo'limlari (G–L)",
       "color": "#f7fbf7",
       "x": 10.5,
       "y": 29,
-      "w": 41,
+      "w": 48,
       "h": 16.5,
       "kind": "hall",
       "labelPos": "none"
     },
     {
       "id": "seminar",
-      "label": "Seminarlar va forum zonasi (Зона семинаров и форума)",
+      "label": "Seminarlar va forum zonasi (Зона семинаров и форум)",
       "color": "#eef3fb",
       "x": 61,
-      "y": 7.5,
-      "w": 18,
-      "h": 18,
+      "y": 4.4,
+      "w": 18.5,
+      "h": 15.2,
       "kind": "seminar",
       "labelPos": "above"
     },
@@ -200,20 +207,20 @@
       "label": "B2B zona",
       "color": "#f3f0fb",
       "x": 61,
-      "y": 29,
-      "w": 18,
-      "h": 9,
+      "y": 20.8,
+      "w": 18.5,
+      "h": 16.2,
       "kind": "b2b",
       "labelPos": "above"
     },
     {
       "id": "conf",
-      "label": "Conference Hall · B2B · переговорная",
+      "label": "Conference-Hall va B2B zonalari",
       "color": "#f0f6ff",
-      "x": 80,
-      "y": 1,
-      "w": 14,
-      "h": 34,
+      "x": 80.4,
+      "y": 4,
+      "w": 15.2,
+      "h": 37,
       "kind": "conference",
       "labelPos": "above"
     },
@@ -231,56 +238,88 @@
   ],
   "features": [
     {
+      "type": "room",
+      "label": "Техническая комната (Texnik xona)",
+      "x": 1,
+      "y": 0.6,
+      "w": 6,
+      "h": 3.2
+    },
+    {
+      "type": "cargo",
+      "label": "Грузовые ворота (Yuk darvozasi)",
+      "x": 82,
+      "y": 0.6,
+      "w": 13,
+      "h": 3.2
+    },
+    {
       "type": "stage",
-      "label": "Sahna",
-      "x": 62,
-      "y": 7,
-      "w": 16,
-      "h": 6
+      "label": "Сцена (Sahna)",
+      "x": 63.5,
+      "y": 5.8,
+      "w": 13.5,
+      "h": 5.6
     },
     {
       "type": "room",
-      "label": "Seminar zonasi",
-      "x": 62,
-      "y": 14,
-      "w": 16,
-      "h": 9
+      "label": "Conference-Hall (ochiq)",
+      "x": 81.4,
+      "y": 4.4,
+      "w": 13.6,
+      "h": 11.4
     },
     {
       "type": "room",
-      "label": "B2B",
-      "x": 62,
-      "y": 28.5,
-      "w": 16,
-      "h": 7
-    },
-    {
-      "type": "room",
-      "label": "Conference Hall",
-      "x": 81,
-      "y": 2,
-      "w": 12,
-      "h": 10
-    },
-    {
-      "type": "room",
-      "label": "Переговорная",
-      "x": 81,
-      "y": 13,
-      "w": 12,
-      "h": 8
+      "label": "Small Conference-Hall",
+      "x": 81.4,
+      "y": 16.6,
+      "w": 13.6,
+      "h": 7.6
     },
     {
       "type": "room",
       "label": "B2B",
-      "x": 81,
-      "y": 23,
-      "w": 12,
-      "h": 9
+      "x": 81.4,
+      "y": 25,
+      "w": 13.6,
+      "h": 4.6
+    },
+    {
+      "type": "room",
+      "label": "B2B",
+      "x": 81.4,
+      "y": 30.6,
+      "w": 13.6,
+      "h": 4.6
+    },
+    {
+      "type": "room",
+      "label": "Переговорная (Muzokara xonasi)",
+      "x": 81.4,
+      "y": 36.2,
+      "w": 13.6,
+      "h": 4.6
+    },
+    {
+      "type": "exit",
+      "label": "Винтовой выход",
+      "x": 81.4,
+      "y": 41.8,
+      "w": 6.4,
+      "h": 4
+    },
+    {
+      "type": "exit",
+      "label": "Выход к открытому павильону",
+      "x": 0.8,
+      "y": 34.4,
+      "w": 6.2,
+      "h": 4.4
     },
     {
       "type": "service",
-      "label": "Registratsiya",
+      "label": "Регистрация (Ro'yxatga olish)",
       "x": 30,
       "y": 45,
       "w": 18,
@@ -288,27 +327,27 @@
     },
     {
       "type": "entrance",
-      "label": "Bosh kirish",
+      "label": "Главный вход (Bosh kirish)",
       "x": 44,
-      "y": 47,
+      "y": 47.2,
       "w": 12,
-      "h": 3
+      "h": 2.4
     },
     {
       "type": "wc",
       "label": "WC",
       "x": 1,
-      "y": 41,
+      "y": 40.4,
       "w": 6,
-      "h": 5
+      "h": 5.2
     },
     {
       "type": "wc",
       "label": "WC",
-      "x": 88,
-      "y": 41,
-      "w": 6,
-      "h": 5
+      "x": 88.6,
+      "y": 41.8,
+      "w": 6.2,
+      "h": 4
     },
     {
       "type": "column",
@@ -341,14 +380,6 @@
       "y": 26.4,
       "w": 1.2,
       "h": 1.2
-    },
-    {
-      "type": "cargo",
-      "label": "Yuk ko'tarish yo'lagi",
-      "x": 80,
-      "y": 36,
-      "w": 14,
-      "h": 4
     }
   ],
   "customStands": [
@@ -446,7 +477,7 @@
       "cols": 2,
       "rows": 4,
       "section": "A",
-      "group": "1-qator",
+      "group": "HoReCa mahsulotlari",
       "color": "#E8A33D"
     },
     {
@@ -457,7 +488,7 @@
       "cols": 2,
       "rows": 4,
       "section": "B",
-      "group": "1-qator",
+      "group": "Konserva mahsulotlari",
       "color": "#2E8B8B"
     },
     {
@@ -468,7 +499,7 @@
       "cols": 2,
       "rows": 4,
       "section": "C",
-      "group": "1-qator",
+      "group": "Baliq va dengiz mahsulotlari",
       "color": "#3E7BB6"
     },
     {
@@ -479,7 +510,7 @@
       "cols": 2,
       "rows": 4,
       "section": "D",
-      "group": "1-qator",
+      "group": "Meva va sabzavotlar",
       "color": "#B8860B"
     },
     {
@@ -490,7 +521,7 @@
       "cols": 2,
       "rows": 4,
       "section": "E",
-      "group": "1-qator",
+      "group": "Sog'lom taom va Sport Pit",
       "color": "#3E9B5F"
     },
     {
@@ -501,7 +532,7 @@
       "cols": 2,
       "rows": 4,
       "section": "F",
-      "group": "1-qator",
+      "group": "Organika mahsulotlari",
       "color": "#9B59B6"
     },
     {
@@ -512,52 +543,63 @@
       "cols": 2,
       "rows": 4,
       "section": "G",
-      "group": "2-qator",
-      "color": "#E8A33D"
+      "group": "Yarim tayyor mahsulotlar",
+      "color": "#C96F2B"
     },
     {
-      "id": "I",
-      "label": "I",
+      "id": "H",
+      "label": "H",
       "x": 20,
       "y": 30,
       "cols": 2,
       "rows": 4,
-      "section": "I",
-      "group": "2-qator",
-      "color": "#3E7BB6"
+      "section": "H",
+      "group": "Go'sht va sut sanoati",
+      "color": "#C0553E"
     },
     {
-      "id": "J",
-      "label": "J",
+      "id": "I",
+      "label": "I",
       "x": 28,
       "y": 30,
       "cols": 2,
       "rows": 4,
+      "section": "I",
+      "group": "Ichimliklar",
+      "color": "#2A9D8F"
+    },
+    {
+      "id": "J",
+      "label": "J",
+      "x": 36,
+      "y": 30,
+      "cols": 2,
+      "rows": 4,
       "section": "J",
-      "group": "2-qator",
+      "group": "Bakaleya",
       "color": "#D2691E"
     },
     {
       "id": "K",
       "label": "K",
-      "x": 36,
-      "y": 30,
-      "cols": 2,
-      "rows": 4,
-      "section": "K",
-      "group": "2-qator",
-      "color": "#3E9B5F"
-    },
-    {
-      "id": "L",
-      "label": "L",
       "x": 44,
       "y": 30,
       "cols": 2,
       "rows": 4,
+      "section": "K",
+      "group": "Qandolat mahsulotlari",
+      "color": "#C2185B"
+    },
+    {
+      "id": "L",
+      "label": "L",
+      "x": 52,
+      "y": 30,
+      "cols": 2,
+      "rows": 4,
       "section": "L",
-      "group": "2-qator",
-      "color": "#9B59B6"
+      "group": "Ingredientlar va komponentlar",
+      "color": "#5E7A8C"
     },
     {
       "id": "EQ-1",

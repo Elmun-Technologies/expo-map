@@ -9,22 +9,23 @@ QOIDALAR
   aynan shu ID ishlatiladi — "o'rtadagi joy" kabi ifoda ishlatilmaydi.
 
 UMUMIY
-  Jami: 106 stend · 1041.18 m²
+  Jami: 114 stend · 1113.18 m²
   Bo'sh: 32 stend · 322.81 m²
   Narx: 1 250 000 so'm/m²
 
 BO'LIMLAR
-  HoReCa va ingredientlar            8 stend ·       72 m² · bo'sh: 0 (0.00 m²)
-  Konserva, go'sht va sut            8 stend ·       72 m² · bo'sh: 2 (18.00 m²)
+  HoReCa mahsulotlari                8 stend ·       72 m² · bo'sh: 0 (0.00 m²)
+  Konserva mahsulotlari              8 stend ·       72 m² · bo'sh: 2 (18.00 m²)
   Baliq va dengiz mahsulotlari       8 stend ·       72 m² · bo'sh: 4 (36.00 m²)
-  Meva-sabzavot                      8 stend ·       72 m² · bo'sh: 4 (36.00 m²)
-  Sog'lom ovqat va organika          8 stend ·       72 m² · bo'sh: 0 (0.00 m²)
-  Eko mahsulotlar                    8 stend ·       72 m² · bo'sh: 4 (36.00 m²)
+  Meva va sabzavotlar                8 stend ·       72 m² · bo'sh: 4 (36.00 m²)
+  Sog'lom taom va Sport Pit          8 stend ·       72 m² · bo'sh: 0 (0.00 m²)
+  Organika mahsulotlari              8 stend ·       72 m² · bo'sh: 4 (36.00 m²)
   Yarim tayyor mahsulotlar           8 stend ·       72 m² · bo'sh: 2 (18.00 m²)
+  Go'sht va sut sanoati              8 stend ·       72 m² · bo'sh: 2 (18.00 m²)
   Ichimliklar                        8 stend ·       72 m² · bo'sh: 4 (36.00 m²)
   Bakaleya                           8 stend ·       72 m² · bo'sh: 2 (18.00 m²)
-  Qandolat mahsulotlari              8 stend ·       72 m² · bo'sh: 4 (36.00 m²)
-  Shirinliklar                       8 stend ·       72 m² · bo'sh: 0 (0.00 m²)
+  Qandolat mahsulotlari              8 stend ·       72 m² · bo'sh: 0 (0.00 m²)
+  Ingredientlar va komponentlar      8 stend ·       72 m² · bo'sh: 2 (18.00 m²)
   Uskunalar va qadoqlash            12 stend ·      108 m² · bo'sh: 4 (36.00 m²)
   Chap qanot — A1–A6                 6 stend ·   141.18 m² · bo'sh: 2 (52.81 m²)
 

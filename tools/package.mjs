@@ -45,6 +45,10 @@ const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9ä-ü]+/gi, '-').re
 const baseName = path.basename(layoutPath).replace(/\.json$/, '');
 const outDir = path.resolve(ROOT, String(opt('out', `exports/${baseName}`)));
 fs.mkdirSync(outDir, { recursive: true });
+// eski varaqlarni tozalash (bo'lim nomi o'zgargan bo'lsa, eski fayl qolib ketmasin)
+for (const f of fs.readdirSync(outDir)) {
+  if (/^03-bolim-.*\.svg$/.test(f)) fs.rmSync(path.join(outDir, f));
+}
 
 const stateFile = path.join(ROOT, 'data/state.json');
 const state = fs.existsSync(stateFile) ? JSON.parse(fs.readFileSync(stateFile, 'utf8')) : { items: {} };

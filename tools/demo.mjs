@@ -62,7 +62,10 @@ if (mode === 'reset') {
     ['I', sardor, 'sell', [1, 2, 3, 4], 'Aqua Water Company', '+998 71 288 99 00', ''],
     ['J', aziz, 'reserve', [1, 2, 3, 4, 5, 6], 'Galla Bakaleya Savdosi', '+998 66 233 44 55', ''],
     ['K', dilnoza, 'sell', [5, 6, 7, 8], 'Qandolat Olam', '+998 70 610 20 30', ''],
-    ['L', sardor, 'sell', [1, 2, 3, 4, 5, 6, 7, 8], 'Shirin Ta\'m MChJ', '+998 71 244 66 77', ''],
+    ['H', dilnoza, 'sell', [1, 2, 3, 4], 'Namangan Go\'sht Kombinati', '+998 69 227 40 40', ''],
+    ['H', sardor, 'reserve', [7, 8], 'Qashqadaryo Sut Zavodi', '+998 75 226 55 66', ''],
+    ['K', dilnoza, 'sell', [1, 2, 3, 4], 'Shirin Ta\'m Qandolat', '+998 71 244 66 77', ''],
+    ['L', sardor, 'sell', [1, 2, 3, 4, 5, 6], 'Osiyo Ingredient MChJ', '+998 71 200 55 66', ''],
     ['EQ-1', aziz, 'reserve', [1, 2, 3, 4], 'UzPack Equipment', '+998 71 233 88 99', 'Uskunalar qatori'],
     ['EQ-2', dilnoza, 'sell', [1, 2, 3, 4], 'Konserv Liniya Servis', '+998 74 226 11 22', ''],
   ];

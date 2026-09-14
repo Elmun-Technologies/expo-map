@@ -176,9 +176,27 @@
     for (const f of layout.features || []) {
       hallG.appendChild(el('rect', { x: f.x, y: f.y, width: f.w ?? 2, height: f.h ?? 2, class: 'feature ' + (f.type || '') , rx: 0.2 }));
       if (f.label) {
-        const t = el('text', { x: (f.x) + (f.w ?? 2) / 2, y: (f.y) + (f.h ?? 2) / 2, class: 'feature-label' }, f.label);
-        t.style.fontSize = Math.max(0.9, Math.min(1.4, (f.w || 4) / 7)) + 'px';
-        hallG.appendChild(t);
+        const w = f.w ?? 2, h = f.h ?? 2;
+        const fit1 = (w - 0.4) / Math.max(6, f.label.length) * 1.45;
+        let lines = [f.label];
+        let fs = Math.max(0.85, Math.min(1.4, fit1));
+        if (fit1 < 1.15) {
+          const words = f.label.split(' ');
+          if (words.length > 1) {
+            let best = null;
+            for (let i = 1; i < words.length; i++) {
+              const a = words.slice(0, i).join(' '), b2 = words.slice(i).join(' ');
+              const worst = Math.max(a.length, b2.length);
+              if (!best || worst < best.worst) best = { a, b: b2, worst, fs: (w - 0.4) / Math.max(6, worst) * 1.45 };
+            }
+            if (best) { lines = [best.a, best.b]; fs = Math.max(0.85, Math.min(1.4, best.fs)); }
+          }
+        }
+        lines.forEach((ln, i) => {
+          const t = el('text', { x: f.x + w / 2, y: f.y + h / 2 + (lines.length > 1 ? (i - 0.5) * (fs + 0.25) + fs * 0.36 : fs * 0.36), class: 'feature-label' }, ln);
+          t.style.fontSize = fs + 'px';
+          hallG.appendChild(t);
+        });
       }
     }
     world.appendChild(hallG);

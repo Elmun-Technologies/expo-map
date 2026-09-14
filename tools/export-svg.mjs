@@ -232,8 +232,30 @@ if (!detail) {
   for (const f of exp.features || []) {
     out.push(`<rect x="${R(X(f.x))}" y="${R(Y(f.y))}" width="${R(S(f.w))}" height="${R(S(f.h))}" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>`);
     if (f.label) {
-      const fs = Math.max(10, Math.min(F.feat + 3, S(f.w) / Math.max(6, f.label.length) * 1.5));
-      out.push(`<text x="${R(X(f.x + f.w / 2))}" y="${R(Y(f.y + f.h / 2) + fs * 0.36)}" font-size="${R(fs)}" fill="#5b6b7a" text-anchor="middle">${esc(f.label)}</text>`);
+      const boxes = S(f.w) - 10;
+      const fit1 = boxes / Math.max(6, f.label.length) * 1.45;
+      let lines = [f.label];
+      let fs = Math.max(9, Math.min(F.feat + 3, fit1));
+      if (fit1 < 11.5) {
+        // 2 qatorga bo'lish: eng uzun so'zga sig'adigan variant
+        const words = f.label.split(' ');
+        if (words.length > 1) {
+          let best = null;
+          for (let i = 1; i < words.length; i++) {
+            const a = words.slice(0, i).join(' ');
+            const b2 = words.slice(i).join(' ');
+            const worst = Math.max(a.length, b2.length);
+            const f2 = boxes / Math.max(6, worst) * 1.45;
+            if (!best || worst < best.worst) best = { a, b: b2, worst, fs: f2 };
+          }
+          if (best) { lines = [best.a, best.b]; fs = Math.max(9, Math.min(F.feat + 3, best.fs)); }
+        }
+      }
+      const cy = Y(f.y + f.h / 2) + (lines.length > 1 ? fs * 0.05 : fs * 0.36);
+      lines.forEach((ln, i) => {
+        const dy = lines.length > 1 ? cy + (i - 0.5) * (fs + 2) + fs * 0.36 : cy;
+        out.push(`<text x="${R(X(f.x + f.w / 2))}" y="${R(dy)}" font-size="${R(fs)}" fill="#5b6b7a" text-anchor="middle">${esc(ln)}</text>`);
+      });
     }
   }
 }

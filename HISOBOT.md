@@ -179,11 +179,13 @@ Chizma bo'yicha zal qayta chizildi va **hamma narsa bitta manbadan** (`layout/fo
 | Nima | Holat |
 |---|---|
 | Zal o'lchami | 96 × 50 m (chizmadagi o'lchamlarni 72 m² shablonga moslab tekisladik) |
-| Bloklar | 11 blok (A–F yuqori qator, G I J K L pastki qator) — har biri 8 stend · 72 m² |
+| Bloklar | **12 blok** (A–F yuqori qator, G–L pastki qator) — har biri 8 stend · 72 m² (FOODERA chizmasidagi 12 sarlavha) |
 | Uskunalar qatori | EQ-1, EQ-2: 6 stend + bitta birlashtirilgan katak (kompaniya bir necha joyni qo'shib olgan) = 72 m² |
 | Chap qanot | A1–A6 nostandart stendlar (19,15–27,41 m², chizmadan olingan) |
-| Bo'limlar | A HoReCa · B Konserva · C Baliq · D Meva-sabzavot · E Sog'lom taom · F Eko · G Yarim tayyor · I Ichimliklar · J Bakaleya · K Qandolat · L Shirinliklar · EQ Uskunalar · WING Chap qanot |
-| Jami | **106 stend · 1 041,18 m²** · eng tor yo'lak 2 m · validator: xato yo'q |
+| Bo'limlar | A HoReCa · B Konserva · C Baliq va dengiz mahsulotlari · D Meva-sabzavot · E Sog'lom taom, Sport Pit · F Organika · G Yarim tayyor · H Go'sht va sut sanoati · I Ichimliklar · J Bakaleya · K Qandolat · L Ingredientlar · EQ Uskunalar · WING Chap qanot |
+| Zonalar (FOODERA chizmasi bo'yicha) | Sena (Sahna) · Zona seminarov i forum · B2B zona · Conference-Hall · Small Conference-Hall · 2× B2B · Peregovornaya · Gruzovye vorota · Vintovoy vyxod · Texnik xona · 2× WC · Registratsiya · Glavniy vxod |
+| Sarlavhalar | Har bir bo'lim nomi chizmadagidek **ruscha + o'zbekcha** yoziladi (masalan, «A bloki · HoReCa / Продукция для HoReCa») |
+| Jami | **114 stend · 1 113,18 m²** (+ 4 birlashtirilgan katak = 1 149,18 m²) · eng tor yo'lak 2 m · validator: xato yo'q |
 | Narx | 1 250 000 so'm/m² (tasdiqlash kutilmoqda) |
 | Band joylar | Panel orqali kiritiladi; hozircha 18 ta **namunaviy** kompaniya bilan ko'rsatilgan |
 
