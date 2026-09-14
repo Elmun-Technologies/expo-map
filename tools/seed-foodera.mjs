@@ -2,11 +2,11 @@
 /**
  * FOODERA EXPO 2026 chizmasidagi HAQIQIY kompaniyalarni xaritaga joylaydi.
  *
- *   node tools/seed-foodera.mjs           → data/state.json yangilanadi (server qayta ishga tushirilsin)
- *   node tools/seed-foodera.mjs --dry     → faqat ko'rsatadi, yozmaydi
- *   node tools/seed-foodera.mjs --reset   → barcha band joylarni bo'shatadi
+ *   node tools/seed-foodera.mjs           → данные пишутся в data/state.json (перезапустите сервер)
+ *   node tools/seed-foodera.mjs --dry     → только показать, не записывать
+ *   node tools/seed-foodera.mjs --reset   → освободить все занятые места
  *
- * Chizmadagi katak o'lchamlari (12/18/36/40 m²) 9 m² shabloniga keltiriladi:
+ * Размеры ячеек на исходном плане (12/18/36/40 м²) приводятся к сетке 9 м²:
  * 12 m² → 1 katak · 18 m² → 2 katak · 36 va 40 m² → 4 katak.
  * Chizmadagi asl maydon `note` ichida saqlanadi.
  */
@@ -31,7 +31,7 @@ const SELLERS = [
 /** [blok, [[kompaniya, chizmadagi m², status?], ...]] — FOODERA chizmasidan o'qildi */
 const PLAN = [
   ['A', [['Silver', 9], ['YaTT Sh.X.T.', 12], ['Ecocups', 12]]],
-  ['B', [['Ansor-Zoxir', 9], ['B12 — bron (mijoz kutilmoqda)', 9, 'reserved']]],
+  ['B', [['Ansor-Zoxir', 9], ['B12 — бронь', 9, 'reserved']]],
   ['C', [['Toyirxon', 9]]],
   ['D', [['Xinjiang Lianfu Food', 9], ['Sayhal Agro Holding', 9]]],
   ['E', [['Kolna', 9]]],
@@ -57,7 +57,7 @@ if (reset) {
   state.items = {};
   state.revision = (state.revision || 0) + 1;
   if (!dry) fs.writeFileSync(STATE, JSON.stringify(state, null, 2));
-  console.log(`✓ Bo'shatildi (revision ${state.revision})`);
+  console.log(`✓ Все места освобождены (revision ${state.revision})`);
   process.exit(0);
 }
 
@@ -93,11 +93,11 @@ for (const [blockId, companies] of PLAN) {
         sellerName: seller.sellerName,
         updatedAt: new Date().toISOString(),
         reservedUntil: null,
-        note: planArea !== 9 ? `FOODERA chizmasi: ${planArea} m²` : '',
+        note: planArea !== 9 ? `по исходному плану: ${planArea} м²` : '',
         groupId,
       };
     }
-    console.log(`${blockId}: ${name} → ${take.map((s) => s.id).join(', ')} (${areaM2} m²${planArea !== areaM2 ? `, chizmada ${planArea} m²` : ''})`);
+    console.log(`${blockId}: ${name} → ${take.map((s) => s.id).join(', ')} (${areaM2} м²${planArea !== areaM2 ? `, в исходном плане ${planArea} м²` : ''})`);
     n++;
   }
 }
@@ -114,5 +114,5 @@ const soldN = allItems.filter((i) => i.status === 'sold').length;
 const resN = allItems.filter((i) => i.status === 'reserved').length;
 const areaN = allItems.filter((i) => i.status === 'sold' || i.status === 'reserved')
   .reduce((a, i) => a + Number(i.areaM2 || 0), 0);
-console.log(`\n✓ ${n} kompaniya · ${soldN} sotilgan + ${resN} bron = ${soldN + resN} stend · ${areaN.toLocaleString('ru-RU')} m² (revision ${state.revision})`);
-if (dry) console.log('(--dry: fayl yozilmadi)');
+console.log(`\n✓ ${n} компаний · продано ${soldN} + бронь ${resN} = ${soldN + resN} стендов · ${areaN.toLocaleString('ru-RU')} м² (revision ${state.revision})`);
+if (dry) console.log('(--dry: файл не записан)');

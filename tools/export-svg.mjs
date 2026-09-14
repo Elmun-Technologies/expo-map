@@ -1,22 +1,24 @@
 #!/usr/bin/env node
 /**
- * Xaritani SVG qilib chiqarish — mijozga yuborish / chop etish uchun.
- * SVG har qanday brauzerda ochiladi, undan PNG/PDF ham oson olinadi.
+ * Экспорт плана зала в SVG — для клиента, печати и PDF.
  *
- *   node tools/export-svg.mjs                          -> butun zal (bo'limlar jadvali bilan)
- *   node tools/export-svg.mjs --section A              -> bitta bo'lim (72 m²)
- *   node tools/export-svg.mjs --block A                 -> bitta blok
- *   node tools/export-svg.mjs --no-state               -> bron/sotuvlarni hisobga olmaslik (bo'sh holat)
- *   node tools/export-svg.mjs --scale 40 --out katta.svg
+ *   node tools/export-svg.mjs                       → весь зал (лист A3 + таблица разделов)
+ *   node tools/export-svg.mjs --map                 → ТОЛЬКО план (без таблицы) — для PDF
+ *   node tools/export-svg.mjs --section A           → один раздел
+ *   node tools/export-svg.mjs --block A             → один блок (8 стендов)
+ *   node tools/export-svg.mjs --no-state            → без броней/продаж (пустой зал, каталог)
+ *   node tools/export-svg.mjs --style=status        → старая цветная палитра статусов
+ *   node tools/export-svg.mjs --out katta.svg --scale 22
  *
- * Barcha o'lchamlar layout JSON'dan olinadi — qo'lda chizish yo'q.
- * QORALAMA (meta.status != "approved") xarita mijozga chiqmaydi (--force bilan majburan).
+ * Все размеры берутся из layout JSON — вручную ничего не рисуется.
+ * Черновик (meta.status != "approved") клиенту не отдаётся (можно --force).
+ * Весь текст — на русском языке.
  */
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { expandLayout, validateLayout } from '../lib/layout.mjs';
-import { groupBookings, unionPath, fitText, largestRect, mergedAsStands } from '../lib/groups.mjs';
+import { groupBookings, unionPath, fitText, largestRect, mergedAsStands, textWidth } from '../lib/groups.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
@@ -27,17 +29,16 @@ const opt = (name, def) => {
   return v && !v.startsWith('--') ? v : true;
 };
 
-// ---------------------------------------------------------------- yuklash
+// ---------------------------------------------------------------- загрузка
 const layoutPath = path.resolve(ROOT, String(opt('layout', process.env.LAYOUT || 'layout/foodera-2026.json')));
 const raw = JSON.parse(fs.readFileSync(layoutPath, 'utf8'));
 const check = validateLayout(raw);
 if (!check.ok) {
-  console.error('✗ Layout xato — eksport qilinmadi:\n' + check.errors.map((e) => '   ✗ ' + e).join('\n'));
+  console.error('✗ Ошибка в layout — экспорт отменён:\n' + check.errors.map((e) => '   ✗ ' + e).join('\n'));
   process.exit(1);
 }
-const isDraft = (raw.meta?.status || 'draft') !== 'approved';
-if (isDraft && !args.includes('--force')) {
-  console.error(`✗ Bu xarita QORALAMA (meta.status = "${raw.meta?.status || 'draft'}") — mijozga yuborish uchun avval raqamlarni tasdiqlang,\n  keyin layout JSON'da meta.status = "approved" qiling. Majburan chiqarish kerak bo'lsa: --force`);
+if ((raw.meta?.status || 'draft') !== 'approved' && !args.includes('--force')) {
+  console.error(`✗ План в статусе "${raw.meta?.status || 'draft'}" (черновик) — клиенту отдавать нельзя.\n  Подтвердите в layout JSON: meta.status = "approved". Принудительно: --force`);
   process.exit(1);
 }
 const exp = expandLayout(raw);
@@ -51,70 +52,123 @@ if (stateFile !== null) {
   const p = path.resolve(ROOT, String(stateFile));
   if (fs.existsSync(p)) {
     items = JSON.parse(fs.readFileSync(p, 'utf8')).items || {};
-    console.log(`ℹ holat: ${path.relative(ROOT, p)} (${Object.keys(items).length} yozuv)`);
+    console.log(`ℹ загрузка: ${path.relative(ROOT, p)} (${Object.keys(items).length} записей)`);
   }
 }
+const neutral = stateFile === null;   // --no-state: пустой зал
 
-const SCALE = Number(opt('scale', 22));                       // 1 metr = necha piksel
+// ---------------------------------------------------------------- параметры
 const blockFilter = typeof opt('block') === 'string' ? opt('block') : null;
 const sectionFilter = typeof opt('section') === 'string' ? opt('section') : null;
+const detail = !!sectionFilter || !!blockFilter;
+const mapOnly = args.includes('--map') || detail;              // без таблицы разделов
+const STATUS_STYLE = args.includes('--style=status') || process.env.STYLE === 'status';
 
-// ---------------------------------------------------------------- tipografiya va yordamchilar
-const F = { title: 20, sub: 13, chip: 13, num: 15, sid: 10, legend: 13, feat: 12, foot: 12, secbar: 15 };
-const PAD = 46;
-const STATUS = {
-  free: { fill: '#eaf6ec', stroke: '#2e7d32', ink: '#1b5e20', label: "Bo'sh" },
-  reserved: { fill: '#fff3d6', stroke: '#f59e0b', ink: '#8a5a00', label: 'Bron' },
-  sold: { fill: '#c62828', stroke: '#8e1b1b', ink: '#ffffff', label: 'Sotilgan' },
-  blocked: { fill: '#eceff1', stroke: '#607d8b', ink: '#37474f', label: 'Bloklangan' },
+const F = {
+  title: 19, sub: 11.5, legend: 11, chipNum: 11, chipSec: 8.5, num: 12, area: 9,
+  zone: 12, feat: 11.5, unitName: 17, unitMeta: 10.5, secName: 11, foot: 11,
 };
-/** TOZA (plan/shablon) uslubi — oq kataklar, yupqa rangli ramkalar, och status fonlari. */
+const PAD = 34;
+const A3 = { w: 404, h: 281 };              // A3 landscape (мм) без полей
+const SHEET_RATIO = (A3.w - 16) / (A3.h - 16);   // соотношение листа PDF (поле 8 мм)
+
+const INK = '#243b4a';
+const SUB = '#7b8b99';
+const LINE = '#cbd6de';
+const LINE_SOFT = '#e4eaf0';
+const ZONE_FILL = '#f8fafc';
+const ZONE_BORDER = '#dbe4ea';
+const FEAT_FILL = '#eef2f6';
+const FEAT_BORDER = '#c3ced8';
+
+/** Чистый (как в плане-образце) стиль: белые ячейки, тонкие цветные рамки. */
 const CLEAN = {
-  free:     { fill: '#ffffff', bar: null,      ink: '#2b3a45', sub: '#8a9aa8', label: "Bo'sh" },
-  reserved: { fill: '#fff8e6', bar: '#e0a300', ink: '#7a4f00', sub: '#a08243', label: 'Bron' },
-  sold:     { fill: '#fdeceb', bar: '#c62828', ink: '#8e1b1b', sub: '#a86666', label: 'Sotilgan' },
-  blocked:  { fill: '#f2f4f6', bar: '#607d8b', ink: '#37474f', sub: '#7a8a94', label: 'Bloklangan' },
+  free:     { fill: '#ffffff', bar: null,      ink: INK,       sub: SUB,       label: 'Свободно' },
+  reserved: { fill: '#fff6e0', bar: '#e0a300', ink: '#8a5b00', sub: '#a08243', label: 'Забронировано' },
+  sold:     { fill: '#fdecea', bar: '#c62828', ink: '#8e1b1b', sub: '#a86666', label: 'Продано' },
+  blocked:  { fill: '#f1f4f6', bar: '#607d8b', ink: '#37474f', sub: '#7a8a94', label: 'Блокировано' },
 };
-const STYLE = (process.argv.includes('--style=status') || process.env.STYLE === 'status') ? 'status' : 'clean';
-const tint = (k) => (STYLE === 'clean' ? CLEAN[k] || CLEAN.free : STATUS[k] || STATUS.free);
-const inkOf = (k) => tint(k).ink;
+/** Старая палитра (--style=status). */
+const STATUS = {
+  free:     { fill: '#eaf6ec', bar: '#2e7d32', ink: '#1b5e20', sub: '#4b7a51', label: 'Свободно' },
+  reserved: { fill: '#fff3d6', bar: '#f59e0b', ink: '#8a5a00', sub: '#a08243', label: 'Забронировано' },
+  sold:     { fill: '#c62828', bar: '#8e1b1b', ink: '#ffffff', sub: '#f2c9c9', label: 'Продано' },
+  blocked:  { fill: '#eceff1', bar: '#607d8b', ink: '#37474f', sub: '#7a8a94', label: 'Блокировано' },
+};
+const tint = (k) => (STATUS_STYLE ? STATUS : CLEAN)[k] || (STATUS_STYLE ? STATUS : CLEAN).free;
+
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const statusOf = (id) => items[id]?.status || 'free';
 const fmtNum = (n) => Number(n || 0).toLocaleString('ru-RU').replace(/\u00A0/g, ' ');
-const txtW = (s, px) => String(s).length * px * 0.62;
+const r2 = (v) => Number(v).toFixed(2);
 
-/** Matnni berilgan kenglik/balandlikka sig'adigan qatorlarga bo'lish (kerak bo'lsa ellipsis). */
-function wrapText(text, maxW, maxH, maxLines, maxFs) {
-  const words = String(text).split(/\s+/);
-  const lines = [];
-  const FScap = maxFs || 15;
-  let cur = '';
-  const fits = (s, fs) => txtW(s, fs) <= maxW;
-  for (const w of words) {
-    const next = cur ? cur + ' ' + w : w;
-    if (!fits(next, FScap) && cur) { lines.push(cur); cur = w; } else { cur = next; }
-    if (lines.length === maxLines) break;
+/**
+ * Подпись внутри рамки: подбираем размер шрифта так, чтобы САМОЕ ДЛИННОЕ слово
+ * влезало по ширине, а число строк — по высоте. Многоточия не ставим никогда:
+ * имя компании клиент должен прочитать полностью.
+ */
+function fitLabel(text, maxW, maxH, o = {}) {
+  const maxFs = o.maxFs || 11;
+  const minFs = o.minFs || 5.2;
+  const words = softBreak(text, o.chunk || 12).split(/\s+/).filter(Boolean);
+  const wrapAt = (fs) => {
+    const lines = [];
+    let cur = '';
+    for (const w of words) {
+      const next = cur ? cur + ' ' + w : w;
+      if (cur && textWidth(next, fs, true) > maxW) { lines.push(cur); cur = w; } else cur = next;
+    }
+    if (cur) lines.push(cur);
+    return lines;
+  };
+  for (let fs = maxFs; fs >= minFs; fs -= 0.2) {
+    const widest = Math.max(...words.map((w) => textWidth(w, fs, true)), 1);
+    if (widest > maxW) continue;
+    const lines = wrapAt(fs);
+    if (lines.length * fs * 1.18 <= maxH) return { lines, fs: Number(fs.toFixed(2)) };
   }
-  if (cur && lines.length < maxLines) lines.push(cur);
-  const used = lines.join(' ');
-  if (used.length < String(text).length) {
-    let last = lines[lines.length - 1];
-    while (last.length > 1 && txtW(last + '…', 11) > maxW) last = last.slice(0, -1);
-    lines[lines.length - 1] = last + '…';
-  }
-  return lines.slice(0, maxLines);
+  const fs = Math.max(o.floor ?? 4.6, Math.min(minFs, maxW / Math.max(...words.map((w) => textWidth(w, 1, true)), 1)));
+  return { lines: wrapAt(fs), fs: Number(fs.toFixed(2)) };
 }
 
-// ---------------------------------------------------------------- eksport maydoni
+/** Длинные слова («Derevenskoye») режем на части — иначе имя не влезает в ячейку 3×3 м. */
+function softBreak(text, chunk = 10) {
+  return String(text).split(/\s+/).map((w) => {
+    if (w.length <= chunk) return w;
+    const parts = [];
+    for (let i = 0; i < w.length; i += chunk) parts.push(w.slice(i, i + chunk));
+    return parts.join(' ');
+  }).join(' ');
+}
+
+/** Перенос строки по ширине (в пикселях). */
+function wrapText(text, maxW, maxLines, fs, bold) {
+  const words = String(text).trim().split(/\s+/).filter(Boolean);
+  const lines = [];
+  let cur = '';
+  for (const w of words) {
+    const next = cur ? cur + ' ' + w : w;
+    if (cur && textWidth(next, fs, bold) > maxW) { lines.push(cur); cur = w; } else cur = next;
+    if (lines.length >= maxLines && cur !== w) break;
+  }
+  if (cur) lines.push(cur);
+  return lines.slice(0, maxLines).map((l, i) => {
+    if (i === lines.length - 1 && lines.slice(0, i + 1).join(' ').length < String(text).trim().length && textWidth(l + '…', fs, bold) > maxW) {
+      let s = l; while (s.length > 1 && textWidth(s + '…', fs, bold) > maxW) s = s.slice(0, -1);
+      return s + '…';
+    }
+    return l;
+  });
+}
+
+// ---------------------------------------------------------------- область вывода
 let blocks = exp.blocks;
-let secCustom = [];
 let content;
 if (sectionFilter) {
   const sec = sectionById(sectionFilter);
-  if (!sec) { console.error(`✗ "${sectionFilter}" bo'limi topilmadi. Mavjud: ${(exp.sections || []).map((s) => s.id).join(', ')}`); process.exit(1); }
+  if (!sec) { console.error(`✗ Раздел "${sectionFilter}" не найден. Есть: ${(exp.sections || []).map((s) => s.id).join(', ')}`); process.exit(1); }
   blocks = exp.blocks.filter((b) => b.section === sec.id);
-  secCustom = [];
-  if (!blocks.length) { console.error(`✗ "${sectionFilter}" bo'limida stend yo'q`); process.exit(1); }
+  if (!blocks.length) { console.error(`✗ В разделе "${sectionFilter}" нет стендов`); process.exit(1); }
   const m = 3.5;
   const rects = blocks.map((b) => [b.x, b.y, b.x + b.w, b.y + b.h]);
   const x1 = Math.min(...rects.map((r) => r[0])), y1 = Math.min(...rects.map((r) => r[1]));
@@ -122,26 +176,17 @@ if (sectionFilter) {
   content = { x: x1 - m, y: y1 - m, w: x2 - x1 + m * 2, h: y2 - y1 + m * 2 };
 } else if (blockFilter) {
   const b = exp.blocks.find((x) => x.id === blockFilter);
-  if (!b) { console.error(`✗ ${blockFilter} topilmadi. Mavjud bloklar: ${exp.blocks.map((x) => x.id).join(', ')}`); process.exit(1); }
+  if (!b) { console.error(`✗ Блок ${blockFilter} не найден. Есть: ${exp.blocks.map((x) => x.id).join(', ')}`); process.exit(1); }
   blocks = [b];
   const m = 2.5;
   content = { x: b.x - m, y: b.y - m, w: b.w + m * 2, h: b.h + m * 2 };
 } else {
-  content = { x: 0, y: 0, w: exp.hall.width, h: exp.hall.height };
+  // рамка с учётом выступов (чипы блоков уходят выше зала) — как раньше: chipTop
+  const chipTop = Math.min(...blocks.filter((b) => b.kind !== 'custom').map((b) => b.y - 2.15), 0);
+  content = { x: 0, y: Math.min(0, chipTop - 0.3), w: exp.hall.width, h: exp.hall.height - Math.min(0, chipTop - 0.3) };
 }
-const detail = !!sectionFilter || !!blockFilter;
-const mapOnly = args.includes('--map');   // faqat xarita (bo'limlar jadvali yo'q) — PDF uchun
 
-const sectionTitle = sectionFilter ? sectionById(sectionFilter) : null;
-const title = sectionTitle
-  ? `${sectionTitle.label}${sectionTitle.labelRu ? ' — ' + sectionTitle.labelRu : ''}`
-  : blockFilter
-  ? `${blockFilter} bloki · ${fmtNum(content.w - 5)} × ${fmtNum(content.h - 5)} m`
-  : `${exp.meta.project} — ${exp.meta.hall} · joylashuv xaritasi`;
-const sub = `${exp.meta.pricePerM2 && !detail ? fmtNum(exp.meta.pricePerM2) + " so'm/m² · " : ''}1 stend = 3×3 m = 9 m² · 1 blok = 8 stend = 72 m² · layout v${exp.meta.version || '?'} · ${new Date().toLocaleDateString('ru-RU')}`;
-
-// ---------------------------------------------------------------- stendlar va legenda
-// nostandart stendlar ham exp.blocks ichida (kind: 'custom') — qo'shib hisoblash takror bo'lardi
+// ---------------------------------------------------------------- содержимое
 const mergedAll = blocks.flatMap((b) => (b.merged || []).map((m, i) => ({
   id: `${b.id}~m${i}`, x: m.x, y: m.y, w: m.w, h: m.h, areaM2: m.w * m.h,
   blockId: b.id, section: b.section || null, mergedCell: true, status: m.status || null, buyer: m.buyer || m.label || '',
@@ -154,375 +199,351 @@ for (const s of allStands) {
   counts[st] = (counts[st] || 0) + 1;
   areas[st] = (areas[st] || 0) + s.areaM2;
 }
-const legendItems = ['free', 'reserved', 'sold', 'blocked'].filter((k) => k !== 'blocked' || counts.blocked);
+const legendKeys = ['free', 'reserved', 'sold', 'blocked'].filter((k) => k !== 'blocked' || counts.blocked);
 
-// ---------------------------------------------------------------- sahifa o'lchami
-const S = (v) => v * SCALE;
-const R = (v) => Number(v).toFixed(2);
-const innerW = Math.max(S(content.w), txtW(title, F.title), txtW(sub, F.sub));
-const legend = [];
-{
-  let row = 0, cx = 0;
-  for (const k of legendItems) {
-    const text = `${STATUS[k].label}: ${counts[k]} stend · ${fmtNum(areas[k])} m²`;
-    const w = 20 + txtW(text, F.legend) + 18;
-    if (cx > 0 && cx + w > innerW) { row++; cx = 0; }
-    legend.push({ k, text, x: cx, row });
-    cx += w;
-  }
-}
-const legendRows = legend.length ? legend[legend.length - 1].row + 1 : 0;
-const legendH = legendRows ? legendRows * (F.legend + 12) + 10 : 0;
-const headerH = F.title + F.sub + 22 + (isDraft ? 34 : 0);
-
-// bo'limlar jadvali (faqat butun zal eksportida)
-const sectionRows = (!detail && !mapOnly && (exp.sections || []).length)
-  ? exp.sections.map((sec) => {
-      const st = allStands.filter((x) => x.section === sec.id && !x.mergedCell);
-      const mg = allStands.filter((x) => x.section === sec.id && x.mergedCell);
-      if (!st.length && !mg.length) return null;
-      const free = st.filter((x) => statusOf(x.id) === 'free');
-      return {
-        sec,
-        n: st.length,
-        merged: mg.length,
-        area: [...st, ...mg].reduce((a, x) => a + x.areaM2, 0),
-        free: free.length,
-        freeArea: free.reduce((a, x) => a + x.areaM2, 0),
-      };
-    }).filter(Boolean)
-  : [];
-// BAND joylar: bitta kompaniya nechta stend olgan bo'lsa — BITTA quti, nomi ichida.
-// (kompaniyalar ro'yxati jadvali olib tashlandi — nom xaritada o'z joyida ko'rinadi)
-const neutral = stateFile === null;                 // --no-state: bo'sh xarita (katalog/bozor uchun)
 const extraUnits = neutral ? { stands: [], items: {} } : mergedAsStands(blocks);
 const units = groupBookings([...allStands, ...extraUnits.stands], Object.assign({}, items, extraUnits.items));
 const bookedIds = new Set(units.flatMap((u) => u.ids.filter((id) => !id.includes('~m'))));
 const mergedDrawn = new Set(units.flatMap((u) => u.ids.filter((id) => id.includes('~m'))));
-const secLineH = F.legend + 9;
-const secTableH = sectionRows.length ? (F.legend + 12) + sectionRows.length * secLineH + 16 : 0;
-const buyerTableH = 0;
 
-// blok chiplari blokning USTIDA turadi — sarlavha bilan ustma-ust tushmasligi uchun joy ajratamiz
-const chipTop = Math.min(...blocks.filter((b) => b.kind !== 'custom').map((b) => b.y - 2.05), content.y);
-const topExtra = Math.max(0, (content.y - chipTop) * SCALE + 12);
-const pageW = Math.max(S(content.w) + PAD * 2, innerW + PAD * 2);
-const pageH = S(content.h) + PAD * 2 + headerH + topExtra + legendH + secTableH + buyerTableH + 34;
-const contentTop = PAD + headerH + topExtra;
-const contentBottom = contentTop + S(content.h);
-const ox = PAD - S(content.x);
-const oy = contentTop - S(content.y);
-const X = (m) => ox + S(m);
-const Y = (m) => oy + S(m);
+const title = sectionFilter ? (() => { const s = sectionById(sectionFilter); return `${s.label} · раздел ${s.id}`; })()
+  : blockFilter ? `Блок ${blockFilter} · ${fmtNum(content.w - 5)} × ${fmtNum(content.h - 5)} м`
+  : `${exp.meta.project} — ${exp.meta.hall} · план залов`;
+const sub = `${exp.meta.pricePerM2 && !detail ? fmtNum(exp.meta.pricePerM2) + ' сум/м² · ' : ''}1 стенд = 3 × 3 м = 9 м² · 1 блок = 8 стендов = 72 м² · версия плана v${exp.meta.version || '?'} · ${new Date().toLocaleDateString('ru-RU')}`;
 
-// ---------------------------------------------------------------- chizish
-const out = [];
-out.push(`<svg xmlns="http://www.w3.org/2000/svg" width="${pageW.toFixed(0)}" height="${pageH.toFixed(0)}" viewBox="0 0 ${pageW.toFixed(0)} ${pageH.toFixed(0)}" font-family="DejaVu Sans, Helvetica, Arial, sans-serif">`);
-out.push(`<rect width="${pageW.toFixed(0)}" height="${pageH.toFixed(0)}" fill="#ffffff"/>`);
-if (isDraft) {
-  out.push(`<rect x="0" y="0" width="${pageW.toFixed(0)}" height="26" fill="#8e1b1b"/>`);
-  out.push(`<text x="${(pageW / 2).toFixed(0)}" y="18" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">QORALAMA - raqamlar tasdiqlanmagan, mijozga yuborilmaydi</text>`);
+// ---------------------------------------------------------------- легенда (нужна для расчёта ширины листа)
+const legendParts = legendKeys.map((k) => ({ k, text: `${tint(k).label}: ${counts[k]}` + (counts[k] ? ` · ${fmtNum(areas[k])} м²` : '') }));
+const LEG_SW = 13, LEG_GAP = 22;
+const legendTotal = legendParts.reduce((a, p) => a + LEG_SW + 6 + textWidth(p.text, F.legend) + LEG_GAP, 0) - LEG_GAP;
+
+// ---------------------------------------------------------------- размер листа
+const S0 = detail ? Number(opt('scale', 22)) : Number(opt('scale', 0)) || 0;
+let SCALE = S0 || 14.5;
+let S = (v) => v * SCALE;
+let headerH = F.title + F.sub + 22;
+let footerH = F.foot + 16;
+
+let pageW, pageH, contentTop;
+const sheetMode = mapOnly && !detail;   // лист под формат A3 — только для плана всего зала
+if (sheetMode) {
+  // лист под соотношение A3: план занимает всю ширину, поля уходят в шапку/подвал
+  for (let i = 0; i < 4; i++) {
+    const availW = pageW ? pageW - PAD * 2 : 0;
+    if (!availW) {                       // первая итерация: стартуем от ширины A3 в «полезных» px
+      SCALE = (1400 - PAD * 2) / content.w;
+    } else {
+      SCALE = Math.min((pageW - PAD * 2) / content.w, (pageH - headerH - footerH - PAD * 2) / content.h);
+    }
+    pageW = content.w * SCALE + PAD * 2;
+    pageH = pageW / SHEET_RATIO;
+  }
+  const usedH = content.h * SCALE;
+  contentTop = Math.max(headerH + PAD, (pageH - usedH) / 2 + 6);
+} else if (detail) {
+  // лист раздела/блока — обычный масштаб (22 px на метр), лист по содержимому
+  // ширина листа учитывает заголовок и легенду, иначе текст уходил за край
+  const needW = Math.max(content.w * SCALE, textWidth(title, F.title, true), textWidth(sub, F.sub), legendTotal);
+  pageW = needW + PAD * 2;
+  pageH = headerH + PAD * 2 + content.h * SCALE + footerH;
+  contentTop = PAD + headerH;
+} else {
+  pageW = content.w * SCALE + PAD * 2;
+  const secLineH = F.legend + 9;
+  const sectionRows = (exp.sections || []).map((sec) => {
+    const st = allStands.filter((x) => x.section === sec.id && !x.mergedCell);
+    const mg = allStands.filter((x) => x.section === sec.id && x.mergedCell);
+    if (!st.length && !mg.length) return null;
+    const free = st.filter((x) => statusOf(x.id) === 'free');
+    return { sec, n: st.length, merged: mg.length, area: [...st, ...mg].reduce((a, x) => a + x.areaM2, 0), free: free.length, freeArea: free.reduce((a, x) => a + x.areaM2, 0) };
+  }).filter(Boolean);
+  const legendRows = legendKeys.length ? 1 : 0;
+  const tableH = sectionRows.length ? F.legend + 14 + sectionRows.length * secLineH : 0;
+  pageH = headerH + PAD + content.h * SCALE + legendRows * (F.legend + 12) + tableH + footerH + PAD;
+  contentTop = headerH + PAD - content.y * SCALE;
 }
-out.push(`<text x="${PAD}" y="${PAD + F.title}" font-size="${F.title}" font-weight="bold" fill="#0f2233">${esc(title)}</text>`);
-out.push(`<text x="${PAD}" y="${PAD + F.title + F.sub + 8}" font-size="${F.sub}" fill="#5b6b7a">${esc(sub)}</text>`);
+const pageWpx = Math.round(pageW);
+const pageHpx = Math.round(pageH);
+const ox = PAD - content.x * SCALE;
+const oy = contentTop - content.y * SCALE;
+const X = (m) => ox + m * SCALE;
+const Y = (m) => oy + m * SCALE;
+S = (v) => v * SCALE;
 
-// zonalar
+// ---------------------------------------------------------------- занятые области (для зон-подписей)
+const occ = [];
+const addOcc = (x, y, w, h) => occ.push({ x, y, w, h });
+const freeAt = (x, y, w, h) => !occ.some((r) => Math.min(r.x + r.w, x + w) - Math.max(r.x, x) > 1 && Math.min(r.y + r.h, y + h) - Math.max(r.y, y) > 1);
+
+const t = (x, y, size, fill, text, o = '') => `<text x="${r2(x)}" y="${r2(y)}" font-size="${r2(size)}" fill="${fill}"${o}>${esc(text)}</text>`;
+const rect = (x, y, w, h, fill, o = '') => `<rect x="${r2(x)}" y="${r2(y)}" width="${r2(w)}" height="${r2(h)}" fill="${fill}"${o}/>`;
+
+const L = { bg: [], zones: [], hall: [], feat: [], blocks: [], stands: [], units: [], labels: [], header: [], footer: [] };
+
+// ---------------------------------------------------------------- шапка
+L.header.push(t(PAD, PAD + F.title - 4, F.title, '#0f2233', title, ' font-weight="bold"'));
+L.header.push(t(PAD, PAD + F.title + F.sub + 4, F.sub, SUB, sub));
+
+// легенда (справа, в одну строку; при нехватке места — во вторую)
+{
+  const titleW = textWidth(title, F.title, true);
+  const rightRoom = pageWpx - PAD * 2 - titleW - 30;
+  let x = PAD, y = PAD + 2;
+  if (legendTotal <= rightRoom) x = pageWpx - PAD - legendTotal;                       // справа, в строке заголовка
+  else y = PAD + F.title + F.sub + 10;                                                 // отдельной строкой ниже подзаголовка
+  for (const p of legendParts) {
+    const w = LEG_SW + 6 + textWidth(p.text, F.legend);
+    if (x > PAD && x + w > pageWpx - PAD) { y += F.legend + 12; x = PAD; }             // переносим на следующую строку
+    const cl = tint(p.k);
+    L.header.push(rect(x, y, LEG_SW, LEG_SW, cl.fill, ` stroke="${cl.bar || LINE}" stroke-width="1.3" rx="3"`));
+    L.header.push(t(x + LEG_SW + 6, y + LEG_SW - 2.5, F.legend, '#44586a', p.text));
+    x += w + LEG_GAP;
+  }
+  if (y > PAD + 2) headerH = Math.max(headerH, y - PAD + F.legend + 12);
+}
+
+// ---------------------------------------------------------------- зоны
+const zoneLabels = [];
 if (!detail) {
-  var zoneLabels = [];
   for (const z of exp.zones || []) {
     if (!z.w || !z.h) continue;
-    out.push(`<rect x="${R(X(z.x))}" y="${R(Y(z.y))}" width="${R(S(z.w))}" height="${R(S(z.h))}" rx="4" fill="${z.color || '#f2f5f8'}" fill-opacity="0.9" stroke="#c9d6e2" stroke-width="1" stroke-dasharray="9 6"/>`);
+    L.zones.push(rect(X(z.x), Y(z.y), S(z.w), S(z.h), z.color || ZONE_FILL, ` fill-opacity="0.85" stroke="${ZONE_BORDER}" stroke-width="1" stroke-dasharray="8 6" rx="6"`));
     const pos = z.labelPos || 'none';
-    if (pos === 'none') continue;
-    const y = pos === 'above' ? Y(z.y) - 8 : pos === 'bottom' ? Y(z.y + z.h) - 10 : Y(z.y) + 26;
-    zoneLabels.push({ z, y });
+    if (pos !== 'none') zoneLabels.push({ z, pos, fs: Math.max(8.5, Math.min(F.zone, (S(z.w) - 20) / Math.max(4, textWidth(z.label, 1)))) });
   }
-  // zal konturi
+}
+
+// ---------------------------------------------------------------- контур зала
+{
   const outline = exp.hall.outline?.length >= 3
-    ? exp.hall.outline.map((p) => `${R(X(p[0]))},${R(Y(p[1]))}`).join(' ')
-    : `${R(X(0))},${R(Y(0))} ${R(X(exp.hall.width))},${R(Y(0))} ${R(X(exp.hall.width))},${R(Y(exp.hall.height))} ${R(X(0))},${R(Y(exp.hall.height))}`;
-  out.push(`<polygon points="${outline}" fill="none" stroke="#0f2233" stroke-width="2.4"/>`);
-  // obyektlar
+    ? exp.hall.outline.map((p) => `${r2(X(p[0]))},${r2(Y(p[1]))}`).join(' ')
+    : `${r2(X(0))},${r2(Y(0))} ${r2(X(exp.hall.width))},${r2(Y(0))} ${r2(X(exp.hall.width))},${r2(Y(exp.hall.height))} ${r2(X(0))},${r2(Y(exp.hall.height))}`;
+  L.hall.push(`<polygon points="${outline}" fill="#ffffff" fill-opacity="0.55" stroke="#0f2233" stroke-width="2.2"/>`);
+}
+
+// ---------------------------------------------------------------- объекты зала (сцена, двери, WC…)
+if (!detail) {
   for (const f of exp.features || []) {
-    out.push(`<rect x="${R(X(f.x))}" y="${R(Y(f.y))}" width="${R(S(f.w))}" height="${R(S(f.h))}" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>`);
+    const w = f.w ?? 2, h = f.h ?? 2;
+    const px = X(f.x), py = Y(f.y), pw = S(w), ph = S(h);
+    L.feat.push(rect(px, py, pw, ph, FEAT_FILL, ` stroke="${FEAT_BORDER}" stroke-width="1.1" rx="4"`));
     if (f.label) {
-      const boxes = S(f.w) - 10;
-      const fit1 = boxes / Math.max(6, f.label.length) * 1.45;
-      let lines = [f.label];
-      let fs = Math.max(9, Math.min(F.feat + 3, fit1));
-      if (fit1 < 11.5) {
-        // 2 qatorga bo'lish: eng uzun so'zga sig'adigan variant
-        const words = f.label.split(' ');
-        if (words.length > 1) {
-          let best = null;
-          for (let i = 1; i < words.length; i++) {
-            const a = words.slice(0, i).join(' ');
-            const b2 = words.slice(i).join(' ');
-            const worst = Math.max(a.length, b2.length);
-            const f2 = boxes / Math.max(6, worst) * 1.45;
-            if (!best || worst < best.worst) best = { a, b: b2, worst, fs: f2 };
-          }
-          if (best) { lines = [best.a, best.b]; fs = Math.max(9, Math.min(F.feat + 3, best.fs)); }
-        }
+      // подпись внутрь прямоугольника: 1–2 строки, при нехватке — рядом (справа/снизу)
+      const innerW = pw - 10, innerH = ph - 8;
+      const maxLines = Math.max(1, Math.min(3, Math.floor(innerH / (9 * 1.2))));
+      const fit = fitText(f.label, Math.max(innerW, 60), innerH, { maxLines, minFs: 8, maxFs: F.feat + 2, bold: false });
+      const lines = fit.lines.length ? fit.lines : [f.label];
+      const inside = fit.lines.length && textWidth(lines[0], fit.fs) <= innerW && lines.length * fit.fs * 1.2 <= innerH;
+      if (inside) {
+        const lh = fit.fs * 1.18;
+        const cy = py + ph / 2 - (lines.length - 1) * lh / 2 + fit.fs * 0.35;
+        lines.forEach((ln, i) => L.feat.push(t(px + pw / 2, cy + i * lh, fit.fs, '#5b6b7a', ln, ' text-anchor="middle"')));
+      } else {
+        // не влезает — подпись под рамкой (короткая строка), рамка остаётся чистой
+        const fs = Math.max(8, Math.min(F.feat, (pw + 90) / Math.max(4, textWidth(f.label, 1))));
+        L.feat.push(t(px + pw / 2, py + ph + fs + 3, fs, '#5b6b7a', f.label, ' text-anchor="middle"'));
       }
-      const cy = Y(f.y + f.h / 2) + (lines.length > 1 ? fs * 0.05 : fs * 0.36);
-      lines.forEach((ln, i) => {
-        const dy = lines.length > 1 ? cy + (i - 0.5) * (fs + 2) + fs * 0.36 : cy;
-        out.push(`<text x="${R(X(f.x + f.w / 2))}" y="${R(dy)}" font-size="${R(fs)}" fill="#5b6b7a" text-anchor="middle">${esc(ln)}</text>`);
-      });
+      addOcc(px - 2, py - 2, pw + 4, ph + 4);
     }
   }
 }
 
-// bloklar, stendlar, bo'lim yorliqlari
-for (const b of blocks) {
-  if (b.kind !== 'custom') {
-    out.push(`<rect x="${R(X(b.x))}" y="${R(Y(b.y))}" width="${R(S(b.w))}" height="${R(S(b.h))}" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>`);
-    const effArea = b.areaM2 + (b.merged || []).reduce((a, m) => a + m.w * m.h, 0);
-    const chipText = `${b.label} · ${fmtNum(effArea)} m²`;
-    const chipW = Math.min(S(b.w) + 70, txtW(chipText, F.chip) + 22);
-    const chipH = F.chip + 12;
-    const chipX = X(b.x), chipY = Y(b.y) - chipH - 7;
-    out.push(`<rect x="${R(chipX)}" y="${R(chipY)}" width="${R(chipW)}" height="${chipH}" rx="5" fill="${STYLE === 'clean' ? '#ffffff' : (b.color || '#0f2233')}" stroke="${b.color || '#0f2233'}" stroke-width="${STYLE === 'clean' ? 1.4 : 0}"/>`);
-    out.push(`<text x="${R(chipX + chipW / 2)}" y="${R(chipY + chipH / 2 + F.chip * 0.35)}" font-size="${F.chip}" font-weight="bold" fill="${STYLE === 'clean' ? (b.color || '#0f2233') : '#ffffff'}" text-anchor="middle">${esc(chipText)}</text>`);
-    for (const s of b.stands) if (!bookedIds.has(s.id)) drawStand(s, false, b);
-    const sec = sectionById(b.section);
-    if (sec) {
-      const cx = X(b.x + b.w / 2);
-      const room = roomBelowBlock(b);
-      out.push(`<rect x="${R(cx - 34)}" y="${R(Y(b.y + b.h) + 10)}" width="68" height="7" rx="3.5" fill="${sec.color}"/>`);
-      if (room > 4.6) {
-        const fitFs = (txt) => Math.max(7, Math.min(F.secbar, (S(b.w) - 14) / Math.max(4, txt.length) / 0.6));
-        out.push(`<text x="${R(cx)}" y="${R(Y(b.y + b.h) + 36)}" font-size="${R(fitFs(`${b.label} bloki`))}" font-weight="bold" fill="#0f2233" text-anchor="middle">${esc(b.label)} bloki</text>`);
-        out.push(`<text x="${R(cx)}" y="${R(Y(b.y + b.h) + 54)}" font-size="${R(fitFs(sec.short || sec.label))}" fill="#5b6b7a" text-anchor="middle">${esc(STYLE === 'clean' ? (sec.labelRu || sec.short || sec.label) : (sec.short || sec.label))}</text>`);
-      }
-    }
-    // birlashtirilgan (stendlar olib tashlangan) kataklar
-    for (const m of b.merged || []) {
-      if (mergedDrawn.has(`${b.id}~m${(b.merged || []).indexOf(m)}`)) continue;
-      const st = !neutral && m.status ? STATUS[m.status] : null;
-      out.push(`<rect x="${R(X(m.x))}" y="${R(Y(m.y))}" width="${R(S(m.w))}" height="${R(S(m.h))}" rx="3" fill="${st ? st.fill : (b.color || '#0f2233')}" fill-opacity="${st ? 1 : 0.85}" stroke="${st ? st.stroke : '#0f2233'}" stroke-width="1.3"/>`);
-      const cx = X(m.x + m.w / 2), cy = Y(m.y + m.h / 2);
-      const label = neutral ? '' : String(m.label || '');
-      const maxLines = S(m.h) > 55 ? 3 : 2;
-      const lines = wrapText(label, S(m.w) - 12, S(m.h) - 10, maxLines, 15);
-      const lh = Math.min(S(m.h) / (lines.length + 1.1), 20);
-      // shrift balandlikka ham, eng uzun qatorning kengligiga ham sig'sin
-      const widestPerPx = Math.max(...lines.map((l) => txtW(l, 1)), 1);
-      const fsByWidth = (S(m.w) - 12) / widestPerPx;
-      const fs = Math.max(6.5, Math.min(14, lh * 0.8, fsByWidth));
-      const ink = st ? st.ink : '#ffffff';
-      lines.forEach((ln, idx) => {
-        out.push(`<text x="${R(cx)}" y="${R(cy - (lines.length - 1) * lh / 2 + idx * lh + fs * 0.36)}" font-size="${R(fs)}" font-weight="bold" fill="${ink}" text-anchor="middle">${esc(ln)}</text>`);
-      });
-      if (!neutral && m.buyer && m.buyer !== label) {
-        const bl = wrapText(m.buyer, S(m.w) - 10, 14, 1);
-        out.push(`<text x="${R(cx)}" y="${R(cy + S(m.h) / 2 - 6)}" font-size="${R(Math.max(6.5, fs * 0.72))}" fill="${ink}" text-anchor="middle" opacity="0.95">${esc(bl[0])}</text>`);
-      }
-    }
-  }
-}
-// nostandart (custom) bloklar: ramka va chip yo'q, faqat stendning o'zi
-for (const b of blocks) {
-  if (b.kind !== 'custom') continue;
-  for (const s of b.stands) if (!bookedIds.has(s.id)) drawStand(s, true, b);
-}
+// ---------------------------------------------------------------- стенды и блоки
+const idText = (b, s) => (b.label.includes('-') ? `${b.label.replace(/^(\w+)-(\d+)$/, '$1$2')}-${s.no}` : `${b.label}${s.no}`);
 
-/** Kompaniyaning band joyi — bitta quti + nomi ichida. */
-function drawUnit(u) {
-  const st = STATUS[u.status] || STATUS.sold;
-  const cl = tint(u.status || 'sold');
-  const d = unionPath(u.stands.map((s) => ({ x: X(s.x), y: Y(s.y), w: S(s.w), h: S(s.h) })));
-  out.push(`<path d="${d}" fill="${cl.fill}" stroke="${STYLE === 'clean' ? (cl.bar || '#c62828') : st.stroke}" stroke-width="2"/>`);
-  const boxes = largestRect(u.stands.map((s) => ({ x: s.x, y: s.y, w: s.w, h: s.h })), 0.25);
-  const boxW = S(boxes.w), boxH = S(boxes.h);
-  const onlyMerged = u.stands.every((st) => st.mergedCell);
-  const metaTxt = onlyMerged
-    ? `${fmtNum(u.areaM2)} m²`
-    : u.stands.length > 1
-      ? `${u.stands.length} stend · ${fmtNum(u.areaM2)} m²`
-      : (Math.abs(u.areaM2 - 9) > 0.01 ? `${fmtNum(u.areaM2)} m²` : '');
-  const withMeta = !!metaTxt && boxH > 52;
-  const label = u.label || st.label;
-  // nom qutiga aniq sig'sin: qatorlar soni va shrift birgalikda moslashadi
-  const maxW = boxW - 12;
-  const maxH = boxH - (withMeta ? 26 : 8);
-  let fsTry = Math.max(8, Math.min(26, boxH / (withMeta ? 3.2 : 2.4), maxW / 3));
-  // bir qatorga sig'masa — 2 qatorga tushirishga ruxsat (yozuv qirqilib qolmasin)
-  let linesGuess = Math.max(1, Math.min(3, Math.floor(maxH / (fsTry * 1.15))));
-  if (linesGuess < 2 && txtW(label, fsTry) > maxW && maxH >= 16) {
-    fsTry = Math.max(7, Math.min(fsTry, maxH / (2 * 1.15)));
-    linesGuess = 2;
-  }
-  const fit = { lines: [label], fs: fsTry };
-  for (let i = 0; i < 18; i++) {
-    const maxLines = Math.max(1, Math.min(3, Math.max(linesGuess, Math.floor(maxH / (fsTry * 1.15)))));
-    const cand = wrapText(label, maxW, maxH, maxLines, fsTry);
-    const widest = Math.max(...cand.map((l) => txtW(l, 1)), 1);
-    const fitW = maxW / widest;
-    const cut = cand.some((l) => l.endsWith('…'));
-    fit.lines = cand;
-    fit.fs = Math.min(fsTry, fitW);
-    if (!cut && fitW >= fsTry) break;
-    fsTry = Math.max(6, fsTry * 0.9);
-  }
-  const cx = X(boxes.x + boxes.w / 2), cy = Y(boxes.y + boxes.h / 2);
-  if (STYLE === 'clean' && cl.bar) {
-    out.push(`<rect x="${R(X(boxes.x))}" y="${R(Y(boxes.y))}" width="${R(boxW)}" height="4" rx="1.5" fill="${cl.bar}"/>`);
-  }
-  const lh = fit.fs * 1.2;
-  const shift = (fit.lines.length * lh) / 2;
-  fit.lines.forEach((ln, i) => {
-    const yy = cy - shift + lh * (i + 0.84) + (withMeta ? -6 : 1);
-    out.push(`<text x="${R(cx)}" y="${R(yy)}" font-size="${R(fit.fs)}" font-weight="bold" fill="${inkOf(u.status || 'sold')}" text-anchor="middle">${esc(ln)}</text>`);
-  });
-  if (withMeta) {
-    out.push(`<text x="${R(cx)}" y="${R(cy + shift + (fit.lines.length ? 12 : 5))}" font-size="${R(Math.max(8, fit.fs * 0.55))}" fill="${inkOf(u.status || 'sold')}" text-anchor="middle" opacity="${STYLE === 'clean' ? 0.85 : 0.92}">${esc(metaTxt)}</text>`);
-  }
-}
-
-for (const u of units) drawUnit(u);
-
-// blok ostida qancha bo'sh joy bor (chip yoki boshqa blok bosib qolmasligi uchun)
-function roomBelowBlock(b) {
-  let gap = 99;
-  for (const o of [...exp.blocks, ...(exp.features || [])]) {
-    if (o.id === b.id) continue;
-    const ow = o.w ?? 2;
-    const xOverlap = Math.min(o.x + ow, b.x + b.w) - Math.max(o.x, b.x);
-    if (xOverlap <= 0.1) continue;
-    const dy = o.y - (b.y + b.h);
-    if (dy >= 0) gap = Math.min(gap, dy);
-  }
-  return gap;
-}
-
-function drawStand(s, custom, b0) {
-  const st = STATUS[statusOf(s.id)];
-  out.push(`<rect x="${R(X(s.x))}" y="${R(Y(s.y))}" width="${R(S(s.w))}" height="${R(S(s.h))}" rx="3" fill="${st.fill}" stroke="${s.color || st.stroke}" stroke-width="1.1"${custom ? ' stroke-dasharray="6 4"' : ''}/>`);
-  const cx = X(s.x + s.w / 2), cy = Y(s.y + s.h / 2);
-  const fs = Math.max(9, Math.min(F.num, S(s.w) / 4.2));
-  if (STYLE === 'clean') {
-    // TOZA uslub: oq katak + bo'lim rangidagi yupqa ramka, status — och fon + pastdagi tasma
-    const key2 = statusOf(s.id);
-    const cl = CLEAN[key2] || CLEAN.free;
-    const edge = custom ? '#E8A33D' : ((b0 && b0.color) || s.color || '#90a4b5');
-    out.push(`<rect x="${R(X(s.x))}" y="${R(Y(s.y))}" width="${R(S(s.w))}" height="${R(S(s.h))}" rx="2" fill="${cl.fill}" stroke="${edge}" stroke-width="${custom ? 1.6 : 1.05}"/>`);
-    if (cl.bar) out.push(`<rect x="${R(X(s.x))}" y="${R(Y(s.y + s.h) - 3)}" width="${R(S(s.w))}" height="3" fill="${cl.bar}" opacity="0.8"/>`);
-    const buyer2 = items[s.id]?.buyer ? String(items[s.id].buyer) : '';
-    if (custom) {
-      const h2 = S(s.h);
-      const name = String(s.label || s.id);
-      let fsName = Math.max(8, Math.min(F.num + 3, (S(s.w) - 12) / Math.max(2, name.length) / 0.66, h2 / 3.2));
-      let nameLines = [name];
-      if (txtW(name, fsName) > S(s.w) - 14 && name.includes(' ') && h2 >= 70) {
-        const w0 = name.split(' ');
-        let best = null;
-        for (let i = 1; i < w0.length; i++) {
-          const a = w0.slice(0, i).join(' '), b2 = w0.slice(i).join(' ');
-          const worst = Math.max(a.length, b2.length);
-          if (!best || worst < best.worst) best = { a, b: b2, worst };
-        }
-        if (best) { nameLines = [best.a, best.b]; fsName = Math.max(8, Math.min(fsName, (S(s.w) - 12) / Math.max(3, best.worst) / 0.62, h2 / 4.4)); }
-      }
-      nameLines.forEach((ln, i) => {
-        out.push(`<text x="${R(cx)}" y="${R(cy - (nameLines.length > 1 ? fsName * 0.85 : 1) + i * fsName * 1.2)}" font-size="${R(fsName)}" font-weight="bold" fill="${cl.ink}" text-anchor="middle">${esc(ln)}</text>`);
-      });
-      out.push(`<text x="${R(cx)}" y="${R(cy + fsName * (nameLines.length > 1 ? 1.5 : 1.3))}" font-size="${R(Math.max(7, fsName * 0.72))}" fill="${cl.sub}" text-anchor="middle">${esc(fmtNum(s.areaM2))} m²</text>`);
-      if (buyer2) {
-        const bfs = Math.min(fsName * 0.8, (S(s.w) - 10) / Math.max(4, buyer2.length) / 0.6);
-        if (bfs > 6.5) out.push(`<text x="${R(cx)}" y="${R(cy + fsName * 2.6)}" font-size="${R(bfs)}" font-weight="bold" fill="${cl.ink}" text-anchor="middle">${esc(buyer2)}</text>`);
-      }
-    } else if (buyer2) {
-      const avail = S(s.w) - 8;
-      const lines = wrapText(buyer2, avail, S(s.h) * 0.6, 2, 13);
-      const widest = Math.max(...lines.map((l) => txtW(l, 1)), 1);
-      const bfs = Math.max(7.5, Math.min(13, avail / widest));
-      const lh2 = bfs * 1.15;
-      lines.forEach((ln, i) => {
-        out.push(`<text x="${R(cx)}" y="${R(cy - (lines.length - 1) * lh2 / 2 + i * lh2 + bfs * 0.34)}" font-size="${R(bfs)}" font-weight="bold" fill="${cl.ink}" text-anchor="middle">${esc(ln)}</text>`);
-      });
-    } else {
-      const noTxt = `${(b0 && (b0.section || b0.label)) || ''}${s.no}`;
-      const fsN = Math.max(9, Math.min(F.num, S(s.w) / 3.2));
-      out.push(`<text x="${R(cx)}" y="${R(cy - 1)}" font-size="${R(fsN)}" font-weight="bold" fill="${edge}" text-anchor="middle">${esc(noTxt)}</text>`);
-      out.push(`<text x="${R(cx)}" y="${R(cy + fsN * 0.95)}" font-size="${R(Math.max(7, F.sid - 1))}" fill="${cl.sub}" text-anchor="middle">${esc(fmtNum(s.areaM2))} m²</text>`);
-    }
-    return;
-  }
+function drawStand(s, b, custom) {
+  const key = statusOf(s.id);
+  const cl = tint(key);
+  const edge = custom ? (s.color || '#E8A33D') : LINE;
+  const edgeW = custom ? 1.6 : 1.05;
+  const parts = [rect(X(s.x), Y(s.y), S(s.w), S(s.h), cl.fill, ` stroke="${edge}" stroke-width="${edgeW}" rx="3"`)];
+  const cx = X(s.x + s.w / 2);
+  const buyer = neutral ? '' : String(items[s.id]?.buyer || '');
   if (custom) {
-    // nostandart stend: nomi + maydoni + mijoz — barchasi karta ichida, ustma-ust tushmaydi
-    const h = S(s.h);
     const name = String(s.label || s.id);
-    const buyer = items[s.id]?.buyer ? String(items[s.id].buyer) : '';
-    const lines = buyer ? 3 : 2;
-    const fsName = Math.max(8, Math.min(F.num + 3, (S(s.w) - 12) / Math.max(2, name.length) / 0.66, h / (lines + 1.6) * 1.05));
-    const fsSmall = Math.max(7, Math.min(F.sid, fsName * 0.72));
-    const step = (fsName + fsSmall * 2.1) / lines;
-    const y0 = cy - (lines - 1) * step / 2 + fsName * 0.34;
-    out.push(`<text x="${R(cx)}" y="${R(y0)}" font-size="${R(fsName)}" font-weight="bold" fill="${st.ink}" text-anchor="middle">${esc(name)}</text>`);
-    out.push(`<text x="${R(cx)}" y="${R(y0 + step)}" font-size="${R(fsSmall)}" fill="${st.ink}" text-anchor="middle" opacity="0.9">${esc(fmtNum(s.areaM2))} m²</text>`);
+    const fsN = Math.max(8.5, Math.min(15, (S(s.w) - 14) / Math.max(2, textWidth(name, 1, true)), S(s.h) / 3.4));
+    const fsA = Math.max(8, fsN * 0.72);
+    const cy = Y(s.y + s.h / 2);
+    parts.push(t(cx, cy - fsN * 0.35, fsN, INK, name, ' font-weight="bold" text-anchor="middle"'));
+    parts.push(t(cx, cy + fsN * 0.75, fsA, SUB, `${fmtNum(s.areaM2)} м²`, ' text-anchor="middle"'));
     if (buyer) {
-      const avail = S(s.w) - 12;
-      const bfs = Math.min(fsSmall, avail / Math.max(6, buyer.length) / 0.62);
-      if (bfs > 6.5) out.push(`<text x="${R(cx)}" y="${R(y0 + step * 2)}" font-size="${R(bfs)}" font-weight="bold" fill="${st.ink}" text-anchor="middle" opacity="0.95">${esc(buyer)}</text>`);
+      const fsB = Math.max(8, Math.min(fsA, (S(s.w) - 12) / Math.max(4, textWidth(buyer, 1, true))));
+      parts.push(t(cx, cy + fsN * 0.75 + fsB + 3, fsB, cl.ink || INK, buyer, ' font-weight="bold" text-anchor="middle"'));
     }
   } else {
-    out.push(`<text x="${R(cx)}" y="${R(cy - 2)}" font-size="${R(fs)}" font-weight="bold" fill="${st.ink}" text-anchor="middle">${esc(s.noLabel)}</text>`);
-    const idText = s.id.replace(/^.*?-(?=\d+$)/, '');
-    out.push(`<text x="${R(cx)}" y="${R(cy + F.sid + 6)}" font-size="${F.sid}" fill="${st.ink}" text-anchor="middle" opacity="0.85">${esc(idText)}</text>`);
-    if (items[s.id]?.buyer) {
-      // kenglikka mos shrift: nom stend chegarasidan chiqmasin
-      const avail = S(s.w) - 8;
-      let buyer = String(items[s.id].buyer);
-      let bfs = Math.min(F.sid - 1, avail / Math.max(4, buyer.length) / 0.6);
-      if (bfs >= 8) {
-        out.push(`<text x="${R(cx)}" y="${R(cy + F.sid + 18)}" font-size="${R(bfs)}" fill="${st.ink}" text-anchor="middle" opacity="0.95">${esc(buyer)}</text>`);
+    const num = idText(b, s);
+    const fsN = Math.max(8, Math.min(F.num, (S(s.w) - 8) / Math.max(2, textWidth(num, 1, true))));
+    const cy = Y(s.y + s.h / 2);
+    if (buyer) {
+      const fitB = fitLabel(buyer, S(s.w) - 7, S(s.h) - 6, { maxFs: Math.min(10.5, S(s.h) / 2.4), minFs: 5.2 });
+      const lh = fitB.fs * 1.16;
+      const y0 = cy - (fitB.lines.length - 1) * lh / 2 + fitB.fs * 0.35;
+      fitB.lines.forEach((ln, i) => parts.push(t(cx, y0 + i * lh, fitB.fs, cl.ink || INK, ln, ' font-weight="bold" text-anchor="middle"')));
+    } else {
+      parts.push(t(cx, cy - 1, fsN, edge === LINE ? (b.color || INK) : edge, num, ' font-weight="bold" text-anchor="middle"'));
+      if (Math.abs(s.areaM2 - 9) > 0.01) parts.push(t(cx, cy + fsN * 0.95, F.area, SUB, `${fmtNum(s.areaM2)} м²`, ' text-anchor="middle"'));
+    }
+  }
+  L.stands.push(parts.join(''));
+  addOcc(X(s.x) - 1, Y(s.y) - 1, S(s.w) + 2, S(s.h) + 2);
+}
+
+for (const b of blocks) {
+  if (b.kind !== 'custom') {
+    const color = b.color || '#90a4b5';
+    const sec = sectionById(b.section);
+    const effArea = b.areaM2 + (b.merged || []).reduce((a, m) => a + m.w * m.h, 0);
+    // рамка блока
+    L.blocks.push(rect(X(b.x), Y(b.y), S(b.w), S(b.h), 'none', ` stroke="${color}" stroke-width="1.6" rx="5"`));
+    addOcc(X(b.x) - 1, Y(b.y) - 1, S(b.w) + 2, S(b.h) + 2);
+    // чип блока: 2 строки — «A · 72 м²» + название раздела
+    {
+      const line1 = `${b.label} · ${fmtNum(effArea)} м²`;
+      const line2 = sec ? (sec.short || sec.label) : '';
+      const chipW = Math.min(
+        Math.max(S(b.w) + 6, textWidth(line1, F.chipNum, true) + 18, textWidth(line2, F.chipSec) + 18),
+        Math.max(74, (mapOnly ? 8 : 9) * SCALE - 6),
+      );
+      const chipH = line2 ? F.chipNum + F.chipSec + 6 : F.chipNum + 7;
+      const chipX = Math.min(Math.max(X(b.x + b.w / 2) - chipW / 2, 2), pageWpx - chipW - 2);
+      const chipY = Y(b.y) - chipH - 2.5;
+      L.blocks.push(rect(chipX, chipY, chipW, chipH, '#ffffff', ` stroke="${color}" stroke-width="1.5" rx="5"`));
+      L.blocks.push(t(chipX + chipW / 2, chipY + F.chipNum + 0.5, F.chipNum, color, line1, ' font-weight="bold" text-anchor="middle"'));
+      if (line2) L.blocks.push(t(chipX + chipW / 2, chipY + chipH - 5, F.chipSec, SUB, line2, ' text-anchor="middle"'));
+      addOcc(chipX - 2, chipY - 2, chipW + 4, chipH + 4);
+    }
+    for (const s of b.stands) if (!bookedIds.has(s.id)) drawStand(s, b, false);
+    for (const m of b.merged || []) {
+      const idx = (b.merged || []).indexOf(m);
+      if (mergedDrawn.has(`${b.id}~m${idx}`)) continue;
+      const cl = tint(neutral ? 'free' : (m.status || 'free'));
+      L.stands.push(rect(X(m.x), Y(m.y), S(m.w), S(m.h), cl.fill, ` stroke="${color}" stroke-width="1.3" rx="3"`));
+      if (!neutral && m.label) {
+        const fs = Math.max(8, Math.min(13, (S(m.w) - 12) / Math.max(3, textWidth(m.label, 1, true))));
+        L.stands.push(t(X(m.x + m.w / 2), Y(m.y + m.h / 2) + fs * 0.35, fs, INK, m.label, ' font-weight="bold" text-anchor="middle"'));
       }
+      addOcc(X(m.x) - 1, Y(m.y) - 1, S(m.w) + 2, S(m.h) + 2);
     }
   }
 }
-
-// legenda
-let ly = contentBottom + F.legend + 16;
-for (const L of legend) {
-  const x = PAD + L.x;
-  const y = ly + L.row * (F.legend + 12);
-  out.push(`<rect x="${R(x)}" y="${R(y - F.legend)}" width="${F.legend + 2}" height="${F.legend + 2}" rx="3" fill="${STATUS[L.k].fill}" stroke="${STATUS[L.k].stroke}" stroke-width="1.4"/>`);
-  out.push(`<text x="${R(x + F.legend + 10)}" y="${R(y)}" font-size="${F.legend}" fill="#33454f">${esc(L.text)}</text>`);
-}
-ly += legendRows * (F.legend + 12);
-
-// bo'limlar jadvali
-if (sectionRows.length) {
-  ly += F.legend + 12;
-  out.push(`<text x="${PAD}" y="${R(ly)}" font-size="${F.legend + 1}" font-weight="bold" fill="#0f2233">Bo'limlar bo'yicha</text>`);
-  ly += secLineH;
-  for (const r of sectionRows) {
-    out.push(`<rect x="${PAD}" y="${R(ly - F.legend + 1)}" width="${F.legend}" height="${F.legend}" rx="2" fill="${r.sec.color}"/>`);
-    out.push(`<text x="${PAD + F.legend + 8}" y="${R(ly)}" font-size="${F.legend}" fill="#33454f">${esc(r.sec.label)}${r.sec.labelRu ? ' · ' + esc(r.sec.labelRu) : ''}</text>`);
-    const mix = `${r.n} stend${r.merged ? ` + ${r.merged} katak` : ''}`;
-    out.push(`<text x="${R(PAD + 700)}" y="${R(ly)}" font-size="${F.legend}" fill="#33454f">${mix} · ${fmtNum(r.area)} m² · bo'sh: ${r.free} (${fmtNum(r.freeArea)} m²)</text>`);
-    ly += secLineH;
-  }
+// нестандартные стенды (левое крыло A1–A6) — только своя рамка, без блока
+for (const b of blocks) {
+  if (b.kind !== 'custom') continue;
+  for (const s of b.stands) if (!bookedIds.has(s.id)) drawStand(s, b, true);
 }
 
-// zona yorliqlari eng oxirida (hech narsa ularni bosmasin)
-for (const { z, y } of (typeof zoneLabels !== 'undefined' ? zoneLabels : [])) {
-  out.push(`<text x="${R(X(z.x + z.w / 2))}" y="${R(y)}" font-size="${F.feat + 3}" font-weight="bold" fill="#8fa0af" text-anchor="middle" letter-spacing="0.4">${esc(z.label)}</text>`);
+// ---------------------------------------------------------------- брони: одна компания = одна рамка
+for (const u of units) {
+  const cl = tint(u.status || 'sold');
+  const d = unionPath(u.stands.map((s) => ({ x: X(s.x), y: Y(s.y), w: S(s.w), h: S(s.h) })));
+  L.units.push(`<path d="${d}" fill="${cl.fill}" fill-opacity="${STATUS_STYLE && u.status === 'sold' ? 1 : 0.92}" stroke="${cl.bar || '#c62828'}" stroke-width="1.8" stroke-linejoin="round"/>`);
+  const boxes = largestRect(u.stands.map((s) => ({ x: s.x, y: s.y, w: s.w, h: s.h })), 0.25);
+  const boxX = X(boxes.x), boxY = Y(boxes.y), boxW = S(boxes.w), boxH = S(boxes.h);
+  const onlyMerged = u.stands.every((st) => st.mergedCell);
+  const metaTxt = onlyMerged
+    ? `${fmtNum(u.areaM2)} м²`
+    : u.stands.length > 1
+      ? `${u.stands.length} стендов · ${fmtNum(u.areaM2)} м²`
+      : (Math.abs(u.areaM2 - 9) > 0.01 ? `${fmtNum(u.areaM2)} м²` : '');
+  const withMeta = !!metaTxt && boxH > 46 && boxW >= 62;
+  const fitU = fitLabel(u.label || tint(u.status).label, boxW - 9, boxH - (withMeta ? 22 : 6), {
+    maxFs: Math.min(F.unitName, boxH / 2.2), minFs: 5.8, chunk: boxW > 90 ? 11 : 8,
+  });
+  const lines = fitU.lines.length ? fitU.lines : [u.label || ''];
+  const fs = fitU.fs;
+  const cx = boxX + boxW / 2, cy = boxY + boxH / 2;
+  if (cl.bar) L.units.push(rect(boxX + 1.5, boxY + 1.5, Math.max(0, boxW - 3), 3.5, cl.bar, ' rx="1.5"'));
+  const lh = fs * 1.2;
+  const shift = (lines.length * lh) / 2 + (withMeta ? 5 : 0);
+  lines.forEach((ln, i) => L.units.push(t(cx, cy - shift + lh * (i + 0.82), fs, cl.ink, ln, ' font-weight="bold" text-anchor="middle"')));
+  if (withMeta) L.units.push(t(cx, cy + shift + 2, Math.max(8, fs * 0.58), cl.sub, metaTxt, ' text-anchor="middle"'));
+  addOcc(boxX - 1, boxY - 1, boxW + 2, boxH + 2);
 }
 
+// ---------------------------------------------------------------- подписи зон (последними, с проверкой пересечений)
+for (const { z, pos, fs } of zoneLabels) {
+  const w = textWidth(z.label, fs);
+  const h = fs * 1.25;
+  const cx = X(z.x + z.w / 2);
+  const ys = [];
+  if (pos === 'above') for (let dy = 6; dy <= 46; dy += 8) ys.push(Y(z.y) - dy);
+  else if (pos === 'bottom') { for (let y = Y(z.y + z.h) - h - 8; y > Y(z.y) + 4; y -= h + 2) ys.push(y); }
+  else if (pos === 'inside-top') ys.push(Y(z.y) + 5);
+  else { for (let y = Y(z.y) + 5; y < Y(z.y + z.h) - h; y += h + 2) ys.push(y); }
+  ys.push(Y(z.y) - 6, Y(z.y + z.h) + h + 2);
+  // по X тоже есть варианты: центр, справа, слева — лишь бы не пересекаться с чипами/рамками
+  const xs = [cx, Math.min(X(z.x + z.w) - w / 2 - 4, pageWpx - PAD - w / 2), Math.max(X(z.x) + w / 2 + 4, PAD + w / 2)];
+  const uniq = (a) => [...new Set(a.map((v) => Math.round(v * 10) / 10))];
+  let place = null;
+  for (const x of uniq(xs)) for (const y of ys) if (freeAt(x - w / 2, y, w, h)) { place = { x, y }; break; }
+  if (!place) for (const x of uniq(xs)) for (const y of ys) if (freeAt(x - w / 2, y, w, h * 1.6)) { place = { x, y }; break; }
+  place = place || { x: cx, y: ys[0] };
+  L.labels.push(t(place.x, place.y + fs, fs, '#93a4b2', z.label, ' font-weight="bold" text-anchor="middle" letter-spacing="0.3"'));
+}
+
+// ---------------------------------------------------------------- подвал
 const totalStands = allStands.filter((s) => !s.mergedCell).length;
 const totalMerged = allStands.length - totalStands;
 const totalArea = allStands.reduce((a, s) => a + s.areaM2, 0);
-out.push(`<text x="${pageW - PAD}" y="${pageH - 18}" font-size="${F.foot}" fill="#33454f" text-anchor="end">Jami: ${totalStands} stend${totalMerged ? ` + ${totalMerged} katak` : ''} · ${fmtNum(totalArea)} m² · bo'sh: ${counts.free} (${fmtNum(areas.free)} m²)</text>`);
+const freeArea = allStands.filter((s) => (s.mergedCell ? s.status || 'free' : statusOf(s.id)) === 'free').reduce((a, s) => a + s.areaM2, 0);
+const footerY = pageHpx - F.foot - 4;
+const footText = `Итого: ${totalStands} стендов${totalMerged ? ` + ${totalMerged} объединённых` : ''} · ${fmtNum(totalArea)} м² · свободно: ${counts.free} (${fmtNum(freeArea)} м²)`;
+if (sheetMode) {
+  L.footer.push(t(pageWpx - PAD, footerY, F.foot, '#5b6b7a', footText, ' text-anchor="end"'));
+  L.footer.push(t(PAD, footerY, F.foot, '#5b6b7a', `${exp.meta.project} · ${exp.meta.hall} · ${new Date().toLocaleDateString('ru-RU')}`));
+} else {
+  if (detail) {
+    // на листе раздела (или блока) легенда уже в шапке — внизу три коротких строки,
+    // все по левому краю: так они не могут наехать друг на друга
+    L.footer.push(t(PAD, pageHpx - F.foot * 3 - 16, F.foot, '#5b6b7a', `${exp.meta.project} · ${exp.meta.hall}`));
+    L.footer.push(t(PAD, pageHpx - F.foot * 2 - 10, F.foot, '#5b6b7a', footText));
+    L.footer.push(t(PAD, pageHpx - F.foot - 4, F.foot, '#93a4b2', `1 стенд = 3 × 3 м = 9 м² · 1 блок = 8 стендов = 72 м² · версия плана v${exp.meta.version || '?'}`));
+  } else {
+  let ly = contentTop + content.h * SCALE + F.legend + 14;
+  for (const k of legendKeys) {
+    const cl = tint(k);
+    L.footer.push(rect(PAD, ly - F.legend + 1, F.legend, F.legend, cl.fill, ` stroke="${cl.bar || LINE}" stroke-width="1.3" rx="3"`));
+    L.footer.push(t(PAD + F.legend + 8, ly, F.legend, '#44586a', `${cl.label}: ${counts[k]} стендов · ${fmtNum(areas[k])} м²`));
+    ly += F.legend + 12;
+  }
+  const sectionRows = (exp.sections || []).map((sec) => {
+    const st = allStands.filter((x) => x.section === sec.id && !x.mergedCell);
+    if (!st.length) return null;
+    const free = st.filter((x) => statusOf(x.id) === 'free');
+    return { sec, n: st.length, area: st.reduce((a, x) => a + x.areaM2, 0), free: free.length, freeArea: free.reduce((a, x) => a + x.areaM2, 0) };
+  }).filter(Boolean);
+  if (sectionRows.length) {
+    ly += 6;
+    L.footer.push(t(PAD, ly, F.legend + 1, '#0f2233', 'По разделам', ' font-weight="bold"'));
+    ly += F.legend + 12;
+    // вторая колонка начинается после самой длинной подписи раздела (иначе тексты наезжают)
+    const colX = PAD + 8 + Math.max(...sectionRows.map((r) => textWidth(r.sec.label, F.legend))) + 24;
+    for (const r of sectionRows) {
+      L.footer.push(rect(PAD, ly - F.legend + 1, F.legend, F.legend, r.sec.color, ' rx="2"'));
+      L.footer.push(t(PAD + F.legend + 8, ly, F.legend, '#44586a', r.sec.label));
+      L.footer.push(t(colX, ly, F.legend, '#44586a', `${r.n} стендов · ${fmtNum(r.area)} м² · свободно: ${r.free} (${fmtNum(r.freeArea)} м²)`));
+      ly += F.legend + 9;
+    }
+  }
+  L.footer.push(t(pageWpx - PAD, pageHpx - 12, F.foot, '#5b6b7a', footText, ' text-anchor="end"'));
+  }
+}
+
+// ---------------------------------------------------------------- сборка
+const out = [
+  `<svg xmlns="http://www.w3.org/2000/svg" width="${pageWpx}" height="${pageHpx}" viewBox="0 0 ${pageWpx} ${pageHpx}" font-family="DejaVu Sans, Helvetica, Arial, sans-serif">`,
+  rect(0, 0, pageWpx, pageHpx, '#ffffff'),
+];
+if ((raw.meta?.status || 'draft') !== 'approved') {
+  out.push(rect(0, 0, pageWpx, 24, '#8e1b1b'));
+  out.push(t(pageWpx / 2, 17, 12.5, '#ffffff', 'ЧЕРНОВИК — размеры не подтверждены, клиенту не отправлять', ' font-weight="bold" text-anchor="middle"'));
+}
+for (const k of ['bg', 'zones', 'hall', 'feat', 'blocks', 'stands', 'units', 'labels', 'header', 'footer']) out.push(...L[k]);
 out.push('</svg>');
 
-// ---------------------------------------------------------------- yozish
 const baseName = path.basename(layoutPath).replace(/\.json$/, '');
 const suffix = sectionFilter ? `-sec-${sectionFilter}` : blockFilter ? `-${blockFilter}` : '';
 const outPath = path.resolve(ROOT, String(opt('out', `exports/${baseName}${suffix}.svg`)));
 fs.mkdirSync(path.dirname(outPath), { recursive: true });
 fs.writeFileSync(outPath, out.join('\n'));
 const kb = (fs.statSync(outPath).size / 1024).toFixed(1);
-console.log(`✓ ${path.relative(ROOT, outPath)} — ${pageW.toFixed(0)}×${pageH.toFixed(0)} px (${kb} KB), ${totalStands} stend${totalMerged ? ` + ${totalMerged} katak` : ''} · ${fmtNum(totalArea)} m²`);
+console.log(`✓ ${path.relative(ROOT, outPath)} — ${pageWpx}×${pageHpx} px (${kb} КБ), ${totalStands} стендов${totalMerged ? ` + ${totalMerged} объединённых` : ''} · ${fmtNum(totalArea)} м²`);

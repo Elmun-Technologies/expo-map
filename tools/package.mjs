@@ -1,20 +1,20 @@
 #!/usr/bin/env node
 /**
- * MIJOZGA TAYYOR PAKET (bitta buyruq bilan hamma fayl).
+ * ПАКЕТ ДЛЯ КЛИЕНТА (все файлы одной командой).
  *
  *   node tools/package.mjs                        # LAYOUT=layout/foodera-2026.json
- *   node tools/package.mjs --layout layout/hall-A.json --out exports/boshqa
+ *   node tools/package.mjs --layout layout/hall-A.json --out exports/drugoe
  *
- * Nima chiqadi (exports/<zagolovka>/ ichida):
- *   01-xarita-butun-zal.svg        — butun zal, bo'limlar va band joylar bilan
- *   01-xarita-butun-zal.pdf        — shu xaritaning BITTA varaqli PDF'i (A3 landscape, mijozga)
- *   02-xarita-bosh-joylar.svg      — FAQAT bo'sh joylar (sotuvchiga/katalogga)
- *   02-xarita-bosh-joylar.pdf      — shu xaritaning BITTA varaqli PDF'i
- *   03-bolim-<ID>-<nom>.svg        — har bir bo'lim uchun alohida varaq
- *   04-kompaniyalar.csv            — band qilingan joylar ro'yxati (Excel uchun)
- *   00-IZOH.txt                    — versiya, sana, qoidalar, qanday o'qish kerak
+ * Что получается (в exports/<имя>/):
+ *   01-план-зала-весь.svg/.pdf     — весь зал: разделы, брони и продажи
+ *   02-план-свободные-места.svg/.pdf — только свободные места (для продавца/каталога)
+ *   03-раздел-<ID>-<название>.svg  — каждый раздел отдельным листом
+ *   04-компании.csv                — занятые места (для Excel)
+ *   05-свободные-места.csv         — свободные места с ценой
+ *   00-ПОЯСНЕНИЕ.txt               — версия, дата, правила, как читать план
  *
- * Qoidalar: layout validatordan o'tishi shart; QORALAMA bo'lsa paket yasalmaydi.
+ * Правила: layout обязан пройти валидатор; ЧЕРНОВИК пакет не собирается.
+ * Все тексты и заголовки — на русском языке.
  */
 import fs from 'node:fs';
 import os from 'node:os';
@@ -36,53 +36,55 @@ const layoutPath = path.resolve(ROOT, String(opt('layout', process.env.LAYOUT ||
 const raw = JSON.parse(fs.readFileSync(layoutPath, 'utf8'));
 const check = validateLayout(raw);
 if (!check.ok) {
-  console.error('✗ Layout xato — paket yasalmadi:\n' + check.errors.map((e) => '   ✗ ' + e).join('\n'));
+  console.error('✗ Ошибка в layout — пакет не собран:\n' + check.errors.map((e) => '   ✗ ' + e).join('\n'));
   process.exit(1);
 }
 if ((raw.meta?.status || 'draft') !== 'approved') {
-  console.error('✗ Layout QORALAMA (meta.status != "approved") — mijozga paket yasash mumkin emas.');
+  console.error('✗ План в статусе ЧЕРНОВИК (meta.status != "approved") — клиентский пакет собирать нельзя.');
   process.exit(1);
 }
 const exp = expandLayout(raw);
-const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9ä-ü]+/gi, '-').replace(/^-|-$/g, '').slice(0, 28);
+const slug = (s) => String(s).toLowerCase().replace(/[^a-zа-я0-9ё]+/gi, '-').replace(/^-|-$/g, '').slice(0, 28);
 const baseName = path.basename(layoutPath).replace(/\.json$/, '');
 const outDir = path.resolve(ROOT, String(opt('out', `exports/${baseName}`)));
 fs.mkdirSync(outDir, { recursive: true });
-// eski varaqlarni tozalash (bo'lim nomi o'zgargan bo'lsa, eski fayl qolib ketmasin)
+// убираем старые листы разделов (если название раздела изменилось)
 for (const f of fs.readdirSync(outDir)) {
-  if (/^03-bolim-.*\.svg$/.test(f)) fs.rmSync(path.join(outDir, f));
+  if (/^03-раздел-.*\.svg$/.test(f) || /^03-bolim-.*\.svg$/.test(f)) fs.rmSync(path.join(outDir, f));
 }
 
 const stateFile = path.join(ROOT, 'data/state.json');
 const state = fs.existsSync(stateFile) ? JSON.parse(fs.readFileSync(stateFile, 'utf8')) : { items: {} };
 const items = state.items || {};
 const statusOf = (id) => items[id]?.status || 'free';
+const fmtNum = (n) => Number(n || 0).toLocaleString('ru-RU');
 
 const run = (argsList) => {
   try {
     const out = execFileSync('node', [path.join(ROOT, 'tools/export-svg.mjs'), '--layout', layoutPath, ...argsList], { cwd: ROOT, encoding: 'utf8' });
     return out.trim().split('\n').pop();
   } catch (e) {
-    console.error('✗ eksport xatosi:', e.message);
+    console.error('✗ ошибка экспорта:', e.message);
     return null;
   }
 };
 
-console.log(`\n📦 Paket: ${raw.meta.project} · ${raw.meta.hall} — v${raw.meta.version}\n`);
+console.log(`\n📦 Пакет: ${raw.meta.project} · ${raw.meta.hall} — v${raw.meta.version}\n`);
 const made = [];
 
-// 1) butun zal (band joylar bilan) va 2) faqat bo'sh joylar
-const f1 = path.join(outDir, '01-xarita-butun-zal.svg');
-const f2 = path.join(outDir, '02-xarita-bosh-joylar.svg');
+// 1) весь зал  ·  2) только свободные места
+const f1 = path.join(outDir, '01-план-зала-весь.svg');
+const f2 = path.join(outDir, '02-план-свободные-места.svg');
 if (run(['--out', f1])) made.push(f1);
 if (run(['--no-state', '--out', f2])) made.push(f2);
 
-// 1b) PDF — FAQAT ASOSIY XARITA, bitta varaq (A3 landscape).
-// Brauzerdagi "Save as PDF" ko'p varaqqa bo'lib tashlaydi; bu fayl mijozga to'g'ridan-to'g'ri yuboriladi.
+// 1б) PDF — ТОЛЬКО ОСНОВНОЙ ПЛАН, один лист A3 landscape.
+// «Печать → Сохранить как PDF» в браузере режет на несколько листов; этот файл можно
+// отправлять клиенту напрямую.
 const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'expo-pdf-'));
 for (const item of [
-  { svg: f1, name: '01-xarita-butun-zal.pdf', extra: [] },
-  { svg: f2, name: '02-xarita-bosh-joylar.pdf', extra: ['--no-state'] },
+  { svg: f1, name: '01-план-зала-весь.pdf', extra: [] },
+  { svg: f2, name: '02-план-свободные-места.pdf', extra: ['--no-state'] },
 ]) {
   const mapSvg = path.join(tmpDir, item.name.replace(/\.pdf$/, '.svg'));
   const pdfOut = path.join(outDir, item.name);
@@ -94,21 +96,21 @@ for (const item of [
     console.log('  ' + line.trim());
     made.push(pdfOut);
   } catch (e) {
-    console.error('⚠ PDF yasalmadi (python3 + reportlab + svglib kerak):', String(e.message).split('\n')[0]);
+    console.error('⚠ PDF не собран (нужны python3 + reportlab + svglib):', String(e.message).split('\n')[0]);
   }
 }
 fs.rmSync(tmpDir, { recursive: true, force: true });
 
-// 3) har bir bo'lim alohida varaq
+// 3) каждый раздел — отдельным листом
 for (const sec of exp.sections || []) {
   const mine = exp.stands.filter((s) => s.section === sec.id);
   if (!mine.length) continue;
-  const f = path.join(outDir, `03-bolim-${sec.id}-${slug(sec.short || sec.label)}.svg`);
+  const f = path.join(outDir, `03-раздел-${sec.id}-${slug(sec.short || sec.label)}.svg`);
   if (run(['--section', sec.id, '--out', f])) made.push(f);
 }
 
-// 4) kompaniyalar CSV — BITTA kompaniya = BITTA qator (nechta stend olgan bo'lsa ham)
-const rows = [['Bolim', 'Kompaniya', 'Mijoz', 'Telefon', 'Holat', 'Stendlar soni', 'm2', 'Summa', 'Stend ID lari', 'Sotuvchi', 'Yangilangan']];
+// 4) компании — ОДНА компания = ОДНА строка (сколько бы стендов она ни заняла)
+const rows = [['Раздел', 'Компания', 'Клиент', 'Телефон', 'Статус', 'Стендов', 'м2', 'Сумма', 'ID стендов', 'Продавец', 'Обновлено']];
 const extra = mergedAsStands(exp.blocks);
 const units = groupBookings([...exp.stands, ...extra.stands], Object.assign({}, items, extra.items))
   .sort((a, b) => (a.section || '').localeCompare(b.section || '') || b.areaM2 - a.areaM2);
@@ -117,79 +119,85 @@ for (const u of units) {
   const first = items[u.ids[0]] || {};
   const sum = u.ids.reduce((a, id) => a + (Number(items[id]?.amount) || 0), 0);
   rows.push([sec ? sec.label : '', u.company || u.buyer || '', u.buyer || '', u.phone || '',
-    { sold: 'Sotilgan', reserved: 'Bron', blocked: 'Bloklangan' }[u.status] || u.status,
+    { sold: 'Продано', reserved: 'Бронь', blocked: 'Блокировано' }[u.status] || u.status,
     String(u.stands.length), String(u.areaM2), String(sum || ''), u.ids.join(', '), first.sellerName || '', first.updatedAt || '']);
 }
 const csv = '\uFEFF' + rows.map((r) => r.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(';')).join('\n');
-const f4 = path.join(outDir, '04-kompaniyalar.csv');
+const f4 = path.join(outDir, '04-компании.csv');
 fs.writeFileSync(f4, csv);
 made.push(f4);
 
-// 4b) bo'sh joylar CSV (sotuvchiga)
-const freeRows = [['Bolim', 'Blok', 'Stend', 'm2', 'Narx (so\'m)']];
+// 4б) свободные места (для продавца)
+const freeRows = [['Раздел', 'Блок', 'Стенд', 'м2', 'Цена, сум']];
 for (const s of exp.stands) {
   if (statusOf(s.id) !== 'free') continue;
   const sec = (exp.sections || []).find((x) => x.id === s.section);
   freeRows.push([sec ? sec.label : '', s.blockId, s.id, String(s.areaM2), String(Math.round(s.areaM2 * (raw.meta.pricePerM2 || 0)))]);
 }
-const f4b = path.join(outDir, '05-bosh-joylar.csv');
+const f4b = path.join(outDir, '05-свободные-места.csv');
 fs.writeFileSync(f4b, '\uFEFF' + freeRows.map((r) => r.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(';')).join('\n'));
 made.push(f4b);
 
-// 5) izoh
+// 5) пояснение
 const secTable = (exp.sections || []).map((sec) => {
   const st = exp.stands.filter((s) => s.section === sec.id);
   if (!st.length) return null;
   const free = st.filter((s) => statusOf(s.id) === 'free');
   const area = st.reduce((a, x) => a + x.areaM2, 0);
   const freeArea = free.reduce((a, x) => a + x.areaM2, 0);
-  return `  ${sec.label.padEnd(32)} ${String(st.length).padStart(3)} stend · ${String(area).padStart(8)} m² · bo'sh: ${free.length} (${freeArea.toFixed(2)} m²)`;
+  return `  ${sec.label.padEnd(34)} ${String(st.length).padStart(3)} стендов · ${String(area.toFixed(0)).padStart(7)} м² · свободно: ${String(free.length).padStart(3)} (${freeArea.toFixed(2)} м²)`;
 }).filter(Boolean).join('\n');
 const totalStands = exp.stands.length;
 const totalArea = exp.stands.reduce((a, s) => a + s.areaM2, 0);
 const freeStands = exp.stands.filter((s) => statusOf(s.id) === 'free');
+const freeArea = freeStands.reduce((a, s) => a + s.areaM2, 0);
 const izoh = `${raw.meta.project} — ${raw.meta.hall}
-Joylashuv xaritasi · versiya ${raw.meta.version} · ${new Date().toLocaleDateString('ru-RU')}
-Manba: ${path.relative(ROOT, layoutPath)} (o'zgartirilsa paket qayta yasaladi)
+План залов · версия ${raw.meta.version} · ${new Date().toLocaleDateString('ru-RU')}
+Источник: ${path.relative(ROOT, layoutPath)} (при изменении пакет пересобирается)
 
-QOIDALAR
-  1 stend = 3×3 m = 9 m²
-  1 blok  = 8 stend = 72 m²
-  Har bir stendning o'z ID'si bor (masalan A-01-05). Shartnomada ham, xaritada ham
-  aynan shu ID ishlatiladi — "o'rtadagi joy" kabi ifoda ishlatilmaydi.
+ПРАВИЛА
+  1 стенд = 3×3 м = 9 м²
+  1 блок  = 8 стендов = 72 м²
+  У каждого стенда свой ID (например A1, K7, EQ1-3). И в договоре, и на плане
+  используется один и тот же ID — никаких «место посередине».
 
-UMUMIY
-  Jami: ${totalStands} stend · ${totalArea.toFixed(2)} m²
-  Bo'sh: ${freeStands.length} stend · ${freeStands.reduce((a, s) => a + s.areaM2, 0).toFixed(2)} m²
-  Narx: ${raw.meta.pricePerM2 ? raw.meta.pricePerM2.toLocaleString('ru-RU') + " so'm/m²" : 'belgilanmagan'}
+ОБЩЕЕ
+  Всего: ${totalStands} стендов · ${totalArea.toFixed(2)} м²
+  Свободно: ${freeStands.length} стендов · ${freeArea.toFixed(2)} м²
+  Цена: ${raw.meta.pricePerM2 ? raw.meta.pricePerM2.toLocaleString('ru-RU') + ' сум/м²' : 'не задана'}
 
-BO'LIMLAR
+РАЗДЕЛЫ
 ${secTable}
 
-FAYLLAR
-  01-xarita-butun-zal.svg     butun zal: bo'limlar, bron va sotilgan joylar bilan (mijozga/rahbariyatga)
-  01-xarita-butun-zal.pdf     shu xaritaning BITTA varaqli PDF'i (A3 landscape) - to'g'ridan-to'g'ri yuborish uchun
-  02-xarita-bosh-joylar.svg   faqat bo'sh joylar (sotuvchiga, katalogga)
-  02-xarita-bosh-joylar.pdf   bo'sh joylar xaritasining bitta varaqli PDF'i
-  03-bolim-*.svg              har bir bo'lim alohida varaq (mijozga aynan o'z bo'limini yuborish uchun)
-  04-kompaniyalar.csv         band qilingan joylar: kompaniya, stend ID, summa, sotuvchi
-  05-bosh-joylar.csv          bo'sh joylar ro'yxati (narx bilan)
+ФАЙЛЫ
+  01-план-зала-весь.svg/.pdf   весь зал: разделы, брони и продажи (клиенту и руководству)
+  02-план-свободные-места.*    только свободные места (продавцу, для каталога)
+  03-раздел-*.svg              каждый раздел отдельным листом (клиенту — только его раздел)
+  04-компании.csv              занятые места: компания, ID стендов, сумма, продавец
+  05-свободные-места.csv       свободные места с ценой
+  00-ПОЯСНЕНИЕ.txt             этот файл
 
-RANGLAR
-  Yashil  — bo'sh (sotuvga tayyor)
-  Sariq   — bron qilingan (muddat tugasa avtomatik bo'shaydi)
-  Qizil   — sotilgan
-  Kulrang — bloklangan (texnik yoki egasi uchun)
+ЦВЕТА (в плане)
+  Белый   — свободно (готово к продаже)
+  Жёлтый  — забронировано (по истечении срока снимается автоматически)
+  Красный — продано
+  Серый   — блокировано (техническое или для владельца)
 
-IZOH: PDF fayllar BITTA A3 varaqdan iborat (brauzerdan "Save as PDF" qilish shart emas - u ko'p
-varaqqa bo'lib tashlaydi). SVG fayllar brauzerda ochiladi, tahrirlanadigan vektor bo'lib qoladi.
-Xarita layout faylidan avtomatik chiziladi — qo'lda tahrirlash mumkin emas, shuning uchun
-xarita bilan holat hech qachon ajralib qolmaydi.
+ВАЖНО: PDF-файлы — это ОДИН лист A3 (печатать «Сохранить как PDF» из браузера не нужно —
+он режет план на несколько листов). SVG открывается в браузере и остаётся редактируемым
+векторным файлом. План строится из layout-файла автоматически, поэтому план и данные
+никогда не расходятся.
 `;
-const f5 = path.join(outDir, '00-IZOH.txt');
+const f5 = path.join(outDir, '00-ПОЯСНЕНИЕ.txt');
 fs.writeFileSync(f5, izoh);
 made.push(f5);
+// старый файл с узбекским названием — убираем, чтобы не путал
+for (const old of ['00-IZOH.txt', '04-kompaniyalar.csv', '05-bosh-joylar.csv', '01-xarita-butun-zal.svg', '02-xarita-bosh-joylar.svg',
+  '01-xarita-butun-zal.pdf', '02-xarita-bosh-joylar.pdf']) {
+  const p = path.join(outDir, old);
+  if (fs.existsSync(p)) fs.rmSync(p);
+}
 
-console.log('\nFayllar:');
+console.log('\nФайлы:');
 for (const f of made) console.log(`  ${path.relative(ROOT, f)}`);
-console.log(`\n✓ Paket tayyor: ${path.relative(ROOT, outDir)} (${made.length} fayl)\n`);
+console.log(`\n✓ Пакет готов: ${path.relative(ROOT, outDir)} (${made.length} файлов)\n`);

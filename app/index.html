@@ -1,49 +1,49 @@
 <!doctype html>
-<html lang="uz">
+<html lang="ru">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Ekspo xaritasi — sotuv paneli</title>
+<title>Экспо-карта — панель продаж</title>
 <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
 
-<!-- ================= LOGIN ================= -->
+<!-- ================= ВХОД ================= -->
 <div id="login" class="login">
   <form class="login-card" id="loginForm">
-    <h1>Ekspo xaritasi</h1>
-    <p class="muted">Sotuv paneli — joyni bron qilish va sotish</p>
-    <label>Sotuvchi
-      <input id="loginName" autocomplete="username" placeholder="ism yoki ID" required />
+    <h1>Экспо-карта</h1>
+    <p class="muted">Панель продаж — бронирование и продажа стендов</p>
+    <label>Продавец
+      <input id="loginName" autocomplete="username" placeholder="имя или ID" required />
     </label>
-    <label>PIN kod
+    <label>PIN-код
       <input id="loginPin" type="password" inputmode="numeric" autocomplete="current-password" placeholder="••••" required />
     </label>
-    <button class="btn primary" type="submit">Kirish</button>
+    <button class="btn primary" type="submit">Войти</button>
     <p class="error" id="loginError"></p>
     <div class="demo-hint">
-      Demo: <button type="button" class="chip" data-user="Aziz Karimov" data-pin="1111">Aziz · 1111</button>
+      Демо: <button type="button" class="chip" data-user="Aziz Karimov" data-pin="1111">Aziz · 1111</button>
       <button type="button" class="chip" data-user="Dilnoza Yusupova" data-pin="2222">Dilnoza · 2222</button>
       <button type="button" class="chip" data-user="Menejer" data-pin="9999">Menejer · 9999</button>
     </div>
   </form>
 </div>
 
-<!-- ================= APP ================= -->
+<!-- ================= ПРИЛОЖЕНИЕ ================= -->
 <header class="topbar">
   <div class="brand">
-    <strong id="hallTitle">Xarita</strong>
+    <strong id="hallTitle">Карта</strong>
     <span class="muted" id="hallSub"></span>
   </div>
   <div class="tools">
-    <input id="search" class="search" placeholder="Qidirish: A-01 yoki A-01-05" />
-    <button class="btn" id="zoomOut" title="Kichraytirish">−</button>
-    <button class="btn" id="zoomIn" title="Kattalashtirish">+</button>
-    <button class="btn" id="zoomFit" title="Butun zalni ko'rsatish">Butun zal</button>
-    <button class="btn" id="clientMode" title="Mijozga ko'rinadigan rejim">Mijoz ko'rinishi</button>
-    <button class="btn" id="printBtn">Chop etish / PDF</button>
+    <input id="search" class="search" placeholder="Поиск: A1, B12, HoReCa" />
+    <button class="btn" id="zoomOut" title="Уменьшить">−</button>
+    <button class="btn" id="zoomIn" title="Увеличить">+</button>
+    <button class="btn" id="zoomFit" title="Показать весь зал">Весь зал</button>
+    <button class="btn" id="clientMode" title="Режим для клиента">Вид для клиента</button>
+    <button class="btn" id="printBtn">Печать / PDF</button>
     <span class="who" id="who"></span>
-    <button class="btn ghost" id="logoutBtn">Chiqish</button>
+    <button class="btn ghost" id="logoutBtn">Выход</button>
   </div>
 </header>
 
@@ -70,49 +70,49 @@
       <g id="world"></g>
     </svg>
     <div class="legend" id="legend"></div>
-    <p class="map-note">Xarita <code>layout/*.json</code> faylidan avtomatik chiziladi. Bitta kompaniya nechta joy olgan bo'lsa — <b>bitta quti</b>, nomi ichida yoziladi.</p>
+    <p class="map-note">План строится автоматически из <code>layout/*.json</code>. Одна компания — <b>одна рамка</b>, название внутри. Всё на русском языке.</p>
   </section>
 
   <aside class="panel">
     <div class="stats" id="stats"></div>
 
     <div id="sectionsCard" class="card" hidden>
-      <h2>Ko'rgazma bo'limlari</h2>
+      <h2>Разделы выставки</h2>
       <div id="sectionChips" class="chips sec-chips"></div>
       <div id="sectionInfo" hidden></div>
       <div class="actions" id="sectionActions" hidden>
-        <button class="btn" id="secSelectFree">Bo'sh joylarni tanlash</button>
-        <button class="btn ghost" id="secClear">Filtrni tozalash</button>
+        <button class="btn" id="secSelectFree">Выбрать свободные места</button>
+        <button class="btn ghost" id="secClear">Сбросить фильтр</button>
       </div>
-      <p class="muted" id="secHint">Bo'lim nomini bosing — xaritada faqat o'sha bo'lim yorqin ko'rinadi.</p>
+      <p class="muted" id="secHint">Нажмите название раздела — на плане останется только он.</p>
     </div>
     <div id="bookingsCard" class="card" hidden>
-      <h2>Band joylar (kompaniyalar)</h2>
-      <p class="muted">Bitta kompaniya nechta stend olgan bo'lsa — bitta qator. Bosilsa xaritada ko'rsatiladi.</p>
+      <h2>Занятые места (компании)</h2>
+      <p class="muted">Одна компания — одна строка, сколько бы стендов она ни заняла. Нажмите — покажем на плане.</p>
       <div id="bookingsList" class="bookings"></div>
     </div>
     <div id="selectionBox" class="card">
-      <h2>Tanlov</h2>
-      <p class="muted" id="selHint">Xaritadan stend yoki blok nomini bosing.</p>
+      <h2>Выбор</h2>
+      <p class="muted" id="selHint">Нажмите стенд или название блока на плане.</p>
       <div id="selBody" hidden>
         <div class="sel-head">
           <span class="pill" id="selTitle"></span>
-          <button class="btn ghost small" id="clearSel">Tozalash</button>
+          <button class="btn ghost small" id="clearSel">Очистить</button>
         </div>
         <div id="selChips" class="chips"></div>
         <div class="kv" id="selInfo"></div>
 
         <div id="formFields">
-          <h3>Mijoz</h3>
-          <label>Ism / kompaniya vakili<input id="buyer" placeholder="Masalan: Aziz Karimov" /></label>
-          <label>Telefon<input id="phone" inputmode="tel" placeholder="+998 90 000 00 00" /></label>
-          <label>Kompaniya<input id="company" placeholder="MChJ «...»" /></label>
-          <label class="inline">Bron muddati (soat)<input id="ttl" type="number" min="1" max="720" value="72" /></label>
-          <label>Izoh<input id="note" placeholder="ixtiyoriy" /></label>
+          <h3>Клиент</h3>
+          <label>Имя / представитель компании<input id="buyer" placeholder="Например: Азиз Каримов" /></label>
+          <label>Телефон<input id="phone" inputmode="tel" placeholder="+998 90 000 00 00" /></label>
+          <label>Компания<input id="company" placeholder="ООО «...»" /></label>
+          <label class="inline">Срок брони (часов)<input id="ttl" type="number" min="1" max="720" value="72" /></label>
+          <label>Примечание<input id="note" placeholder="не обязательно" /></label>
           <div class="actions">
-            <button class="btn reserve" id="btnReserve">Bron qilish</button>
-            <button class="btn sell" id="btnSell">Sotish</button>
-            <button class="btn ghost" id="btnRelease">Bo'shatish</button>
+            <button class="btn reserve" id="btnReserve">Забронировать</button>
+            <button class="btn sell" id="btnSell">Продать</button>
+            <button class="btn ghost" id="btnRelease">Освободить</button>
           </div>
         </div>
 
@@ -121,7 +121,7 @@
     </div>
     <div id="receipt" class="card receipt" hidden></div>
     <div id="auditCard" class="card" hidden>
-      <h2>Amallar jurnali</h2>
+      <h2>Журнал операций</h2>
       <div id="auditList" class="audit"></div>
     </div>
   </aside>
@@ -130,11 +130,11 @@
 <div id="toasts" class="toasts"></div>
 <div id="confirm" class="modal" hidden>
   <div class="modal-card">
-    <h2 id="confirmTitle">Tasdiqlash</h2>
+    <h2 id="confirmTitle">Подтверждение</h2>
     <div id="confirmBody"></div>
     <div class="actions">
-      <button class="btn primary" id="confirmOk">Tasdiqlash</button>
-      <button class="btn ghost" id="confirmCancel">Bekor qilish</button>
+      <button class="btn primary" id="confirmOk">Подтвердить</button>
+      <button class="btn ghost" id="confirmCancel">Отмена</button>
     </div>
   </div>
 </div>

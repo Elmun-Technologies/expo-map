@@ -1,6 +1,6 @@
 # Xarita va sotuv jarayoni: tahlil + yechim
 
-**Sana:** 2026-09-14 · **Loyiha:** Expo Map (ekspo zali xaritasi + sotuv paneli)
+**Sana:** 2026-09-14 · **Til:** butun mahsulot (panel, PDF, CSV, SVG) endi RUS tilida · **Loyiha:** Expo Map (ekspo zali xaritasi + sotuv paneli)
 **Qisqa xulosa:** muammo xarita *chizilishida* emas — xaritaning **yagona manbasi yo'qligida** edi.
 Endi xarita bitta JSON fayldan formula bo'yicha chiziladi, sotuvlar umumiy bazada yuritiladi va
 mijozga doim *bir xil* xarita fayli ketadi.
@@ -71,7 +71,7 @@ eksport yozilmaydi). Ya'ni "yo'q joyni sotish" texnik jihatdan imkonsiz bo'ladi.
 * **Mijoz ko'rinishi** havolasi (`?mode=client`) — mijoz o'zi qarab turadi, narx maydonlari yo'q.
 * **Chop etish / PDF** — bitta A3 varaq: faqat **asosiy xarita** (legenda bilan). Brauzerdagi
   "Save as PDF" endi xaritani bitta varaqqa sig'diradi; tayyor PDF fayllar `exports/foodera-2026/`
-  ichida ham bor (`01-xarita-butun-zal.pdf`, `02-xarita-bosh-joylar.pdf`).
+  ichida ham bor (`01-план-зала-весь.pdf`, `02-план-свободные-места.pdf`).
 * **Jurnal** (admin) va **CSV eksport** (buxgalteriya/hisobot uchun).
 
 **Nazorat vositalari:**

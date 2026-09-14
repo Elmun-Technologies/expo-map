@@ -86,14 +86,17 @@ body {
 .feature-label { font-size: 1.1px; fill: #5b6b7a; text-anchor: middle; dominant-baseline: middle; pointer-events: none; }
 .block-outline { fill: none; stroke: #90a4b5; stroke-width: .18; stroke-dasharray: .7 .5; }
 .block-chip { cursor: pointer; }
-.block-chip rect { fill: #0f2233; rx: .35; }
-.block-chip text { fill: #fff; font-size: 1.15px; font-weight: 600; text-anchor: middle; dominant-baseline: middle; }
+.block-chip rect.chip-bg { fill: #ffffff; stroke-width: .14; rx: .3; }
+.block-chip text { fill: #0f2233; font-size: 1.15px; font-weight: 600; text-anchor: middle; dominant-baseline: middle; }
 .stand rect.box { stroke-width: .12; cursor: pointer; }
 .stand .num { font-size: 1.05px; text-anchor: middle; dominant-baseline: middle; pointer-events: none; fill: #33454f; font-weight: 600; }
-.stand[data-status="free"] rect.box { fill: #eaf6ec; stroke: var(--free); }
-.stand[data-status="reserved"] rect.box { fill: url(#hatchReserved); stroke: var(--reserved); }
-.stand[data-status="sold"] rect.box { fill: url(#hatchSold); stroke: var(--sold); }
-.stand[data-status="blocked"] rect.box { fill: url(#hatchBlocked); stroke: var(--blocked); }
+/* ЧИСТЫЙ СТИЛЬ (как на образце плана): белые ячейки, тонкая цветная рамка,
+   статус виден по лёгкому фону и полоске сверху — без «шумной» штриховки */
+.stand rect.box { fill: #ffffff; }
+.stand[data-status="reserved"] rect.box { fill: #fff6e0; }
+.stand[data-status="sold"] rect.box { fill: #fdecea; }
+.stand[data-status="blocked"] rect.box { fill: #f1f4f6; }
+.stand .name { text-anchor: middle; dominant-baseline: middle; pointer-events: none; fill: #8e1b1b; font-weight: 700; }
 .stand.selected rect.box { stroke: #0b5fff; stroke-width: .28; filter: drop-shadow(0 0 .35px rgba(11,95,255,.9)); }
 .stand:hover rect.box { stroke-width: .26; }
 .stand.dim { opacity: .18; }
@@ -204,11 +207,11 @@ label.inline input { width: 92px; margin: 0; }
 
 /* ---------- band joy qutisi: bitta kompaniya = bitta quti, nomi ichida ---------- */
 .booking-unit { cursor: pointer; }
-.booking-unit .unit-fill { stroke: none; }
+.booking-unit .unit-fill { stroke: none; fill-opacity: .92; }
 .booking-unit .unit-line { fill: none; stroke: #7a1f1f; stroke-width: .2; pointer-events: none; }
-.booking-unit[data-status="reserved"] .unit-line { stroke: #a35f00; }
+.booking-unit[data-status="reserved"] .unit-line { stroke: #e0a300; }
 .booking-unit[data-status="blocked"] .unit-line { stroke: #455a64; }
-.booking-unit .unit-name { text-anchor: middle; dominant-baseline: middle; fill: #12222e; font-weight: 700; pointer-events: none; }
+.booking-unit .unit-name { text-anchor: middle; dominant-baseline: middle; fill: #8e1b1b; font-weight: 700; pointer-events: none; }
 .booking-unit .unit-meta { text-anchor: middle; dominant-baseline: middle; fill: #33454f; opacity: .85; pointer-events: none; }
 .booking-unit.selected .unit-line { stroke: #0b5fff; stroke-width: .4; filter: drop-shadow(0 0 .4px rgba(11,95,255,.9)); }
 .booking-unit.part .unit-line { stroke-dasharray: .8 .5; }

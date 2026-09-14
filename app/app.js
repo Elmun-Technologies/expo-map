@@ -1,12 +1,12 @@
-/* Ekspo xaritasi — sotuv paneli (vanilla JS, build yo'q) */
+/* Экспо-карта — панель продаж (vanilla JS, без сборки). Весь интерфейс — на русском. */
 (() => {
   'use strict';
   const $ = (s) => document.querySelector(s);
   const $$ = (s) => [...document.querySelectorAll(s)];
   const CLIENT = new URLSearchParams(location.search).get('mode') === 'client';
 
-  let layout = null;          // /api/layout javobi
-  let items = {};             // standId -> {status, buyer, ...}  (free bo'lsa kalit yo'q)
+  let layout = null;          // ответ /api/layout
+  let items = {};             // standId -> { status, buyer, ... } (свободные не хранятся)
   let revision = 0;
   let seller = JSON.parse(localStorage.getItem('expo.seller') || 'null');
   let token = localStorage.getItem('expo.token') || null;
@@ -16,11 +16,11 @@
 
   // ------------------------------------------------------------ utils
   const fmtNum = (n) => Number(n || 0).toLocaleString('ru-RU').replace(/\u00A0/g, ' ');
-  const fmtMoney = (n) => `${fmtNum(n)} so'm`;
-  const fmtMln = (n) => `${(Number(n || 0) / 1e6).toLocaleString('ru-RU', { maximumFractionDigits: 2 })} mln so'm`;
+  const fmtMoney = (n) => `${fmtNum(n)} сум`;
+  const fmtMln = (n) => `${(Number(n || 0) / 1e6).toLocaleString('ru-RU', { maximumFractionDigits: 2 })} млн сум`;
   const fmtDate = (iso) => (iso ? new Date(iso).toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—');
   const statusOf = (id) => items[id]?.status || 'free';
-  const STATUS_LABEL = { free: "Bo'sh", reserved: 'Bron', sold: 'Sotilgan', blocked: 'Bloklangan' };
+  const STATUS_LABEL = { free: 'Свободно', reserved: 'Забронировано', sold: 'Продано', blocked: 'Блокировано' };
   const STATUS_COLOR = { free: '#2e7d32', reserved: '#f59e0b', sold: '#c62828', blocked: '#607d8b' };
   const pricePerM2 = () => Number(layout?.meta?.pricePerM2 || 0);
   const ttlDefault = () => Number(layout?.meta?.reserveTtlHours || 72);
@@ -43,8 +43,8 @@
     if (token) headers.Authorization = 'Bearer ' + token;
     const res = await fetch(path, { ...opts, headers, body: opts.body ? JSON.stringify(opts.body) : undefined });
     const data = await res.json().catch(() => ({}));
-    if (res.status === 401 && !CLIENT) { doLogout(true); throw Object.assign(new Error(data.message || 'Sessiya tugadi'), { code: 401 }); }
-    if (!res.ok) throw Object.assign(new Error(data.message || 'Xatolik'), { code: res.status, data });
+    if (res.status === 401 && !CLIENT) { doLogout(true); throw Object.assign(new Error(data.message || 'Сессия истекла'), { code: 401 }); }
+    if (!res.ok) throw Object.assign(new Error(data.message || 'Ошибка'), { code: res.status, data });
     return data;
   }
 
@@ -55,25 +55,25 @@
     renderStats();
     renderLegend();
     renderSections();
-    document.title = `${layout.meta.hall} · Ekspo xaritasi`;
+    document.title = `${layout.meta.hall} · Экспо-карта`;
     const msgs = [];
     if ((layout.meta.status || 'draft') !== 'approved') {
-      msgs.push(`⚠ QORALAMA XARITA (v${layout.meta.version || '?'}) — raqamlar tasdiqlanmagan, mijozga yuborib bo'lmaydi.`);
+      msgs.push(`⚠ ЧЕРНОВИК ПЛАНА (v${layout.meta.version || '?'}) — размеры не подтверждены, клиенту отправлять нельзя.`);
     }
     const deviants = (layout.blocks || []).filter((b) => b.kind !== 'custom' && Math.abs((b.areaM2 + (b.merged || []).reduce((a, m) => a + m.w * m.h, 0)) - 72) > 0.01);
     if (deviants.length) {
-      const some = deviants.slice(0, 4).map((b) => `${b.label} = ${fmtNum(b.areaM2)} m²`).join(', ');
-      msgs.push(`ℹ Bu zaldagi guruhlar 72 m² (8×9) qoidasidan farq qiladi: ${some}${deviants.length > 4 ? ` va yana ${deviants.length - 4} ta` : ''}. Narx va maydon har bir guruh bo'yicha hisoblanadi.`);
+      const some = deviants.slice(0, 4).map((b) => `${b.label} = ${fmtNum(b.areaM2)} м²`).join(', ');
+      msgs.push(`ℹ Группы в этом зале отличаются от правила 72 м² (8×9): ${some}${deviants.length > 4 ? ` и ещё ${deviants.length - 4}` : ''}. Площадь и цена считаются по каждой группе.`);
     }
     const customCount = (layout.customStands || []).length;
-    if (customCount) msgs.push(`ℹ ${customCount} ta nostandart stend (A1–A6 kabi) — maydoni xaritada yozilgan, narxi o'sha maydon bo'yicha.`);
+    if (customCount) msgs.push(`ℹ ${customCount} нестандартных стендов (например A1–A6) — площадь написана на плане, цена считается по ней.`);
     if (msgs.length) {
       $('#draftBanner').hidden = false;
       $('#draftBanner').className = 'draft-banner' + ((layout.meta.status || 'draft') !== 'approved' ? '' : ' info');
       $('#draftBanner').textContent = msgs.join('  |  ');
     }
     $('#hallTitle').textContent = `${layout.meta.project} — ${layout.meta.hall}`;
-    $('#hallSub').textContent = `${layout.blocks.length} blok · ${layout.stands.length} stend · ${fmtNum(layout.stands.length * 9)} m² · layout v${layout.meta.version || '?'}`;
+    $('#hallSub').textContent = `${layout.blocks.length} блоков · ${layout.stands.length} стендов · ${fmtNum(layout.stands.length * 9)} м² · версия плана v${layout.meta.version || '?'}`;
   }
 
   async function refreshState(force) {
@@ -87,7 +87,7 @@
         const taken = [...selection].filter((id) => statusOf(id) !== 'free');
         if (taken.length) {
           taken.forEach((id) => selection.delete(id));
-          toast(`Diqqat: ${taken.join(', ')} boshqa sotuvchi tomonidan band qilindi — tanlovdan chiqarildi.`, 'err');
+          toast(`Внимание: ${taken.join(', ')} заняты другим продавцом — сняты с выбора.`, 'err');
         }
       }
       renderMap(); renderStats(); renderLegend(); renderSections(); renderBookings(); renderSelection();
@@ -125,7 +125,7 @@
   $('#logoutBtn').addEventListener('click', () => doLogout(false));
 
   function startSession() {
-    $('#who').innerHTML = `Sotuvchi: <b>${seller.name}</b>${isAdmin() ? ' (menejer)' : ''}`;
+    $('#who').innerHTML = `Продавец: <b>${seller.name}</b>${isAdmin() ? ' (менеджер)' : ''}`;
     $('#auditCard').hidden = !isAdmin();
     if (isAdmin()) loadAudit();
     renderSelection();
@@ -134,7 +134,8 @@
   async function loadAudit() {
     try {
       const r = await api('/api/audit?limit=50');
-      $('#auditList').innerHTML = r.entries.map((e) => `<div><b>${fmtDate(e.ts)}</b> — ${e.sellerName || e.sellerId}: ${e.action}${e.standIds?.length ? ' · ' + e.standIds.join(', ') : ''}${e.buyer ? ' · ' + e.buyer : ''}</div>`).join('') || '<div class="muted">Yozuv yo\'q</div>';
+      const ACT = { sell: 'продажа', reserve: 'бронь', release: 'освобождение', block: 'блокировка', expire: 'снятие брони', login: 'вход' };
+    $('#auditList').innerHTML = r.entries.map((e) => `<div><b>${fmtDate(e.ts)}</b> — ${e.sellerName || e.sellerId}: ${ACT[e.action] || e.action}${e.standIds?.length ? ' · ' + e.standIds.join(', ') : ''}${e.buyer ? ' · ' + e.buyer : ''}</div>`).join('') || '<div class="muted">Записей нет</div>';
     } catch { /* jim */ }
   }
 
@@ -179,24 +180,15 @@
       hallG.appendChild(el('rect', { x: f.x, y: f.y, width: f.w ?? 2, height: f.h ?? 2, class: 'feature ' + (f.type || '') , rx: 0.2 }));
       if (f.label) {
         const w = f.w ?? 2, h = f.h ?? 2;
-        const fit1 = (w - 0.4) / Math.max(6, f.label.length) * 1.45;
-        let lines = [f.label];
-        let fs = Math.max(0.85, Math.min(1.4, fit1));
-        if (fit1 < 1.15) {
-          const words = f.label.split(' ');
-          if (words.length > 1) {
-            let best = null;
-            for (let i = 1; i < words.length; i++) {
-              const a = words.slice(0, i).join(' '), b2 = words.slice(i).join(' ');
-              const worst = Math.max(a.length, b2.length);
-              if (!best || worst < best.worst) best = { a, b: b2, worst, fs: (w - 0.4) / Math.max(6, worst) * 1.45 };
-            }
-            if (best) { lines = [best.a, best.b]; fs = Math.max(0.85, Math.min(1.4, best.fs)); }
-          }
-        }
+        const fit = ExpoGroups.fitLabel(f.label.replace(/\s*\([^)]*\)\s*/g, ' '), w - 0.5, h - 0.5, {
+          maxFs: 1.25, minFs: 0.7, chunk: 18, bold: false,
+        });
+        const lines = fit.lines.length ? fit.lines : [f.label];
+        const lh = fit.fs * 1.18;
         lines.forEach((ln, i) => {
-          const t = el('text', { x: f.x + w / 2, y: f.y + h / 2 + (lines.length > 1 ? (i - 0.5) * (fs + 0.25) + fs * 0.36 : fs * 0.36), class: 'feature-label' }, ln);
-          t.style.fontSize = fs + 'px';
+          const yy = f.y + h / 2 - (lines.length - 1) * lh / 2 + i * lh + fit.fs * 0.35;
+          const t = el('text', { x: f.x + w / 2, y: yy, class: 'feature-label' }, ln);
+          t.style.fontSize = fit.fs + 'px';
           hallG.appendChild(t);
         });
       }
@@ -226,17 +218,19 @@
       const chip = el('g', { class: 'block-chip', 'data-block': b.id, tabindex: '0' });
       const label = b.label;
       const effArea = b.areaM2 + (b.merged || []).reduce((a, m) => a + m.w * m.h, 0);
-      const chipText = `${label} · ${fmtNum(effArea)} m²`;
-      // kenglik YOZUV bo'yicha (matn qutidan chiqib ketmasin)
-      const cw = Math.max(4.6, chipText.length * 1.15 * 0.62 + 1.6);
-      // birinchi qator (uskunalar) — chip zal chetidan tashqariga to'liq chiqsin, chet chizig'ini kesmasin
-      let chipY = b.y - 1.95;
-      if (chipY < 0 && b.y - 0.45 > 0) chipY = -1.72;
-      chip.appendChild(el('rect', { x: b.x, y: chipY, width: cw, height: 1.5, rx: 0.35, fill: b.color || '#0f2233' }));
-      occupied.push({ x: b.x, y: chipY, w: cw, h: 1.5 });
-      chip.appendChild(el('text', { x: b.x + cw / 2, y: chipY + 1.05 }, chipText));
+      const chipText = `${label} · ${fmtNum(effArea)} м²`;
+      // кenglik YOZUV bo'yicha (matn qutidan chiqib ketmasin)
+      const cw = Math.max(4.6, ExpoGroups.textWidth(chipText, 1.15, true) + 1.4);
+      const chH = 1.6;
+      let chipY = b.y - chH - 0.35;
+      if (chipY < 0 && b.y - 0.45 > 0) chipY = -chH - 0.2;
+      chip.appendChild(el('rect', { x: b.x, y: chipY, width: cw, height: chH, rx: 0.3, class: 'chip-bg', stroke: b.color || '#0f2233' }));
+      const tnum = el('text', { x: b.x + cw / 2, y: chipY + 1.05 }, chipText);
+      tnum.style.fill = b.color || '#0f2233';
+      chip.appendChild(tnum);
+      occupied.push({ x: b.x, y: chipY, w: cw, h: chH });
       const secForChip = sectionById(b.section);
-      chip.appendChild(el('title', {}, `${label} bloki${secForChip ? ' — ' + secForChip.label + (secForChip.labelRu ? ' (' + secForChip.labelRu + ')' : '') : ''} · ${b.stands.length} stend × 9 m² = ${fmtNum(b.areaM2)} m². Bosib butun blokni tanlang.`));
+      chip.appendChild(el('title', {}, `${label} — блок${secForChip ? ' · раздел ' + secForChip.label : ''} · ${b.stands.length} стендов × 9 м² = ${fmtNum(b.areaM2)} м². Нажмите — выберется весь блок.`));
       blockG.appendChild(chip);
 
       for (const s of b.stands) if (!bookedIds.has(s.id)) { standG.appendChild(standNode(s)); occupied.push({ x: s.x, y: s.y, w: s.w, h: s.h }); }
@@ -251,7 +245,7 @@
         const fs = Math.max(0.9, Math.min(1.5, (m.w / Math.max(6, (m.label || '').length)) * 2.1));
         g.appendChild(el('text', { x: m.x + m.w / 2, y: m.y + m.h / 2 + (m.buyer ? -0.25 : 0.25), fill: m.status === 'sold' ? '#fff' : '#fff', 'font-size': fs, 'text-anchor': 'middle', 'font-weight': 'bold' }, m.label || ''));
         if (m.buyer) g.appendChild(el('text', { x: m.x + m.w / 2, y: m.y + m.h / 2 + 1.3, fill: m.status === 'sold' ? '#fff' : '#eaf1f7', 'font-size': Math.min(1.0, fs * 0.75), 'text-anchor': 'middle' }, m.buyer));
-        g.appendChild(el('title', {}, `${b.label}: ${m.label || 'birlashgan katak'} · ${fmtNum(m.w * m.h)} m²${m.buyer ? ' · ' + m.buyer : ''}${st ? ' · ' + st : ''}`));
+        g.appendChild(el('title', {}, `${b.label}: ${m.label || 'объединённая ячейка'} · ${fmtNum(m.w * m.h)} м²${m.buyer ? ' · ' + m.buyer : ''}${st ? ' · ' + st : ''}`));
         standG.appendChild(g);
       }
       // bo'lim nomi blok ostida — faqat joy yetarli bo'lsa (chip ustiga tushmasin)
@@ -267,7 +261,7 @@
         }, 99);
         if (gap > 3.2) {
           const fitFs = (txt) => Math.max(0.62, Math.min(1.05, (b.w - 1.2) / Math.max(4, txt.length) / 0.62));
-          const l1 = `${b.label} bloki`;
+          const l1 = `Блок ${b.label}`;
           const l2 = sec.short || sec.label;
           const t1 = el('text', { x: cx, y: b.y + b.h + 1.9, class: 'sec-label', 'text-anchor': 'middle' }, l1);
           t1.style.fontSize = fitFs(l1) + 'px';
@@ -303,6 +297,7 @@
       t.style.fontSize = fs + 'px';
       t.setAttribute('class', 'zone-label');
       lastG.appendChild(t);
+      occupied.push({ x: x1 - 0.4, y: y - fs * 0.95, w: (x2 - x1) + 0.8, h: fs * 1.5 });   // keyingi yorliq bu yerga tushmasin
     }
     world.appendChild(lastG);
     applyView();
@@ -314,13 +309,32 @@
     const st = statusOf(s.id);
     const g = el('g', { class: 'stand' + (custom ? ' custom' : ''), 'data-id': s.id, 'data-status': st, 'data-block': s.blockId });
     g.appendChild(el('rect', { x: s.x, y: s.y, width: s.w, height: s.h, class: 'box', rx: 0.25, stroke: s.color || undefined }));
+    const edge = s.color || '#90a4b5';
     if (custom) {
-      g.appendChild(el('text', { x: s.x + s.w / 2, y: s.y + s.h / 2 - 0.25, class: 'num' }, s.label || s.id));
-      g.appendChild(el('text', { x: s.x + s.w / 2, y: s.y + s.h / 2 + 1.15, class: 'area' }, `${fmtNum(s.areaM2)} m²`));
+      const tn = el('text', { x: s.x + s.w / 2, y: s.y + s.h / 2 - 0.25, class: 'num' }, s.label || s.id);
+      tn.style.fill = '#243b4a';
+      g.appendChild(tn);
+      g.appendChild(el('text', { x: s.x + s.w / 2, y: s.y + s.h / 2 + 1.15, class: 'area' }, `${fmtNum(s.areaM2)} м²`));
     } else {
-      g.appendChild(el('text', { x: s.x + s.w / 2, y: s.y + s.h / 2, class: 'num' }, s.noLabel));
+      const n = items[s.id]?.buyer ? null : String(s.noLabel);
+      const blockId = String(s.blockId || '');
+      const num = blockId.includes('-') ? `${blockId.replace(/^(\w+)-(\d+)$/, '$1$2')}-${s.noLabel}` : `${blockId}${s.noLabel}`;
+      if (n) {
+        const fs = Math.max(0.62, Math.min(1.15, (s.w - 0.4) / ExpoGroups.textWidth(num, 1, true)));
+        const tn = el('text', { x: s.x + s.w / 2, y: s.y + s.h / 2, class: 'num' }, num);
+        tn.style.fill = edge;
+        tn.style.fontSize = fs + 'px';
+        g.appendChild(tn);
+      } else {
+        // занятый стенд: имя компании — прямо в ячейке
+        const fit = ExpoGroups.fitLabel(String(items[s.id].buyer), s.w - 0.5, s.h - 0.55, { minFs: 0.8, maxFs: 1.15, chunk: 10, floor: 0.5 });
+        (fit.lines.length ? fit.lines : [String(items[s.id].buyer)]).forEach((ln, i) => {
+          const tn = el('text', { x: s.x + s.w / 2, y: s.y + s.h / 2 + (i - (fit.lines.length - 1) / 2) * fit.fs * 1.2 + fit.fs * 0.35, class: 'name', 'font-size': fit.fs }, ln);
+          g.appendChild(tn);
+        });
+      }
     }
-    g.appendChild(el('title', {}, `${s.id} · ${fmtNum(s.areaM2)} m² · ${STATUS_LABEL[st]}${items[s.id]?.buyer ? ' · ' + items[s.id].buyer : ''}${s.note ? ' · ' + s.note : ''}`));
+    g.appendChild(el('title', {}, `${s.id} · ${fmtNum(s.areaM2)} м² · ${STATUS_LABEL[st]}${items[s.id]?.buyer ? ' · ' + items[s.id].buyer : ''}${s.note ? ' · ' + s.note : ''}`));
     return g;
   }
 
@@ -334,25 +348,26 @@
     }).join(' ');
   }
 
-  /** Bitta kompaniyaning band joyi — bitta quti, nomi ichida. */
+  /** Занятые места одной компании — одна рамка, название внутри. */
   function unitNode(u) {
     const g = el('g', { class: 'booking-unit', 'data-ids': u.ids.join(','), 'data-status': u.status, 'data-buyer': (u.label || '').toUpperCase() });
     const d = ExpoGroups.unionPath(u.stands.map((s) => ({ x: s.x, y: s.y, w: s.w, h: s.h })));
-    const fill = u.status === 'sold' ? 'url(#hatchSold)' : u.status === 'reserved' ? 'url(#hatchReserved)' : 'url(#hatchBlocked)';
+    const fill = u.status === 'sold' ? '#fdecea' : u.status === 'reserved' ? '#fff6e0' : '#f1f4f6';
     g.appendChild(el('path', { d, class: 'unit-fill', fill }));
     g.appendChild(el('path', { d, class: 'unit-line' }));
     // nom guruh ichidagi eng katta to'rtburchakka yoziladi (L shaklda ham to'g'ri joy)
     const boxes = ExpoGroups.largestRect(u.stands.map((s) => ({ x: s.x, y: s.y, w: s.w, h: s.h })), 0.25);
     const onlyMerged = u.stands.every((st) => st.mergedCell);
     const metaTxt = onlyMerged
-      ? `${fmtNum(u.areaM2)} m²`
+      ? `${fmtNum(u.areaM2)} м²`
       : u.stands.length > 1
-        ? `${u.stands.length} stend · ${fmtNum(u.areaM2)} m²`
-        : (Math.abs(u.areaM2 - 9) > 0.01 ? `${fmtNum(u.areaM2)} m²` : '');
+        ? `${u.stands.length} стендов · ${fmtNum(u.areaM2)} м²`
+        : (Math.abs(u.areaM2 - 9) > 0.01 ? `${fmtNum(u.areaM2)} м²` : '');
     const withMeta = !!metaTxt && boxes.h > 2.4;
-    const fit = ExpoGroups.fitText(softLabel(u.label || STATUS_LABEL[u.status]), boxes.w - 0.7, boxes.h - (withMeta ? 1.5 : 0.5), {
-      maxLines: boxes.h > 5 ? 4 : boxes.h > 2.2 ? 3 : 1,
-      minFs: 0.42,
+    const fit = ExpoGroups.fitLabel(u.label || STATUS_LABEL[u.status], boxes.w - 0.7, boxes.h - (withMeta ? 1.5 : 0.5), {
+      chunk: boxes.w > 6 ? 12 : 8,
+      minFs: 0.62,
+      floor: 0.5,
       maxFs: Math.min(2.4, boxes.h / (withMeta ? 2.9 : 2.3)),
     });
     const cx = boxes.x + boxes.w / 2, cy = boxes.y + boxes.h / 2;
@@ -360,10 +375,13 @@
     const shift = (fit.lines.length * lh) / 2;
     fit.lines.forEach((ln, i) => g.appendChild(el('text', { x: cx, y: cy - shift + lh * (i + 0.85) + (withMeta ? -0.4 : 0), class: 'unit-name', 'font-size': fit.fs }, ln)));
     if (withMeta) {
-      g.appendChild(el('text', { x: cx, y: cy + shift + (fit.lines.length ? 1.0 : 0.4), class: 'unit-meta', 'font-size': Math.max(0.68, fit.fs * 0.58) }, metaTxt));
+      // подпись «4 стенда · 36 м²» — строго внутри рамки, у нижнего края
+      const my = Math.min(cy + shift + fit.fs * 0.6, boxes.y + boxes.h - 0.35);
+      const mfs = Math.min(0.72, Math.max(0.55, fit.fs * 0.5), (boxes.w - 0.5) / ExpoGroups.textWidth(metaTxt, 1));
+      g.appendChild(el('text', { x: cx, y: my, class: 'unit-meta', 'font-size': mfs }, metaTxt));
     }
-    g.appendChild(el('title', {}, `${u.label || 'Band joy'} — ${STATUS_LABEL[u.status]} · ${u.ids.length} stend · ${fmtNum(u.areaM2)} m²`
-      + `\nStendlar: ${u.ids.join(', ')}${u.sellerName ? '\nSotuvchi: ' + u.sellerName : ''}${u.phone ? ' · ' + u.phone : ''}`));
+    g.appendChild(el('title', {}, `${u.label || 'Занято'} — ${STATUS_LABEL[u.status]} · ${u.ids.length} стендов · ${fmtNum(u.areaM2)} м²`
+      + `\nСтенды: ${u.ids.join(', ')}${u.sellerName ? '\nПродавец: ' + u.sellerName : ''}${u.phone ? ' · ' + u.phone : ''}`));
     return g;
   }
 
@@ -443,7 +461,7 @@
     const pick = free.length ? free : b.stands.map((s) => s.id);
     const allIn = pick.every((id) => selection.has(id));
     pick.forEach((id) => (allIn ? selection.delete(id) : selection.add(id)));
-    if (free.length && free.length < 8) toast(`${blockId}: 8 tadan ${free.length} tasi bo'sh — shular tanlandi.`);
+    if (free.length && free.length < 8) toast(`${blockId}: из 8 стендов свободно ${free.length} — выбраны они.`);
     renderSelection(); paintSelection();
   }
   function paintSelection() {
@@ -471,15 +489,15 @@
     $('#selBody').hidden = !has;
     if (!has) { $('#details').innerHTML = ''; return; }
     const { stands, free, taken, area, amount, blocks } = selectionInfo();
-    const kind = stands.every((s) => s.blockId === blocks[0]) && stands.length === 8 ? 'To\'liq blok (72 m²)' : `${stands.length} stend`;
+    const kind = stands.every((s) => s.blockId === blocks[0]) && stands.length === 8 ? 'Весь блок (72 м²)' : `${stands.length} стендов`;
     $('#selTitle').textContent = `${blocks.join(', ')} · ${kind}`;
     $('#selChips').innerHTML = stands.map((s) => `<span class="chip ${statusOf(s.id)}" data-id="${s.id}" title="${STATUS_LABEL[statusOf(s.id)]}">${s.id.replace(/^.*?-(?=\d+$)/, '')}</span>`).join('');
     $$('#selChips .chip').forEach((c) => c.addEventListener('click', (e) => { e.stopPropagation(); toggleStand(c.dataset.id); }));
 
     $('#selInfo').innerHTML = `
-      <dt>Bo'sh joy</dt><dd><b>${free.length}</b> stend · ${fmtNum(area)} m²</dd>
-      ${taken.length ? `<dt>Band</dt><dd>${taken.length} stend (${taken.map((s) => STATUS_LABEL[statusOf(s.id)]).filter((v, i, a) => a.indexOf(v) === i).join(', ')})</dd>` : ''}
-      <dt>Narx</dt><dd>${pricePerM2() ? fmtMoney(amount) : '—'}<br><span class="muted">${pricePerM2() ? fmtMln(amount) + ' · ' + fmtMoney(pricePerM2()) + '/m²' : 'narx belgilanmagan'}</span></dd>`;
+      <dt>Свободно</dt><dd><b>${free.length}</b> стендов · ${fmtNum(area)} м²</dd>
+      ${taken.length ? `<dt>Занято</dt><dd>${taken.length} стендов (${taken.map((s) => STATUS_LABEL[statusOf(s.id)]).filter((v, i, a) => a.indexOf(v) === i).join(', ')})</dd>` : ''}
+      <dt>Цена</dt><dd>${pricePerM2() ? fmtMoney(amount) : '—'}<br><span class="muted">${pricePerM2() ? fmtMln(amount) + ' · ' + fmtMoney(pricePerM2()) + '/м²' : 'цена не задана'}</span></dd>`;
 
     const canAct = !CLIENT;
     $('#formFields').hidden = !canAct;
@@ -487,16 +505,16 @@
     $('#btnSell').disabled = !canAct || free.length === 0;
     const releasable = stands.filter((s) => statusOf(s.id) !== 'free' && (isAdmin() || items[s.id]?.sellerId === seller?.id || statusOf(s.id) === 'blocked'));
     $('#btnRelease').disabled = !canAct || releasable.length === 0;
-    $('#btnRelease').textContent = `Bo'shatish${releasable.length && releasable.length < stands.length ? ` (${releasable.length})` : ''}`;
-    $('#btnReserve').textContent = free.length ? `Bron qilish (${fmtNum(free.length * 9)} m²)` : 'Bron qilish';
-    $('#btnSell').textContent = free.length ? `Sotish (${fmtNum(free.length * 9)} m²)` : 'Sotish';
+    $('#btnRelease').textContent = `Освободить${releasable.length && releasable.length < stands.length ? ` (${releasable.length})` : ''}`;
+    $('#btnReserve').textContent = free.length ? `Забронировать (${fmtNum(free.length * 9)} м²)` : 'Забронировать';
+    $('#btnSell').textContent = free.length ? `Продать (${fmtNum(free.length * 9)} м²)` : 'Продать';
     if (!$('#ttl').value) $('#ttl').value = ttlDefault();
 
     // tanlangan joylarning tafsiloti
     const rows = stands.map((s) => {
       const it = items[s.id];
       return `<div style="margin:5px 0">
-        <b>${s.id}</b> — ${STATUS_LABEL[statusOf(s.id)]}${it ? `<br><span class="muted">${it.buyer || ''}${it.phone ? ' · ' + it.phone : ''} · ${it.sellerName || ''} · ${fmtDate(it.updatedAt)}${it.reservedUntil ? ' · bron ' + fmtDate(it.reservedUntil) + ' gacha' : ''}</span>` : ''}
+        <b>${s.id}</b> — ${STATUS_LABEL[statusOf(s.id)]}${it ? `<br><span class="muted">${it.buyer || ''}${it.phone ? ' · ' + it.phone : ''} · ${it.sellerName || ''} · ${fmtDate(it.updatedAt)}${it.reservedUntil ? ' · бронь до ' + fmtDate(it.reservedUntil) : ''}</span>` : ''}
       </div>`;
     }).join('');
     $('#details').innerHTML = (isAdmin() || !CLIENT ? rows : '');
@@ -511,8 +529,8 @@
     $('#bookingsList').innerHTML = units.map((u) => `
       <div class="booking-row" data-ids="${u.ids.join(',')}" data-x="${u.x}" data-y="${u.y}" data-w="${u.w}" data-h="${u.h}">
         <span class="sw" style="background:${STATUS_COLOR[u.status]}"></span>
-        <b title="${u.ids.join(', ')}">${u.label || 'Band joy'}</b>
-        <span class="bmuted">${u.ids.length} stend · ${fmtNum(u.areaM2)} m²</span>
+        <b title="${u.ids.join(', ')}">${u.label || 'Занято'}</b>
+        <span class="bmuted">${u.ids.length} стендов · ${fmtNum(u.areaM2)} м²</span>
         <span class="bids">${u.ids.length > 6 ? u.ids.slice(0, 6).join(', ') + ' +' + (u.ids.length - 6) : u.ids.join(', ')}</span>
       </div>`).join('');
     $$('#bookingsList .booking-row').forEach((r) => r.addEventListener('click', () => {
@@ -548,11 +566,11 @@
     }
     const totalArea = [...layout.stands, ...merged].reduce((a, s) => a + s.areaM2, 0);
     $('#stats').innerHTML = `
-      <div class="stat"><b>${by.free}</b><span>bo'sh stend · ${fmtNum(area.free)} m²</span></div>
-      <div class="stat"><b>${by.reserved}</b><span>bron · ${fmtNum(area.reserved)} m²</span></div>
-      <div class="stat"><b>${by.sold}</b><span>sotilgan · ${fmtNum(area.sold)} m²</span></div>
-      <div class="stat"><b>${fmtNum(totalArea)}</b><span>jami m² (${by.sold + by.reserved} band)</span></div>
-      <div class="stat" style="grid-column:1/-1"><b>${fmtNum(revenue)}</b><span>so'm sotuv · ${fmtMln(revenue)}</span></div>`;
+      <div class="stat"><b>${by.free}</b><span>свободно · ${fmtNum(area.free)} м²</span></div>
+      <div class="stat"><b>${by.reserved}</b><span>бронь · ${fmtNum(area.reserved)} м²</span></div>
+      <div class="stat"><b>${by.sold}</b><span>продано · ${fmtNum(area.sold)} м²</span></div>
+      <div class="stat"><b>${fmtNum(totalArea)}</b><span>всего м² (занято ${by.sold + by.reserved})</span></div>
+      <div class="stat" style="grid-column:1/-1"><b>${fmtNum(revenue)}</b><span>сум продаж · ${fmtMln(revenue)}</span></div>`;
   }
 
   function renderLegend() {
@@ -562,8 +580,8 @@
       <div class="row">
         <span class="sw" style="background:${k === 'free' ? '#eaf6ec' : k === 'reserved' ? '#fff8e1' : k === 'sold' ? '#fdecea' : '#eceff1'};border-color:${STATUS_COLOR[k]}"></span>
         <label><input type="checkbox" data-st="${k}" ${hiddenStatuses.has(k) ? '' : 'checked'}/> ${STATUS_LABEL[k]} (${counts[k] || 0})</label>
-      </div>`).join('') + `<div class="row muted" style="font-size:11.5px">1 stend = 3×3 m = 9 m² · 1 blok = 8 stend = 72 m²`
-      + (layout.customStands?.length ? `<br>${layout.customStands.length} ta nostandart stend (maydoni o'zida yozilgan)` : '') + `</div>`;
+      </div>`).join('') + `<div class="row muted" style="font-size:11.5px">1 стенд = 3×3 м = 9 м² · 1 блок = 8 стендов = 72 м²`
+      + (layout.customStands?.length ? `<br>${layout.customStands.length} нестандартных стендов (площадь на плане)` : '') + `</div>`;
     $$('#legend input[data-st]').forEach((cb) => cb.addEventListener('change', () => {
       cb.checked ? hiddenStatuses.delete(cb.dataset.st) : hiddenStatuses.add(cb.dataset.st);
       applyFilters();
@@ -607,7 +625,7 @@
     if (!list.length) return;
     $('#sectionChips').innerHTML = list.map(({ sec, stands, free }) => {
       const active = activeSection === sec.id;
-      return `<span class="chip sec${active ? ' active' : ''}" data-sec="${sec.id}" style="border-left-color:${sec.color}" title="${sec.label}${sec.labelRu ? ' / ' + sec.labelRu : ''}">
+      return `<span class="chip sec${active ? ' active' : ''}" data-sec="${sec.id}" style="border-left-color:${sec.color}" title="${sec.short || ''} — ${sec.label}">
         <i class="dot" style="background:${sec.color}"></i>${sec.short || sec.label} <b>${free.length}/${stands.length}</b></span>`;
     }).join('');
     $$('#sectionChips .chip').forEach((c) => c.addEventListener('click', () => {
@@ -634,17 +652,17 @@
       </tr>`).join('');
     box.innerHTML = `
       <div class="sec-head"><span class="swatch" style="background:${sec.color}"></span><b>${sec.label}</b></div>
-      ${sec.labelRu ? `<div class="muted">${sec.labelRu}</div>` : ''}
+      ${sec.short ? `<div class="muted">${sec.short} · раздел ${sec.id}</div>` : ''}
       <table class="sec-table">
-        <thead><tr><th>Bo'lim</th><th class="num">Stend</th><th class="num">m²</th><th class="num">Bo'sh</th><th class="num">Bo'sh m²</th></tr></thead>
+        <thead><tr><th>Раздел</th><th class="num">Стендов</th><th class="num">м²</th><th class="num">Свободно</th><th class="num">Свободно м²</th></tr></thead>
         <tbody>${rows}</tbody>
       </table>
       <div class="kv">
-        <dt>Bu bo'limda</dt><dd><b>${stands.length}</b> stend · ${fmtNum(area)} m²${mergedArea ? ` <span class="muted">(${fmtNum(mergedArea)} m² birlashgan katak)</span>` : ''}</dd>
-        <dt>Bo'sh</dt><dd><b>${free.length}</b> stend · ${fmtNum(freeArea)} m²</dd>
-        <dt>Narx (bo'sh joylar)</dt><dd>${pricePerM2() ? fmtMoney(amount) : '—'}</dd>
+        <dt>В разделе</dt><dd><b>${stands.length}</b> стендов · ${fmtNum(area)} м²${mergedArea ? ` <span class="muted">(${fmtNum(mergedArea)} м² объединённые ячейки)</span>` : ''}</dd>
+        <dt>Свободно</dt><dd><b>${free.length}</b> стендов · ${fmtNum(freeArea)} м²</dd>
+        <dt>Цена (свободные места)</dt><dd>${pricePerM2() ? fmtMoney(amount) : '—'}</dd>
       </div>
-      ${free.length && free.length <= 24 ? `<div class="muted">Bo'sh: ${free.map((s) => s.id).join(', ')}</div>` : ''}`;
+      ${free.length && free.length <= 24 ? `<div class="muted">Свободно: ${free.map((s) => s.id).join(', ')}</div>` : ''}`;
   }
 
   $('#secClear').addEventListener('click', () => { activeSection = null; applyFilters(); renderSections(); });
@@ -653,7 +671,7 @@
     if (!found) return;
     selection = new Set(found.free.map((s) => s.id));
     paintSelection(); renderSelection();
-    toast(`${found.sec.short || found.sec.label}: ${found.free.length} ta bo'sh stend tanlandi (${fmtNum(found.freeArea)} m²)`);
+    toast(`${found.sec.short || found.sec.label}: выбрано ${found.free.length} свободных стендов (${fmtNum(found.freeArea)} м²)`);
   });
 
   // ------------------------------------------------------------ search
@@ -688,14 +706,14 @@
       renderStats(); renderLegend();
       const ids = standIds;
       if (action === 'sell') showReceipt(ids, extra, r.items);
-      toast(`${action === 'sell' ? 'Sotildi' : action === 'reserve' ? 'Bron qilindi' : action === 'release' ? "Bo'shatildi" : 'Bloklandi'}: ${ids.join(', ')}`, 'ok');
+      toast(`${action === 'sell' ? 'Продано' : action === 'reserve' ? 'Забронировано' : action === 'release' ? 'Освобождено' : 'Блокировано'}: ${ids.join(', ')}`, 'ok');
       selection = new Set();
       renderSelection(); paintSelection();
       if (isAdmin()) loadAudit();
     } catch (err) {
       if (err.code === 409 && err.data?.conflicts) {
         const c = err.data.conflicts.map((x) => `${x.standId} (${STATUS_LABEL[x.status] || x.status}${x.sellerName ? ', ' + x.sellerName : ''})`);
-        fail(`Band qilingan: ${c.join(', ')}. Sahifa yangilandi — qaytadan tanlang.`);
+        fail(`Уже занято: ${c.join(', ')}. Страница обновлена — выберите заново.`);
         await refreshState();
       } else if (err.code !== 401) {
         fail(err.message);
@@ -707,17 +725,17 @@
     const { free, area, amount, blocks } = selectionInfo();
     if (!free.length) return;
     const buyer = $('#buyer').value.trim();
-    if (!buyer) return fail('Mijoz ismini kiriting');
+    if (!buyer) return fail('Введите имя клиента');
     const ttl = Number($('#ttl').value || ttlDefault());
-    const ok = await confirmDialog('Bron qilishni tasdiqlang', `
-      <p>${free.length} stend (${fmtNum(area)} m²) ${ttl} soatga bron qilinadi:</p>
+    const ok = await confirmDialog('Подтвердите бронь', `
+      <p>${free.length} стендов (${fmtNum(area)} м²) бронируются на ${ttl} ч.:</p>
       <p><b>${free.map((s) => s.id).join(', ')}</b></p>
       <table>
-        <tr><td>Blok(lar)</td><td>${blocks.join(', ')}</td></tr>
-        <tr><td>Mijoz</td><td>${buyer}</td></tr>
-        <tr><td>Summa (kelishuv narxi)</td><td>${fmtMoney(amount)}</td></tr>
+        <tr><td>Блок(и)</td><td>${blocks.join(', ')}</td></tr>
+        <tr><td>Клиент</td><td>${buyer}</td></tr>
+        <tr><td>Сумма (по согласованию)</td><td>${fmtMoney(amount)}</td></tr>
       </table>
-      <p class="muted">Bron ${fmtDate(new Date(Date.now() + ttl * 3600e3).toISOString())} gacha amal qiladi, keyin avtomatik bo'shaydi.</p>`);
+      <p class="muted">Бронь действует до ${fmtDate(new Date(Date.now() + ttl * 3600e3).toISOString())}, затем снимается автоматически.</p>`);
     if (!ok) return;
     await doAction('reserve', free.map((s) => s.id), { buyer, phone: $('#phone').value, company: $('#company').value, note: $('#note').value, ttlHours: ttl }).catch(() => {});
   });
@@ -726,18 +744,18 @@
     const { free, area, amount, blocks, taken } = selectionInfo();
     if (!free.length) return;
     const buyer = $('#buyer').value.trim();
-    if (!buyer) return fail('Mijoz ismini kiriting');
-    const ok = await confirmDialog('SOTISHNI tasdiqlang', `
-      <p style="margin-top:0">Quyidagi joylar <b>sotilgan</b> deb belgilanadi. Mijozga aynan shu ID'lar aytiladi:</p>
+    if (!buyer) return fail('Введите имя клиента');
+    const ok = await confirmDialog('Подтвердите ПРОДАЖУ', `
+      <p style="margin-top:0">Эти места будут отмечены как <b>проданные</b>. Клиенту называются именно эти ID:</p>
       <p style="font-size:15px"><b>${free.map((s) => s.id).join(', ')}</b></p>
       <table>
-        <tr><td>Blok(lar)</td><td>${blocks.join(', ')}</td></tr>
-        <tr><td>Maydon</td><td>${free.length} × 9 = ${fmtNum(area)} m²</td></tr>
-        <tr><td>Mijoz</td><td>${buyer} ${$('#phone').value ? '· ' + $('#phone').value : ''}</td></tr>
-        <tr><td><b>Summa</b></td><td><b>${fmtMoney(amount)}</b></td></tr>
+        <tr><td>Блок(и)</td><td>${blocks.join(', ')}</td></tr>
+        <tr><td>Площадь</td><td>${free.length} × 9 = ${fmtNum(area)} м²</td></tr>
+        <tr><td>Клиент</td><td>${buyer} ${$('#phone').value ? '· ' + $('#phone').value : ''}</td></tr>
+        <tr><td><b>Сумма</b></td><td><b>${fmtMoney(amount)}</b></td></tr>
       </table>
-      ${taken.length ? `<p class="muted">Eslatma: tanlangan ${taken.length} stend band, faqat bo'sh joylar sotiladi.</p>` : ''}
-      <p class="muted">Amal jurnalga yoziladi: kim, qachon, qaysi joyni sotdi.</p>`);
+      ${taken.length ? `<p class="muted">Внимание: из выбранных ${taken.length} стендов часть занята — продаются только свободные.</p>` : ''}
+      <p class="muted">Операция записывается в журнал: кто, когда и какие места продал.</p>`);
     if (!ok) return;
     await doAction('sell', free.map((s) => s.id), { buyer, phone: $('#phone').value, company: $('#company').value, note: $('#note').value }).catch(() => {});
   });
@@ -746,10 +764,10 @@
     const { stands } = selectionInfo();
     const releasable = stands.filter((s) => statusOf(s.id) !== 'free');
     if (!releasable.length) return;
-    const ok = await confirmDialog('Bo\'shatishni tasdiqlang', `
-      <p>Bu joylardagi bron/sotuv yozuvi o'chiriladi va ular yana <b>bo'sh</b> bo'ladi:</p>
+    const ok = await confirmDialog('Подтвердите освобождение', `
+      <p>Записи о брони/продаже будут удалены, места снова станут <b>свободными</b>:</p>
       <p><b>${releasable.map((s) => s.id).join(', ')}</b></p>
-      <p class="muted">Sotilgan joyni faqat menejer bo'shata oladi. Amal jurnalga yoziladi.</p>`);
+      <p class="muted">Проданное место освобождает только менеджер. Операция пишется в журнал.</p>`);
     if (!ok) return;
     await doAction('release', releasable.map((s) => s.id), { note: $('#note').value }).catch(() => {});
   });
@@ -762,13 +780,13 @@
     const blockIds = [...new Set(standIds.map((id) => id.split('-').slice(0, 2).join('-')))];
     $('#receipt').hidden = false;
     $('#receipt').innerHTML = `
-      <h2>Sotuv kvitansiyasi ✓</h2>
-      <div>Sotilgan joy(lar): <b>${standIds.join(', ')}</b></div>
-      <div>Guruh(lar): ${blockIds.join(', ')} · Maydon: ${standIds.length} stend = <b>${fmtNum(area)} m²</b></div>
-      <div>Mijoz: <b>${extra.buyer || ''}</b> ${extra.phone || ''} ${extra.company ? '· ' + extra.company : ''}</div>
-      <div>Summa: <b>${fmtMoney(amount)}</b> (${fmtMln(amount)})</div>
-      <div class="muted">Sotuvchi: ${seller?.name || ''} · ${fmtDate(new Date().toISOString())} · ${layout.meta.project}, ${layout.meta.hall} · layout v${layout.meta.version}</div>
-      <div class="actions"><button class="btn" id="printReceipt">Kvitansiyani chop etish</button></div>`;
+      <h2>Квитанция о продаже ✓</h2>
+      <div>Проданные места: <b>${standIds.join(', ')}</b></div>
+      <div>Группы: ${blockIds.join(', ')} · Площадь: ${standIds.length} стендов = <b>${fmtNum(area)} м²</b></div>
+      <div>Клиент: <b>${extra.buyer || ''}</b> ${extra.phone || ''} ${extra.company ? '· ' + extra.company : ''}</div>
+      <div>Сумма: <b>${fmtMoney(amount)}</b> (${fmtMln(amount)})</div>
+      <div class="muted">Продавец: ${seller?.name || ''} · ${fmtDate(new Date().toISOString())} · ${layout.meta.project}, ${layout.meta.hall} · версия плана v${layout.meta.version}</div>
+      <div class="actions"><button class="btn" id="printReceipt">Печать квитанции</button></div>`;
     $('#printReceipt').onclick = () => { document.body.classList.add('print-receipt'); window.print(); };
     window.onafterprint = () => document.body.classList.remove('print-receipt');
   }
@@ -776,17 +794,17 @@
   function showClientInfo(id) {
     const s = layout.stands.find((x) => x.id === id);
     const st = statusOf(id);
-    toast(`${s.id} · ${STATUS_LABEL[st]} · 9 m²`);
+    toast(`${s.id} · ${STATUS_LABEL[st]} · 9 м²`);
   }
 
   // ------------------------------------------------------------ mijoz rejimi / print / share
   $('#clientMode').addEventListener('click', async () => {
     if ((layout?.meta?.status || 'draft') !== 'approved') {
-      return fail('Bu xarita hali QORALAMA — mijozga havola yuborishdan oldin raqamlarni tasdiqlash kerak (meta.status = "approved").');
+      return fail('План ещё ЧЕРНОВИК — перед отправкой клиенту подтвердите размеры (meta.status = "approved").');
     }
     const url = new URL(location.href);
     url.searchParams.set('mode', 'client');
-    try { await navigator.clipboard.writeText(url.toString()); toast('Mijoz uchun havola nusxalandi: ' + url.toString()); }
+    try { await navigator.clipboard.writeText(url.toString()); toast('Ссылка для клиента скопирована: ' + url.toString()); }
     catch { window.open(url.toString(), '_blank'); }
   });
 
@@ -802,20 +820,20 @@
     const rows = layout.blocks.filter((b) => b.kind !== 'custom').map((b) => {
       const cnt = { free: 0, reserved: 0, sold: 0, blocked: 0 };
       b.stands.forEach((s) => cnt[statusOf(s.id)]++);
-      return `<tr><td>${b.id}</td><td>${b.stands.length} × 9 = ${fmtNum(b.areaM2)} m²</td><td>${cnt.free}</td><td>${cnt.reserved}</td><td>${cnt.sold}</td><td>${cnt.free ? b.stands.filter((s) => statusOf(s.id) === 'free').map((s) => s.id).join(', ') : '—'}</td></tr>`;
+      return `<tr><td>${b.id}</td><td>${b.stands.length} × 9 = ${fmtNum(b.areaM2)} м²</td><td>${cnt.free}</td><td>${cnt.reserved}</td><td>${cnt.sold}</td><td>${cnt.free ? b.stands.filter((s) => statusOf(s.id) === 'free').map((s) => s.id).join(', ') : '—'}</td></tr>`;
     }).join('');
     const secRows = sectionStats().map(({ sec, stands, free, area, freeArea }) => `<tr>
-        <td>${sec.label}${sec.labelRu ? ' · ' + sec.labelRu : ''}</td>
-        <td>${stands.length}</td><td>${fmtNum(area)} m²</td>
-        <td>${free.length}</td><td>${fmtNum(freeArea)} m²</td>
+        <td>${sec.label}</td>
+        <td>${stands.length}</td><td>${fmtNum(area)} м²</td>
+        <td>${free.length}</td><td>${fmtNum(freeArea)} м²</td>
         <td>${free.length ? free.map((s) => s.id).join(', ') : '—'}</td>
       </tr>`).join('');
     sheet.innerHTML = `
-      <h2>${layout.meta.project} — ${layout.meta.hall} · joylashuv xaritasi (v${layout.meta.version})</h2>
-      <p>1 stend = 3×3 m = 9 m² · 1 blok = 8 stend = 72 m² · Narx: ${layout.meta.pricePerM2 ? fmtMoney(layout.meta.pricePerM2) + '/m²' : '—'} · Sana: ${fmtDate(new Date().toISOString())}</p>
-      <p><b>Bo'sh joylar (${freeIds.length} ta stend = ${fmtNum(freeIds.length * 9)} m²):</b> ${freeIds.join(', ') || '—'}</p>
+      <h2>${layout.meta.project} — ${layout.meta.hall} · план залов (v${layout.meta.version})</h2>
+      <p>1 стенд = 3×3 м = 9 м² · 1 блок = 8 стендов = 72 м² · Цена: ${layout.meta.pricePerM2 ? fmtMoney(layout.meta.pricePerM2) + '/м²' : '—'} · Дата: ${fmtDate(new Date().toISOString())}</p>
+      <p><b>Свободные места (${freeIds.length} стендов = ${fmtNum(freeIds.length * 9)} м²):</b> ${freeIds.join(', ') || '—'}</p>
       <table>
-        <thead><tr><th>Blok</th><th>Maydon</th><th>Bo'sh</th><th>Bron</th><th>Sotilgan</th><th>Bo'sh stend ID'lari</th></tr></thead>
+        <thead><tr><th>Блок</th><th>Площадь</th><th>Свободно</th><th>Бронь</th><th>Продано</th><th>ID свободных стендов</th></tr></thead>
         <tbody>${rows}</tbody>
       </table>
       ${(() => {
@@ -827,20 +845,20 @@
           if (!m.has(k)) m.set(k, { buyer: it.buyer, status: it.status, ids: [], area: 0 });
           const r = m.get(k); r.ids.push(s.id); r.area += s.areaM2;
         }
-        const rows = [...m.values()].sort((a, b) => b.area - a.area);
-        if (!rows.length) return '';
-        return `<h3>Kompaniyalar (band qilingan joylar)</h3>
-        <table><thead><tr><th>Kompaniya</th><th>Holat</th><th>Stend</th><th>Maydon</th><th>Stend ID'lari</th></tr></thead>
-        <tbody>${rows.map((r) => `<tr><td><b>${r.buyer}</b></td><td>${STATUS_LABEL[r.status]}</td><td>${r.ids.length}</td><td>${fmtNum(r.area)} m²</td><td>${r.ids.join(', ')}</td></tr>`).join('')}</tbody></table>`;
+        const list = [...m.values()].sort((a, b) => b.area - a.area);
+        if (!list.length) return '';
+        return `<h3>Компании (занятые места)</h3>
+        <table><thead><tr><th>Компания</th><th>Статус</th><th>Стендов</th><th>Площадь</th><th>ID стендов</th></tr></thead>
+        <tbody>${list.map((r) => `<tr><td><b>${r.buyer}</b></td><td>${STATUS_LABEL[r.status]}</td><td>${r.ids.length}</td><td>${fmtNum(r.area)} м²</td><td>${r.ids.join(', ')}</td></tr>`).join('')}</tbody></table>`;
       })()}
-      ${secRows ? `<h3>Bo'limlar bo'yicha</h3>
+      ${secRows ? `<h3>По разделам</h3>
       <table>
-        <thead><tr><th>Bo'lim</th><th>Stend</th><th>Maydon</th><th>Bo'sh</th><th>Bo'sh maydon</th><th>Bo'sh stend ID'lari</th></tr></thead>
+        <thead><tr><th>Раздел</th><th>Стендов</th><th>Площадь</th><th>Свободно</th><th>Свободная площадь</th><th>ID свободных стендов</th></tr></thead>
         <tbody>${secRows}</tbody>
       </table>` : ''}
-      <p style="margin-top:6mm">Mijoz uchun izoh: sotib olingan joylar xaritada ID bo'yicha ko'rsatilgan. Shartnomada ko'rsatilgan stend ID'si bilan xaritadagi joy bir xil.</p>`;
+      <p style="margin-top:6mm">Примечание для клиента: купленные места отмечены на плане по ID. ID стенда в договоре совпадает с местом на плане.</p>`;
   }
-  // A3 landscape (8 mm hoshiya) ichiga xaritani to'liq sig'diradi -> PDF bitta varaq bo'ladi
+  // Вписывает план в лист A3 landscape (поля 8 мм) — PDF получается на одну страницу
   function fitPrintPage() {
     const svg = $('#map');
     const vb = (svg.getAttribute('viewBox') || '').split(/\s+/).map(Number);

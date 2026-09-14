@@ -199,13 +199,38 @@
     return { stands, items };
   }
 
+  /**
+   * Matn kengligi (em birliklarida) — DejaVu Sans / Arial o'rtacha ko'rsatkichlari.
+   * Nega kerak: yorliqlar bir-birini bosmasligi uchun matn kengligini OLDINDAN
+   * aniq bilish shart (eski "0.6 × belgilar soni" taxmini kirillcha matnda
+   * kichik chiqib, yozuvlar ustma-ust tushardi).
+   */
+  const NARROW = /[ijltfrI.,:;!|'"`()[\]{}\-–—•·]/;
+  const WIDE = /[mwMWШЩшщюЮМФ]/;
+  const UPPER = /[A-ZА-ЯЁҚҒҲЎ]/;
+  function charWidth(ch) {
+    if (ch === ' ') return 0.318;
+    if (ch >= '0' && ch <= '9') return 0.636;
+    if (NARROW.test(ch)) return 0.38;
+    if (WIDE.test(ch)) return 0.9;
+    if (UPPER.test(ch)) return 0.7;
+    return 0.56;
+  }
+  /** Matnning piksel (yoki SVG user-unit) kengligi. bold=true bo'lsa 5% qo'shiladi. */
+  function textWidth(text, fs, bold) {
+    const s = String(text ?? '');
+    let w = 0;
+    for (const ch of s) w += charWidth(ch);
+    return w * fs * (bold ? 1.05 : 1) + s.length * fs * 0.02;
+  }
+
   /** Matnni berilgan kenglik/balandlikka sig'adigan qatorlarga bo'ladi va shrift o'lchamini tanlaydi. */
   function fitText(text, maxW, maxH, o) {
     const opt = o || {};
     const minFs = opt.minFs || 0.7;
     const maxFs = opt.maxFs || 3;
     const maxLines = opt.maxLines || 3;
-    const cw = opt.cw || 0.6;          // belgi kengligi / shrift
+    const bold = !!opt.bold;
     const lh = opt.lh || 1.22;         // qator balandligi / shrift
     const words = String(text).trim().split(/\s+/).filter(Boolean);
     if (!words.length) return { lines: [], fs: minFs };
@@ -214,13 +239,13 @@
       let cur = '';
       for (const w of words) {
         const next = cur ? cur + ' ' + w : w;
-        if (next.length * fs * cw > maxW && cur) { lines.push(cur); cur = w; }
+        if (textWidth(next, fs, bold) > maxW && cur) { lines.push(cur); cur = w; }
         else cur = next;
         if (lines.length >= limit) return null;
       }
       if (cur) lines.push(cur);
       if (lines.length > limit) return null;
-      if (lines.some((l) => l.length * fs * cw > maxW)) return null;
+      if (lines.some((l) => textWidth(l, fs, bold) > maxW)) return null;
       if (lines.length * lh * fs > maxH) return null;
       return lines;
     };
@@ -233,16 +258,66 @@
       if (best) return best;
     }
     // sig'madi — eng katta shriftda qisqartiramiz
-    const fs = Math.max(minFs, Math.min(maxFs, maxW / Math.max(4, words[0].length) / cw, maxH / (2 * lh)));
+    const fs = Math.max(minFs, Math.min(maxFs, (maxW / textWidth(words[0], 1, bold)) || 1, maxH / (2 * lh)));
     let out = '';
     for (const w of words) {
       const next = out ? out + ' ' + w : w;
-      if (next.length * fs * cw > maxW) break;
+      if (textWidth(next, fs, bold) > maxW) break;
       out = next;
     }
     if (out.length < String(text).trim().length) out = out.replace(/.$/, '') + '…';
     return { lines: out ? [out] : [], fs: r3(fs) };
   }
 
-  root.ExpoGroups = { groupBookings, unionPath, fitText, largestRect, mergedAsStands, touches };
+  /** Длинные слова («Derevenskoye») режем на части — иначе имя не влезает в ячейку 3×3 м. */
+  function softBreak(text, chunk) {
+    const c = chunk || 12;
+    return String(text ?? '').split(/\s+/).map((w) => {
+      if (w.length <= c) return w;
+      // сначала пробуем перенести по дефису (Conference-Hall → Conference- + Hall)
+      const hy = w.lastIndexOf('-');
+      if (hy > 2 && hy < w.length - 1 && w.length - hy - 1 <= c) return w.slice(0, hy + 1) + ' ' + w.slice(hy + 1);
+      const parts = [];
+      for (let i = 0; i < w.length; i += c) parts.push(w.slice(i, i + c));
+      return parts.join(' ');
+    }).join(' ');
+  }
+
+  /**
+   * Подпись внутри рамки БЕЗ обрезки (многоточия): подбираем размер шрифта так,
+   * чтобы самое длинное слово влезало по ширине, а число строк — по высоте.
+   * Длинные слова при необходимости режутся на части (chunk).
+   */
+  function fitLabel(text, maxW, maxH, o) {
+    const opt = o || {};
+    const maxFs = opt.maxFs || 11;
+    const minFs = opt.minFs || 5.2;
+    const bold = opt.bold !== false;
+    const chunk = opt.chunk || 12;
+    const words = softBreak(String(text || ''), chunk).split(/\s+/).filter(Boolean);
+    if (!words.length) return { lines: [], fs: minFs };
+    const wrapAt = (fs) => {
+      const lines = [];
+      let cur = '';
+      for (const w of words) {
+        const next = cur ? cur + ' ' + w : w;
+        if (cur && textWidth(next, fs, bold) > maxW) { lines.push(cur); cur = w; } else cur = next;
+      }
+      if (cur) lines.push(cur);
+      return lines;
+    };
+    for (let fs = maxFs; fs >= minFs; fs -= 0.2) {
+      const widest = Math.max(...words.map((w) => textWidth(w, fs, bold)), 1);
+      if (widest > maxW) continue;
+      const lines = wrapAt(fs);
+      if (lines.length * fs * 1.18 <= maxH) return { lines, fs: r3(fs) };
+    }
+    // не влезло даже в минимальный размер — берём максимально возможный по ширине,
+    // но не мельче floor (в пикселях экспорта floor = 4.6, на плане в метрах — 0.35)
+    const widest1 = Math.max(...words.map((w) => textWidth(w, 1, bold)), 1);
+    const fs = Math.max(opt.floor ?? 0.35, Math.min(minFs, maxW / widest1));
+    return { lines: wrapAt(fs), fs: r3(fs) };
+  }
+
+  root.ExpoGroups = { groupBookings, unionPath, fitText, largestRect, mergedAsStands, touches, textWidth, charWidth, fitLabel };
 })(typeof globalThis !== 'undefined' ? globalThis : this);

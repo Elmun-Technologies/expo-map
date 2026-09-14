@@ -51,7 +51,7 @@ xarita "aniq" bo'ladi, chunki har bir stend o'z ID'si va o'z o'lchami bilan chiq
    B2B, Hall, переговорная, yuk darvozasi, ustunlar) va **haqiqiy stend ID'lari**.
 2. Ustun/fon ranglari sxemadagidek (A sariq, B ko'k, C qizil, D feruza, E yashil, F binafsha, G ko'k).
 3. FOODERA kompaniyalarini **haqiqiy stendlarga** bog'lash (kompaniya ↔ stend ID ro'yxati bo'yicha).
-4. Panel, `01-xarita-butun-zal.pdf`, bo'lim varaqlari, CSV'lar — hammasi yangi layoutdan
+4. Panel, `01-план-зала-весь.pdf`, bo'lim varaqlari, CSV'lar — hammasi yangi layoutdan
    avtomatik qayta yasaladi. Validator 9 m²/72 m² va yo'lak qoidalarini tekshiradi.
 5. Natijani siz bilan solishtiramiz: har bir stend ID + o'lcham + kompaniya.
 

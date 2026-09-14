@@ -127,14 +127,14 @@ node tools/package.mjs --layout layout/hall-A.json --out exports/A-zal
 Paket ichida:
 | Fayl | Kim uchun |
 |---|---|
-| `01-xarita-butun-zal.svg` | mijoz/rahbariyat: bo'limlar, bron va sotilgan joylar bilan |
-| `01-xarita-butun-zal.pdf` | shu xaritaning **bitta varaqli** PDF'i (A3 landscape) — yuborish uchun |
-| `02-xarita-bosh-joylar.svg` | sotuvchi: faqat bo'sh joylar |
-| `02-xarita-bosh-joylar.pdf` | bo'sh joylar xaritasining bitta varaqli PDF'i |
-| `03-bolim-<ID>-*.svg` | mijozga aynan o'z bo'limi (A, B, ... EQ, WING) |
-| `04-kompaniyalar.csv` | band joylar: kompaniya, stend ID lari, summa — **bitta kompaniya = bitta qator** (Excel) |
-| `05-bosh-joylar.csv` | bo'sh joylar ro'yxati narxi bilan |
-| `00-IZOH.txt` | versiya, qoidalar, bo'limlar jadvali |
+| `01-план-зала-весь.svg` | mijoz/rahbariyat: bo'limlar, bron va sotilgan joylar bilan |
+| `01-план-зала-весь.pdf` | shu xaritaning **bitta varaqli** PDF'i (A3 landscape) — yuborish uchun |
+| `02-план-свободные-места.svg` | sotuvchi: faqat bo'sh joylar |
+| `02-план-свободные-места.pdf` | bo'sh joylar xaritasining bitta varaqli PDF'i |
+| `03-раздел-<ID>-*.svg` | mijozga aynan o'z bo'limi (A, B, ... EQ, WING) |
+| `04-компании.csv` | band joylar: kompaniya, stend ID lari, summa — **bitta kompaniya = bitta qator** (Excel) |
+| `05-свободные-места.csv` | bo'sh joylar ro'yxati narxi bilan |
+| `00-ПОЯСНЕНИЕ.txt` | versiya, qoidalar, bo'limlar jadvali |
 
 Paket faqat layout validatordan o'tgan va `meta.status: "approved"` bo'lsa yasaladi
 (qoralamadan mijozga ketmaydi).

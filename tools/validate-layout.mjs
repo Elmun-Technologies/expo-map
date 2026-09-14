@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
- * Layout'ni tekshirish:  node tools/validate-layout.mjs layout/hall-A.json
- * Har qanday o'zgarishdan keyin (CI'da ham) shu skript ishlaydi.
- * Xato topsa — chiqish kodi 1 (ya'ni xarita bilan mijozga chiqib bo'lmaydi).
+ * Проверка плана:  node tools/validate-layout.mjs layout/foodera-2026.json
+ * Запускается после любого изменения (в том числе в CI).
+ * При ошибке — код выхода 1 (с таким планом к клиенту выходить нельзя).
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -10,7 +10,7 @@ import { validateLayout } from '../lib/layout.mjs';
 
 const files = process.argv.slice(2);
 if (!files.length) {
-  console.error('Ishlatish: node tools/validate-layout.mjs <layout.json> [yana.json ...]');
+  console.error('Использование: node tools/validate-layout.mjs <layout.json> [ещё.json ...]');
   process.exit(2);
 }
 
@@ -21,7 +21,7 @@ for (const f of files) {
   try {
     raw = JSON.parse(fs.readFileSync(p, 'utf8'));
   } catch (e) {
-    console.log(`\n✗ ${f}\n  JSON o'qib bo'lmadi: ${e.message}`);
+    console.log(`\n✗ ${f}\n  не удалось прочитать JSON: ${e.message}`);
     failed++;
     continue;
   }
@@ -29,7 +29,7 @@ for (const f of files) {
   const rel = path.relative(process.cwd(), p);
   console.log(`\n${r.ok ? '✓' : '✗'} ${rel}`);
   if (r.stats) {
-    console.log(`  ${r.stats.blocks} blok · ${r.stats.stands} stend · ${r.stats.totalAreaM2} m² · stend ${r.stats.standWidthM}×${r.stats.standHeightM} m · min yo'lak ${r.stats.minAisleM} m`);
+    console.log(`  ${r.stats.blocks} блоков · ${r.stats.stands} стендов · ${r.stats.totalAreaM2} м² · стенд ${r.stats.standWidthM}×${r.stats.standHeightM} м · мин. проход ${r.stats.minAisleM} м`);
   }
   for (const w of r.warnings) console.log(`  ⚠ ${w}`);
   for (const e of r.errors) console.log(`  ✗ ${e}`);
@@ -37,7 +37,7 @@ for (const f of files) {
 }
 
 if (failed) {
-  console.log(`\n${failed} ta layout XATO bilan tugadi.`);
+  console.log(`\n${failed} план(ов) завершились с ОШИБКОЙ.`);
   process.exit(1);
 }
-console.log('\nHammasi joyida.');
+console.log('\nВсё в порядке.');

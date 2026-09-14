@@ -67,14 +67,14 @@ try {
   process.exit(2);
 }
 
-// --- bo'sh blokni tanlaymiz (holat toza bo'lmasa ham test ishlashi uchun)
+// --- bo'выбираем блок со свободными местами (состояние чистое,lmasa ham test ishlashi uchun)
 const layout = await (await fetch(BASE + '/api/layout')).json();
 let st = await (await fetch(BASE + '/api/state')).json();
-// nostandart (custom) bloklar stendi blok ID'si bilan bir xil bo'ladi — sinov uchun oddiy blok kerak
+// nostandart (custom) bloklar stendi blok ID'совпадает с ladi — sinov uchun oddiy blok kerak
 const gridBlocks = layout.blocks.filter((b) => b.kind !== 'custom');
 let freeBlock = gridBlocks.find((b) => b.stands.every((s) => !st.items[s.id]));
 if (!freeBlock) {
-  // eng ko'p bo'sh joyi bor blokni bo'shatamiz (menejer huquqi bilan)
+  // eng ko'p bo'блок со свободными местамиshatamiz (menejer huquqi bilan)
   const tok0 = (await (await fetch(BASE + '/api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: 'Menejer', pin: '9999' }) })).json()).token;
   const cand = gridBlocks.map((b) => ({ b, booked: b.stands.filter((s) => st.items[s.id]) })).sort((x, y) => x.booked.length - y.booked.length)[0];
   if (cand.booked.length) {
@@ -140,21 +140,21 @@ const clickMap = (el, pointerId = 1) => {
 };
 
 await tick(600);
-assert(errors.length === 0, 'ilova xatosiz yuklandi' + (errors.length ? ' → ' + errors.join(' | ') : ''));
+assert(errors.length === 0, 'приложение загрузилось без ошибок' + (errors.length ? ' → ' + errors.join(' | ') : ''));
 assert($('#hallTitle').textContent.includes(layout.meta.project) || $('#hallTitle').textContent.includes(layout.meta.hall),
-  'layout yuklandi: ' + $('#hallTitle').textContent);
-// band joylar endi bitta quti bo'lib chiziladi — stendlar soni = bo'sh yacheykalar + qutilar ichidagi stendlar
+  'план загружен: ' + $('#hallTitle').textContent);
+// band joylar endi bitta quti bo'рисуется — число стендов = своsh yacheykalar + qutilar ichidagi stendlar
 const unitStands = $$('#world .booking-unit').flatMap((u) => u.dataset.ids.split(',').filter((id) => !id.includes('~m')));
 const customUnitStands = unitStands.filter((id) => (layout.customStands || []).some((c) => c.id === id));
 assert(!layout.customStands?.length
   || doc.querySelectorAll('#world .stand.custom').length + customUnitStands.length === layout.customStands.length,
   `nostandart stendlar chizildi (${doc.querySelectorAll('#world .stand.custom').length + customUnitStands.length}/${layout.customStands?.length || 0})`);
 if ((layout.meta.status || 'draft') !== 'approved') {
-  assert(!$('#draftBanner').hidden, 'QORALAMA banneri ko\'rsatildi');
+  assert(!$('#draftBanner').hidden, 'баннер «ЧЕРНОВИК» показан');
 }
 assert($$('#world .stand').length + unitStands.length === layout.stands.length,
   `xaritada ${layout.stands.length} stend chizildi (bo'sh ${$$('#world .stand').length} + qutilarda ${unitStands.length})`);
-assert($('#stats').textContent.includes("bo'sh"), 'statistika ko\'rsatildi');
+assert($('#stats').textContent.includes('свободно'), 'статистика показана');
 
 // --- login
 $('#loginName').value = 'Aziz Karimov';
@@ -166,10 +166,10 @@ assert($('#who').textContent.includes('Aziz'), 'login ishladi: ' + $('#who').tex
 // --- bitta stend tanlash
 clickMap($$('#world .stand').find((g) => g.dataset.id === freeStand.id));
 await tick();
-assert(!$('#selBody').hidden, 'stend bosilganda tanlov paneli ochildi');
-assert($('#selTitle').textContent.includes(freeStand.blockId), 'tanlov bloki: ' + $('#selTitle').textContent);
-assert($('#selInfo').textContent.includes('9 m²'), '9 m² ko\'rsatildi');
-assert($('#btnSell').disabled === false, 'tanlovda "Sotish" tugmasi faol');
+assert(!$('#selBody').hidden, 'при клике на стенд открылась панель выбора');
+assert($('#selTitle').textContent.includes(freeStand.blockId), 'блок выбора: ' + $('#selTitle').textContent);
+assert($('#selInfo').textContent.includes('9 м²'), 'показано 9 м²');
+assert($('#btnSell').disabled === false, 'кнопка «Продать» активна');
 
 // --- blok yorlig'i bosilganda butun blok (8 × 9 = 72 m²)
 $('#clearSel').click();
@@ -178,8 +178,8 @@ clickMap($$('#world .block-chip').find((c) => c.dataset.block === freeBlock.id),
 await tick();
 const fbArea = freeBlock.stands.reduce((a, s) => a + s.areaM2, 0);
 const fbAreaTxt = fbArea.toLocaleString('ru-RU').replace(/\u00A0/g, ' ');
-assert($('#selChips').children.length === freeBlock.stands.length, `blok bosilganda ${freeBlock.stands.length} stend tanlandi (${$('#selChips').children.length})`);
-assert($('#selInfo').textContent.replace(/\s+/g, ' ').includes(`${freeBlock.stands.length} stend · ${fbAreaTxt} m²`),
+assert($('#selChips').children.length === freeBlock.stands.length, `при клике на блок выбрано ${freeBlock.stands.length} стендов (${$('#selChips').children.length})`);
+assert($('#selInfo').textContent.replace(/\s+/g, ' ').includes(`${freeBlock.stands.length} стендов · ${fbAreaTxt} м²`),
   'blok maydoni ko\'rsatildi: ' + $('#selInfo').textContent.replace(/\s+/g, ' ').slice(0, 90));
 
 // --- sotish oqimi
@@ -187,13 +187,13 @@ $('#buyer').value = 'Smoke Test MChJ';
 $('#phone').value = '+998900000000';
 $('#btnSell').click();
 await tick(200);
-assert(!$('#confirm').hidden, 'tasdiqlash oynasi chiqdi');
+assert(!$('#confirm').hidden, 'окно подтверждения показано');
 assert($('#confirmBody').textContent.includes(freeBlock.stands[0].id), 'tasdiqlashda stend ID\'lari ko\'rsatildi');
 $('#confirmOk').click();
 await tick(900);
-assert(!$('#receipt').hidden, 'sotuv kvitansiyasi chiqdi');
-assert($('#receipt').textContent.includes('Smoke Test MChJ'), 'kvitansiyada mijoz ismi bor');
-assert($('#receipt').textContent.replace(/\u00A0/g, ' ').includes(`${fbAreaTxt} m²`), 'kvitansiyada blok maydoni');
+assert(!$('#receipt').hidden, 'квитанция о продаже показана');
+assert($('#receipt').textContent.includes('Smoke Test MChJ'), 'в квитанции есть имя клиента');
+assert($('#receipt').textContent.replace(/\u00A0/g, ' ').includes(`${fbAreaTxt} м²`), 'в квитанции площадь блока');
 assert(errors.length === 0, 'sotuvdan keyin ham xato yo\'q' + (errors.length ? ' → ' + errors.join(' | ') : ''));
 
 st = await (await fetch(BASE + '/api/state')).json();
@@ -202,23 +202,23 @@ assert(sold.length === freeBlock.stands.length, `serverda ${freeBlock.id} ning $
 
 // --- bitta kompaniya = xaritada BITTA quti, nomi ichida
 const unit = $$('#world .booking-unit').find((u) => u.dataset.ids.split(',').includes(freeBlock.stands[0].id));
-assert(!!unit, 'band joy bitta quti bo\'lib chiqdi (.booking-unit)');
+assert(!!unit, 'занятое место стало одной рамкой (.booking-unit)');
 assert(unit.dataset.ids.split(',').length === freeBlock.stands.length,
   `quti butun guruhni o\'z ichiga oldi (${unit.dataset.ids.split(',').length}/${freeBlock.stands.length})`);
 const unitText = unit.textContent.replace(/\s+/g, ' ');
-assert(unitText.includes('Smoke Test MChJ'), 'kompaniya nomi qutining ICHIDA yozilgan: ' + unitText.slice(0, 60));
+assert(unitText.includes('Smoke Test MChJ'), 'название компании написано ВНУТРИ рамки: ' + unitText.slice(0, 60));
 assert($$('#world .stand').every((g) => !g.dataset.id.startsWith(freeBlock.id + '-')), 'band stendlar alohida yacheyka bo\'lib qolmadi');
 const row = $$('#bookingsList .booking-row').find((r) => r.textContent.includes('Smoke Test MChJ'));
 assert(!!row, 'boshqaruv ro\'yxatida ham bitta qator');
-assert(row.textContent.replace(/\s+/g, ' ').includes(`${freeBlock.stands.length} stend`), 'qatorda stendlar soni bitta yozuvda');
+assert(row.textContent.replace(/\s+/g, ' ').includes(`${freeBlock.stands.length} стендов`), 'в строке количество стендов одним числом');
 
-// --- sotilgan blok qayta tanlanganda "Sotish" o'chirilgan
+// --- для проданного блока кнопка «Продать» заблокирована
 $('#clearSel').click();
 await tick(50);
 clickMap($$('#world .block-chip').find((c) => c.dataset.block === freeBlock.id), 3);
 await tick(150);
 assert($('#btnSell').disabled === true, 'sotilgan blok qayta tanlanganda "Sotish" o\'chirilgan');
-assert($('#selInfo').textContent.includes("Bo'sh joy"), 'band blokda "bo\'sh joy 0" ko\'rsatildi');
+assert($('#selInfo').textContent.includes('Свободно'), 'для занятого блока показано «свободно 0»');
 
 // --- boshqa sotuvchi bir vaqtda xuddi shu joyni sotmoqchi: server rad etadi
 const tok2 = (await (await fetch(BASE + '/api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: 'Dilnoza Yusupova', pin: '2222' }) })).json()).token;
@@ -228,7 +228,7 @@ const r409 = await fetch(BASE + '/api/action', {
   body: JSON.stringify({ action: 'sell', standIds: freeBlock.stands.slice(0, 2).map((s) => s.id), buyer: 'Ikkinchi mijoz' }),
 });
 const j409 = await r409.json();
-assert(r409.status === 409 && j409.error === 'conflict', `bir vaqtda sotish urinishi rad etildi (${r409.status}: ${j409.message})`);
+assert(r409.status === 409 && j409.error === 'conflict', `одновременная продажа отклонена (${r409.status}: ${j409.message})`);
 assert(j409.conflicts[0].buyer === 'Smoke Test MChJ', 'kim sotgani ko\'rsatildi: ' + JSON.stringify(j409.conflicts[0]));
 
 // --- mijoz rejimi
@@ -244,10 +244,10 @@ const d2 = dom2.window.document;
 assert(d2.querySelector('#login').style.display === 'none', 'mijoz rejimida login yo\'q');
 const drawnStands = d2.querySelectorAll('#world .stand').length;
 const drawnUnits = d2.querySelectorAll('#world .booking-unit').length;
-assert(drawnStands + drawnUnits > 0 && drawnUnits > 0, `mijoz rejimida xarita chizildi (${drawnStands} bo'sh stend + ${drawnUnits} band quti)`);
-assert(d2.querySelector('#stats').textContent.includes('sotilgan'), 'mijoz rejimida statistika ko\'rinadi');
+assert(drawnStands + drawnUnits > 0 && drawnUnits > 0, `в режиме клиента план нарисован (${drawnStands} свободных стендов + ${drawnUnits} band quti)`);
+assert(d2.querySelector('#stats').textContent.includes('продано'), 'в режиме клиента статистика видна');
 
 window.close();
 dom2.window.close();
-console.log(failed ? `\nSMOKE: ${failed} ta tekshiruv yiqildi` : '\nSMOKE: hammasi o\'tdi');
+console.log(failed ? `\nSMOKE: провалено проверок — ${failed}` : '\nSMOKE: всё пройдено');
 process.exit(failed ? 1 : 0);

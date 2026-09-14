@@ -2,7 +2,7 @@
 /**
  * Ekspo xarita serveri — bog'liqliksiz (faqat Node standart kutubxonasi).
  *
- * Vazifasi:
+ * Задачи:
  *   - layout'ni yuklaydi va VALIDATSIYADAN o'tkazadi (o'tmasa server ko'tarilmaydi);
  *   - barcha sotuvchilar uchun YAGONA holatni (state) saqlaydi;
  *   - bron / sotuv / bo'shatish amallarini atomik bajaradi va jurnalga yozadi.
@@ -33,9 +33,9 @@ const APP_DIR = path.join(ROOT, 'app');
 const rawLayout = JSON.parse(fs.readFileSync(LAYOUT_PATH, 'utf8'));
 const check = validateLayout(rawLayout);
 if (!check.ok) {
-  console.error(`\n✗ LAYOUT XATO (${path.relative(ROOT, LAYOUT_PATH)}) — server ko'tarilmadi:\n`);
+  console.error(`\n✗ ОШИБКА LAYOUT (${path.relative(ROOT, LAYOUT_PATH)}) — сервер не запущен:\n`);
   for (const e of check.errors) console.error('   ✗ ' + e);
-  console.error('\n  Tuzatib, qaytadan urinib ko\'ring: node tools/validate-layout.mjs ' + path.relative(ROOT, LAYOUT_PATH) + '\n');
+  console.error('\n  Исправьте и проверьте: node tools/validate-layout.mjs ' + path.relative(ROOT, LAYOUT_PATH) + '\n');
   process.exit(1);
 }
 for (const w of check.warnings) console.warn('   ⚠ ' + w);
@@ -43,9 +43,9 @@ const exp = expandLayout(rawLayout);
 const standsById = new Map(exp.stands.map((s) => [s.id, s]));
 const blocksById = new Map(exp.blocks.map((b) => [b.id, b]));
 const totalArea = exp.stands.reduce((a, s) => a + s.areaM2, 0);
-console.log(`✓ Layout yuklandi: ${exp.meta.project} · ${exp.meta.hall} · ${exp.gridBlocks.length} blok + ${exp.customStands.length} nostandart stend · ${exp.stands.length} stend (${totalArea.toLocaleString('uz-UZ')} m²)`);
+console.log(`✓ План загружен: ${exp.meta.project} · ${exp.meta.hall} · ${exp.gridBlocks.length} блоков + ${exp.customStands.length} нестандартных стендов · ${exp.stands.length} стендов (${totalArea.toLocaleString('ru-RU')} м²)`);
 if ((exp.meta.status || 'draft') !== 'approved') {
-  console.warn('⚠ DIQQAT: bu layout QORALAMA (meta.status != "approved"). Panelda mijozga havola bloklangan, eksport ham to\'xtatiladi.');
+  console.warn('⚠ ВНИМАНИЕ: план в статусе ЧЕРНОВИК (meta.status != "approved"). Ссылка для клиента и экспорт заблокированы.');
 }
 
 // ---------------------------------------------------------------- data
@@ -54,18 +54,18 @@ let sellers = [];
 const sellersSrc = fs.existsSync(SELLERS_FILE) ? SELLERS_FILE : SELLERS_EXAMPLE;
 sellers = JSON.parse(fs.readFileSync(sellersSrc, 'utf8')).sellers || [];
 if (sellersSrc === SELLERS_EXAMPLE) {
-  console.warn('⚠ data/sellers.json topilmadi — demo loginlar ishlatilyapti (data/sellers.example.json). Ishga tushishdan oldin PIN\'larni almashtiring.');
+  console.warn('⚠ data/sellers.json не найден — используются демо-логины (data/sellers.example.json). Перед работой замените PIN-коды.');
 } else {
-  console.log('✓ Sotuvchilar ro\'yxati: data/sellers.json');
+  console.log('✓ Список продавцов: data/sellers.json');
 }
 
 let state = { revision: 0, updatedAt: new Date().toISOString(), items: {} };
 if (fs.existsSync(STATE_FILE)) {
   try {
     state = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
-    console.log(`✓ Holat yuklandi: revision ${state.revision}, ${Object.keys(state.items || {}).length} yozuv`);
+    console.log(`✓ Состояние загружено: revision ${state.revision}, записей ${Object.keys(state.items || {}).length}`);
   } catch (e) {
-    console.error('✗ data/state.json buzuq:', e.message);
+    console.error('✗ data/state.json повреждён:', e.message);
     process.exit(1);
   }
 }
@@ -78,7 +78,7 @@ if (fs.existsSync(STATE_FILE)) {
     state.revision++;
     state.updatedAt = new Date().toISOString();
     persist();
-    console.log(`⚠ ${stale.length} ta eski yozuv (bu layout'da yo'q stendlar) holatdan olib tashlandi`);
+    console.log(`⚠ Удалено ${stale.length} старых записей (стендов нет в текущем плане)`);
   }
 }
 
@@ -103,14 +103,14 @@ function expire() {
     if (it.status === 'reserved' && it.reservedUntil && Date.parse(it.reservedUntil) < now) {
       delete state.items[id];
       changed++;
-      audit({ ts: new Date().toISOString(), action: 'expire', standIds: [id], sellerId: 'system', sellerName: 'tizim', reason: 'bron muddati tugadi' });
+      audit({ ts: new Date().toISOString(), action: 'expire', standIds: [id], sellerId: 'system', sellerName: 'система', reason: 'срок брони истёк' });
     }
   }
   if (changed) {
     state.revision++;
     state.updatedAt = new Date().toISOString();
     persist();
-    console.log(`⏰ ${changed} ta bron muddati tugadi, bo'shatildi`);
+    console.log(`⏰ Снято просроченных броней: ${changed}`);
   }
   return changed;
 }
@@ -128,14 +128,14 @@ function readBody(req) {
     let data = '';
     req.on('data', (c) => {
       data += c;
-      if (data.length > 1_000_000) reject(new Error('so\'rov juda katta'));
+      if (data.length > 1_000_000) reject(new Error('запрос слишком большой'));
     });
     req.on('end', () => {
       if (!data) return resolve({});
       try {
         resolve(JSON.parse(data));
       } catch (e) {
-        reject(new Error('JSON buzuq'));
+        reject(new Error('некорректный JSON'));
       }
     });
     req.on('error', reject);
@@ -171,11 +171,11 @@ function serveStatic(res, urlPath) {
 function applyAction(sess, body) {
   const action = String(body.action || '');
   const ids = [...new Set((body.standIds || []).map(String))];
-  if (!ids.length) return { code: 400, body: { error: 'standIds bo\'sh' } };
+  if (!ids.length) return { code: 400, body: { error: 'empty_stand_ids', message: 'Не переданы стенды' } };
   for (const id of ids) if (!standsById.has(id)) return { code: 400, body: { error: 'unknown_stand', standId: id } };
 
   if (body.expectedRevision != null && Number(body.expectedRevision) !== state.revision) {
-    return { code: 409, body: { error: 'revision_mismatch', message: 'Xarita boshqa sotuvchi tomonidan yangilandi. Sahifani yangilab, qaytadan urinib ko\'ring.', revision: state.revision } };
+    return { code: 409, body: { error: 'revision_mismatch', message: 'План обновлён другим продавцом. Обновите страницу и повторите.', revision: state.revision } };
   }
 
   const now = new Date().toISOString();
@@ -184,11 +184,11 @@ function applyAction(sess, body) {
   const company = (body.company || '').toString().trim();
 
   if (action === 'reserve' || action === 'sell') {
-    if (!buyer) return { code: 400, body: { error: 'buyer_required', message: 'Mijoz ismi kiritilishi shart' } };
+    if (!buyer) return { code: 400, body: { error: 'buyer_required', message: 'Нужно указать имя клиента' } };
     const conflicts = ids
       .filter((id) => state.items[id])
       .map((id) => ({ standId: id, status: state.items[id].status, buyer: state.items[id].buyer || null, sellerName: state.items[id].sellerName || null }));
-    if (conflicts.length) return { code: 409, body: { error: 'conflict', message: 'Tanlangan joylardan ba\'zilari allaqachon band.', conflicts, revision: state.revision } };
+    if (conflicts.length) return { code: 409, body: { error: 'conflict', message: 'Часть выбранных мест уже занята.', conflicts, revision: state.revision } };
   }
 
   if (action === 'release' || action === 'block') {
@@ -200,7 +200,7 @@ function applyAction(sess, body) {
       return it.status === 'sold' || it.sellerId !== sess.id;
     });
     if (locked.length) {
-      return { code: 403, body: { error: 'not_allowed', message: 'Sotilgan joyni yoki boshqa sotuvchining bronini faqat menejer o\'zgartira oladi.', standIds: locked } };
+      return { code: 403, body: { error: 'not_allowed', message: 'Проданное место или бронь другого продавца может менять только менеджер.', standIds: locked } };
     }
   }
 
@@ -260,7 +260,8 @@ function applyAction(sess, body) {
   state.updatedAt = now;
   persist();
   audit({ ts: now, action, standIds: ids, buyer: buyer || null, phone: phone || null, company: company || null, groupId: action === 'release' ? null : groupId, sellerId: sess.id, sellerName: sess.name, revision: state.revision, ttlHours: action === 'reserve' ? ttlHours : null });
-  console.log(`→ ${sess.name}: ${action} ${ids.join(', ')}${buyer ? ' · ' + buyer : ''}`);
+  const ACT = { sell: 'продажа', reserve: 'бронь', release: 'освобождение', block: 'блокировка' };
+  console.log(`→ ${sess.name}: ${ACT[action] || action} ${ids.join(', ')}${buyer ? ' · ' + buyer : ''}`);
   return { code: 200, body: { ok: true, revision: state.revision, items: result } };
 }
 
@@ -276,8 +277,8 @@ const server = http.createServer(async (req, res) => {
       const b = await readBody(req);
       const key = String(b.name || b.id || '').trim().toLowerCase();
       const s = sellers.find((x) => x.id.toLowerCase() === key || x.name.toLowerCase() === key);
-      if (!s) return send(res, 401, { error: 'not_found', message: 'Bunday sotuvchi topilmadi' });
-      if (String(b.pin) !== String(s.pin)) return send(res, 401, { error: 'bad_pin', message: 'PIN kod xato' });
+      if (!s) return send(res, 401, { error: 'not_found', message: 'Продавец не найден' });
+      if (String(b.pin) !== String(s.pin)) return send(res, 401, { error: 'bad_pin', message: 'Неверный PIN-код' });
       const token = crypto.randomBytes(24).toString('hex');
       const sess = { id: s.id, name: s.name, role: s.role || 'seller', at: new Date().toISOString() };
       sessions.set(token, sess);
@@ -312,7 +313,7 @@ const server = http.createServer(async (req, res) => {
 
     if (p === '/api/action' && req.method === 'POST') {
       const sess = auth(req);
-      if (!sess) return send(res, 401, { error: 'unauthorized', message: 'Avval tizimga kiring' });
+      if (!sess) return send(res, 401, { error: 'unauthorized', message: 'Сначала войдите в систему' });
       const b = await readBody(req);
       const r = applyAction(sess, b);
       return send(res, r.code, r.body);
@@ -321,7 +322,7 @@ const server = http.createServer(async (req, res) => {
     if (p === '/api/audit' && req.method === 'GET') {
       const sess = auth(req);
       if (!sess) return send(res, 401, { error: 'unauthorized' });
-      if (sess.role !== 'admin') return send(res, 403, { error: 'forbidden', message: 'Jurnal faqat menejerga ko\'rinadi' });
+      if (sess.role !== 'admin') return send(res, 403, { error: 'forbidden', message: 'Журнал операций видит только менеджер' });
       const limit = Math.min(Number(url.searchParams.get('limit') || 100), 1000);
       if (!fs.existsSync(AUDIT_FILE)) return send(res, 200, { entries: [] });
       const lines = fs.readFileSync(AUDIT_FILE, 'utf8').trim().split('\n').slice(-limit).reverse();
@@ -331,10 +332,11 @@ const server = http.createServer(async (req, res) => {
     if (p === '/api/export.csv' && req.method === 'GET') {
       const sess = auth(req);
       if (!sess) return send(res, 401, { error: 'unauthorized' });
-      const rows = [['blok', 'stend', 'holat', 'm2', 'narx', 'mijoz', 'telefon', 'kompaniya', 'sotuvchi', 'yangilangan']];
+      const ST = { free: 'свободно', reserved: 'бронь', sold: 'продано', blocked: 'блокировано' };
+      const rows = [['Блок', 'Стенд', 'Статус', 'Площадь, м2', 'Сумма', 'Клиент', 'Телефон', 'Компания', 'Продавец', 'Обновлено']];
       for (const s of exp.stands) {
         const it = state.items[s.id];
-        rows.push([s.blockId, s.id, it ? it.status : 'free', String(s.areaM2), it ? String(it.amount) : String(pricePerM2 * s.areaM2), it?.buyer || '', it?.phone || '', it?.company || '', it?.sellerName || '', it?.updatedAt || '']);
+        rows.push([s.blockId, s.id, ST[it ? it.status : 'free'] || 'свободно', String(s.areaM2), it ? String(it.amount) : String(pricePerM2 * s.areaM2), it?.buyer || '', it?.phone || '', it?.company || '', it?.sellerName || '', it?.updatedAt || '']);
       }
       const csv = rows.map((r) => r.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(';')).join('\n');
       return send(res, 200, '\uFEFF' + csv, 'text/csv; charset=utf-8');
@@ -349,6 +351,6 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(PORT, HOST, () => {
-  console.log(`\n🚀 Sotuv paneli: http://localhost:${PORT}  (0.0.0.0:${PORT})`);
-  console.log(`   1 stend = 9 m² · 1 blok = 8 stend = 72 m² · narx ${pricePerM2.toLocaleString('uz-UZ')} so'm/m²\n`);
+  console.log(`\n🚀 Панель продаж: http://localhost:${PORT}  (0.0.0.0:${PORT})`);
+  console.log(`   1 стенд = 9 м² · 1 блок = 8 стендов = 72 м² · цена ${pricePerM2.toLocaleString('ru-RU')} сум/м²\n`);
 });
