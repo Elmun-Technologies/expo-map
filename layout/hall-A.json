@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "meta": {
+    "project": "Ekspo Markazi",
+    "hall": "A zal",
+    "version": "1.0.0",
+    "updatedAt": "2026-09-14",
+    "units": "meters",
+    "stand": { "w": 3, "h": 3, "areaM2": 9 },
+    "block": { "stands": 8, "areaM2": 72 },
+    "minAisleM": 2,
+    "currency": "UZS",
+    "pricePerM2": 1250000,
+    "reserveTtlHours": 72
+  },
+  "hall": {
+    "width": 66,
+    "height": 44,
+    "outline": [[0, 0], [66, 0], [66, 44], [0, 44]]
+  },
+  "features": [
+    { "type": "entrance", "label": "Kirish", "x": 29, "y": 41, "w": 8, "h": 3 },
+    { "type": "service", "label": "Ro'yxatga olish", "x": 2, "y": 38, "w": 10, "h": 4 },
+    { "type": "wc", "label": "WC", "x": 54, "y": 38, "w": 10, "h": 5 },
+    { "type": "food", "label": "Food zone", "x": 54, "y": 4, "w": 10, "h": 8 },
+    { "type": "stage", "label": "Sahna", "x": 2, "y": 17, "w": 14, "h": 8 },
+    { "type": "column", "label": "Ustun", "x": 18, "y": 20, "w": 1.2, "h": 1.2 },
+    { "type": "column", "label": "Ustun", "x": 34, "y": 20, "w": 1.2, "h": 1.2 },
+    { "type": "column", "label": "Ustun", "x": 48, "y": 20, "w": 1.2, "h": 1.2 }
+  ],
+  "blocks": [
+    { "id": "A-01", "x": 4,  "y": 6,  "cols": 4, "rows": 2, "group": "1-qator" },
+    { "id": "A-02", "x": 22, "y": 6,  "cols": 4, "rows": 2, "group": "1-qator" },
+    { "id": "A-03", "x": 40, "y": 6,  "cols": 4, "rows": 2, "group": "1-qator" },
+    { "id": "A-04", "x": 4,  "y": 30, "cols": 4, "rows": 2, "group": "2-qator", "note": "Sahnaga yaqin" },
+    { "id": "A-05", "x": 22, "y": 30, "cols": 4, "rows": 2, "group": "2-qator" },
+    { "id": "A-06", "x": 40, "y": 30, "cols": 4, "rows": 2, "group": "2-qator", "note": "Kirishga yaqin" }
+  ]
+}

@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ekspo xaritasi — sotuv paneli</title>
+<link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+
+<!-- ================= LOGIN ================= -->
+<div id="login" class="login">
+  <form class="login-card" id="loginForm">
+    <h1>Ekspo xaritasi</h1>
+    <p class="muted">Sotuv paneli — joyni bron qilish va sotish</p>
+    <label>Sotuvchi
+      <input id="loginName" autocomplete="username" placeholder="ism yoki ID" required />
+    </label>
+    <label>PIN kod
+      <input id="loginPin" type="password" inputmode="numeric" autocomplete="current-password" placeholder="••••" required />
+    </label>
+    <button class="btn primary" type="submit">Kirish</button>
+    <p class="error" id="loginError"></p>
+    <div class="demo-hint">
+      Demo: <button type="button" class="chip" data-user="Aziz Karimov" data-pin="1111">Aziz · 1111</button>
+      <button type="button" class="chip" data-user="Dilnoza Yusupova" data-pin="2222">Dilnoza · 2222</button>
+      <button type="button" class="chip" data-user="Menejer" data-pin="9999">Menejer · 9999</button>
+    </div>
+  </form>
+</div>
+
+<!-- ================= APP ================= -->
+<header class="topbar">
+  <div class="brand">
+    <strong id="hallTitle">Xarita</strong>
+    <span class="muted" id="hallSub"></span>
+  </div>
+  <div class="tools">
+    <input id="search" class="search" placeholder="Qidirish: A-01 yoki A-01-05" />
+    <button class="btn" id="zoomOut" title="Kichraytirish">−</button>
+    <button class="btn" id="zoomIn" title="Kattalashtirish">+</button>
+    <button class="btn" id="zoomFit" title="Butun zalni ko'rsatish">Butun zal</button>
+    <button class="btn" id="clientMode" title="Mijozga ko'rinadigan rejim">Mijoz ko'rinishi</button>
+    <button class="btn" id="printBtn">Chop etish / PDF</button>
+    <span class="who" id="who"></span>
+    <button class="btn ghost" id="logoutBtn">Chiqish</button>
+  </div>
+</header>
+
+<main class="layout">
+  <section class="map-wrap">
+    <svg id="map" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="hatchReserved" width="0.6" height="0.6" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+          <rect width="0.6" height="0.6" fill="#fff8e1" />
+          <line x1="0" y1="0" x2="0" y2="0.6" stroke="#f59e0b" stroke-width="0.22" />
+        </pattern>
+        <pattern id="hatchSold" width="0.6" height="0.6" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+          <rect width="0.6" height="0.6" fill="#fdecea" />
+          <line x1="0" y1="0" x2="0" y2="0.6" stroke="#c62828" stroke-width="0.28" />
+          <line x1="0" y1="0" x2="0.6" y2="0" stroke="#c62828" stroke-width="0.16" opacity="0.55" />
+        </pattern>
+        <pattern id="hatchBlocked" width="0.5" height="0.5" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+          <rect width="0.5" height="0.5" fill="#eceff1" />
+          <line x1="0" y1="0" x2="0" y2="0.5" stroke="#607d8b" stroke-width="0.2" />
+        </pattern>
+      </defs>
+      <g id="world"></g>
+    </svg>
+    <div class="legend" id="legend"></div>
+    <p class="map-note">Koordinatalar <code>layout/hall-A.json</code> faylidan olinadi — xarita qo'lda chizilmaydi.</p>
+  </section>
+
+  <aside class="panel">
+    <div class="stats" id="stats"></div>
+    <div id="selectionBox" class="card">
+      <h2>Tanlov</h2>
+      <p class="muted" id="selHint">Xaritadan stend yoki blok nomini bosing.</p>
+      <div id="selBody" hidden>
+        <div class="sel-head">
+          <span class="pill" id="selTitle"></span>
+          <button class="btn ghost small" id="clearSel">Tozalash</button>
+        </div>
+        <div id="selChips" class="chips"></div>
+        <div class="kv" id="selInfo"></div>
+
+        <div id="formFields">
+          <h3>Mijoz</h3>
+          <label>Ism / kompaniya vakili<input id="buyer" placeholder="Masalan: Aziz Karimov" /></label>
+          <label>Telefon<input id="phone" inputmode="tel" placeholder="+998 90 000 00 00" /></label>
+          <label>Kompaniya<input id="company" placeholder="MChJ «...»" /></label>
+          <label class="inline">Bron muddati (soat)<input id="ttl" type="number" min="1" max="720" value="72" /></label>
+          <label>Izoh<input id="note" placeholder="ixtiyoriy" /></label>
+          <div class="actions">
+            <button class="btn reserve" id="btnReserve">Bron qilish</button>
+            <button class="btn sell" id="btnSell">Sotish</button>
+            <button class="btn ghost" id="btnRelease">Bo'shatish</button>
+          </div>
+        </div>
+
+        <div id="details" class="details"></div>
+      </div>
+    </div>
+    <div id="receipt" class="card receipt" hidden></div>
+    <div id="auditCard" class="card" hidden>
+      <h2>Amallar jurnali</h2>
+      <div id="auditList" class="audit"></div>
+    </div>
+  </aside>
+</main>
+
+<div id="toasts" class="toasts"></div>
+<div id="confirm" class="modal" hidden>
+  <div class="modal-card">
+    <h2 id="confirmTitle">Tasdiqlash</h2>
+    <div id="confirmBody"></div>
+    <div class="actions">
+      <button class="btn primary" id="confirmOk">Tasdiqlash</button>
+      <button class="btn ghost" id="confirmCancel">Bekor qilish</button>
+    </div>
+  </div>
+</div>
+
+<script src="./app.js"></script>
+</body>
+</html>

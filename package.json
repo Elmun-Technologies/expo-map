@@ -1,0 +1,24 @@
+{
+  "name": "expo-map",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Ekspo zali xaritasi va sotuv paneli — 1 stend = 3x3 m = 9 m², 1 blok = 8 stend = 72 m²",
+  "scripts": {
+    "start": "node server.mjs",
+    "validate": "node tools/validate-layout.mjs layout/hall-A.json",
+    "test": "node tools/test-validator.mjs",
+    "check": "npm run validate && npm test",
+    "export": "node tools/export-svg.mjs",
+    "export:empty": "node tools/export-svg.mjs --no-state --out exports/hall-A-empty.svg",
+    "export:block": "node tools/export-svg.mjs --block",
+    "import": "node tools/import-csv.mjs",
+    "smoke": "node tests/smoke.mjs"
+  },
+  "devDependencies": {
+    "jsdom": "^24.1.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
