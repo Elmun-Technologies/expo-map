@@ -175,8 +175,13 @@ label.inline input { width: 92px; margin: 0; }
   .topbar, .panel, #toasts, .login, .map-note, #confirm, .draft-banner, .legend,
   .stats, .print-only, #report, .zoombar, .toolbar, .toast { display: none !important; }
   .layout { display: block; padding: 0 !important; }
-  .map-wrap { padding: 0 !important; border: none !important; box-shadow: none !important; overflow: visible !important; }
-  #map { display: block; margin: 0 auto; border: none !important; }
+  .map-wrap { padding: 0 !important; border: none !important; box-shadow: none !important; overflow: visible !important; width: 100% !important; }
+  /* SVG'ning standart o'lchami (300x150px) bo'lib qolmasin - varaqni to'liq egallaydi */
+  #map {
+    display: block; margin: 0 auto; border: none !important;
+    width: 100% !important; height: auto !important; max-height: 276mm;
+    aspect-ratio: var(--map-ratio, 1.8);
+  }
   /* jadvallar faqat "Tafsilot" rejimida chop etiladi */
   body.print-tables .print-only { display: block !important; font-size: 10pt; }
 }

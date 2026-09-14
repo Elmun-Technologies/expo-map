@@ -155,6 +155,8 @@
     const { width: W, height: H } = layout.hall;
     pad = Math.max(3, W * 0.04);
     $('#map').setAttribute('viewBox', `${-pad} ${-pad} ${W + pad * 2} ${H + pad * 2}`);
+    // chop etishda xarita varaqni TO'LIQ to'ldirishi uchun nisbat (kenglik/balandlik)
+    $('#map').style.setProperty('--map-ratio', ((W + pad * 2) / (H + pad * 2)).toFixed(4));
 
     // zonalar (asosiy zal, chap qanot, B2B, konferens...)
     const zoneG = el('g');
