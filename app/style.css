@@ -231,3 +231,7 @@ label.inline input { width: 92px; margin: 0; }
 .booking-row b { font-size: 12.5px; }
 .booking-row .bmuted { font-size: 11.5px; color: #5b6b7a; text-align: right; }
 .booking-row .bids { grid-column: 2 / -1; font-size: 11px; color: #7a8894; }
+
+/* MUHIM: [hidden] atributi har qanday display qoidasidan ustun bo'lishi kerak.
+   Busiz .modal/.login kabi elementlar (display:grid) sahifa ochilganda darhol ko'rinib qoladi. */
+[hidden] { display: none !important; }

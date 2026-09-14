@@ -255,9 +255,10 @@ for (const b of blocks) {
       const cx = X(b.x + b.w / 2);
       const room = roomBelowBlock(b);
       out.push(`<rect x="${R(cx - 34)}" y="${R(Y(b.y + b.h) + 10)}" width="68" height="7" rx="3.5" fill="${sec.color}"/>`);
-      if (room > 4.2) {
-        out.push(`<text x="${R(cx)}" y="${R(Y(b.y + b.h) + 36)}" font-size="${F.secbar}" font-weight="bold" fill="#0f2233" text-anchor="middle">${esc(b.label)} bloki</text>`);
-        out.push(`<text x="${R(cx)}" y="${R(Y(b.y + b.h) + 54)}" font-size="${F.secbar - 2}" fill="#5b6b7a" text-anchor="middle">${esc(sec.short || sec.label)}</text>`);
+      if (room > 4.6) {
+        const fitFs = (txt) => Math.max(7, Math.min(F.secbar, (S(b.w) - 14) / Math.max(4, txt.length) / 0.6));
+        out.push(`<text x="${R(cx)}" y="${R(Y(b.y + b.h) + 36)}" font-size="${R(fitFs(`${b.label} bloki`))}" font-weight="bold" fill="#0f2233" text-anchor="middle">${esc(b.label)} bloki</text>`);
+        out.push(`<text x="${R(cx)}" y="${R(Y(b.y + b.h) + 54)}" font-size="${R(fitFs(sec.short || sec.label))}" fill="#5b6b7a" text-anchor="middle">${esc(sec.short || sec.label)}</text>`);
       }
     }
     // birlashtirilgan (stendlar olib tashlangan) kataklar
@@ -306,7 +307,7 @@ function drawUnit(u) {
       : (Math.abs(u.areaM2 - 9) > 0.01 ? `${fmtNum(u.areaM2)} m²` : '');
   const withMeta = !!metaTxt && boxH > 52;
   const label = u.label || st.label;
-  const fit = fitText(label, boxW - 14, boxH - (withMeta ? 26 : 8), { maxLines: boxH > 120 ? 3 : boxH > 70 ? 2 : 1, minFs: 7, maxFs: Math.min(26, boxH / (withMeta ? 3.4 : 2.6)), cw: 0.62, lh: 1.2 });
+  const fit = fitText(label, boxW - 14, boxH - (withMeta ? 26 : 8), { maxLines: boxH > 120 ? 3 : boxH > 58 ? 2 : 1, minFs: 7, maxFs: Math.min(26, boxH / (withMeta ? 3.4 : 2.6)), cw: 0.62, lh: 1.2 });
   const cx = X(boxes.x + boxes.w / 2), cy = Y(boxes.y + boxes.h / 2);
   const lh = fit.fs * 1.2;
   const shift = (fit.lines.length * lh) / 2;
@@ -324,9 +325,10 @@ for (const u of units) drawUnit(u);
 // blok ostida qancha bo'sh joy bor (chip yoki boshqa blok bosib qolmasligi uchun)
 function roomBelowBlock(b) {
   let gap = 99;
-  for (const o of exp.blocks) {
+  for (const o of [...exp.blocks, ...(exp.features || [])]) {
     if (o.id === b.id) continue;
-    const xOverlap = Math.min(o.x + o.w, b.x + b.w) - Math.max(o.x, b.x);
+    const ow = o.w ?? 2;
+    const xOverlap = Math.min(o.x + ow, b.x + b.w) - Math.max(o.x, b.x);
     if (xOverlap <= 0.1) continue;
     const dy = o.y - (b.y + b.h);
     if (dy >= 0) gap = Math.min(gap, dy);

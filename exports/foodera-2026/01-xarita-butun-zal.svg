@@ -45,8 +45,8 @@
 <rect x="310.00" y="271.40" width="94.54" height="25" rx="5" fill="#E8A33D"/>
 <text x="357.27" y="288.45" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">A · 72 m²</text>
 <rect x="342.00" y="577.40" width="68" height="7" rx="3.5" fill="#E8A33D"/>
-<text x="376.00" y="603.40" font-size="15" font-weight="bold" fill="#0f2233" text-anchor="middle">A bloki</text>
-<text x="376.00" y="621.40" font-size="13" fill="#5b6b7a" text-anchor="middle">HoReCa</text>
+<text x="376.00" y="603.40" font-size="15.00" font-weight="bold" fill="#0f2233" text-anchor="middle">A bloki</text>
+<text x="376.00" y="621.40" font-size="15.00" fill="#5b6b7a" text-anchor="middle">HoReCa</text>
 <rect x="486.00" y="303.40" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
 <rect x="486.00" y="271.40" width="94.54" height="25" rx="5" fill="#2E8B8B"/>
 <text x="533.27" y="288.45" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">B · 72 m²</text>
@@ -57,8 +57,8 @@
 <text x="585.00" y="532.40" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">8</text>
 <text x="585.00" y="550.40" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">08</text>
 <rect x="518.00" y="577.40" width="68" height="7" rx="3.5" fill="#2E8B8B"/>
-<text x="552.00" y="603.40" font-size="15" font-weight="bold" fill="#0f2233" text-anchor="middle">B bloki</text>
-<text x="552.00" y="621.40" font-size="13" fill="#5b6b7a" text-anchor="middle">Konserva</text>
+<text x="552.00" y="603.40" font-size="15.00" font-weight="bold" fill="#0f2233" text-anchor="middle">B bloki</text>
+<text x="552.00" y="621.40" font-size="15.00" fill="#5b6b7a" text-anchor="middle">Konserva</text>
 <rect x="662.00" y="303.40" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
 <rect x="662.00" y="271.40" width="94.54" height="25" rx="5" fill="#3E7BB6"/>
 <text x="709.27" y="288.45" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">C · 72 m²</text>
@@ -75,8 +75,8 @@
 <text x="761.00" y="532.40" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">8</text>
 <text x="761.00" y="550.40" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">08</text>
 <rect x="694.00" y="577.40" width="68" height="7" rx="3.5" fill="#3E7BB6"/>
-<text x="728.00" y="603.40" font-size="15" font-weight="bold" fill="#0f2233" text-anchor="middle">C bloki</text>
-<text x="728.00" y="621.40" font-size="13" fill="#5b6b7a" text-anchor="middle">Baliq</text>
+<text x="728.00" y="603.40" font-size="15.00" font-weight="bold" fill="#0f2233" text-anchor="middle">C bloki</text>
+<text x="728.00" y="621.40" font-size="15.00" fill="#5b6b7a" text-anchor="middle">Baliq</text>
 <rect x="838.00" y="303.40" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
 <rect x="838.00" y="271.40" width="94.54" height="25" rx="5" fill="#B8860B"/>
 <text x="885.27" y="288.45" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">D · 72 m²</text>
@@ -93,14 +93,14 @@
 <text x="937.00" y="532.40" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">8</text>
 <text x="937.00" y="550.40" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">08</text>
 <rect x="870.00" y="577.40" width="68" height="7" rx="3.5" fill="#B8860B"/>
-<text x="904.00" y="603.40" font-size="15" font-weight="bold" fill="#0f2233" text-anchor="middle">D bloki</text>
-<text x="904.00" y="621.40" font-size="13" fill="#5b6b7a" text-anchor="middle">Meva-sabzavot</text>
+<text x="904.00" y="603.40" font-size="15.00" font-weight="bold" fill="#0f2233" text-anchor="middle">D bloki</text>
+<text x="904.00" y="621.40" font-size="15.00" fill="#5b6b7a" text-anchor="middle">Meva-sabzavot</text>
 <rect x="1014.00" y="303.40" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
 <rect x="1014.00" y="271.40" width="94.54" height="25" rx="5" fill="#3E9B5F"/>
 <text x="1061.27" y="288.45" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">E · 72 m²</text>
 <rect x="1046.00" y="577.40" width="68" height="7" rx="3.5" fill="#3E9B5F"/>
-<text x="1080.00" y="603.40" font-size="15" font-weight="bold" fill="#0f2233" text-anchor="middle">E bloki</text>
-<text x="1080.00" y="621.40" font-size="13" fill="#5b6b7a" text-anchor="middle">Sog'lom taom</text>
+<text x="1080.00" y="603.40" font-size="15.00" font-weight="bold" fill="#0f2233" text-anchor="middle">E bloki</text>
+<text x="1080.00" y="621.40" font-size="15.00" fill="#5b6b7a" text-anchor="middle">Sog'lom taom</text>
 <rect x="1190.00" y="303.40" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
 <rect x="1190.00" y="271.40" width="94.54" height="25" rx="5" fill="#9B59B6"/>
 <text x="1237.27" y="288.45" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">F · 72 m²</text>
@@ -117,8 +117,8 @@
 <text x="1289.00" y="466.40" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">6</text>
 <text x="1289.00" y="484.40" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">06</text>
 <rect x="1222.00" y="577.40" width="68" height="7" rx="3.5" fill="#9B59B6"/>
-<text x="1256.00" y="603.40" font-size="15" font-weight="bold" fill="#0f2233" text-anchor="middle">F bloki</text>
-<text x="1256.00" y="621.40" font-size="13" fill="#5b6b7a" text-anchor="middle">Eko</text>
+<text x="1256.00" y="603.40" font-size="15.00" font-weight="bold" fill="#0f2233" text-anchor="middle">F bloki</text>
+<text x="1256.00" y="621.40" font-size="15.00" fill="#5b6b7a" text-anchor="middle">Eko</text>
 <rect x="310.00" y="761.00" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
 <rect x="310.00" y="729.00" width="94.54" height="25" rx="5" fill="#E8A33D"/>
 <text x="357.27" y="746.05" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">G · 72 m²</text>
@@ -129,8 +129,8 @@
 <text x="409.00" y="990.00" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">8</text>
 <text x="409.00" y="1008.00" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">08</text>
 <rect x="342.00" y="1035.00" width="68" height="7" rx="3.5" fill="#E8A33D"/>
-<text x="376.00" y="1061.00" font-size="15" font-weight="bold" fill="#0f2233" text-anchor="middle">G bloki</text>
-<text x="376.00" y="1079.00" font-size="13" fill="#5b6b7a" text-anchor="middle">Yarim tayyor</text>
+<text x="376.00" y="1061.00" font-size="15.00" font-weight="bold" fill="#0f2233" text-anchor="middle">G bloki</text>
+<text x="376.00" y="1079.00" font-size="15.00" fill="#5b6b7a" text-anchor="middle">Yarim tayyor</text>
 <rect x="486.00" y="761.00" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
 <rect x="486.00" y="729.00" width="94.54" height="25" rx="5" fill="#3E7BB6"/>
 <text x="533.27" y="746.05" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">I · 72 m²</text>
@@ -147,8 +147,8 @@
 <text x="585.00" y="990.00" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">8</text>
 <text x="585.00" y="1008.00" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">08</text>
 <rect x="518.00" y="1035.00" width="68" height="7" rx="3.5" fill="#3E7BB6"/>
-<text x="552.00" y="1061.00" font-size="15" font-weight="bold" fill="#0f2233" text-anchor="middle">I bloki</text>
-<text x="552.00" y="1079.00" font-size="13" fill="#5b6b7a" text-anchor="middle">Ichimliklar</text>
+<text x="552.00" y="1061.00" font-size="15.00" font-weight="bold" fill="#0f2233" text-anchor="middle">I bloki</text>
+<text x="552.00" y="1079.00" font-size="15.00" fill="#5b6b7a" text-anchor="middle">Ichimliklar</text>
 <rect x="662.00" y="761.00" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
 <rect x="662.00" y="729.00" width="94.54" height="25" rx="5" fill="#D2691E"/>
 <text x="709.27" y="746.05" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">J · 72 m²</text>
@@ -159,8 +159,6 @@
 <text x="761.00" y="990.00" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">8</text>
 <text x="761.00" y="1008.00" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">08</text>
 <rect x="694.00" y="1035.00" width="68" height="7" rx="3.5" fill="#D2691E"/>
-<text x="728.00" y="1061.00" font-size="15" font-weight="bold" fill="#0f2233" text-anchor="middle">J bloki</text>
-<text x="728.00" y="1079.00" font-size="13" fill="#5b6b7a" text-anchor="middle">Bakaleya</text>
 <rect x="838.00" y="761.00" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
 <rect x="838.00" y="729.00" width="94.54" height="25" rx="5" fill="#3E9B5F"/>
 <text x="885.27" y="746.05" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">K · 72 m²</text>
@@ -177,14 +175,10 @@
 <text x="937.00" y="858.00" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">4</text>
 <text x="937.00" y="876.00" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">04</text>
 <rect x="870.00" y="1035.00" width="68" height="7" rx="3.5" fill="#3E9B5F"/>
-<text x="904.00" y="1061.00" font-size="15" font-weight="bold" fill="#0f2233" text-anchor="middle">K bloki</text>
-<text x="904.00" y="1079.00" font-size="13" fill="#5b6b7a" text-anchor="middle">Qandolat</text>
 <rect x="1014.00" y="761.00" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
 <rect x="1014.00" y="729.00" width="94.54" height="25" rx="5" fill="#9B59B6"/>
 <text x="1061.27" y="746.05" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">L · 72 m²</text>
 <rect x="1046.00" y="1035.00" width="68" height="7" rx="3.5" fill="#9B59B6"/>
-<text x="1080.00" y="1061.00" font-size="15" font-weight="bold" fill="#0f2233" text-anchor="middle">L bloki</text>
-<text x="1080.00" y="1079.00" font-size="13" fill="#5b6b7a" text-anchor="middle">Shirinliklar</text>
 <rect x="310.00" y="127.40" width="264.00" height="132.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
 <rect x="310.00" y="95.40" width="118.72" height="25" rx="5" fill="#2E8B8B"/>
 <text x="369.36" y="112.45" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">EQ-1 · 72 m²</text>

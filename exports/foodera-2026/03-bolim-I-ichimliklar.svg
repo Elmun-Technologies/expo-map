@@ -18,8 +18,8 @@
 <text x="222.00" y="407.00" font-size="15.00" font-weight="bold" fill="#1b5e20" text-anchor="middle">8</text>
 <text x="222.00" y="425.00" font-size="10" fill="#1b5e20" text-anchor="middle" opacity="0.85">08</text>
 <rect x="155.00" y="452.00" width="68" height="7" rx="3.5" fill="#3E7BB6"/>
-<text x="189.00" y="478.00" font-size="15" font-weight="bold" fill="#0f2233" text-anchor="middle">I bloki</text>
-<text x="189.00" y="496.00" font-size="13" fill="#5b6b7a" text-anchor="middle">Ichimliklar</text>
+<text x="189.00" y="478.00" font-size="15.00" font-weight="bold" fill="#0f2233" text-anchor="middle">I bloki</text>
+<text x="189.00" y="496.00" font-size="15.00" fill="#5b6b7a" text-anchor="middle">Ichimliklar</text>
 <path d="M123 178L189 178L255 178L255 244L255 310L189 310L123 310L123 244Z" fill="#c62828" stroke="#8e1b1b" stroke-width="2"/>
 <text x="189.00" y="242.31" font-size="10.56" font-weight="bold" fill="#ffffff" text-anchor="middle">Aqua Water Company</text>
 <text x="189.00" y="262.34" font-size="8.00" fill="#ffffff" text-anchor="middle" opacity="0.92">4 stend · 36 m²</text>

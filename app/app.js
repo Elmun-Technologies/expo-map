@@ -199,7 +199,8 @@
       const label = b.label;
       const cw = Math.max(5.4, label.length * 1.15 + 3.4);
       chip.appendChild(el('rect', { x: b.x, y: b.y - 1.95, width: cw, height: 1.5, rx: 0.35, fill: b.color || '#0f2233' }));
-      chip.appendChild(el('text', { x: b.x + cw / 2, y: b.y - 1.2 }, `${label} · ${fmtNum(b.areaM2)} m²`));
+      const effArea = b.areaM2 + (b.merged || []).reduce((a, m) => a + m.w * m.h, 0);
+      chip.appendChild(el('text', { x: b.x + cw / 2, y: b.y - 1.2 }, `${label} · ${fmtNum(effArea)} m²`));
       const secForChip = sectionById(b.section);
       chip.appendChild(el('title', {}, `${label} bloki${secForChip ? ' — ' + secForChip.label + (secForChip.labelRu ? ' (' + secForChip.labelRu + ')' : '') : ''} · ${b.stands.length} stend × 9 m² = ${fmtNum(b.areaM2)} m². Bosib butun blokni tanlang.`));
       blockG.appendChild(chip);
@@ -224,14 +225,22 @@
       if (sec) {
         const cx = b.x + b.w / 2;
         blockG.appendChild(el('rect', { x: cx - 1.7, y: b.y + b.h + 0.55, width: 3.4, height: 0.28, rx: 0.14, fill: sec.color, class: 'sec-bar' }));
-        const gap = layout.blocks.reduce((g, o) => {
+        const gap = [...layout.blocks, ...(layout.features || [])].reduce((g, o) => {
           if (o.id === b.id) return g;
-          const ov = Math.min(o.x + o.w, b.x + b.w) - Math.max(o.x, b.x);
+          const ow = o.w ?? 2, oh = o.h ?? 2;
+          const ov = Math.min(o.x + ow, b.x + b.w) - Math.max(o.x, b.x);
           return ov > 0.1 && o.y - (b.y + b.h) >= 0 ? Math.min(g, o.y - (b.y + b.h)) : g;
         }, 99);
-        if (gap > 2.6) {
-          blockG.appendChild(el('text', { x: cx, y: b.y + b.h + 1.9, class: 'sec-label', 'text-anchor': 'middle' }, `${b.label} bloki`));
-          blockG.appendChild(el('text', { x: cx, y: b.y + b.h + 3.1, class: 'sec-label', 'text-anchor': 'middle' }, sec.short || sec.label));
+        if (gap > 3.2) {
+          const fitFs = (txt) => Math.max(0.62, Math.min(1.05, (b.w - 1.2) / Math.max(4, txt.length) / 0.62));
+          const l1 = `${b.label} bloki`;
+          const l2 = sec.short || sec.label;
+          const t1 = el('text', { x: cx, y: b.y + b.h + 1.9, class: 'sec-label', 'text-anchor': 'middle' }, l1);
+          t1.style.fontSize = fitFs(l1) + 'px';
+          const t2 = el('text', { x: cx, y: b.y + b.h + 3.1, class: 'sec-label', 'text-anchor': 'middle' }, l2);
+          t2.style.fontSize = fitFs(l2) + 'px';
+          blockG.appendChild(t1);
+          blockG.appendChild(t2);
         }
       }
     }
@@ -284,7 +293,7 @@
         : (Math.abs(u.areaM2 - 9) > 0.01 ? `${fmtNum(u.areaM2)} m²` : '');
     const withMeta = !!metaTxt && boxes.h > 2.4;
     const fit = ExpoGroups.fitText(u.label || STATUS_LABEL[u.status], boxes.w - 0.7, boxes.h - (withMeta ? 1.5 : 0.5), {
-      maxLines: boxes.h > 5 ? 3 : boxes.h > 3.1 ? 2 : 1,
+      maxLines: boxes.h > 5 ? 3 : boxes.h > 2.6 ? 2 : 1,
       minFs: 0.72,
       maxFs: Math.min(2.4, boxes.h / (withMeta ? 2.9 : 2.3)),
     });
