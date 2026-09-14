@@ -7,7 +7,9 @@
  *
  * Nima chiqadi (exports/<zagolovka>/ ichida):
  *   01-xarita-butun-zal.svg        — butun zal, bo'limlar va band joylar bilan
+ *   01-xarita-butun-zal.pdf        — shu xaritaning BITTA varaqli PDF'i (A3 landscape, mijozga)
  *   02-xarita-bosh-joylar.svg      — FAQAT bo'sh joylar (sotuvchiga/katalogga)
+ *   02-xarita-bosh-joylar.pdf      — shu xaritaning BITTA varaqli PDF'i
  *   03-bolim-<ID>-<nom>.svg        — har bir bo'lim uchun alohida varaq
  *   04-kompaniyalar.csv            — band qilingan joylar ro'yxati (Excel uchun)
  *   00-IZOH.txt                    — versiya, sana, qoidalar, qanday o'qish kerak
@@ -15,6 +17,7 @@
  * Qoidalar: layout validatordan o'tishi shart; QORALAMA bo'lsa paket yasalmaydi.
  */
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
@@ -73,6 +76,28 @@ const f1 = path.join(outDir, '01-xarita-butun-zal.svg');
 const f2 = path.join(outDir, '02-xarita-bosh-joylar.svg');
 if (run(['--out', f1])) made.push(f1);
 if (run(['--no-state', '--out', f2])) made.push(f2);
+
+// 1b) PDF — FAQAT ASOSIY XARITA, bitta varaq (A3 landscape).
+// Brauzerdagi "Save as PDF" ko'p varaqqa bo'lib tashlaydi; bu fayl mijozga to'g'ridan-to'g'ri yuboriladi.
+const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'expo-pdf-'));
+for (const item of [
+  { svg: f1, name: '01-xarita-butun-zal.pdf', extra: [] },
+  { svg: f2, name: '02-xarita-bosh-joylar.pdf', extra: ['--no-state'] },
+]) {
+  const mapSvg = path.join(tmpDir, item.name.replace(/\.pdf$/, '.svg'));
+  const pdfOut = path.join(outDir, item.name);
+  if (!run(['--map', ...item.extra, '--out', mapSvg])) continue;
+  try {
+    const line = execFileSync('python3',
+      [path.join(ROOT, 'tools/export-pdf.py'), mapSvg, pdfOut, '--title', `${raw.meta.project} — ${raw.meta.hall}`],
+      { cwd: ROOT, encoding: 'utf8' });
+    console.log('  ' + line.trim());
+    made.push(pdfOut);
+  } catch (e) {
+    console.error('⚠ PDF yasalmadi (python3 + reportlab + svglib kerak):', String(e.message).split('\n')[0]);
+  }
+}
+fs.rmSync(tmpDir, { recursive: true, force: true });
 
 // 3) har bir bo'lim alohida varaq
 for (const sec of exp.sections || []) {
@@ -143,7 +168,9 @@ ${secTable}
 
 FAYLLAR
   01-xarita-butun-zal.svg     butun zal: bo'limlar, bron va sotilgan joylar bilan (mijozga/rahbariyatga)
+  01-xarita-butun-zal.pdf     shu xaritaning BITTA varaqli PDF'i (A3 landscape) - to'g'ridan-to'g'ri yuborish uchun
   02-xarita-bosh-joylar.svg   faqat bo'sh joylar (sotuvchiga, katalogga)
+  02-xarita-bosh-joylar.pdf   bo'sh joylar xaritasining bitta varaqli PDF'i
   03-bolim-*.svg              har bir bo'lim alohida varaq (mijozga aynan o'z bo'limini yuborish uchun)
   04-kompaniyalar.csv         band qilingan joylar: kompaniya, stend ID, summa, sotuvchi
   05-bosh-joylar.csv          bo'sh joylar ro'yxati (narx bilan)
@@ -154,7 +181,8 @@ RANGLAR
   Qizil   — sotilgan
   Kulrang — bloklangan (texnik yoki egasi uchun)
 
-IZOH: SVG fayllar brauzerda ochiladi, chop etish mumkin (A3/A2), PDF qilib saqlash ham mumkin.
+IZOH: PDF fayllar BITTA A3 varaqdan iborat (brauzerdan "Save as PDF" qilish shart emas - u ko'p
+varaqqa bo'lib tashlaydi). SVG fayllar brauzerda ochiladi, tahrirlanadigan vektor bo'lib qoladi.
 Xarita layout faylidan avtomatik chiziladi — qo'lda tahrirlash mumkin emas, shuning uchun
 xarita bilan holat hech qachon ajralib qolmaydi.
 `;

@@ -3,7 +3,7 @@
   "meta": {
     "project": "FOODERA EXPO 2026",
     "hall": "Крытый павильон (Yopiq pavilyon)",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "status": "approved",
     "updatedAt": "2026-09-14",
     "units": "meters",
@@ -23,7 +23,7 @@
     "pricePerM2": 1250000,
     "reserveTtlHours": 72,
     "source": "FOODERA EXPO 2026 chizma — bo'limlar tuzilishi (rasm bo'yicha)",
-    "note": "Shablon: faqat 72 m² bloklar (2×4 · 8 × 9 m²) — 1-qator A–F, 2-qator G–I, 3-qator J–L + uskunalar qatori (8×1) + chap qanot A1–A6"
+    "note": "FOODERA chizmasi (3 qator) → 72 m² bloklar (2×4 · 8 × 9 m²): A–F, G–L, M–R + uskunalar qatori + chap qanot"
   },
   "hall": {
     "width": 96,
@@ -79,7 +79,7 @@
     {
       "id": "E",
       "short": "Sport pit",
-      "label": "Sog'lom taom va Sport Pit",
+      "label": "Sport Pit, sog'lom taom",
       "labelRu": "Продукты для здорового питания, Спорт Пит",
       "color": "#3E9B5F"
     },
@@ -95,7 +95,7 @@
       "short": "Ingredientlar",
       "label": "Ingredientlar va komponentlar",
       "labelRu": "Ингредиенты и компоненты",
-      "color": "#5E7A8C"
+      "color": "#C96F2B"
     },
     {
       "id": "H",
@@ -106,31 +106,73 @@
     },
     {
       "id": "I",
+      "short": "Baliq 2",
+      "label": "Baliq va dengiz mahsulotlari (2)",
+      "labelRu": "Рыба и морепродукты (2)",
+      "color": "#3E7BB6"
+    },
+    {
+      "id": "J",
       "short": "Ichimliklar",
       "label": "Ichimliklar",
       "labelRu": "Напитки",
       "color": "#2A9D8F"
     },
     {
-      "id": "J",
+      "id": "K",
+      "short": "Organika 2",
+      "label": "Organika mahsulotlari (2)",
+      "labelRu": "Органика (2)",
+      "color": "#9B59B6"
+    },
+    {
+      "id": "L",
       "short": "Yarim tayyor",
       "label": "Yarim tayyor mahsulotlar",
       "labelRu": "Полуфабрикаты",
       "color": "#C96F2B"
     },
     {
-      "id": "K",
+      "id": "M",
+      "short": "Ichimliklar 2",
+      "label": "Ichimliklar (2)",
+      "labelRu": "Напитки (2)",
+      "color": "#2A9D8F"
+    },
+    {
+      "id": "N",
+      "short": "Ingredientlar 2",
+      "label": "Ingredientlar va komponentlar (2)",
+      "labelRu": "Ингредиенты и компоненты (2)",
+      "color": "#C0553E"
+    },
+    {
+      "id": "O",
       "short": "Bakaleya",
       "label": "Bakaleya",
       "labelRu": "Бакалея",
       "color": "#D2691E"
     },
     {
-      "id": "L",
+      "id": "P",
       "short": "Qandolat",
       "label": "Qandolat mahsulotlari",
       "labelRu": "Кондитерские изделия",
       "color": "#C2185B"
+    },
+    {
+      "id": "Q",
+      "short": "Qandolat 2",
+      "label": "Qandolat va shirinliklar",
+      "labelRu": "Кондитерские изделия и сладости",
+      "color": "#5E7A8C"
+    },
+    {
+      "id": "R",
+      "short": "Turli",
+      "label": "Turli eksponentlar",
+      "labelRu": "Прочие экспоненты",
+      "color": "#7A6C4F"
     },
     {
       "id": "EQ",
@@ -161,7 +203,7 @@
     },
     {
       "id": "top",
-      "label": "1-qator bo'limlari (A–F)",
+      "label": "1-qator (A–F)",
       "color": "#f6f9fc",
       "x": 10.5,
       "y": 5.2,
@@ -172,22 +214,22 @@
     },
     {
       "id": "mid",
-      "label": "2-qator bo'limlari (G–I)",
+      "label": "2-qator (G–L)",
       "color": "#f7fbf7",
-      "x": 17.5,
+      "x": 10.5,
       "y": 19.2,
-      "w": 35,
+      "w": 48,
       "h": 13.2,
       "kind": "hall",
       "labelPos": "none"
     },
     {
       "id": "bottom",
-      "label": "3-qator bo'limlari (J–L)",
+      "label": "3-qator (M–R)",
       "color": "#f6f9fc",
-      "x": 17.5,
+      "x": 10.5,
       "y": 33.2,
-      "w": 35,
+      "w": 48,
       "h": 13.2,
       "kind": "hall",
       "labelPos": "none"
@@ -360,38 +402,6 @@
       "y": 42.4,
       "w": 6.2,
       "h": 4
-    },
-    {
-      "type": "column",
-      "label": "Ustun",
-      "x": 12,
-      "y": 18.2,
-      "w": 1.2,
-      "h": 1.2
-    },
-    {
-      "type": "column",
-      "label": "Ustun",
-      "x": 24,
-      "y": 18.2,
-      "w": 1.2,
-      "h": 1.2
-    },
-    {
-      "type": "column",
-      "label": "Ustun",
-      "x": 36,
-      "y": 18.2,
-      "w": 1.2,
-      "h": 1.2
-    },
-    {
-      "type": "column",
-      "label": "Ustun",
-      "x": 48,
-      "y": 18.2,
-      "w": 1.2,
-      "h": 1.2
     }
   ],
   "customStands": [
@@ -489,7 +499,7 @@
       "cols": 2,
       "rows": 4,
       "section": "A",
-      "group": "1-qator (A–F)",
+      "group": "1-qator",
       "color": "#E8A33D"
     },
     {
@@ -500,7 +510,7 @@
       "cols": 2,
       "rows": 4,
       "section": "B",
-      "group": "1-qator (A–F)",
+      "group": "1-qator",
       "color": "#2E8B8B"
     },
     {
@@ -511,7 +521,7 @@
       "cols": 2,
       "rows": 4,
       "section": "C",
-      "group": "1-qator (A–F)",
+      "group": "1-qator",
       "color": "#3E7BB6"
     },
     {
@@ -522,7 +532,7 @@
       "cols": 2,
       "rows": 4,
       "section": "D",
-      "group": "1-qator (A–F)",
+      "group": "1-qator",
       "color": "#B8860B"
     },
     {
@@ -533,7 +543,7 @@
       "cols": 2,
       "rows": 4,
       "section": "E",
-      "group": "1-qator (A–F)",
+      "group": "1-qator",
       "color": "#3E9B5F"
     },
     {
@@ -544,74 +554,140 @@
       "cols": 2,
       "rows": 4,
       "section": "F",
-      "group": "1-qator (A–F)",
+      "group": "1-qator",
       "color": "#9B59B6"
     },
     {
       "id": "G",
       "label": "G",
-      "x": 19,
+      "x": 12,
       "y": 19.8,
       "cols": 2,
       "rows": 4,
       "section": "G",
-      "group": "2-qator (G–I)",
-      "color": "#5E7A8C"
+      "group": "2-qator",
+      "color": "#C96F2B"
     },
     {
       "id": "H",
       "label": "H",
-      "x": 32,
+      "x": 20,
       "y": 19.8,
       "cols": 2,
       "rows": 4,
       "section": "H",
-      "group": "2-qator (G–I)",
+      "group": "2-qator",
       "color": "#C0553E"
     },
     {
       "id": "I",
       "label": "I",
-      "x": 45,
+      "x": 28,
       "y": 19.8,
       "cols": 2,
       "rows": 4,
       "section": "I",
-      "group": "2-qator (G–I)",
-      "color": "#2A9D8F"
+      "group": "2-qator",
+      "color": "#3E7BB6"
     },
     {
       "id": "J",
       "label": "J",
-      "x": 19,
-      "y": 33.8,
+      "x": 36,
+      "y": 19.8,
       "cols": 2,
       "rows": 4,
       "section": "J",
-      "group": "3-qator (J–L)",
-      "color": "#C96F2B"
+      "group": "2-qator",
+      "color": "#2A9D8F"
     },
     {
       "id": "K",
       "label": "K",
-      "x": 32,
-      "y": 33.8,
+      "x": 44,
+      "y": 19.8,
       "cols": 2,
       "rows": 4,
       "section": "K",
-      "group": "3-qator (J–L)",
-      "color": "#D2691E"
+      "group": "2-qator",
+      "color": "#9B59B6"
     },
     {
       "id": "L",
       "label": "L",
-      "x": 45,
-      "y": 33.8,
+      "x": 52,
+      "y": 19.8,
       "cols": 2,
       "rows": 4,
       "section": "L",
-      "group": "3-qator (J–L)",
+      "group": "2-qator",
+      "color": "#C96F2B"
+    },
+    {
+      "id": "M",
+      "label": "M",
+      "x": 12,
+      "y": 33.8,
+      "cols": 2,
+      "rows": 4,
+      "section": "M",
+      "group": "3-qator",
+      "color": "#2A9D8F"
+    },
+    {
+      "id": "N",
+      "label": "N",
+      "x": 20,
+      "y": 33.8,
+      "cols": 2,
+      "rows": 4,
+      "section": "N",
+      "group": "3-qator",
+      "color": "#C0553E"
+    },
+    {
+      "id": "O",
+      "label": "O",
+      "x": 28,
+      "y": 33.8,
+      "cols": 2,
+      "rows": 4,
+      "section": "O",
+      "group": "3-qator",
+      "color": "#D2691E"
+    },
+    {
+      "id": "P",
+      "label": "P",
+      "x": 36,
+      "y": 33.8,
+      "cols": 2,
+      "rows": 4,
+      "section": "P",
+      "group": "3-qator",
       "color": "#C2185B"
+    },
+    {
+      "id": "Q",
+      "label": "Q",
+      "x": 44,
+      "y": 33.8,
+      "cols": 2,
+      "rows": 4,
+      "section": "Q",
+      "group": "3-qator",
+      "color": "#5E7A8C"
+    },
+    {
+      "id": "R",
+      "label": "R",
+      "x": 52,
+      "y": 33.8,
+      "cols": 2,
+      "rows": 4,
+      "section": "R",
+      "group": "3-qator",
+      "color": "#7A6C4F"
     },
     {
       "id": "EQ-1",

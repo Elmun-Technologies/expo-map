@@ -203,6 +203,12 @@
 
     const blockG = el('g');
     const standG = el('g');
+    // yorliqlar bir-birini bosmasligi uchun band joylar ro'yxati
+    const occupied = [];
+    for (const f of layout.features || []) {
+      const fw = f.w ?? 2, fh = f.h ?? 2;
+      if (f.label) occupied.push({ x: f.x + 0.4, y: f.y + fh / 2 - 1.0, w: Math.max(1, fw - 0.8), h: 2.0 });
+    }
     // BAND joylar: bitta kompaniya nechta stend olgan bo'lsa — bitta umumiy quti
     const extra = ExpoGroups.mergedAsStands(layout.blocks || []);
     const allStands = [...(layout.stands || []), ...extra.stands];
@@ -211,24 +217,32 @@
     const bookedIds = new Set(units.flatMap((u) => u.ids.filter((id) => !id.includes('~m'))));
     for (const b of layout.blocks) {
       blockG.appendChild(el('rect', { x: b.x, y: b.y, width: b.w, height: b.h, class: 'block-outline', rx: 0.3, stroke: b.color || '#90a4b5' }));
+      occupied.push({ x: b.x, y: b.y, w: b.w, h: b.h });
 
-      // blok nomi — bosilsa butun blok tanlanadi
+      // blok nomi — bosilsa butun blok tanlanadi (chap qanot stendlari o'lchami o'zida yozilgan)
+      if (b.kind === 'custom') continue;
       const chip = el('g', { class: 'block-chip', 'data-block': b.id, tabindex: '0' });
       const label = b.label;
-      const cw = Math.max(5.4, label.length * 1.15 + 3.4);
-      chip.appendChild(el('rect', { x: b.x, y: b.y - 1.95, width: cw, height: 1.5, rx: 0.35, fill: b.color || '#0f2233' }));
       const effArea = b.areaM2 + (b.merged || []).reduce((a, m) => a + m.w * m.h, 0);
-      chip.appendChild(el('text', { x: b.x + cw / 2, y: b.y - 1.2 }, `${label} · ${fmtNum(effArea)} m²`));
+      const chipText = `${label} · ${fmtNum(effArea)} m²`;
+      // kenglik YOZUV bo'yicha (matn qutidan chiqib ketmasin)
+      const cw = Math.max(4.6, chipText.length * 1.15 * 0.62 + 1.6);
+      // birinchi qator (uskunalar) — chip zal chetidan tashqariga to'liq chiqsin, chet chizig'ini kesmasin
+      let chipY = b.y - 1.95;
+      if (chipY < 0 && b.y - 0.45 > 0) chipY = -1.72;
+      chip.appendChild(el('rect', { x: b.x, y: chipY, width: cw, height: 1.5, rx: 0.35, fill: b.color || '#0f2233' }));
+      occupied.push({ x: b.x, y: chipY, w: cw, h: 1.5 });
+      chip.appendChild(el('text', { x: b.x + cw / 2, y: chipY + 1.05 }, chipText));
       const secForChip = sectionById(b.section);
       chip.appendChild(el('title', {}, `${label} bloki${secForChip ? ' — ' + secForChip.label + (secForChip.labelRu ? ' (' + secForChip.labelRu + ')' : '') : ''} · ${b.stands.length} stend × 9 m² = ${fmtNum(b.areaM2)} m². Bosib butun blokni tanlang.`));
       blockG.appendChild(chip);
 
-      if (b.kind === 'custom') continue; // nostandart stendlar pastda alohida chiziladi
-      for (const s of b.stands) if (!bookedIds.has(s.id)) standG.appendChild(standNode(s));
+      for (const s of b.stands) if (!bookedIds.has(s.id)) { standG.appendChild(standNode(s)); occupied.push({ x: s.x, y: s.y, w: s.w, h: s.h }); }
       // birlashtirilgan kataklar — holati/egasi bo'lsa yuqorida bitta quti bo'lib chiqadi,
       // bu yerda faqat bo'sh (texnik) kataklar qoladi
       for (const m of (b.merged || []).filter((m) => !m.status && !m.buyer)) {
         const g = el('g', { class: 'merged', 'data-block': b.id });
+        occupied.push({ x: m.x, y: m.y, w: m.w, h: m.h });
         const st = m.status ? STATUS_LABEL[m.status] : null;
         const fill = m.status === 'sold' ? 'url(#hatchSold)' : m.status === 'reserved' ? 'url(#hatchReserved)' : (b.color || '#0f2233');
         g.appendChild(el('rect', { x: m.x, y: m.y, width: m.w, height: m.h, rx: 0.25, fill, 'fill-opacity': m.status ? 1 : 0.9, stroke: b.color || '#0f2233', 'stroke-width': 0.16 }));
@@ -263,14 +277,28 @@
       }
     }
     // nostandart o'lchamdagi stendlar (A1–A6 kabi)
-    for (const s of layout.customStands || []) if (!bookedIds.has(s.id)) standG.appendChild(standNode(s, true));
-    for (const u of units) standG.appendChild(unitNode(u));
+    for (const s of layout.customStands || []) if (!bookedIds.has(s.id)) { standG.appendChild(standNode(s, true)); occupied.push({ x: s.x, y: s.y, w: s.w, h: s.h }); }
+    for (const u of units) { standG.appendChild(unitNode(u)); occupied.push({ x: u.x, y: u.y, w: u.w, h: u.h }); }
     world.appendChild(blockG);
     world.appendChild(standG);
     // zona yorliqlari eng ustida (hech narsa bosmasin)
     const lastG = el('g');
-    for (const { z, y } of (world.__zoneLabels || [])) {
-      const t = el('text', { x: z.x + z.w / 2, y, fill: '#8fa0af', 'font-size': 1.35, 'text-anchor': 'middle', 'font-weight': 'bold' }, z.label);
+    const zlFs = 1.2;                       // .zone-label CSS bilan bir xil
+    const zlW = (txt) => txt.length * zlFs * 0.6;
+    const isFree = (x1, x2, y, h) => !occupied.some((r) => Math.min(r.x + r.w, x2) - Math.max(r.x, x1) > 0.15
+      && Math.min(r.y + r.h, y + h / 2) - Math.max(r.y, y - h / 2) > 0.05);
+    for (const zl of (world.__zoneLabels || [])) {
+      const z = zl.z;
+      const fs = Math.max(0.7, Math.min(zlFs, (z.w - 0.8) / Math.max(4, z.label.length) / 0.62));
+      const w = Math.min(z.w - 0.4, zlW(z.label));
+      const cx = z.x + z.w / 2, x1 = cx - w / 2, x2 = cx + w / 2;
+      // nomzodlar: avval mo'ljallangan joy, keyin zona ichi (yuqoridan pastga), keyin tashqarisi
+      const cands = [zl.y];
+      for (let y = z.y + 0.8; y <= z.y + z.h - 0.4; y += 0.25) cands.push(y);
+      cands.push(z.y - 0.6, z.y + z.h + 0.9);
+      let y = cands.find((c) => isFree(x1, x2, c, fs * 1.25)) ?? zl.y;
+      const t = el('text', { x: cx, y, fill: '#8fa0af', 'text-anchor': 'middle', 'font-weight': 'bold' }, z.label);
+      t.style.fontSize = fs + 'px';
       t.setAttribute('class', 'zone-label');
       lastG.appendChild(t);
     }
@@ -294,6 +322,16 @@
     return g;
   }
 
+  /** Uzun bitta so'z (Ansor-Zoxir, ZominFarms) qutiga sig'masa — chiziqcha/bo'g'in bo'ylab bo'lamiz. */
+  function softLabel(text) {
+    return String(text).split(/\s+/).map((w) => {
+      if (w.length <= 12) return w.includes('-') ? w.replace(/-/g, '- ').trim() : w;
+      const parts = [];
+      for (let i = 0; i < w.length; i += 10) parts.push(w.slice(i, i + 10));
+      return parts.join(' ');
+    }).join(' ');
+  }
+
   /** Bitta kompaniyaning band joyi — bitta quti, nomi ichida. */
   function unitNode(u) {
     const g = el('g', { class: 'booking-unit', 'data-ids': u.ids.join(','), 'data-status': u.status, 'data-buyer': (u.label || '').toUpperCase() });
@@ -310,9 +348,9 @@
         ? `${u.stands.length} stend · ${fmtNum(u.areaM2)} m²`
         : (Math.abs(u.areaM2 - 9) > 0.01 ? `${fmtNum(u.areaM2)} m²` : '');
     const withMeta = !!metaTxt && boxes.h > 2.4;
-    const fit = ExpoGroups.fitText(u.label || STATUS_LABEL[u.status], boxes.w - 0.7, boxes.h - (withMeta ? 1.5 : 0.5), {
-      maxLines: boxes.h > 5 ? 3 : boxes.h > 2.6 ? 2 : 1,
-      minFs: 0.72,
+    const fit = ExpoGroups.fitText(softLabel(u.label || STATUS_LABEL[u.status]), boxes.w - 0.7, boxes.h - (withMeta ? 1.5 : 0.5), {
+      maxLines: boxes.h > 5 ? 4 : boxes.h > 2.2 ? 3 : 1,
+      minFs: 0.42,
       maxFs: Math.min(2.4, boxes.h / (withMeta ? 2.9 : 2.3)),
     });
     const cx = boxes.x + boxes.w / 2, cy = boxes.y + boxes.h / 2;
@@ -800,7 +838,23 @@
       </table>` : ''}
       <p style="margin-top:6mm">Mijoz uchun izoh: sotib olingan joylar xaritada ID bo'yicha ko'rsatilgan. Shartnomada ko'rsatilgan stend ID'si bilan xaritadagi joy bir xil.</p>`;
   }
-  $('#printBtn').addEventListener('click', () => { buildPrintSheet(); window.print(); });
+  // A3 landscape (8 mm hoshiya) ichiga xaritani to'liq sig'diradi -> PDF bitta varaq bo'ladi
+  function fitPrintPage() {
+    const svg = $('#map');
+    const vb = (svg.getAttribute('viewBox') || '').split(/\s+/).map(Number);
+    if (vb.length !== 4 || !(vb[2] > 0) || !(vb[3] > 0)) return;
+    const mmW = 404, mmH = 281;
+    const k = Math.min(mmW / vb[2], mmH / vb[3]);
+    svg.style.width = (vb[2] * k).toFixed(1) + 'mm';
+    svg.style.height = (vb[3] * k).toFixed(1) + 'mm';
+    svg.style.maxWidth = 'none';
+  }
+  window.addEventListener('beforeprint', fitPrintPage);
+  window.addEventListener('afterprint', () => {
+    const s2 = $('#map');
+    s2.style.width = ''; s2.style.height = ''; s2.style.maxWidth = '';
+  });
+  $('#printBtn').addEventListener('click', () => { buildPrintSheet(); fitPrintPage(); window.print(); });
 
   // ------------------------------------------------------------ start
   (async () => {

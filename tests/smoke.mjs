@@ -6,16 +6,52 @@
  *   npm start              # boshqa oynada server
  *   npm run smoke
  *
- * DIQQAT: test haqiqiy holatni o'zgartiradi — bo'sh blok sotiladi.
- * Demo holatni tiklash: node tools/demo.mjs --reset
+ * DIQQAT: test stendlarni sotadi. Shuning uchun u ALOHIDA (vaqtinchalik) holat faylida
+ * ishlaydi — haqiqiy data/state.json ga tegmaydi. Xohlasangiz BASE berib tirik serverga
+ * qarshi yugurtirish mumkin, lekin u holda haqiqiy holat o'zgaradi.
+ *
+ *   npm run smoke              # izolyatsiya: o'zi server ko'taradi, o'zi tozalaydi
+ *   BASE=http://localhost:4173 npm run smoke   # tirik serverga qarshi (ehtiyot bo'ling)
  */
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
+import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { JSDOM } from 'jsdom';
 
 const APP = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', 'app');
-const BASE = process.env.BASE || 'http://localhost:4173';
+const ROOT = path.resolve(APP, '..');
+let BASE = process.env.BASE || null;
+let child = null;
+let tmpDir = null;
+
+if (!BASE) {
+  // izolyatsiya: haqiqiy holatning NUSXASI bilan alohida portda server ko'taramiz
+  tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'expo-smoke-'));
+  const tmpState = path.join(tmpDir, 'state.json');
+  fs.copyFileSync(path.join(ROOT, 'data/state.json'), tmpState);
+  const port = Number(process.env.SMOKE_PORT || 4293);
+  child = spawn(process.execPath, [path.join(ROOT, 'server.mjs')], {
+    cwd: ROOT,
+    env: { ...process.env, PORT: String(port), STATE: tmpState },
+    stdio: 'ignore',
+  });
+  BASE = `http://localhost:${port}`;
+  for (let i = 0; i < 80; i++) {
+    try { const r = await fetch(BASE + '/api/healthz'); if (r.ok) break; } catch { /* hali ko'tarilmadi */ }
+    await new Promise((r) => setTimeout(r, 150));
+  }
+  console.log(`ℹ izolyatsiya: vaqtinchalik holat + port ${port} (haqiqiy state.json tegilmadi)`);
+} else {
+  console.warn('⚠ BASE berilgan — test HAQIQIY holatni o\'zgartiradi.');
+}
+const cleanup = () => {
+  try { child?.kill('SIGTERM'); } catch { /* bo'ldi */ }
+  try { if (tmpDir) fs.rmSync(tmpDir, { recursive: true, force: true }); } catch { /* bo'ldi */ }
+};
+process.on('exit', cleanup);
+process.on('SIGINT', () => { cleanup(); process.exit(130); });
 
 const html = fs.readFileSync(path.join(APP, 'index.html'), 'utf8');
 const appJs = fs.readFileSync(path.join(APP, 'app.js'), 'utf8');

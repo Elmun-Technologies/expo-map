@@ -69,7 +69,9 @@ eksport yozilmaydi). Ya'ni "yo'q joyni sotish" texnik jihatdan imkonsiz bo'ladi.
   sotilgan joyni faqat **menejer** bo'shata oladi.
 * Jonli statistika: bo'sh/bron/sotilgan stend va m², sotuv summasi.
 * **Mijoz ko'rinishi** havolasi (`?mode=client`) — mijoz o'zi qarab turadi, narx maydonlari yo'q.
-* **Chop etish / PDF** — A3 varaq: xarita + legenda + bo'sh joylar ro'yxati + bloklar jadvali (72 m²).
+* **Chop etish / PDF** — bitta A3 varaq: faqat **asosiy xarita** (legenda bilan). Brauzerdagi
+  "Save as PDF" endi xaritani bitta varaqqa sig'diradi; tayyor PDF fayllar `exports/foodera-2026/`
+  ichida ham bor (`01-xarita-butun-zal.pdf`, `02-xarita-bosh-joylar.pdf`).
 * **Jurnal** (admin) va **CSV eksport** (buxgalteriya/hisobot uchun).
 
 **Nazorat vositalari:**

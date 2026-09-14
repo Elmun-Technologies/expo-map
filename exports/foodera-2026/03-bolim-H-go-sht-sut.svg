@@ -1,35 +1,52 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="724" height="659" viewBox="0 0 724 659" font-family="DejaVu Sans, Helvetica, Arial, sans-serif">
-<rect width="724" height="659" fill="#ffffff"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="724" height="671" viewBox="0 0 724 671" font-family="DejaVu Sans, Helvetica, Arial, sans-serif">
+<rect width="724" height="671" fill="#ffffff"/>
 <text x="46" y="66" font-size="20" font-weight="bold" fill="#0f2233">Go'sht va sut sanoati — Мясная и молочная индустрия</text>
-<text x="46" y="87" font-size="13" fill="#5b6b7a">1 stend = 3×3 m = 9 m² · 1 blok = 8 stend = 72 m² · layout v1.1.0 · 14.09.2026</text>
-<rect x="123.00" y="178.00" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
-<rect x="123.00" y="146.00" width="94.54" height="25" rx="5" fill="#ffffff" stroke="#C0553E" stroke-width="1.4"/>
-<text x="170.27" y="163.05" font-size="13" font-weight="bold" fill="#C0553E" text-anchor="middle">H · 72 m²</text>
-<rect x="123.00" y="310.00" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#C0553E" stroke-width="1.1"/>
-<rect x="123.00" y="310.00" width="66.00" height="66.00" rx="2" fill="#ffffff" stroke="#C0553E" stroke-width="1.05"/>
-<text x="156.00" y="342.00" font-size="15.00" font-weight="bold" fill="#C0553E" text-anchor="middle">H5</text>
-<text x="156.00" y="357.25" font-size="9.00" fill="#8a9aa8" text-anchor="middle">9 m²</text>
-<rect x="189.00" y="310.00" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#C0553E" stroke-width="1.1"/>
-<rect x="189.00" y="310.00" width="66.00" height="66.00" rx="2" fill="#ffffff" stroke="#C0553E" stroke-width="1.05"/>
-<text x="222.00" y="342.00" font-size="15.00" font-weight="bold" fill="#C0553E" text-anchor="middle">H6</text>
-<text x="222.00" y="357.25" font-size="9.00" fill="#8a9aa8" text-anchor="middle">9 m²</text>
-<rect x="155.00" y="452.00" width="68" height="7" rx="3.5" fill="#C0553E"/>
-<path d="M123 178L189 178L255 178L255 244L255 310L189 310L123 310L123 244Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
-<rect x="123.00" y="178.00" width="132.00" height="4" rx="1.5" fill="#c62828"/>
-<text x="189.00" y="221.32" font-size="21.06" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Namangan</text>
-<text x="189.00" y="246.59" font-size="21.06" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Go'sht</text>
-<text x="189.00" y="271.86" font-size="21.06" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Kombinati</text>
-<text x="189.00" y="293.91" font-size="11.58" fill="#8e1b1b" text-anchor="middle" opacity="0.85">4 stend · 36 m²</text>
-<path d="M123 376L189 376L255 376L255 442L189 442L123 442Z" fill="#fff8e6" stroke="#e0a300" stroke-width="2"/>
-<rect x="123.00" y="376.00" width="132.00" height="4" rx="1.5" fill="#e0a300"/>
-<text x="189.00" y="399.66" font-size="17.39" font-weight="bold" fill="#7a4f00" text-anchor="middle">Qashqadaryo</text>
-<text x="189.00" y="420.53" font-size="17.39" font-weight="bold" fill="#7a4f00" text-anchor="middle">Sut Zavodi</text>
-<text x="189.00" y="441.87" font-size="9.57" fill="#7a4f00" text-anchor="middle" opacity="0.85">2 stend · 18 m²</text>
-<rect x="46.00" y="535.00" width="15" height="15" rx="3" fill="#eaf6ec" stroke="#2e7d32" stroke-width="1.4"/>
-<text x="69.00" y="548.00" font-size="13" fill="#33454f">Bo'sh: 2 stend · 18 m²</text>
-<rect x="261.32" y="535.00" width="15" height="15" rx="3" fill="#fff3d6" stroke="#f59e0b" stroke-width="1.4"/>
-<text x="284.32" y="548.00" font-size="13" fill="#33454f">Bron: 2 stend · 18 m²</text>
-<rect x="46.00" y="560.00" width="15" height="15" rx="3" fill="#c62828" stroke="#8e1b1b" stroke-width="1.4"/>
-<text x="69.00" y="573.00" font-size="13" fill="#33454f">Sotilgan: 4 stend · 36 m²</text>
-<text x="678.4" y="641" font-size="12" fill="#33454f" text-anchor="end">Jami: 8 stend · 72 m² · bo'sh: 2 (18 m²)</text>
+<text x="46" y="87" font-size="13" fill="#5b6b7a">1 stend = 3×3 m = 9 m² · 1 blok = 8 stend = 72 m² · layout v1.2.0 · 14.09.2026</text>
+<rect x="123.00" y="190.00" width="132.00" height="264.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
+<rect x="123.00" y="158.00" width="94.54" height="25" rx="5" fill="#ffffff" stroke="#C0553E" stroke-width="1.4"/>
+<text x="170.27" y="175.05" font-size="13" font-weight="bold" fill="#C0553E" text-anchor="middle">H · 72 m²</text>
+<rect x="189.00" y="322.00" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#C0553E" stroke-width="1.1"/>
+<rect x="189.00" y="322.00" width="66.00" height="66.00" rx="2" fill="#ffffff" stroke="#C0553E" stroke-width="1.05"/>
+<text x="222.00" y="354.00" font-size="15.00" font-weight="bold" fill="#C0553E" text-anchor="middle">H6</text>
+<text x="222.00" y="369.25" font-size="9.00" fill="#8a9aa8" text-anchor="middle">9 m²</text>
+<rect x="123.00" y="388.00" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#C0553E" stroke-width="1.1"/>
+<rect x="123.00" y="388.00" width="66.00" height="66.00" rx="2" fill="#ffffff" stroke="#C0553E" stroke-width="1.05"/>
+<text x="156.00" y="420.00" font-size="15.00" font-weight="bold" fill="#C0553E" text-anchor="middle">H7</text>
+<text x="156.00" y="435.25" font-size="9.00" fill="#8a9aa8" text-anchor="middle">9 m²</text>
+<rect x="189.00" y="388.00" width="66.00" height="66.00" rx="3" fill="#eaf6ec" stroke="#C0553E" stroke-width="1.1"/>
+<rect x="189.00" y="388.00" width="66.00" height="66.00" rx="2" fill="#ffffff" stroke="#C0553E" stroke-width="1.05"/>
+<text x="222.00" y="420.00" font-size="15.00" font-weight="bold" fill="#C0553E" text-anchor="middle">H8</text>
+<text x="222.00" y="435.25" font-size="9.00" fill="#8a9aa8" text-anchor="middle">9 m²</text>
+<rect x="155.00" y="464.00" width="68" height="7" rx="3.5" fill="#C0553E"/>
+<path d="M123 190L189 190L189 256L123 256Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
+<rect x="123.00" y="190.00" width="66.00" height="4" rx="1.5" fill="#c62828"/>
+<text x="156.00" y="213.61" font-size="13.12" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Oltin</text>
+<text x="156.00" y="229.35" font-size="13.12" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Go'sht</text>
+<text x="156.00" y="245.10" font-size="13.12" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Sari</text>
+<path d="M189 190L255 190L255 256L189 256Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
+<rect x="189.00" y="190.00" width="66.00" height="4" rx="1.5" fill="#c62828"/>
+<text x="222.00" y="213.61" font-size="13.12" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Oltin</text>
+<text x="222.00" y="229.35" font-size="13.12" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Go'sht</text>
+<text x="222.00" y="245.10" font-size="13.12" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Turon</text>
+<path d="M123 256L189 256L189 322L123 322Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
+<rect x="123.00" y="256.00" width="66.00" height="4" rx="1.5" fill="#c62828"/>
+<text x="156.00" y="280.65" font-size="11.81" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Saldis</text>
+<text x="156.00" y="294.82" font-size="11.81" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Trading</text>
+<text x="156.00" y="308.99" font-size="11.81" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Group</text>
+<path d="M189 256L255 256L255 322L189 322Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
+<rect x="189.00" y="256.00" width="66.00" height="4" rx="1.5" fill="#c62828"/>
+<text x="222.00" y="288.66" font-size="6.97" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Dobroye</text>
+<text x="222.00" y="297.03" font-size="6.97" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Derevenskoye</text>
+<path d="M123 322L189 322L189 388L123 388Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
+<rect x="123.00" y="322.00" width="66.00" height="4" rx="1.5" fill="#c62828"/>
+<text x="156.00" y="348.42" font-size="9.57" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Saldis</text>
+<text x="156.00" y="359.90" font-size="9.57" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Trading</text>
+<text x="156.00" y="371.38" font-size="9.57" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Group (2)</text>
+<rect x="46.00" y="547.00" width="15" height="15" rx="3" fill="#eaf6ec" stroke="#2e7d32" stroke-width="1.4"/>
+<text x="69.00" y="560.00" font-size="13" fill="#33454f">Bo'sh: 3 stend · 27 m²</text>
+<rect x="261.32" y="547.00" width="15" height="15" rx="3" fill="#fff3d6" stroke="#f59e0b" stroke-width="1.4"/>
+<text x="284.32" y="560.00" font-size="13" fill="#33454f">Bron: 0 stend · 0 m²</text>
+<rect x="46.00" y="572.00" width="15" height="15" rx="3" fill="#c62828" stroke="#8e1b1b" stroke-width="1.4"/>
+<text x="69.00" y="585.00" font-size="13" fill="#33454f">Sotilgan: 5 stend · 45 m²</text>
+<text x="678.4" y="653" font-size="12" fill="#33454f" text-anchor="end">Jami: 8 stend · 72 m² · bo'sh: 3 (27 m²)</text>
 </svg>

@@ -1,40 +1,36 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="721" height="957" viewBox="0 0 721 957" font-family="DejaVu Sans, Helvetica, Arial, sans-serif">
-<rect width="721" height="957" fill="#ffffff"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="721" height="969" viewBox="0 0 721 969" font-family="DejaVu Sans, Helvetica, Arial, sans-serif">
+<rect width="721" height="969" fill="#ffffff"/>
 <text x="46" y="66" font-size="20" font-weight="bold" fill="#0f2233">Chap qanot — A1–A6 — Левое крыло — A1–A6</text>
-<text x="46" y="87" font-size="13" fill="#5b6b7a">1 stend = 3×3 m = 9 m² · 1 blok = 8 stend = 72 m² · layout v1.1.0 · 14.09.2026</text>
-<rect x="123.00" y="433.20" width="132.00" height="93.13" rx="3" fill="#eaf6ec" stroke="#E8A33D" stroke-width="1.1" stroke-dasharray="6 4"/>
-<rect x="123.00" y="433.20" width="132.00" height="93.13" rx="2" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6"/>
-<text x="189.00" y="478.76" font-size="18.00" font-weight="bold" fill="#2b3a45" text-anchor="middle">A3</text>
-<text x="189.00" y="503.16" font-size="12.96" fill="#8a9aa8" text-anchor="middle">25,4 m²</text>
-<rect x="123.00" y="640.00" width="132.00" height="100.50" rx="3" fill="#eaf6ec" stroke="#E8A33D" stroke-width="1.1" stroke-dasharray="6 4"/>
-<rect x="123.00" y="640.00" width="132.00" height="100.50" rx="2" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6"/>
-<text x="189.00" y="689.25" font-size="18.00" font-weight="bold" fill="#2b3a45" text-anchor="middle">A1</text>
-<text x="189.00" y="713.65" font-size="12.96" fill="#8a9aa8" text-anchor="middle">27,41 m²</text>
-<path d="M123 178L255 178L255 248.224L123 248.224Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
-<rect x="123.00" y="178.00" width="132.00" height="4" rx="1.5" fill="#c62828"/>
-<text x="189.00" y="204.33" font-size="17.80" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Milliy</text>
-<text x="189.00" y="225.70" font-size="17.80" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Ziravorlar</text>
-<text x="189.00" y="247.12" font-size="9.79" fill="#8e1b1b" text-anchor="middle" opacity="0.85">19,15 m²</text>
-<path d="M123 257.2L255 257.2L255 331.714L123 331.714Z" fill="#fff8e6" stroke="#e0a300" stroke-width="2"/>
-<rect x="123.00" y="257.20" width="132.00" height="4" rx="1.5" fill="#e0a300"/>
-<text x="189.00" y="286.25" font-size="17.96" font-weight="bold" fill="#7a4f00" text-anchor="middle">Andijon</text>
-<text x="189.00" y="307.80" font-size="17.96" font-weight="bold" fill="#7a4f00" text-anchor="middle">Meva Savdo</text>
-<text x="189.00" y="329.25" font-size="9.88" fill="#7a4f00" text-anchor="middle" opacity="0.85">20,32 m²</text>
-<path d="M123 340.8L255 340.8L255 423.916L123 423.916Z" fill="#fdeceb" stroke="#c62828" stroke-width="2"/>
-<rect x="123.00" y="340.80" width="132.00" height="4" rx="1.5" fill="#c62828"/>
-<text x="189.00" y="372.61" font-size="17.91" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Samarqand</text>
-<text x="189.00" y="394.10" font-size="17.91" font-weight="bold" fill="#8e1b1b" text-anchor="middle">Non Zavodi</text>
-<text x="189.00" y="415.54" font-size="9.85" fill="#8e1b1b" text-anchor="middle" opacity="0.85">22,67 m²</text>
-<path d="M123 534.4L255 534.4L255 630.584L123 630.584Z" fill="#fff8e6" stroke="#e0a300" stroke-width="2"/>
-<rect x="123.00" y="534.40" width="132.00" height="4" rx="1.5" fill="#e0a300"/>
-<text x="189.00" y="571.11" font-size="21.06" font-weight="bold" fill="#7a4f00" text-anchor="middle">Qarshi</text>
-<text x="189.00" y="596.38" font-size="21.06" font-weight="bold" fill="#7a4f00" text-anchor="middle">Sifat Sut</text>
-<text x="189.00" y="618.42" font-size="11.58" fill="#7a4f00" text-anchor="middle" opacity="0.85">26,23 m²</text>
-<rect x="46.00" y="833.50" width="15" height="15" rx="3" fill="#eaf6ec" stroke="#2e7d32" stroke-width="1.4"/>
-<text x="69.00" y="846.50" font-size="13" fill="#33454f">Bo'sh: 2 stend · 52,81 m²</text>
-<rect x="285.50" y="833.50" width="15" height="15" rx="3" fill="#fff3d6" stroke="#f59e0b" stroke-width="1.4"/>
-<text x="308.50" y="846.50" font-size="13" fill="#33454f">Bron: 2 stend · 46,55 m²</text>
-<rect x="46.00" y="858.50" width="15" height="15" rx="3" fill="#c62828" stroke="#8e1b1b" stroke-width="1.4"/>
-<text x="69.00" y="871.50" font-size="13" fill="#33454f">Sotilgan: 2 stend · 41,82 m²</text>
-<text x="674.68" y="939.496" font-size="12" fill="#33454f" text-anchor="end">Jami: 6 stend · 141,18 m² · bo'sh: 2 (52,81 m²)</text>
+<text x="46" y="87" font-size="13" fill="#5b6b7a">1 stend = 3×3 m = 9 m² · 1 blok = 8 stend = 72 m² · layout v1.2.0 · 14.09.2026</text>
+<rect x="123.00" y="190.00" width="132.00" height="70.22" rx="3" fill="#eaf6ec" stroke="#E8A33D" stroke-width="1.1" stroke-dasharray="6 4"/>
+<rect x="123.00" y="190.00" width="132.00" height="70.22" rx="2" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6"/>
+<text x="189.00" y="224.11" font-size="18.00" font-weight="bold" fill="#2b3a45" text-anchor="middle">A6</text>
+<text x="189.00" y="248.51" font-size="12.96" fill="#8a9aa8" text-anchor="middle">19,15 m²</text>
+<rect x="123.00" y="269.20" width="132.00" height="74.51" rx="3" fill="#eaf6ec" stroke="#E8A33D" stroke-width="1.1" stroke-dasharray="6 4"/>
+<rect x="123.00" y="269.20" width="132.00" height="74.51" rx="2" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6"/>
+<text x="189.00" y="305.46" font-size="18.00" font-weight="bold" fill="#2b3a45" text-anchor="middle">A5</text>
+<text x="189.00" y="329.86" font-size="12.96" fill="#8a9aa8" text-anchor="middle">20,32 m²</text>
+<rect x="123.00" y="352.80" width="132.00" height="83.12" rx="3" fill="#eaf6ec" stroke="#E8A33D" stroke-width="1.1" stroke-dasharray="6 4"/>
+<rect x="123.00" y="352.80" width="132.00" height="83.12" rx="2" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6"/>
+<text x="189.00" y="393.36" font-size="18.00" font-weight="bold" fill="#2b3a45" text-anchor="middle">A4</text>
+<text x="189.00" y="417.76" font-size="12.96" fill="#8a9aa8" text-anchor="middle">22,67 m²</text>
+<rect x="123.00" y="445.20" width="132.00" height="93.13" rx="3" fill="#eaf6ec" stroke="#E8A33D" stroke-width="1.1" stroke-dasharray="6 4"/>
+<rect x="123.00" y="445.20" width="132.00" height="93.13" rx="2" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6"/>
+<text x="189.00" y="490.76" font-size="18.00" font-weight="bold" fill="#2b3a45" text-anchor="middle">A3</text>
+<text x="189.00" y="515.16" font-size="12.96" fill="#8a9aa8" text-anchor="middle">25,4 m²</text>
+<rect x="123.00" y="546.40" width="132.00" height="96.18" rx="3" fill="#eaf6ec" stroke="#E8A33D" stroke-width="1.1" stroke-dasharray="6 4"/>
+<rect x="123.00" y="546.40" width="132.00" height="96.18" rx="2" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6"/>
+<text x="189.00" y="593.49" font-size="18.00" font-weight="bold" fill="#2b3a45" text-anchor="middle">A2</text>
+<text x="189.00" y="617.89" font-size="12.96" fill="#8a9aa8" text-anchor="middle">26,23 m²</text>
+<rect x="123.00" y="652.00" width="132.00" height="100.50" rx="3" fill="#eaf6ec" stroke="#E8A33D" stroke-width="1.1" stroke-dasharray="6 4"/>
+<rect x="123.00" y="652.00" width="132.00" height="100.50" rx="2" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6"/>
+<text x="189.00" y="701.25" font-size="18.00" font-weight="bold" fill="#2b3a45" text-anchor="middle">A1</text>
+<text x="189.00" y="725.65" font-size="12.96" fill="#8a9aa8" text-anchor="middle">27,41 m²</text>
+<rect x="46.00" y="845.50" width="15" height="15" rx="3" fill="#eaf6ec" stroke="#2e7d32" stroke-width="1.4"/>
+<text x="69.00" y="858.50" font-size="13" fill="#33454f">Bo'sh: 6 stend · 141,18 m²</text>
+<rect x="293.56" y="845.50" width="15" height="15" rx="3" fill="#fff3d6" stroke="#f59e0b" stroke-width="1.4"/>
+<text x="316.56" y="858.50" font-size="13" fill="#33454f">Bron: 0 stend · 0 m²</text>
+<rect x="46.00" y="870.50" width="15" height="15" rx="3" fill="#c62828" stroke="#8e1b1b" stroke-width="1.4"/>
+<text x="69.00" y="883.50" font-size="13" fill="#33454f">Sotilgan: 0 stend · 0 m²</text>
+<text x="674.68" y="951.496" font-size="12" fill="#33454f" text-anchor="end">Jami: 6 stend · 141,18 m² · bo'sh: 6 (141,18 m²)</text>
 </svg>

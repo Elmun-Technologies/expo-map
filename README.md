@@ -128,7 +128,9 @@ Paket ichida:
 | Fayl | Kim uchun |
 |---|---|
 | `01-xarita-butun-zal.svg` | mijoz/rahbariyat: bo'limlar, bron va sotilgan joylar bilan |
+| `01-xarita-butun-zal.pdf` | shu xaritaning **bitta varaqli** PDF'i (A3 landscape) — yuborish uchun |
 | `02-xarita-bosh-joylar.svg` | sotuvchi: faqat bo'sh joylar |
+| `02-xarita-bosh-joylar.pdf` | bo'sh joylar xaritasining bitta varaqli PDF'i |
 | `03-bolim-<ID>-*.svg` | mijozga aynan o'z bo'limi (A, B, ... EQ, WING) |
 | `04-kompaniyalar.csv` | band joylar: kompaniya, stend ID lari, summa — **bitta kompaniya = bitta qator** (Excel) |
 | `05-bosh-joylar.csv` | bo'sh joylar ro'yxati narxi bilan |

@@ -130,6 +130,7 @@ if (sectionFilter) {
   content = { x: 0, y: 0, w: exp.hall.width, h: exp.hall.height };
 }
 const detail = !!sectionFilter || !!blockFilter;
+const mapOnly = args.includes('--map');   // faqat xarita (bo'limlar jadvali yo'q) — PDF uchun
 
 const sectionTitle = sectionFilter ? sectionById(sectionFilter) : null;
 const title = sectionTitle
@@ -175,7 +176,7 @@ const legendH = legendRows ? legendRows * (F.legend + 12) + 10 : 0;
 const headerH = F.title + F.sub + 22 + (isDraft ? 34 : 0);
 
 // bo'limlar jadvali (faqat butun zal eksportida)
-const sectionRows = (!detail && (exp.sections || []).length)
+const sectionRows = (!detail && !mapOnly && (exp.sections || []).length)
   ? exp.sections.map((sec) => {
       const st = allStands.filter((x) => x.section === sec.id && !x.mergedCell);
       const mg = allStands.filter((x) => x.section === sec.id && x.mergedCell);
@@ -202,9 +203,12 @@ const secLineH = F.legend + 9;
 const secTableH = sectionRows.length ? (F.legend + 12) + sectionRows.length * secLineH + 16 : 0;
 const buyerTableH = 0;
 
+// blok chiplari blokning USTIDA turadi — sarlavha bilan ustma-ust tushmasligi uchun joy ajratamiz
+const chipTop = Math.min(...blocks.filter((b) => b.kind !== 'custom').map((b) => b.y - 2.05), content.y);
+const topExtra = Math.max(0, (content.y - chipTop) * SCALE + 12);
 const pageW = Math.max(S(content.w) + PAD * 2, innerW + PAD * 2);
-const pageH = S(content.h) + PAD * 2 + headerH + legendH + secTableH + buyerTableH + 34;
-const contentTop = PAD + headerH;
+const pageH = S(content.h) + PAD * 2 + headerH + topExtra + legendH + secTableH + buyerTableH + 34;
+const contentTop = PAD + headerH + topExtra;
 const contentBottom = contentTop + S(content.h);
 const ox = PAD - S(content.x);
 const oy = contentTop - S(content.y);
