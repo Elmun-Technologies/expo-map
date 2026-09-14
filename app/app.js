@@ -11,6 +11,7 @@
   let seller = JSON.parse(localStorage.getItem('expo.seller') || 'null');
   let token = localStorage.getItem('expo.token') || null;
   let selection = new Set();
+  let activeSection = null;
   let hiddenStatuses = new Set();
 
   // ------------------------------------------------------------ utils
@@ -24,6 +25,8 @@
   const pricePerM2 = () => Number(layout?.meta?.pricePerM2 || 0);
   const ttlDefault = () => Number(layout?.meta?.reserveTtlHours || 72);
   const isAdmin = () => seller?.role === 'admin';
+  const sectionById = (id) => (layout?.sections || []).find((s) => s.id === id) || null;
+  const sectionOf = (stand) => stand.section || null;
 
   function toast(msg, kind = '') {
     const el = document.createElement('div');
@@ -51,12 +54,13 @@
     renderMap();
     renderStats();
     renderLegend();
+    renderSections();
     document.title = `${layout.meta.hall} · Ekspo xaritasi`;
     const msgs = [];
     if ((layout.meta.status || 'draft') !== 'approved') {
       msgs.push(`⚠ QORALAMA XARITA (v${layout.meta.version || '?'}) — raqamlar tasdiqlanmagan, mijozga yuborib bo'lmaydi.`);
     }
-    const deviants = (layout.blocks || []).filter((b) => b.kind !== 'custom' && Math.abs(b.areaM2 - 72) > 0.01);
+    const deviants = (layout.blocks || []).filter((b) => b.kind !== 'custom' && Math.abs((b.areaM2 + (b.merged || []).reduce((a, m) => a + m.w * m.h, 0)) - 72) > 0.01);
     if (deviants.length) {
       const some = deviants.slice(0, 4).map((b) => `${b.label} = ${fmtNum(b.areaM2)} m²`).join(', ');
       msgs.push(`ℹ Bu zaldagi guruhlar 72 m² (8×9) qoidasidan farq qiladi: ${some}${deviants.length > 4 ? ` va yana ${deviants.length - 4} ta` : ''}. Narx va maydon har bir guruh bo'yicha hisoblanadi.`);
@@ -86,7 +90,7 @@
           toast(`Diqqat: ${taken.join(', ')} boshqa sotuvchi tomonidan band qilindi — tanlovdan chiqarildi.`, 'err');
         }
       }
-      renderMap(); renderStats(); renderLegend(); renderSelection();
+      renderMap(); renderStats(); renderLegend(); renderSections(); renderSelection();
     }
   }
 
@@ -154,13 +158,15 @@
 
     // zonalar (asosiy zal, chap qanot, B2B, konferens...)
     const zoneG = el('g');
+    const zoneLabels = [];
     for (const z of layout.zones || []) {
       if (!z.w || !z.h) continue;
-      zoneG.appendChild(el('rect', { x: z.x, y: z.y, width: z.w, height: z.h, rx: 0.4, fill: z.color || '#f2f5f8', stroke: '#c9d4de', 'stroke-width': 0.14, 'stroke-dasharray': '1.2 .8' }));
-      const t = el('text', { x: z.x + 0.6, y: z.y + 1.5, fill: '#7d8b98', 'font-size': 1.15 }, z.label);
-      t.setAttribute('class', 'zone-label');
-      zoneG.appendChild(t);
+      zoneG.appendChild(el('rect', { x: z.x, y: z.y, width: z.w, height: z.h, rx: 0.4, fill: z.color || '#f2f5f8', 'fill-opacity': 0.9, stroke: '#c9d6e2', 'stroke-width': 0.14, 'stroke-dasharray': '1.2 .8' }));
+      const pos = z.labelPos || 'none';
+      if (pos === 'none') continue;
+      zoneLabels.push({ z, y: pos === 'above' ? z.y - 0.5 : pos === 'bottom' ? z.y + z.h - 0.5 : z.y + 1.6 });
     }
+    world.__zoneLabels = zoneLabels;
     world.appendChild(zoneG);
 
     // zal
@@ -188,16 +194,52 @@
       const cw = Math.max(5.4, label.length * 1.15 + 3.4);
       chip.appendChild(el('rect', { x: b.x, y: b.y - 1.95, width: cw, height: 1.5, rx: 0.35, fill: b.color || '#0f2233' }));
       chip.appendChild(el('text', { x: b.x + cw / 2, y: b.y - 1.2 }, `${label} · ${fmtNum(b.areaM2)} m²`));
-      chip.appendChild(el('title', {}, `${label} bloki — ${b.stands.length} stend × 9 m² = ${fmtNum(b.areaM2)} m². Bosib butun blokni tanlang.`));
+      const secForChip = sectionById(b.section);
+      chip.appendChild(el('title', {}, `${label} bloki${secForChip ? ' — ' + secForChip.label + (secForChip.labelRu ? ' (' + secForChip.labelRu + ')' : '') : ''} · ${b.stands.length} stend × 9 m² = ${fmtNum(b.areaM2)} m². Bosib butun blokni tanlang.`));
       blockG.appendChild(chip);
 
       if (b.kind === 'custom') continue; // nostandart stendlar pastda alohida chiziladi
       for (const s of b.stands) standG.appendChild(standNode(s));
+      // birlashtirilgan kataklar (masalan bitta kompaniya 2 stendni birlashtirgan)
+      for (const m of b.merged || []) {
+        const g = el('g', { class: 'merged', 'data-block': b.id });
+        const st = m.status ? STATUS_LABEL[m.status] : null;
+        const fill = m.status === 'sold' ? 'url(#hatchSold)' : m.status === 'reserved' ? 'url(#hatchReserved)' : (b.color || '#0f2233');
+        g.appendChild(el('rect', { x: m.x, y: m.y, width: m.w, height: m.h, rx: 0.25, fill, 'fill-opacity': m.status ? 1 : 0.9, stroke: b.color || '#0f2233', 'stroke-width': 0.16 }));
+        const fs = Math.max(0.9, Math.min(1.5, (m.w / Math.max(6, (m.label || '').length)) * 2.1));
+        g.appendChild(el('text', { x: m.x + m.w / 2, y: m.y + m.h / 2 + (m.buyer ? -0.25 : 0.25), fill: m.status === 'sold' ? '#fff' : '#fff', 'font-size': fs, 'text-anchor': 'middle', 'font-weight': 'bold' }, m.label || ''));
+        if (m.buyer) g.appendChild(el('text', { x: m.x + m.w / 2, y: m.y + m.h / 2 + 1.3, fill: m.status === 'sold' ? '#fff' : '#eaf1f7', 'font-size': Math.min(1.0, fs * 0.75), 'text-anchor': 'middle' }, m.buyer));
+        g.appendChild(el('title', {}, `${b.label}: ${m.label || 'birlashgan katak'} · ${fmtNum(m.w * m.h)} m²${m.buyer ? ' · ' + m.buyer : ''}${st ? ' · ' + st : ''}`));
+        standG.appendChild(g);
+      }
+      // bo'lim nomi blok ostida — faqat joy yetarli bo'lsa (chip ustiga tushmasin)
+      const sec = sectionById(b.section);
+      if (sec) {
+        const cx = b.x + b.w / 2;
+        blockG.appendChild(el('rect', { x: cx - 1.7, y: b.y + b.h + 0.55, width: 3.4, height: 0.28, rx: 0.14, fill: sec.color, class: 'sec-bar' }));
+        const gap = layout.blocks.reduce((g, o) => {
+          if (o.id === b.id) return g;
+          const ov = Math.min(o.x + o.w, b.x + b.w) - Math.max(o.x, b.x);
+          return ov > 0.1 && o.y - (b.y + b.h) >= 0 ? Math.min(g, o.y - (b.y + b.h)) : g;
+        }, 99);
+        if (gap > 2.6) {
+          blockG.appendChild(el('text', { x: cx, y: b.y + b.h + 1.9, class: 'sec-label', 'text-anchor': 'middle' }, `${b.label} bloki`));
+          blockG.appendChild(el('text', { x: cx, y: b.y + b.h + 3.1, class: 'sec-label', 'text-anchor': 'middle' }, sec.short || sec.label));
+        }
+      }
     }
     // nostandart o'lchamdagi stendlar (A1–A6 kabi)
     for (const s of layout.customStands || []) standG.appendChild(standNode(s, true));
     world.appendChild(blockG);
     world.appendChild(standG);
+    // zona yorliqlari eng ustida (hech narsa bosmasin)
+    const lastG = el('g');
+    for (const { z, y } of (world.__zoneLabels || [])) {
+      const t = el('text', { x: z.x + z.w / 2, y, fill: '#8fa0af', 'font-size': 1.35, 'text-anchor': 'middle', 'font-weight': 'bold' }, z.label);
+      t.setAttribute('class', 'zone-label');
+      lastG.appendChild(t);
+    }
+    world.appendChild(lastG);
     applyView();
     applyFilters();
     applySearch();
@@ -369,8 +411,86 @@
     }));
   }
   function applyFilters() {
-    $$('#world .stand').forEach((g) => { g.style.display = hiddenStatuses.has(g.dataset.status) ? 'none' : ''; });
+    $$('#world .stand').forEach((g) => {
+      g.style.display = hiddenStatuses.has(g.dataset.status) ? 'none' : '';
+      const st = layout.stands.find((x) => x.id === g.dataset.id);
+      g.classList.toggle('sec-off', !!activeSection && st?.section !== activeSection);
+    });
+    $$('#world .block-chip, #world .sec-label, #world .sec-bar').forEach((n) => {
+      const blockId = n.dataset.block || n.getAttribute('data-block');
+      const b = layout.blocks.find((x) => x.id === blockId);
+      if (!b) return;
+      n.classList.toggle('sec-off', !!activeSection && b.section !== activeSection);
+    });
   }
+
+  // ------------------------------------------------------------ bo'limlar
+  function sectionStats() {
+    return (layout.sections || []).map((sec) => {
+      const stands = layout.stands.filter((s) => s.section === sec.id);
+      const free = stands.filter((s) => statusOf(s.id) === 'free');
+      const blocks = (layout.blocks || []).filter((b) => b.section === sec.id);
+      const mergedArea = blocks.reduce((a, b) => a + (b.merged || []).reduce((x, m) => x + m.w * m.h, 0), 0);
+      const area = stands.reduce((a, s) => a + s.areaM2, 0) + mergedArea;
+      const freeArea = free.reduce((a, s) => a + s.areaM2, 0);
+      return { sec, stands, free, area, freeArea, amount: freeArea * pricePerM2(), mergedArea };
+    });
+  }
+
+  function renderSections() {
+    const list = sectionStats();
+    $('#sectionsCard').hidden = !list.length;
+    if (!list.length) return;
+    $('#sectionChips').innerHTML = list.map(({ sec, stands, free }) => {
+      const active = activeSection === sec.id;
+      return `<span class="chip sec${active ? ' active' : ''}" data-sec="${sec.id}" style="border-left-color:${sec.color}" title="${sec.label}${sec.labelRu ? ' / ' + sec.labelRu : ''}">
+        <i class="dot" style="background:${sec.color}"></i>${sec.short || sec.label} <b>${free.length}/${stands.length}</b></span>`;
+    }).join('');
+    $$('#sectionChips .chip').forEach((c) => c.addEventListener('click', () => {
+      activeSection = activeSection === c.dataset.sec ? null : c.dataset.sec;
+      applyFilters(); renderSections(); renderSectionInfo();
+    }));
+    renderSectionInfo();
+  }
+
+  function renderSectionInfo() {
+    const box = $('#sectionInfo');
+    const list = sectionStats();
+    const found = list.find((x) => x.sec.id === activeSection);
+    if (!found) { box.hidden = true; $('#sectionActions').hidden = true; return; }
+    const { sec, stands, free, area, freeArea, amount } = found;
+    box.hidden = false;
+    $('#sectionActions').hidden = CLIENT;
+    const rows = list.map((r) => `<tr>
+        <td><span class="swatch" style="background:${r.sec.color}"></span> ${r.sec.short || r.sec.label}</td>
+        <td class="num">${r.stands.length}</td>
+        <td class="num">${fmtNum(r.area)}</td>
+        <td class="num">${r.free.length}</td>
+        <td class="num">${fmtNum(r.freeArea)}</td>
+      </tr>`).join('');
+    box.innerHTML = `
+      <div class="sec-head"><span class="swatch" style="background:${sec.color}"></span><b>${sec.label}</b></div>
+      ${sec.labelRu ? `<div class="muted">${sec.labelRu}</div>` : ''}
+      <table class="sec-table">
+        <thead><tr><th>Bo'lim</th><th class="num">Stend</th><th class="num">m²</th><th class="num">Bo'sh</th><th class="num">Bo'sh m²</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+      <div class="kv">
+        <dt>Bu bo'limda</dt><dd><b>${stands.length}</b> stend · ${fmtNum(area)} m²${mergedArea ? ` <span class="muted">(${fmtNum(mergedArea)} m² birlashgan katak)</span>` : ''}</dd>
+        <dt>Bo'sh</dt><dd><b>${free.length}</b> stend · ${fmtNum(freeArea)} m²</dd>
+        <dt>Narx (bo'sh joylar)</dt><dd>${pricePerM2() ? fmtMoney(amount) : '—'}</dd>
+      </div>
+      ${free.length && free.length <= 24 ? `<div class="muted">Bo'sh: ${free.map((s) => s.id).join(', ')}</div>` : ''}`;
+  }
+
+  $('#secClear').addEventListener('click', () => { activeSection = null; applyFilters(); renderSections(); });
+  $('#secSelectFree').addEventListener('click', () => {
+    const found = sectionStats().find((x) => x.sec.id === activeSection);
+    if (!found) return;
+    selection = new Set(found.free.map((s) => s.id));
+    paintSelection(); renderSelection();
+    toast(`${found.sec.short || found.sec.label}: ${found.free.length} ta bo'sh stend tanlandi (${fmtNum(found.freeArea)} m²)`);
+  });
 
   // ------------------------------------------------------------ search
   let searchTerm = '';
@@ -378,6 +498,8 @@
   function applySearch() {
     if (!layout) return;
     const q = searchTerm;
+    const secHit = (layout.sections || []).find((s) => s.short?.toUpperCase() === q || s.id.toUpperCase() === q);
+    if (secHit && activeSection !== secHit.id) { activeSection = secHit.id; renderSections(); applyFilters(); }
     $$('#world .stand').forEach((g) => g.classList.toggle('dim', !!q && !g.dataset.id.includes(q) && !g.dataset.block.includes(q)));
     if (q && layout.stands.some((s) => s.id === q)) { selection = new Set([q]); paintSelection(); renderSelection(); }
   }
@@ -518,6 +640,12 @@
       b.stands.forEach((s) => cnt[statusOf(s.id)]++);
       return `<tr><td>${b.id}</td><td>${b.stands.length} × 9 = ${fmtNum(b.areaM2)} m²</td><td>${cnt.free}</td><td>${cnt.reserved}</td><td>${cnt.sold}</td><td>${cnt.free ? b.stands.filter((s) => statusOf(s.id) === 'free').map((s) => s.id).join(', ') : '—'}</td></tr>`;
     }).join('');
+    const secRows = sectionStats().map(({ sec, stands, free, area, freeArea }) => `<tr>
+        <td>${sec.label}${sec.labelRu ? ' · ' + sec.labelRu : ''}</td>
+        <td>${stands.length}</td><td>${fmtNum(area)} m²</td>
+        <td>${free.length}</td><td>${fmtNum(freeArea)} m²</td>
+        <td>${free.length ? free.map((s) => s.id).join(', ') : '—'}</td>
+      </tr>`).join('');
     sheet.innerHTML = `
       <h2>${layout.meta.project} — ${layout.meta.hall} · joylashuv xaritasi (v${layout.meta.version})</h2>
       <p>1 stend = 3×3 m = 9 m² · 1 blok = 8 stend = 72 m² · Narx: ${layout.meta.pricePerM2 ? fmtMoney(layout.meta.pricePerM2) + '/m²' : '—'} · Sana: ${fmtDate(new Date().toISOString())}</p>
@@ -526,6 +654,26 @@
         <thead><tr><th>Blok</th><th>Maydon</th><th>Bo'sh</th><th>Bron</th><th>Sotilgan</th><th>Bo'sh stend ID'lari</th></tr></thead>
         <tbody>${rows}</tbody>
       </table>
+      ${(() => {
+        const m = new Map();
+        for (const s of layout.stands) {
+          const it = items[s.id];
+          if (!it?.buyer) continue;
+          const k = it.buyer + '||' + it.status;
+          if (!m.has(k)) m.set(k, { buyer: it.buyer, status: it.status, ids: [], area: 0 });
+          const r = m.get(k); r.ids.push(s.id); r.area += s.areaM2;
+        }
+        const rows = [...m.values()].sort((a, b) => b.area - a.area);
+        if (!rows.length) return '';
+        return `<h3>Kompaniyalar (band qilingan joylar)</h3>
+        <table><thead><tr><th>Kompaniya</th><th>Holat</th><th>Stend</th><th>Maydon</th><th>Stend ID'lari</th></tr></thead>
+        <tbody>${rows.map((r) => `<tr><td><b>${r.buyer}</b></td><td>${STATUS_LABEL[r.status]}</td><td>${r.ids.length}</td><td>${fmtNum(r.area)} m²</td><td>${r.ids.join(', ')}</td></tr>`).join('')}</tbody></table>`;
+      })()}
+      ${secRows ? `<h3>Bo'limlar bo'yicha</h3>
+      <table>
+        <thead><tr><th>Bo'lim</th><th>Stend</th><th>Maydon</th><th>Bo'sh</th><th>Bo'sh maydon</th><th>Bo'sh stend ID'lari</th></tr></thead>
+        <tbody>${secRows}</tbody>
+      </table>` : ''}
       <p style="margin-top:6mm">Mijoz uchun izoh: sotib olingan joylar xaritada ID bo'yicha ko'rsatilgan. Shartnomada ko'rsatilgan stend ID'si bilan xaritadagi joy bir xil.</p>`;
   }
   $('#printBtn').addEventListener('click', () => { buildPrintSheet(); window.print(); });

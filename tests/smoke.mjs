@@ -33,7 +33,24 @@ try {
 // --- bo'sh blokni tanlaymiz (holat toza bo'lmasa ham test ishlashi uchun)
 const layout = await (await fetch(BASE + '/api/layout')).json();
 let st = await (await fetch(BASE + '/api/state')).json();
-const freeBlock = layout.blocks.find((b) => b.stands.every((s) => !st.items[s.id]));
+// nostandart (custom) bloklar stendi blok ID'si bilan bir xil bo'ladi — sinov uchun oddiy blok kerak
+const gridBlocks = layout.blocks.filter((b) => b.kind !== 'custom');
+let freeBlock = gridBlocks.find((b) => b.stands.every((s) => !st.items[s.id]));
+if (!freeBlock) {
+  // eng ko'p bo'sh joyi bor blokni bo'shatamiz (menejer huquqi bilan)
+  const tok0 = (await (await fetch(BASE + '/api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: 'Menejer', pin: '9999' }) })).json()).token;
+  const cand = gridBlocks.map((b) => ({ b, booked: b.stands.filter((s) => st.items[s.id]) })).sort((x, y) => x.booked.length - y.booked.length)[0];
+  if (cand.booked.length) {
+    await fetch(BASE + '/api/action', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + tok0 },
+      body: JSON.stringify({ action: 'release', standIds: cand.booked.map((s) => s.id) }),
+    });
+    st = await (await fetch(BASE + '/api/state')).json();
+    console.log(`ℹ sinov uchun ${cand.b.id} bloki bo'shatildi (${cand.booked.length} stend)`);
+  }
+  freeBlock = cand.b;
+}
 const freeStand = layout.stands.find((s) => !st.items[s.id]);
 if (!freeBlock || !freeStand) {
   console.error('✗ Butunlay bo\'sh blok yo\'q — "node tools/demo.mjs --reset" qilib qayta urinib ko\'ring.');
@@ -127,7 +144,7 @@ $('#phone').value = '+998900000000';
 $('#btnSell').click();
 await tick(200);
 assert(!$('#confirm').hidden, 'tasdiqlash oynasi chiqdi');
-assert($('#confirmBody').textContent.includes(`${freeBlock.id}-01`), 'tasdiqlashda stend ID\'lari ko\'rsatildi');
+assert($('#confirmBody').textContent.includes(freeBlock.stands[0].id), 'tasdiqlashda stend ID\'lari ko\'rsatildi');
 $('#confirmOk').click();
 await tick(900);
 assert(!$('#receipt').hidden, 'sotuv kvitansiyasi chiqdi');
@@ -152,7 +169,7 @@ const tok2 = (await (await fetch(BASE + '/api/login', { method: 'POST', headers:
 const r409 = await fetch(BASE + '/api/action', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + tok2 },
-  body: JSON.stringify({ action: 'sell', standIds: [`${freeBlock.id}-01`, `${freeBlock.id}-02`], buyer: 'Ikkinchi mijoz' }),
+  body: JSON.stringify({ action: 'sell', standIds: freeBlock.stands.slice(0, 2).map((s) => s.id), buyer: 'Ikkinchi mijoz' }),
 });
 const j409 = await r409.json();
 assert(r409.status === 409 && j409.error === 'conflict', `bir vaqtda sotish urinishi rad etildi (${r409.status}: ${j409.message})`);

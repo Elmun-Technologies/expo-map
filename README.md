@@ -117,10 +117,33 @@ npm run check          # validator + 12 ta regressiya testi (tools/test-validato
 
 ## 4. Mijozga yuboriladigan xarita fayli
 
+**Eng oson yo'l — tayyor paket** (17–20 fayl bir buyruqda):
+
 ```bash
-node tools/export-svg.mjs                        # exports/hall-A.svg  (butun zal, hozirgi holat bilan)
-node tools/export-svg.mjs --block A-01 --scale 40 # exports/hall-A-A-01.svg (faqat 72 m² blok kartasi)
-node tools/export-svg.mjs --no-state              # barcha joylar bo'sh holda (katalog/bozor uchun)
+node tools/package.mjs                            # exports/foodera-2026/ ichiga hammasi
+node tools/package.mjs --layout layout/hall-A.json --out exports/A-zal
+```
+
+Paket ichida:
+| Fayl | Kim uchun |
+|---|---|
+| `01-xarita-butun-zal.svg` | mijoz/rahbariyat: bo'limlar, bron va sotilgan joylar bilan |
+| `02-xarita-bosh-joylar.svg` | sotuvchi: faqat bo'sh joylar |
+| `03-bolim-<ID>-*.svg` | mijozga aynan o'z bo'limi (A, B, ... EQ, WING) |
+| `04-kompaniyalar.csv` | band joylar: kompaniya, stend ID, summa (Excel) |
+| `05-bosh-joylar.csv` | bo'sh joylar ro'yxati narxi bilan |
+| `00-IZOH.txt` | versiya, qoidalar, bo'limlar jadvali |
+
+Paket faqat layout validatordan o'tgan va `meta.status: "approved"` bo'lsa yasaladi
+(qoralamadan mijozga ketmaydi).
+
+Bitta fayl kerak bo'lsa:
+
+```bash
+node tools/export-svg.mjs                         # exports/foodera-2026.svg (butun zal)
+node tools/export-svg.mjs --section A              # faqat A bo'limi
+node tools/export-svg.mjs --block EQ-1 --scale 40  # bitta blok kartasi
+node tools/export-svg.mjs --no-state               # barcha joylar bo'sh holda (katalog uchun)
 ```
 
 SVG har qanday brauzerda ochiladi; undan PNG/PDF olish mumkin. Chop etishda "xarita versiyasi"
@@ -128,6 +151,18 @@ SVG har qanday brauzerda ochiladi; undan PNG/PDF olish mumkin. Chop etishda "xar
 
 **Qoida:** mijozga faqat shu skript chiqargan fayl yuboriladi. Figma/Photoshop'dan saqlangan
 rasm yuborilmaydi — aks holda xarita bilan holat yana ajralib ketadi.
+
+## 4b. Mavjud band ro'yxatini Excel'dan yuklash (manager qayta terib chiqmasin)
+
+```bash
+node tools/import-bookings.mjs band-royxat.csv             # avval sinov (dry-run)
+node tools/import-bookings.mjs band-royxat.csv --apply     # haqiqiy yuklash
+```
+
+CSV ustunlari (nomlar tanish bo'lsa yetadi): `Blok/Stend | Holat | Kompaniya | Mijoz | Telefon | Summa | Sotuvchi | Izoh`.
+Ajratgich `;` yoki `,` — avtomatik aniqlanadi; Excel'da "CSV UTF-8" qilib saqlash kifoya.
+Qolgan parametrlar: `--ttl 48`, `--user Menejer --pin 9999`. Allaqachon band qilingan qatorlar
+o'tkazib yuboriladi va hisobotda ko'rsatiladi.
 
 ## 5. Yangi zal yoki mavjud ro'yxatni ko'chirish
 
@@ -222,12 +257,14 @@ layout/hall-A.json      # A zalning yagona manbasi (namuna)
 app/index.html|style.css|app.js   # sotuv paneli (vanilla JS, build yo'q)
 tools/validate-layout.mjs         # CLI validator (CI uchun)
 docs/CHIZMA-ANKETA.md             # real chizma bo'yicha tasdiqlash savollari
-tools/test-validator.mjs          # 12 ta buzilgan layout testi
+tools/test-validator.mjs          # 18 ta buzilgan layout testi
 tools/export-svg.mjs              # mijozga yuboriladigan xarita (SVG)
 tools/import-csv.mjs              # Excel/CSV → layout JSON
 tools/inspect-dxf.py              # DXF: layerlar, to'rtburchaklar, yozuvlar ro'yxati (ezdxf)
 tools/dxf-to-layout.py            # DXF → layout JSON (Y o'qini teskari qiladi, xatolarni sanaydi)
 tools/demo.mjs                    # demo holat: --seed / --reset
+tools/import-bookings.mjs         # Excel/CSV → serverga ommaviy yuklash (dry-run default)
+tools/package.mjs                 # mijozga tayyor paket: xarita + bo'limlar + CSV + izoh
 tests/smoke.mjs                   # UI smoke-test (jsdom; ishlab turgan serverga qarshi)
 exports/                # chiqarilgan xaritalar
 data/                   # holat + jurnal (git'ga tushmaydi)

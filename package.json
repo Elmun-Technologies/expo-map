@@ -13,7 +13,9 @@
     "export:empty": "node tools/export-svg.mjs --no-state --out exports/hall-A-empty.svg",
     "export:block": "node tools/export-svg.mjs --block",
     "import": "node tools/import-csv.mjs",
-    "smoke": "node tests/smoke.mjs"
+    "smoke": "node tests/smoke.mjs",
+    "package": "node tools/package.mjs",
+    "bookings": "node tools/import-bookings.mjs"
   },
   "devDependencies": {
     "jsdom": "^24.1.3"

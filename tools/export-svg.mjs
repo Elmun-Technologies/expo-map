@@ -3,12 +3,14 @@
  * Xaritani SVG qilib chiqarish — mijozga yuborish / chop etish uchun.
  * SVG har qanday brauzerda ochiladi, undan PNG/PDF ham oson olinadi.
  *
- *   node tools/export-svg.mjs                        -> exports/hall-A.svg (butun zal)
- *   node tools/export-svg.mjs --block A-01           -> exports/hall-A-A-01.svg (72 m² blok kartasi)
- *   node tools/export-svg.mjs --no-state             -> bron/sotuvlarni hisobga olmaslik
+ *   node tools/export-svg.mjs                          -> butun zal (bo'limlar jadvali bilan)
+ *   node tools/export-svg.mjs --section A              -> bitta bo'lim (72 m²)
+ *   node tools/export-svg.mjs --block A                 -> bitta blok
+ *   node tools/export-svg.mjs --no-state               -> bron/sotuvlarni hisobga olmaslik (bo'sh holat)
  *   node tools/export-svg.mjs --scale 40 --out katta.svg
  *
- * Barcha o'lchamlar layout/hall-A.json dan olinadi — qo'lda chizish yo'q.
+ * Barcha o'lchamlar layout JSON'dan olinadi — qo'lda chizish yo'q.
+ * QORALAMA (meta.status != "approved") xarita mijozga chiqmaydi (--force bilan majburan).
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -24,7 +26,8 @@ const opt = (name, def) => {
   return v && !v.startsWith('--') ? v : true;
 };
 
-const layoutPath = path.resolve(ROOT, String(opt('layout', 'layout/hall-A.json')));
+// ---------------------------------------------------------------- yuklash
+const layoutPath = path.resolve(ROOT, String(opt('layout', process.env.LAYOUT || 'layout/foodera-2026.json')));
 const raw = JSON.parse(fs.readFileSync(layoutPath, 'utf8'));
 const check = validateLayout(raw);
 if (!check.ok) {
@@ -37,6 +40,7 @@ if (isDraft && !args.includes('--force')) {
   process.exit(1);
 }
 const exp = expandLayout(raw);
+const sectionById = (id) => (exp.sections || []).find((s) => s.id === id) || null;
 
 let stateOpt = opt('state', null);
 if (stateOpt === null && !args.includes('--no-state') && fs.existsSync(path.join(ROOT, 'data/state.json'))) stateOpt = 'data/state.json';
@@ -50,14 +54,13 @@ if (stateFile !== null) {
   }
 }
 
-const SCALE = Number(opt('scale', 22));            // 1 metr = necha piksel
+const SCALE = Number(opt('scale', 22));                       // 1 metr = necha piksel
 const blockFilter = typeof opt('block') === 'string' ? opt('block') : null;
-const S = (v) => v * SCALE;                        // metr -> px
-const R = (v) => Number(v).toFixed(2);
+const sectionFilter = typeof opt('section') === 'string' ? opt('section') : null;
 
-// tipografiya (pikselda — masshtabdan qat'i nazar o'qiladi)
-const F = { title: 20, sub: 13, chip: 13, num: 15, sid: 10, legend: 13, feat: 12, foot: 12 };
-const PAD = 46;                                     // tashqi hoshiya, px
+// ---------------------------------------------------------------- tipografiya va yordamchilar
+const F = { title: 20, sub: 13, chip: 13, num: 15, sid: 10, legend: 13, feat: 12, foot: 12, secbar: 15 };
+const PAD = 46;
 const STATUS = {
   free: { fill: '#eaf6ec', stroke: '#2e7d32', ink: '#1b5e20', label: "Bo'sh" },
   reserved: { fill: '#fff3d6', stroke: '#f59e0b', ink: '#8a5a00', label: 'Bron' },
@@ -67,46 +70,81 @@ const STATUS = {
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const statusOf = (id) => items[id]?.status || 'free';
 const fmtNum = (n) => Number(n || 0).toLocaleString('ru-RU').replace(/\u00A0/g, ' ');
-const txtW = (s, px) => String(s).length * px * 0.62;   // DejaVu Sans uchun yetarli aniqlik
+const txtW = (s, px) => String(s).length * px * 0.62;
 
-// ---------------------------------------------------------------- nima chizamiz
+/** Matnni berilgan kenglik/balandlikka sig'adigan qatorlarga bo'lish (kerak bo'lsa ellipsis). */
+function wrapText(text, maxW, maxH, maxLines, maxFs) {
+  const words = String(text).split(/\s+/);
+  const lines = [];
+  const FScap = maxFs || 15;
+  let cur = '';
+  const fits = (s, fs) => txtW(s, fs) <= maxW;
+  for (const w of words) {
+    const next = cur ? cur + ' ' + w : w;
+    if (!fits(next, FScap) && cur) { lines.push(cur); cur = w; } else { cur = next; }
+    if (lines.length === maxLines) break;
+  }
+  if (cur && lines.length < maxLines) lines.push(cur);
+  const used = lines.join(' ');
+  if (used.length < String(text).length) {
+    let last = lines[lines.length - 1];
+    while (last.length > 1 && txtW(last + '…', 11) > maxW) last = last.slice(0, -1);
+    lines[lines.length - 1] = last + '…';
+  }
+  return lines.slice(0, maxLines);
+}
+
+// ---------------------------------------------------------------- eksport maydoni
 let blocks = exp.blocks;
-let content;   // metrda: { x, y, w, h }
-if (blockFilter) {
+let secCustom = [];
+let content;
+if (sectionFilter) {
+  const sec = sectionById(sectionFilter);
+  if (!sec) { console.error(`✗ "${sectionFilter}" bo'limi topilmadi. Mavjud: ${(exp.sections || []).map((s) => s.id).join(', ')}`); process.exit(1); }
+  blocks = exp.blocks.filter((b) => b.section === sec.id);
+  secCustom = [];
+  if (!blocks.length) { console.error(`✗ "${sectionFilter}" bo'limida stend yo'q`); process.exit(1); }
+  const m = 3.5;
+  const rects = blocks.map((b) => [b.x, b.y, b.x + b.w, b.y + b.h]);
+  const x1 = Math.min(...rects.map((r) => r[0])), y1 = Math.min(...rects.map((r) => r[1]));
+  const x2 = Math.max(...rects.map((r) => r[2])), y2 = Math.max(...rects.map((r) => r[3]));
+  content = { x: x1 - m, y: y1 - m, w: x2 - x1 + m * 2, h: y2 - y1 + m * 2 };
+} else if (blockFilter) {
   const b = exp.blocks.find((x) => x.id === blockFilter);
   if (!b) { console.error(`✗ ${blockFilter} topilmadi. Mavjud bloklar: ${exp.blocks.map((x) => x.id).join(', ')}`); process.exit(1); }
   blocks = [b];
-  content = { x: b.x, y: b.y, w: b.w, h: b.h };
+  const m = 2.5;
+  content = { x: b.x - m, y: b.y - m, w: b.w + m * 2, h: b.h + m * 2 };
 } else {
   content = { x: 0, y: 0, w: exp.hall.width, h: exp.hall.height };
 }
+const detail = !!sectionFilter || !!blockFilter;
 
-const title = blockFilter
-  ? `${blockFilter} bloki · ${fmtNum(content.w)} × ${fmtNum(content.h)} m · 8 stend × 9 m² = 72 m²`
+const sectionTitle = sectionFilter ? sectionById(sectionFilter) : null;
+const title = sectionTitle
+  ? `${sectionTitle.label}${sectionTitle.labelRu ? ' — ' + sectionTitle.labelRu : ''}`
+  : blockFilter
+  ? `${blockFilter} bloki · ${fmtNum(content.w - 5)} × ${fmtNum(content.h - 5)} m`
   : `${exp.meta.project} — ${exp.meta.hall} · joylashuv xaritasi`;
-const sub = `${exp.meta.pricePerM2 && !blockFilter ? fmtNum(exp.meta.pricePerM2) + " so'm/m² · " : ''}1 stend = 3×3 m = 9 m² · 1 blok = 8 stend = 72 m² · layout v${exp.meta.version || '?'} · ${new Date().toLocaleDateString('ru-RU')}`;
+const sub = `${exp.meta.pricePerM2 && !detail ? fmtNum(exp.meta.pricePerM2) + " so'm/m² · " : ''}1 stend = 3×3 m = 9 m² · 1 blok = 8 stend = 72 m² · layout v${exp.meta.version || '?'} · ${new Date().toLocaleDateString('ru-RU')}`;
 
-// ---------------------------------------------------------------- legenda qatorlari
+// ---------------------------------------------------------------- stendlar va legenda
+// nostandart stendlar ham exp.blocks ichida (kind: 'custom') — qo'shib hisoblash takror bo'lardi
+const allStands = blocks.flatMap((b) => b.stands);
 const counts = { free: 0, reserved: 0, sold: 0, blocked: 0 };
-const allStands = [...blocks.flatMap((b) => b.stands), ...(blockFilter ? [] : exp.customStands || [])];
-for (const s of allStands) counts[statusOf(s.id)]++;
+const areas = { free: 0, reserved: 0, sold: 0, blocked: 0 };
+for (const s of allStands) { const st = statusOf(s.id); counts[st]++; areas[st] += s.areaM2; }
 const legendItems = ['free', 'reserved', 'sold', 'blocked'].filter((k) => k !== 'blocked' || counts.blocked);
-const innerW = Math.max(S(content.w), Math.max(txtW(title, F.title), txtW(sub, F.sub)));
+
+// ---------------------------------------------------------------- sahifa o'lchami
+const S = (v) => v * SCALE;
+const R = (v) => Number(v).toFixed(2);
+const innerW = Math.max(S(content.w), txtW(title, F.title), txtW(sub, F.sub));
 const legend = [];
 {
-  let x = 0;
-  for (const k of legendItems) {
-    const text = `${STATUS[k].label}: ${counts[k]} stend · ${fmtNum(counts[k] * 9)} m²`;
-    const w = 20 + txtW(text, F.legend) + 18;
-    if (x > 0 && x + w > innerW) { x = 0; }
-    legend.push({ k, text, x, row: legend.length ? legend[legend.length - 1].row + (x === 0 ? 1 : 0) : 0 });
-    x += w;
-  }
-  // qatorlar soni
   let row = 0, cx = 0;
-  legend.length = 0;
   for (const k of legendItems) {
-    const text = `${STATUS[k].label}: ${counts[k]} stend · ${fmtNum(counts[k] * 9)} m²`;
+    const text = `${STATUS[k].label}: ${counts[k]} stend · ${fmtNum(areas[k])} m²`;
     const w = 20 + txtW(text, F.legend) + 18;
     if (cx > 0 && cx + w > innerW) { row++; cx = 0; }
     legend.push({ k, text, x: cx, row });
@@ -115,20 +153,49 @@ const legend = [];
 }
 const legendRows = legend.length ? legend[legend.length - 1].row + 1 : 0;
 const legendH = legendRows ? legendRows * (F.legend + 12) + 10 : 0;
-// blok kartasida sarlavha ostida blok yorlig'i uchun ham joy kerak
-const headerH = F.title + F.sub + 22 + (blockFilter ? F.chip + 24 : 0) + (isDraft ? 34 : 0);
+const headerH = F.title + F.sub + 22 + (isDraft ? 34 : 0);
 
-// ---------------------------------------------------------------- sahifa o'lchami
-const headerW = Math.max(txtW(title, F.title), txtW(sub, F.sub)) + PAD * 2;
-const pageW = Math.max(S(content.w) + PAD * 2, headerW);
-const pageH = S(content.h) + PAD * 2 + headerH + legendH + (blockFilter ? 0 : 30);
+// bo'limlar jadvali (faqat butun zal eksportida)
+const sectionRows = (!detail && (exp.sections || []).length)
+  ? exp.sections.map((sec) => {
+      const st = exp.stands.filter((x) => x.section === sec.id);
+      if (!st.length) return null;
+      const free = st.filter((x) => statusOf(x.id) === 'free');
+      return {
+        sec,
+        n: st.length,
+        area: st.reduce((a, x) => a + x.areaM2, 0),
+        free: free.length,
+        freeArea: free.reduce((a, x) => a + x.areaM2, 0),
+      };
+    }).filter(Boolean)
+  : [];
+// kompaniyalar: qaysi firma qaysi stendlarda (uzun nomlar xaritada sig'masa shu yerga tushadi)
+const byBuyer = new Map();
+for (const st of allStands) {
+  const it = items[st.id];
+  if (!it?.buyer) continue;
+  const key = `${it.buyer}||${it.status}`;
+  if (!byBuyer.has(key)) byBuyer.set(key, { buyer: it.buyer, status: it.status, ids: [], area: 0 });
+  const rec = byBuyer.get(key);
+  rec.ids.push(st.id);
+  rec.area += st.areaM2;
+}
+const buyerRows = [...byBuyer.values()].sort((a, b) => b.area - a.area);
+const secLineH = F.legend + 9;
+const secTableH = sectionRows.length ? (F.legend + 12) + sectionRows.length * secLineH + 16 : 0;
+const buyerTableH = buyerRows.length ? (F.legend + 14) + buyerRows.length * secLineH + 16 : 0;
+
+const pageW = Math.max(S(content.w) + PAD * 2, innerW + PAD * 2);
+const pageH = S(content.h) + PAD * 2 + headerH + legendH + secTableH + buyerTableH + 34;
 const contentTop = PAD + headerH;
 const contentBottom = contentTop + S(content.h);
 const ox = PAD - S(content.x);
 const oy = contentTop - S(content.y);
-const X = (m) => ox + S(m);      // metr -> px (sahifa koordinatasi), raqam qaytaradi
-const Y = (m) => oy + S(m);      // chiqarishda R() bilan yaxlitlanadi
+const X = (m) => ox + S(m);
+const Y = (m) => oy + S(m);
 
+// ---------------------------------------------------------------- chizish
 const out = [];
 out.push(`<svg xmlns="http://www.w3.org/2000/svg" width="${pageW.toFixed(0)}" height="${pageH.toFixed(0)}" viewBox="0 0 ${pageW.toFixed(0)} ${pageH.toFixed(0)}" font-family="DejaVu Sans, Helvetica, Arial, sans-serif">`);
 out.push(`<rect width="${pageW.toFixed(0)}" height="${pageH.toFixed(0)}" fill="#ffffff"/>`);
@@ -136,86 +203,210 @@ if (isDraft) {
   out.push(`<rect x="0" y="0" width="${pageW.toFixed(0)}" height="26" fill="#8e1b1b"/>`);
   out.push(`<text x="${(pageW / 2).toFixed(0)}" y="18" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">QORALAMA - raqamlar tasdiqlanmagan, mijozga yuborilmaydi</text>`);
 }
-
-// sarlavha (title/sub yuqorida hisoblangan)
 out.push(`<text x="${PAD}" y="${PAD + F.title}" font-size="${F.title}" font-weight="bold" fill="#0f2233">${esc(title)}</text>`);
 out.push(`<text x="${PAD}" y="${PAD + F.title + F.sub + 8}" font-size="${F.sub}" fill="#5b6b7a">${esc(sub)}</text>`);
 
 // zonalar
-if (!blockFilter) {
+if (!detail) {
+  var zoneLabels = [];
   for (const z of exp.zones || []) {
     if (!z.w || !z.h) continue;
-    out.push(`<rect x="${R(X(z.x))}" y="${R(Y(z.y))}" width="${R(S(z.w))}" height="${R(S(z.h))}" rx="4" fill="${z.color || '#f2f5f8'}" fill-opacity="0.85" stroke="#b9c7d4" stroke-width="1.2" stroke-dasharray="9 6"/>`);
-    out.push(`<text x="${R(X(z.x) + z.w / 2)}" y="${R(Y(z.y) + 24)}" font-size="${F.feat + 2}" font-weight="bold" fill="#93a3b1" text-anchor="middle">${esc(z.label)}</text>`);
+    out.push(`<rect x="${R(X(z.x))}" y="${R(Y(z.y))}" width="${R(S(z.w))}" height="${R(S(z.h))}" rx="4" fill="${z.color || '#f2f5f8'}" fill-opacity="0.9" stroke="#c9d6e2" stroke-width="1" stroke-dasharray="9 6"/>`);
+    const pos = z.labelPos || 'none';
+    if (pos === 'none') continue;
+    const y = pos === 'above' ? Y(z.y) - 8 : pos === 'bottom' ? Y(z.y + z.h) - 10 : Y(z.y) + 26;
+    zoneLabels.push({ z, y });
   }
-}
-
-// zal konturi va obyektlar
-if (!blockFilter) {
+  // zal konturi
   const outline = exp.hall.outline?.length >= 3
-    ? exp.hall.outline.map((p) => `${X(p[0])},${Y(p[1])}`).join(' ')
-    : `${X(0)},${Y(0)} ${X(exp.hall.width)},${Y(0)} ${X(exp.hall.width)},${Y(exp.hall.height)} ${X(0)},${Y(exp.hall.height)}`;
-  out.push(`<polygon points="${outline}" fill="#fbfcfd" stroke="#0f2233" stroke-width="2"/>`);
+    ? exp.hall.outline.map((p) => `${R(X(p[0]))},${R(Y(p[1]))}`).join(' ')
+    : `${R(X(0))},${R(Y(0))} ${R(X(exp.hall.width))},${R(Y(0))} ${R(X(exp.hall.width))},${R(Y(exp.hall.height))} ${R(X(0))},${R(Y(exp.hall.height))}`;
+  out.push(`<polygon points="${outline}" fill="none" stroke="#0f2233" stroke-width="2.4"/>`);
+  // obyektlar
   for (const f of exp.features || []) {
     out.push(`<rect x="${R(X(f.x))}" y="${R(Y(f.y))}" width="${R(S(f.w))}" height="${R(S(f.h))}" rx="3" fill="#e8edf2" stroke="#b9c4ce" stroke-width="1.2"/>`);
     if (f.label) {
-      const cx = X(f.x + f.w / 2), cy = Y(f.y + f.h / 2);
-      const fs = Math.max(10, Math.min(F.feat + 3, S(f.w) / (f.label.length * 0.62) * 0.75));
-      out.push(`<text x="${R(cx)}" y="${R(cy + fs * 0.35)}" font-size="${R(fs)}" fill="#5b6b7a" text-anchor="middle">${esc(f.label)}</text>`);
+      const fs = Math.max(10, Math.min(F.feat + 3, S(f.w) / Math.max(6, f.label.length) * 1.5));
+      out.push(`<text x="${R(X(f.x + f.w / 2))}" y="${R(Y(f.y + f.h / 2) + fs * 0.36)}" font-size="${R(fs)}" fill="#5b6b7a" text-anchor="middle">${esc(f.label)}</text>`);
     }
   }
 }
 
-// bloklar va stendlar
+// bloklar, stendlar, bo'lim yorliqlari
 for (const b of blocks) {
-  if (b.kind === 'custom') continue; // nostandart stend: yorliq va maydon o'z ichida yozilgan
-  out.push(`<rect x="${R(X(b.x))}" y="${R(Y(b.y))}" width="${R(S(b.w))}" height="${R(S(b.h))}" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>`);
-
-  // blok yorlig'i
-  const chipText = `${b.label} · ${fmtNum(b.areaM2)} m²`;
-  const chipW = Math.min(S(b.w) + 60, txtW(chipText, F.chip) + 22);
-  const chipH = F.chip + 12;
-  const chipX = X(b.x), chipY = Y(b.y) - chipH - 7;
-  out.push(`<rect x="${R(chipX)}" y="${R(chipY)}" width="${R(chipW)}" height="${chipH}" rx="5" fill="${b.color || '#0f2233'}"/>`);
-  out.push(`<text x="${R(chipX + chipW / 2)}" y="${R(chipY + chipH / 2 + F.chip * 0.35)}" font-size="${F.chip}" font-weight="bold" fill="#ffffff" text-anchor="middle">${esc(chipText)}</text>`);
-
-  if (b.kind === 'custom') continue;
-  for (const s of b.stands) drawStand(s, false);
+  if (b.kind !== 'custom') {
+    out.push(`<rect x="${R(X(b.x))}" y="${R(Y(b.y))}" width="${R(S(b.w))}" height="${R(S(b.h))}" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>`);
+    const effArea = b.areaM2 + (b.merged || []).reduce((a, m) => a + m.w * m.h, 0);
+    const chipText = `${b.label} · ${fmtNum(effArea)} m²`;
+    const chipW = Math.min(S(b.w) + 70, txtW(chipText, F.chip) + 22);
+    const chipH = F.chip + 12;
+    const chipX = X(b.x), chipY = Y(b.y) - chipH - 7;
+    out.push(`<rect x="${R(chipX)}" y="${R(chipY)}" width="${R(chipW)}" height="${chipH}" rx="5" fill="${b.color || '#0f2233'}"/>`);
+    out.push(`<text x="${R(chipX + chipW / 2)}" y="${R(chipY + chipH / 2 + F.chip * 0.35)}" font-size="${F.chip}" font-weight="bold" fill="#ffffff" text-anchor="middle">${esc(chipText)}</text>`);
+    for (const s of b.stands) drawStand(s, false, b);
+    const sec = sectionById(b.section);
+    if (sec) {
+      const cx = X(b.x + b.w / 2);
+      const room = roomBelowBlock(b);
+      out.push(`<rect x="${R(cx - 34)}" y="${R(Y(b.y + b.h) + 10)}" width="68" height="7" rx="3.5" fill="${sec.color}"/>`);
+      if (room > 4.2) {
+        out.push(`<text x="${R(cx)}" y="${R(Y(b.y + b.h) + 36)}" font-size="${F.secbar}" font-weight="bold" fill="#0f2233" text-anchor="middle">${esc(b.label)} bloki</text>`);
+        out.push(`<text x="${R(cx)}" y="${R(Y(b.y + b.h) + 54)}" font-size="${F.secbar - 2}" fill="#5b6b7a" text-anchor="middle">${esc(sec.short || sec.label)}</text>`);
+      }
+    }
+    // birlashtirilgan (stendlar olib tashlangan) kataklar
+    for (const m of b.merged || []) {
+      const st = m.status ? STATUS[m.status] : null;
+      out.push(`<rect x="${R(X(m.x))}" y="${R(Y(m.y))}" width="${R(S(m.w))}" height="${R(S(m.h))}" rx="3" fill="${st ? st.fill : (b.color || '#0f2233')}" fill-opacity="${st ? 1 : 0.85}" stroke="${st ? st.stroke : '#0f2233'}" stroke-width="1.3"/>`);
+      const cx = X(m.x + m.w / 2), cy = Y(m.y + m.h / 2);
+      const label = String(m.label || '');
+      const maxLines = S(m.h) > 55 ? 3 : 2;
+      const lines = wrapText(label, S(m.w) - 12, S(m.h) - 10, maxLines, 15);
+      const lh = Math.min(S(m.h) / (lines.length + 1.1), 20);
+      // shrift balandlikka ham, eng uzun qatorning kengligiga ham sig'sin
+      const widestPerPx = Math.max(...lines.map((l) => txtW(l, 1)), 1);
+      const fsByWidth = (S(m.w) - 12) / widestPerPx;
+      const fs = Math.max(6.5, Math.min(14, lh * 0.8, fsByWidth));
+      const ink = st ? st.ink : '#ffffff';
+      lines.forEach((ln, idx) => {
+        out.push(`<text x="${R(cx)}" y="${R(cy - (lines.length - 1) * lh / 2 + idx * lh + fs * 0.36)}" font-size="${R(fs)}" font-weight="bold" fill="${ink}" text-anchor="middle">${esc(ln)}</text>`);
+      });
+      if (m.buyer && m.buyer !== label) {
+        const bl = wrapText(m.buyer, S(m.w) - 10, 14, 1);
+        out.push(`<text x="${R(cx)}" y="${R(cy + S(m.h) / 2 - 6)}" font-size="${R(Math.max(6.5, fs * 0.72))}" fill="${ink}" text-anchor="middle" opacity="0.95">${esc(bl[0])}</text>`);
+      }
+    }
+  }
+}
+// nostandart (custom) bloklar: ramka va chip yo'q, faqat stendning o'zi
+for (const b of blocks) {
+  if (b.kind !== 'custom') continue;
+  for (const s of b.stands) drawStand(s, true, b);
 }
 
-// nostandart o'lchamdagi stendlar (A1–A6 kabi) — maydoni o'zida yozilgan
-for (const s of exp.customStands || []) drawStand(s, true);
+// blok ostida qancha bo'sh joy bor (chip yoki boshqa blok bosib qolmasligi uchun)
+function roomBelowBlock(b) {
+  let gap = 99;
+  for (const o of exp.blocks) {
+    if (o.id === b.id) continue;
+    const xOverlap = Math.min(o.x + o.w, b.x + b.w) - Math.max(o.x, b.x);
+    if (xOverlap <= 0.1) continue;
+    const dy = o.y - (b.y + b.h);
+    if (dy >= 0) gap = Math.min(gap, dy);
+  }
+  return gap;
+}
 
-function drawStand(s, custom) {
+function drawStand(s, custom, b0) {
   const st = STATUS[statusOf(s.id)];
   out.push(`<rect x="${R(X(s.x))}" y="${R(Y(s.y))}" width="${R(S(s.w))}" height="${R(S(s.h))}" rx="3" fill="${st.fill}" stroke="${s.color || st.stroke}" stroke-width="1.1"${custom ? ' stroke-dasharray="6 4"' : ''}/>`);
   const cx = X(s.x + s.w / 2), cy = Y(s.y + s.h / 2);
+  const fs = Math.max(9, Math.min(F.num, S(s.w) / 4.2));
   if (custom) {
-    out.push(`<text x="${R(cx)}" y="${R(cy)}" font-size="${F.num}" font-weight="bold" fill="${st.ink}" text-anchor="middle">${esc(s.label || s.id)}</text>`);
-    out.push(`<text x="${R(cx)}" y="${R(cy + F.num + 4)}" font-size="${F.sid}" fill="${st.ink}" text-anchor="middle" opacity="0.9">${esc(fmtNum(s.areaM2))} m²</text>`);
+    // nostandart stend: nomi + maydoni + mijoz — barchasi karta ichida, ustma-ust tushmaydi
+    const h = S(s.h);
+    const name = String(s.label || s.id);
+    const buyer = items[s.id]?.buyer ? String(items[s.id].buyer) : '';
+    const lines = buyer ? 3 : 2;
+    const fsName = Math.max(8, Math.min(F.num + 3, (S(s.w) - 12) / Math.max(2, name.length) / 0.66, h / (lines + 1.6) * 1.05));
+    const fsSmall = Math.max(7, Math.min(F.sid, fsName * 0.72));
+    const step = (fsName + fsSmall * 2.1) / lines;
+    const y0 = cy - (lines - 1) * step / 2 + fsName * 0.34;
+    out.push(`<text x="${R(cx)}" y="${R(y0)}" font-size="${R(fsName)}" font-weight="bold" fill="${st.ink}" text-anchor="middle">${esc(name)}</text>`);
+    out.push(`<text x="${R(cx)}" y="${R(y0 + step)}" font-size="${R(fsSmall)}" fill="${st.ink}" text-anchor="middle" opacity="0.9">${esc(fmtNum(s.areaM2))} m²</text>`);
+    if (buyer) {
+      const avail = S(s.w) - 12;
+      const bfs = Math.min(fsSmall, avail / Math.max(6, buyer.length) / 0.62);
+      if (bfs > 6.5) out.push(`<text x="${R(cx)}" y="${R(y0 + step * 2)}" font-size="${R(bfs)}" font-weight="bold" fill="${st.ink}" text-anchor="middle" opacity="0.95">${esc(buyer)}</text>`);
+    }
   } else {
-    out.push(`<text x="${R(cx)}" y="${R(cy - 2)}" font-size="${F.num}" font-weight="bold" fill="${st.ink}" text-anchor="middle">${esc(s.noLabel)}</text>`);
-    out.push(`<text x="${R(cx)}" y="${R(cy + F.sid + 6)}" font-size="${F.sid}" fill="${st.ink}" text-anchor="middle" opacity="0.85">${esc(s.id.replace(/^.*?-(?=\d+$)/, ''))}</text>`);
+    out.push(`<text x="${R(cx)}" y="${R(cy - 2)}" font-size="${R(fs)}" font-weight="bold" fill="${st.ink}" text-anchor="middle">${esc(s.noLabel)}</text>`);
+    const idText = s.id.replace(/^.*?-(?=\d+$)/, '');
+    out.push(`<text x="${R(cx)}" y="${R(cy + F.sid + 6)}" font-size="${F.sid}" fill="${st.ink}" text-anchor="middle" opacity="0.85">${esc(idText)}</text>`);
+    if (items[s.id]?.buyer) {
+      // kenglikka mos shrift: nom stend chegarasidan chiqmasin
+      const avail = S(s.w) - 8;
+      let buyer = String(items[s.id].buyer);
+      let bfs = Math.min(F.sid - 1, avail / Math.max(4, buyer.length) / 0.6);
+      if (bfs >= 8) {
+        out.push(`<text x="${R(cx)}" y="${R(cy + F.sid + 18)}" font-size="${R(bfs)}" fill="${st.ink}" text-anchor="middle" opacity="0.95">${esc(buyer)}</text>`);
+      }
+    }
   }
 }
 
 // legenda
-const ly = contentBottom + F.legend + 16;
+let ly = contentBottom + F.legend + 16;
 for (const L of legend) {
   const x = PAD + L.x;
   const y = ly + L.row * (F.legend + 12);
   out.push(`<rect x="${R(x)}" y="${R(y - F.legend)}" width="${F.legend + 2}" height="${F.legend + 2}" rx="3" fill="${STATUS[L.k].fill}" stroke="${STATUS[L.k].stroke}" stroke-width="1.4"/>`);
   out.push(`<text x="${R(x + F.legend + 10)}" y="${R(y)}" font-size="${F.legend}" fill="#33454f">${esc(L.text)}</text>`);
 }
+ly += legendRows * (F.legend + 12);
+
+// bo'limlar jadvali
+if (sectionRows.length) {
+  ly += F.legend + 12;
+  out.push(`<text x="${PAD}" y="${R(ly)}" font-size="${F.legend + 1}" font-weight="bold" fill="#0f2233">Bo'limlar bo'yicha</text>`);
+  ly += secLineH;
+  for (const r of sectionRows) {
+    out.push(`<rect x="${PAD}" y="${R(ly - F.legend + 1)}" width="${F.legend}" height="${F.legend}" rx="2" fill="${r.sec.color}"/>`);
+    out.push(`<text x="${PAD + F.legend + 8}" y="${R(ly)}" font-size="${F.legend}" fill="#33454f">${esc(r.sec.label)}${r.sec.labelRu ? ' · ' + esc(r.sec.labelRu) : ''}</text>`);
+    out.push(`<text x="${R(PAD + 700)}" y="${R(ly)}" font-size="${F.legend}" fill="#33454f">${r.n} stend · ${fmtNum(r.area)} m² · bo'sh: ${r.free} (${fmtNum(r.freeArea)} m²)</text>`);
+    ly += secLineH;
+  }
+}
+
+// kompaniyalar jadvali
+if (buyerRows.length) {
+  ly += F.legend + 14;
+  out.push(`<text x="${PAD}" y="${R(ly)}" font-size="${F.legend + 1}" font-weight="bold" fill="#0f2233">Kompaniyalar (band qilingan joylar)</text>`);
+  ly += secLineH;
+  for (const r of buyerRows) {
+    const st = STATUS[r.status];
+    out.push(`<rect x="${PAD}" y="${R(ly - F.legend + 1)}" width="${F.legend}" height="${F.legend}" rx="2" fill="${st.fill}" stroke="${st.stroke}" stroke-width="1.3"/>`);
+    out.push(`<text x="${PAD + F.legend + 8}" y="${R(ly)}" font-size="${F.legend}" fill="#33454f"><tspan font-weight="bold">${esc(r.buyer)}</tspan> — ${esc(st.label)}</text>`);
+    const ids = r.ids.length > 14 ? `${r.ids.slice(0, 14).join(', ')} +${r.ids.length - 14}` : r.ids.join(', ');
+    out.push(`<text x="${R(PAD + 700)}" y="${R(ly)}" font-size="${F.legend}" fill="#33454f">${r.ids.length} stend · ${fmtNum(r.area)} m² · ${esc(ids)}</text>`);
+    ly += secLineH;
+  }
+}
+
+// birlashtirilgan kataklar (kompaniya bir necha stendni qo'shib olgan) — jadvalga alohida qator
+const mergedRows = [];
+for (const b of blocks) for (const m of b.merged || []) {
+  if (!m.buyer && !m.label) continue;
+  mergedRows.push({ buyer: m.buyer || m.label, status: m.status || 'sold', area: m.w * m.h, ids: (m.label || m.id) + ' katagi' });
+}
+if (mergedRows.length) {
+  ly += F.legend + 14;
+  out.push(`<text x="${PAD}" y="${R(ly)}" font-size="${F.legend + 1}" font-weight="bold" fill="#0f2233">Birlashtirilgan kataklar (kompaniya bir necha stendni qo'shib olgan)</text>`);
+  ly += secLineH;
+  for (const r of mergedRows) {
+    const st = STATUS[r.status] || STATUS.sold;
+    out.push(`<rect x="${PAD}" y="${R(ly - F.legend + 1)}" width="${F.legend}" height="${F.legend}" rx="2" fill="${st.fill}" stroke="${st.stroke}" stroke-width="1.3"/>`);
+    out.push(`<text x="${PAD + F.legend + 8}" y="${R(ly)}" font-size="${F.legend}" fill="#33454f"><tspan font-weight="bold">${esc(r.buyer)}</tspan> — ${esc(st.label)}</text>`);
+    out.push(`<text x="${R(PAD + 700)}" y="${R(ly)}" font-size="${F.legend}" fill="#33454f">1 katak · ${fmtNum(r.area)} m² · ${esc(r.ids)}</text>`);
+    ly += secLineH;
+  }
+}
+
+// zona yorliqlari eng oxirida (hech narsa ularni bosmasin)
+for (const { z, y } of (typeof zoneLabels !== 'undefined' ? zoneLabels : [])) {
+  out.push(`<text x="${R(X(z.x + z.w / 2))}" y="${R(y)}" font-size="${F.feat + 3}" font-weight="bold" fill="#8fa0af" text-anchor="middle" letter-spacing="0.4">${esc(z.label)}</text>`);
+}
+
 const totalStands = allStands.length;
-const totalAreaM2 = allStands.reduce((a, s) => a + s.areaM2, 0);
-out.push(`<text x="${pageW - PAD}" y="${pageH - PAD + F.foot}" font-size="${F.foot}" fill="#33454f" text-anchor="end">Jami: ${totalStands} stend · ${fmtNum(totalAreaM2)} m²</text>`);
+const totalArea = allStands.reduce((a, s) => a + s.areaM2, 0);
+out.push(`<text x="${pageW - PAD}" y="${pageH - 18}" font-size="${F.foot}" fill="#33454f" text-anchor="end">Jami: ${totalStands} stend · ${fmtNum(totalArea)} m² · bo'sh: ${counts.free} (${fmtNum(areas.free)} m²)</text>`);
 out.push('</svg>');
 
-// yozish
+// ---------------------------------------------------------------- yozish
 const baseName = path.basename(layoutPath).replace(/\.json$/, '');
-const outPath = path.resolve(ROOT, String(opt('out', `exports/${baseName}${blockFilter ? '-' + blockFilter : ''}.svg`)));
+const suffix = sectionFilter ? `-sec-${sectionFilter}` : blockFilter ? `-${blockFilter}` : '';
+const outPath = path.resolve(ROOT, String(opt('out', `exports/${baseName}${suffix}.svg`)));
 fs.mkdirSync(path.dirname(outPath), { recursive: true });
 fs.writeFileSync(outPath, out.join('\n'));
 const kb = (fs.statSync(outPath).size / 1024).toFixed(1);
-console.log(`✓ ${path.relative(ROOT, outPath)} — ${pageW.toFixed(0)}×${pageH.toFixed(0)} px (${kb} KB), ${totalStands} stend · ${fmtNum(totalAreaM2)} m²`);
+console.log(`✓ ${path.relative(ROOT, outPath)} — ${pageW.toFixed(0)}×${pageH.toFixed(0)} px (${kb} KB), ${totalStands} stend · ${fmtNum(totalArea)} m²`);

@@ -20,7 +20,7 @@ import { expandLayout, validateLayout } from './lib/layout.mjs';
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const PORT = Number(process.env.PORT || 4173);
 const HOST = process.env.HOST || '0.0.0.0';
-const LAYOUT_PATH = path.resolve(ROOT, process.env.LAYOUT || 'layout/hall-A.json');
+const LAYOUT_PATH = path.resolve(ROOT, process.env.LAYOUT || 'layout/foodera-2026.json');
 const DATA_DIR = path.join(ROOT, 'data');
 // test/sinov uchun alohida holat fayli: STATE=data/state-test.json
 const STATE_FILE = process.env.STATE ? path.resolve(ROOT, process.env.STATE) : path.join(DATA_DIR, 'state.json');
@@ -223,7 +223,7 @@ function applyAction(sess, body) {
       phone: action === 'block' ? prev.phone || null : phone,
       company: action === 'block' ? prev.company || null : company,
       pricePerM2,
-      amount: pricePerM2 * stand.areaM2,
+      amount: Number(body.amount && ids.length === 1 ? body.amount : pricePerM2 * stand.areaM2),
       sellerId: sess.id,
       sellerName: sess.name,
       updatedAt: now,
@@ -274,6 +274,7 @@ const server = http.createServer(async (req, res) => {
         meta: exp.meta,
         hall: exp.hall,
         zones: exp.zones,
+        sections: exp.sections,
         features: exp.features,
         blocks: exp.blocks,
         customStands: exp.customStands,

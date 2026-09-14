@@ -66,6 +66,7 @@ body {
 .zone-label { fill: #8595a3; font-size: 1.15px; pointer-events: none; letter-spacing: .02em; }
 .stand .area { font-size: .95px; text-anchor: middle; dominant-baseline: middle; pointer-events: none; fill: #5b6b7a; }
 .stand.custom rect.box { stroke-dasharray: .5 .3; }
+.merged text { pointer-events: none; }
 
 .legend {
   position: absolute; top: 24px; left: 24px; background: rgba(255,255,255,.94);
@@ -112,6 +113,19 @@ body {
 .pill { background: #eef3f8; border-radius: 999px; padding: 4px 10px; font-size: 13px; font-weight: 600; }
 .chips { display: flex; flex-wrap: wrap; gap: 4px; margin: 8px 0; max-height: 108px; overflow-y: auto; }
 .chips .chip { background: #eef3f8; border: 1px solid var(--line); border-radius: 6px; font-size: 12px; padding: 2px 6px; cursor: pointer; }
+.sec-chips .chip { border-left-width: 4px; border-left-style: solid; }
+.chip i.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; }
+.chip.active { outline: 2px solid #0b5fff; }
+.chip.off { opacity: .45; }
+.stand.sec-off { opacity: .10; }
+.block-chip.sec-off, .sec-label.sec-off { opacity: .15; }
+.sec-label { font-size: 1.25px; fill: #6b7b8c; text-anchor: middle; pointer-events: none; }
+.sec-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.sec-table th, .sec-table td { text-align: left; padding: 3px 4px; border-bottom: 1px dotted var(--line); }
+.sec-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.sec-head { display: flex; align-items: center; gap: 6px; margin-top: 6px; font-size: 13.5px; }
+.swatch { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+
 .chips .chip.sold { background: #fdecea; border-color: #e6b0aa; }
 .chips .chip.reserved { background: #fff8e1; border-color: #f0c14b; }
 .legend .chip, .login .chip { cursor: pointer; }
@@ -168,6 +182,7 @@ label.inline input { width: 92px; margin: 0; }
 .zone-label { fill: #8595a3; font-size: 1.15px; pointer-events: none; letter-spacing: .02em; }
 .stand .area { font-size: .95px; text-anchor: middle; dominant-baseline: middle; pointer-events: none; fill: #5b6b7a; }
 .stand.custom rect.box { stroke-dasharray: .5 .3; }
+.merged text { pointer-events: none; }
 
 .legend { position: static; display: flex !important; flex-direction: row; gap: 16px; border: none; box-shadow: none; margin-top: 4mm; }
   .print-only { display: block; margin-top: 4mm; font-size: 11pt; }

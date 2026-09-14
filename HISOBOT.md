@@ -169,6 +169,51 @@ ularni **72 m² deb ko'rsatib bo'lmaydi** — yo blok 8 taga yetkaziladi, yo mij
 | Menejer (admin) | Jurnal nazorati, xato yozuvlarni bo'shatish, kunlik zaxira |
 | Men (texnik) | Layout'ni to'ldirish, keyingi modullar (shartnoma, portal, to'lov) |
 
+
+---
+
+## 9. FOODERA EXPO 2026 — qilingan ishlar (v2, hozirgi holat)
+
+Chizma bo'yicha zal qayta chizildi va **hamma narsa bitta manbadan** (`layout/foodera-2026.json`) hisoblanadi.
+
+| Nima | Holat |
+|---|---|
+| Zal o'lchami | 96 × 50 m (chizmadagi o'lchamlarni 72 m² shablonga moslab tekisladik) |
+| Bloklar | 11 blok (A–F yuqori qator, G I J K L pastki qator) — har biri 8 stend · 72 m² |
+| Uskunalar qatori | EQ-1, EQ-2: 6 stend + bitta birlashtirilgan katak (kompaniya bir necha joyni qo'shib olgan) = 72 m² |
+| Chap qanot | A1–A6 nostandart stendlar (19,15–27,41 m², chizmadan olingan) |
+| Bo'limlar | A HoReCa · B Konserva · C Baliq · D Meva-sabzavot · E Sog'lom taom · F Eko · G Yarim tayyor · I Ichimliklar · J Bakaleya · K Qandolat · L Shirinliklar · EQ Uskunalar · WING Chap qanot |
+| Jami | **106 stend · 1 041,18 m²** · eng tor yo'lak 2 m · validator: xato yo'q |
+| Narx | 1 250 000 so'm/m² (tasdiqlash kutilmoqda) |
+| Band joylar | Panel orqali kiritiladi; hozircha 18 ta **namunaviy** kompaniya bilan ko'rsatilgan |
+
+### Mijozga yuboriladigan tayyor paket
+
+```bash
+node tools/package.mjs
+```
+
+`exports/foodera-2026/` ichida 18 fayl: butun zal xaritasi, faqat bo'sh joylar xaritasi,
+har bir bo'lim uchun alohida varaq (13 ta), kompaniyalar CSV, bo'sh joylar CSV va izoh fayli.
+Paket **faqat** validatordan o'tgan va tasdiqlangan layout'dan yasaladi — xato xarita
+mijozga chiqib ketmaydi.
+
+### Band ro'yxatni Excel'dan yuklash
+
+Manager tayyor ro'yxatni qayta terib chiqmasin:
+
+```bash
+node tools/import-bookings.mjs band-royxat.csv           # sinov
+node tools/import-bookings.mjs band-royxat.csv --apply   # yuklash
+```
+
+### Sizdan kutilayotgan 3 narsa
+
+1. **Kompaniyalar ↔ stend ro'yxati** (qaysi kompaniya qaysi stendni olgan) — hozirgi 18 nom faqat namuna.
+2. **Narx** (so'm/m²) va bron muddati (hozir 72 soat qo'yildi).
+3. Chizmadagi o'lchamlar mos kelmagan joylar: blok boshlanish nuqtalari va yo'lak kengligi
+   chizmada boshqacha bo'lsa — ayting, 5 daqiqada tuzatiladi.
+
 ---
 
 **Bir gapda:** xaritani chizishni to'xtatdik — endi u hisoblanadi va tekshiriladi;
