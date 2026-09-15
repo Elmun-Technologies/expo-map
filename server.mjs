@@ -80,7 +80,7 @@ if (fs.existsSync(STATE_FILE)) {
   }
 }
 
-// Boshqa layout'dan qolgan yozuvlar (masalan zal almashganda) hisobga olinmaydi
+// Записи, оставшиеся от другой схемы (например, при смене зала), не учитываются
 {
   const stale = Object.keys(state.items || {}).filter((id) => !standsById.has(id));
   if (stale.length) {

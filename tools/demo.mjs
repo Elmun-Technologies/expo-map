@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 /**
- * Demo holat:  node tools/demo.mjs --seed     (kompaniyalar bo'limlarga joylashadi — ranglar ko'rinadi)
- *              node tools/demo.mjs --reset    (hamma joyni bo'shatadi — toza holat)
+ * Демо-состояние:  node tools/demo.mjs --seed   (компании раскладываются по разделам — видно цвета)
+ *                  node tools/demo.mjs --reset  (освобождает всё — чистое состояние)
  *
  * Ishlab turgan serverga murojaat qiladi (standart http://localhost:4173).
- * Bo'limlar bo'yicha taqsimlaydi: har bir bo'limdan bir necha stend band qilinadi,
- * shunda xaritada ham bo'sh, ham bron, ham sotilgan joylar ko'rinadi.
+ * Раскладывает по разделам: в каждом разделе занимается несколько стендов,
+ * чтобы на карте были видны и свободные, и забронированные, и проданные места.
  */
 const BASE = process.env.BASE || 'http://localhost:4173';
 const mode = process.argv.includes('--reset') ? 'reset' : process.argv.includes('--seed') ? 'seed' : null;
@@ -51,7 +51,7 @@ if (mode === 'reset') {
   };
   // bo'limlar bo'yicha taqsimlangan band qilish (FOODERA tuzilishi)
   const plan = [
-    ['A', aziz, 'sell', [1, 2, 3, 4, 5, 6, 7, 8], 'Orient Food Group', '+998 71 200 10 10', 'HoReCa uchun to\'liq blok'],
+    ['A', aziz, 'sell', [1, 2, 3, 4, 5, 6, 7, 8], 'Orient Food Group', '+998 71 200 10 10', 'весь блок под HoReCa'],
     ['B', dilnoza, 'sell', [1, 2, 3, 4], 'Navoiy Konserva Zavodi', '+998 79 220 30 40', ''],
     ['B', sardor, 'reserve', [5, 6], 'Buxoro Sut Mahsulotlari', '+998 65 221 33 44', ''],
     ['C', aziz, 'reserve', [1, 2, 3, 4], 'Silk Road Seafood', '+998 93 300 44 55', '48 soatga bron'],

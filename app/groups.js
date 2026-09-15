@@ -231,7 +231,7 @@
     const maxFs = opt.maxFs || 3;
     const maxLines = opt.maxLines || 3;
     const bold = !!opt.bold;
-    const lh = opt.lh || 1.22;         // qator balandligi / shrift
+    const lh = opt.lh || 1.22;         // высота строки / шрифт
     const words = String(text).trim().split(/\s+/).filter(Boolean);
     if (!words.length) return { lines: [], fs: minFs };
     const wrap = (fs, limit) => {

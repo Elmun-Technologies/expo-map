@@ -1,236 +1,193 @@
-# Xarita va sotuv jarayoni: tahlil + yechim
+# Карта и процесс продаж: анализ + решение
 
-**Sana:** 2026-09-14 · **Til:** butun mahsulot (panel, PDF, CSV, SVG) endi RUS tilida · **Loyiha:** Expo Map (ekspo zali xaritasi + sotuv paneli)
-**Qisqa xulosa:** muammo xarita *chizilishida* emas — xaritaning **yagona manbasi yo'qligida** edi.
-Endi xarita bitta JSON fayldan formula bo'yicha chiziladi, sotuvlar umumiy bazada yuritiladi va
-mijozga doim *bir xil* xarita fayli ketadi.
+**Дата:** 2026-09-15 · **Язык продукта:** русский (панель, PDF, SVG, CSV, письма/сообщения системы) · **Проект:** Expo Map (карта экспо-зала + панель продаж)
+**Кратко:** проблема была не в том, что карту *рисуют*, а в том, что у карты **нет единого источника**.
+Теперь карта строится по формуле из одного JSON-файла, продажи идут в общей базе, а клиенту всегда уходит
+*один и тот же* файл карты — с версией и датой.
 
 ---
 
-## 1. Mijoz nima deyapti va aslida nima bo'layapti
+## 1. На что жалуется клиент и что за этим стоит технически
 
-| Mijoz shikoyati | Orqasida yotgan texnik sabab |
+| Жалоба клиента | Техническая причина за ней |
 |---|---|
-| "Men sotib olgan joy bu emas" | Stendning ID si yo'q — mijoz "3-qator, o'rtadagi blok" deb eslab qoladi, xaritada esa blok boshqa joyda |
-| "Siz yo'q joyni sotyapsizla" | Bloklar real zaldagi masofaga mos emas: yo'lak/ustun/sahna ustiga tushib qolgan yoki bloklar bir-biriga yopishib ketgan |
-| "Ikki marta sotib qo'yibsiz" | Bron/sotuv markazlashmagani uchun (Excel + Telegram + daftar) bir joy ikki mijozga ketgan |
-| "72 m² olasan degan edingiz, 54 chiqdi" | Blokda 8 ta emas, 6–10 stend bo'lgan — ya'ni 72 m² qoidasi buzilgan, xaritada esa baribir "blok" deb ko'rsatilgan |
-| "Menga yuborilgan xarita boshqa" | Eski versiya qo'lda yuborilgan (`map_final_v3.png`), keyin xarita o'zgargan |
+| «Я покупал не это место» | У стенда нет ID — клиент запоминает «третий ряд, средний блок», а блок на карте уже в другом месте |
+| «Вы продаёте место, которого нет» | Блоки не совпадают с реальными расстояниями в зале: попадают на проход/колонну/сцену или блоки слипаются |
+| «Продали дважды» | Бронь/продажа не централизованы (Excel + Telegram + тетрадь), одно место ушло двум клиентам |
+| «Вы обещали 72 м², а вышло 54» | В блоке было не 8, а 6–10 стендов — правило 72 м² нарушено, но на карте всё равно написано «блок» |
+| «Мне прислали другую карту» | Старая версия ушла вручную (`map_final_v3.png`), потом карта изменилась |
 
-Ya'ni **bitta** muammo emas: (a) geometriya ishonchsiz, (b) holat (kim band qilgan) ishonchsiz,
-(c) mijozga boradigan fayl ishonchsiz. Uchtasi bir vaqtda tuzatilmasa, shikoyat qaytadi.
+То есть проблема **не одна**: (а) геометрия недостоверна, (б) состояние (кто занял) недостоверно,
+(в) файл, уходящий клиенту, недостоверен. Если не исправить все три сразу — жалоба вернётся.
 
-## 2. Ildiz sabab: xarita "chizilgan", "hisoblanmagan"
+## 2. Корень: карта «нарисована», а не «посчитана»
 
-Sizda qoida aniq: **1 stend = 3×3 m = 9 m²**, **1 blok = 8 stend = 72 m²**.
-Bu — matematik bog'lanish: `72 = 8 × 9`. Bunday bog'lanishni qo'lda chizishda saqlab bo'lmaydi:
+Правило однозначное: **1 стенд = 3×3 м = 9 м²**, **1 блок = 8 стендов = 72 м²**.
+Это математическая связь: `72 = 8 × 9`. При ручной отрисовке её не удержать:
 
-* 6 ta blok 48 stend bo'lsa, 384 koordinata (x, y, eni, bo'yi) qo'lda yoziladi;
-* bitta blok 2 m siljisa, u boshqa blokka yopishadi — ko'z ilg'amaydi, mijoz ilg'aydi;
-* Figma layer nomlari (`Rectangle 127 copy 3`) stend ID bo'la olmaydi;
-* fayl versiyalari `final`, `final2`, `oxirgi` deb ko'payadi.
+* 6 блоков по 48 стендов — это 384 координаты (x, y, ширина, высота) вручную;
+* один блок сдвинулся на 2 м — прилип к соседнему: глаз не заметит, клиент заметит;
+* имена слоёв в Figma (`Rectangle 127 copy 3`) не могут быть ID стенда;
+* версии файла множатся: `final`, `final2`, `oxirgi`.
 
-Figma — *dizayn* vositasi, *ma'lumot* vositasi emas. Xarita ma'lumot bo'lishi kerak: har bir stend
-o'z ID siga ega yozuv, joylashuvi esa shu yozuvdan hisoblanadigan natija.
+Figma — инструмент *дизайна*, а не *данных*. Карта должна быть данными: каждый стенд — запись со своим ID,
+а положение — результат вычисления из этой записи.
 
-**Shu sababli tizim shunday qurildi:** xarita qo'lda chizilmaydi — `layout/hall-A.json` dagi
-blok boshlanish nuqtasi + ustun/qator sonidan **avtomatik** hisoblanadi, har bir o'zgarish
-**validatordan** o'tadi. Validator xato topsa — xarita umuman chiqmaydi (server ko'tarilmaydi,
-eksport yozilmaydi). Ya'ni "yo'q joyni sotish" texnik jihatdan imkonsiz bo'ladi.
+**Поэтому система построена так:** карта не рисуется вручную — она считается **автоматически**
+из точки привязки блока + числа колонок/строк в `layout/*.json`, и каждое изменение проходит **валидатор**.
+Если валидатор нашёл ошибку — карта не выпускается вообще (сервер не поднимается, экспорт не пишется).
+То есть «продать место, которого нет» технически невозможно.
 
-## 3. Taklif etilgan yechim (3 qatlam)
+## 3. Предложенное решение (3 слоя)
 
 ```
-   ① LAYOUT (manba)          ② HOLAT (sotuv)              ③ MIJOZGA KETADIGAN FAYL
-   layout/hall-A.json        data/state.json              SVG / PDF / havola
-   zal o'lchami, bloklar      bron, sotuv, mijoz          xarita + legenda + bo'sh joylar
-   ustun/qator → 8×9=72       revision, audit.log          versiya raqami bilan
+   ① СХЕМА (источник)        ② СОСТОЯНИЕ (продажи)        ③ ФАЙЛ ДЛЯ КЛИЕНТА
+   layout/foodera-2026.json  data/state.json              SVG / PDF / ссылка
+   размеры зала, блоки       бронь, продажа, клиент       карта + легенда + свободные места
+   колонки/строки → 8×9=72   revision, audit.log          с номером версии
         │                          │                            │
-        └────── bitta formula:  stend.id = "A-01-05" ───────────┘
-                (shartnomada ham, xaritada ham, bazada ham aynan shu ID)
+        └────── одна формула:  stand.id = "A-01" ──────────────┘
+                (и в договоре, и на карте, и в базе — один и тот же ID)
 ```
 
-1. **Manba bitta.** Zal o'lchami, ustunlar, sahna, kirish — hammasi JSON'da, metrda.
-2. **Hisoblash bitta.** `lib/layout.mjs` — 9 m²/72 m² qoidalari va tekshiruv faqat shu yerda.
-3. **Holat bitta.** Barcha sotuvchilar bitta bazaga yozadi; bitta joy ikki marta sotilmaydi
-   (konfliktda tizim rad etadi va kim band qilganini ko'rsatadi).
-4. **Chiqish bitta.** Mijozga faqat `tools/export-svg.mjs` chiqargan fayl yoki panelning
-   "Chop etish / PDF" tugmasi orqali olingan hujjat yuboriladi.
+1. **Один источник.** Размер зала, колонки, сцена, вход — всё в JSON, в метрах.
+2. **Один расчёт.** `lib/layout.mjs` — правила 9 м²/72 м² и проверки только здесь.
+3. **Одно состояние.** Все продавцы пишут в одну базу; одно место не продаётся дважды
+   (при конфликте система отклоняет операцию и показывает, кто занял место).
+4. **Один выход.** Клиенту уходит только файл из `tools/export-svg.mjs` / `tools/package.mjs`
+   или документ, полученный кнопкой «Печать плана» / «Скачать PDF».
 
-## 4. Endi ishlaydigan narsa (shu omborda tayyor)
+## 4. Что уже работает (готово в этом репозитории)
 
-**Sotuv paneli** (`node server.mjs` → brauzer, telefon va kompyuterda):
+**Панель продаж** (`node server.mjs` → браузер, работает и с телефона):
 
-* Xaritadan **stend** (9 m²) yoki **blok yorlig'i** (`A-01 · 72 m²` → butun blok, 8 stend) bosiladi;
-  savat sifatida yig'iladi — blok to'liq bo'lmasa, faqat bo'sh joylari tanlanadi va ogohlantiradi.
-* Mijoz maydonlari (ism, telefon, kompaniya, izoh) → **Bron** (muddatli, tugasa avtomatik bo'shaydi)
-  yoki **Sotish** → tasdiqlash oynasida *aynan qaysi ID'lar* va summa → **kvitansiya** (chop etiladi).
-* Band joy: kim, qachon, qaysi sotuvchi, qaysi mijoz — ko'rinadi. Boshqa sotuvchining bronini yoki
-  sotilgan joyni faqat **menejer** bo'shata oladi.
-* Jonli statistika: bo'sh/bron/sotilgan stend va m², sotuv summasi.
-* **Mijoz ko'rinishi** havolasi (`?mode=client`) — mijoz o'zi qarab turadi, narx maydonlari yo'q.
-* **Chop etish / PDF** — bitta A3 varaq: faqat **asosiy xarita** (legenda bilan). Brauzerdagi
-  "Save as PDF" endi xaritani bitta varaqqa sig'diradi; tayyor PDF fayllar `exports/foodera-2026/`
-  ichida ham bor (`01-план-зала-весь.pdf`, `02-план-свободные-места.pdf`).
-* **Jurnal** (admin) va **CSV eksport** (buxgalteriya/hisobot uchun).
+* Клик по **стенду** (9 м²) или по **ярлыку блока** (`A · 72 м²` → весь блок, 8 стендов);
+  выбор накапливается — если блок занят частично, выбираются только свободные места с предупреждением.
+* Поля клиента (имя, телефон, компания, примечание) → **Забронировать** (со сроком, по истечении
+  снимается автоматически) или **Продать** → в окне подтверждения видно *какие именно ID* и сумма → **квитанция**.
+* Занятое место: видно кто, когда, какой продавец, какой клиент. Чужую бронь или проданное место
+  освобождает только **менеджер**.
+* Живая статистика: свободные/бронь/проданные стенды и м², сумма продаж.
+* Ссылка **«Вид для клиента»** (`?mode=client`) — клиент смотрит сам, полей для цен нет.
+* **«Печать плана»** — один лист A3 с шапкой (проект, дата, цена, статистика) и планом зала,
+  который заполняет лист целиком. Таблицы (блоки, компании, разделы) — только по флажку «с таблицами».
+* **«Скачать PDF»** — сервер сам собирает PDF одной страницы (`/api/export/pdf`); готовые файлы
+  лежат в `exports/foodera-2026/`.
+* **Журнал операций** (админ) и **экспорт CSV** (для бухгалтерии/отчётов).
 
-**Nazorat vositalari:**
+**Инструменты контроля:**
 
-| Buyruq | Vazifa |
+| Команда | Задача |
 |---|---|
-| `npm run validate` | Layout qoidalarga mosmi (9 m², 72 m², ustma-ust tushish, yo'lak, ID) |
-| `npm test` | 12 ta "buzilgan layout" testi — har biri ushlanishi shart |
-| `npm run export` | Mijozga yuboriladigan SVG (butun zal / bitta blok kartasi) |
-| `npm run import` | Excel/CSV → layout JSON (mavjud ro'yxatni ko'chirish) |
-| `npm run smoke` | UI smoke-test: login → tanlash → sotish → konflikt → mijoz rejimi (22 ta tekshiruv) |
+| `npm run check` | Схема по правилам (9 м², 72 м², наложения, проходы, ID) + 18 тестов на «сломанные» схемы |
+| `npm run export` | SVG для клиента (весь зал / раздел / карточка блока) |
+| `npm run package` | Готовый пакет: план + разделы + CSV + пояснение, с проверкой чистоты подписей |
+| `npm run smoke` | Smoke-тест интерфейса: вход → выбор → продажа → конфликт → режим клиента |
+| `npm run bookings` | Импорт существующих броней из Excel/CSV (по умолчанию dry-run) |
 
-## 5. Ish reglamenti (qisqa, sotuvchilar uchun)
+## 5. Регламент работы (коротко, для продавцов)
 
-1. **Joy har doim ID bilan aytiladi**: "A-01-05, 9 m²" — "o'rtadagi blok" emas.
-2. **72 m² = butun blok (8 ta stend)**. Blokdan bo'lak sotilsa, mijozga aynan qaysi ID'lar
-   o'tgani kvitansiyada ko'rsatiladi.
-3. **Bron muddati** (standart 72 soat) tugasa joy avtomatik bo'shaydi — qo'lda "esdan chiqarish" yo'q.
-4. **Mijozga faqat tizim chiqargan xarita** yuboriladi (versiya raqami va sanasi faylda ko'rinadi).
-5. **Sotilgan joyni bo'shatish** — menejer vakolati (yozuv jurnalga tushadi).
-6. Layout o'zgarsa (`layout/hall-A.json`) — avval `npm run check`, keyin mijozlarga yangi versiya.
+1. **Место всегда называется по ID**: «A-03, 9 м²» — а не «средний блок».
+2. **72 м² = весь блок (8 стендов)**. Если продаётся часть блока, клиенту в квитанции показываются
+   конкретные ID.
+3. **Срок брони** (по умолчанию 72 часа) истёк — место освобождается автоматически, «забыть» нельзя.
+4. **Клиенту уходит только карта, выпущенная системой** (в файле видны версия и дата).
+5. **Освободить проданное место** может только менеджер (запись попадает в журнал).
+6. Меняется схема (`layout/*.json`) — сначала `npm run check`, потом новая версия клиентам.
 
-## 6. Keyingi qadamlar
+## 6. Следующие шаги
 
-**0–1 hafta (hozir tayyor qism + sizning ma'lumot):**
-1. Siz real zal faylini (DWG/PDF/Figma/Excel) berasiz → men `layout/hall-*.json` ni to'ldiraman
-   (import skripti tayyor: blok boshlanish nuqtasi + ustun/qator yetarli).
-2. `data/sellers.json` — haqiqiy sotuvchilar ro'yxati va PIN'lar.
-3. Narx (`pricePerM2`) va bron muddatini tasdiqlaymiz; ekspo sanalari kiritiladi.
-4. Sinov kuni: 2–3 sotuvchi panelda ishlab ko'radi; biz ularning e'tirozlarini yig'amiz.
+**0–1 неделя (готовая часть + ваши данные):**
+1. Вы даёте реальный файл зала (DWG/PDF/Figma/Excel) → я заполняю `layout/*.json`.
+2. `data/sellers.json` — реальный список продавцов и PIN-коды (демо-PIN заменяются перед работой).
+3. Подтверждаем цену (`pricePerM2`) и срок брони; вносим даты выставки.
+4. Тестовый день: 2–3 продавца работают в панели, собираем замечания.
 
-**1–3 oy:**
-* PostgreSQL (yoki SQLite) + WebSocket — ikki sotuvchi bir joyni bir vaqtda ochsa darhol ko'rinadi.
-* Shartnoma moduli: stend ID, maydon, narx, xarita versiyasi avtomatik shartnomaga tushadi.
-* Mijoz portali: shaxsiy havola, to'lov holati, QR check-in (tadbir kunida skaner).
-* Excel'dan mavjud shartnomalarni bir marta ko'chirish.
-* Zaxira (backup) avtomatik: har kuni `data/*` nusxasi + o'zgarishlar jurnali.
+**1–3 месяца:**
+* PostgreSQL (или SQLite) + WebSocket — если двое открыли одно место, это видно сразу.
+* Модуль договора: ID стенда, площадь, цена, версия карты попадают в договор автоматически.
+* Портал клиента: личная ссылка, статус оплаты, QR-check-in в день мероприятия.
+* Единоразовый перенос существующих договоров из Excel.
+* Автоматический бэкап: ежедневная копия `data/*` + журнал изменений.
 
-**3–12 oy:**
-* Bir nechta zal / bir nechta tadbir sanasi (har tadbirga alohida holat).
-* Onlayn to'lov (Payme/Click yoki bank), hisob-faktura/akt avtomatik.
-* Analitika: qaysi bloklar tez sotiladi, qaysi narx ishlaydi, sotuvchilar reytingi.
-* Tadbir kunida QR orqali kelganini belgilash, kassa/badge tizimi bilan bog'lash.
+**3–12 месяцев:**
+* Несколько залов / несколько дат (у каждого мероприятия своё состояние).
+* Онлайн-оплата (Payme/Click или банк), автоматические счёт-фактура и акт.
+* Аналитика: какие блоки продаются быстрее, какая цена работает, рейтинг продавцов.
+* Отметка прихода по QR в день мероприятия, связка с кассой/badge-системой.
 
-## 6b. Real chizma tahlili (Крытый павильон) — 2026-09-14
+## 6b. Разбор чертежа (Крытый павильон) — 2026-09-14
 
-Siz yuborgan chizma (rasm) o'rganildi va `layout/hall-real.json` **qoralamasi** shu asosda tayyorlandi.
-Chizmadan o'qilgan tuzilma:
+Присланный чертёж изучен; на его основе собрана схема **`layout/foodera-2026.json`** (v1.2.0).
 
-| Element | Chizmada | Izoh |
+| Элемент | На чертеже | Комментарий |
 |---|---|---|
-| Chap qanot | A1–A6 stendlari | Nostandart o'lchamlar: A3=25.4, A4=22.67, A5=20.32, A6=19.15 m² (A1, A2 yozuvi ko'rinmadi) |
-| Asosiy zal | A, B, C, D, E, F ustunlar | Har birida 2×6 = **12 ta katak** (9 m²) → **108 m²**, ya'ni 72 m² qoidasidan **katta** |
-| Pastki qator | B (4), C (8), D (8), E (8), F (8), G (4) | 8 talik guruhlar = 72 m² (qoidaga mos), 4 taliklar = 36 m² |
-| Boshqa | Sahna, B2B zona, Small Conference Hall, Registratsiya, 2×WC, zina, texnik xona, yuk ko'tarish yo'lagi | Zonalar xaritada alohida rang bilan ko'rsatildi |
+| Левое крыло | Стенды A1–A6 | Нестандартные площади: A1=27,41 · A2=26,23 · A3=25,4 · A4=22,67 · A5=20,32 · A6=19,15 м² |
+| Основной зал | 3 ряда блоков: **A–F · G–L · M–R** | 18 блоков по 8 стендов × 9 м² = 72 м² (правило выдержано) |
+| Линия оборудования | EQ-1, EQ-2 | По 8 ячеек × 9 м² = 72 м² |
+| Разделы | HoReCa · Консервация · Рыба и морепродукты · Фрукты и овощи · Продукты для здорового питания · Sport Pit · Органика · Ингредиенты и компоненты · Мясная и молочная индустрия · Напитки · Полуфабрикаты · Бакалея · Кондитерские изделия · Оборудование · Крыло A1–A6 | Названия взяты с чертежа заказчика |
+| Объекты | Техническая комната · Грузовые ворота · Сцена · Зона семинаров и форума · Conference-Hall · Small Conference-Hall · 2× B2B · Переговорная · Винтовой выход · Выход к открытому павильону · Регистрация · Главный вход · 2× WC · Парковка | Показаны отдельными зонами |
+| Итого | **20 блоков · 166 стендов · 1 581,18 м²** | Минимальный проход 2 м; валидатор — без ошибок |
+| Цена | 1 250 000 сум/м² | Ждёт подтверждения |
 
-**Muhim xulosa (mijoz shikoyatining ildizi shu yerda):** chizmadagi asosiy zal kataklari 12 tadan —
-ya'ni bir ustun 108 m². Agar sotuvchi buni "bir blok / 72 m²" deb aytsa, mijoz **36 m²** kam joy oladi
-yoki ortiqcha pul to'laydi. Tizim endi buni o'zi aytadi: har bir guruh maydoni (`108 m²`, `72 m²`,
-`36 m²`, `25.4 m²`...) xaritada va hisob-kitobda **ko'rinib turadi**, 72 m² dan farq qilgani
-uchun ogohlantirish beriladi (`meta.enforceBlockRule`).
+**Что сделано по занятым местам:** из чертежа заказчика прочитаны реальные компании и расставлены по
+стендам — **43 компании, 52 стенда, 468 м²** (51 продано + 1 бронь). Скрипт: `tools/seed-foodera.mjs`
+(исходная площадь с чертежа сохраняется в примечании к стенду).
 
-Chizmada yana bir xatarli joy bor: har bir katakda **ikkita raqam** yozilgan (`A7/9м` va `B9/9м` kabi).
-Qaysi biri mijozga aytiladigan stend ID si ekani tasdiqlanishi shart — aks holda chizmadagi chalkashlik
-yana panelga ko'chadi. Savollar ro'yxati: **`docs/CHIZMA-ANKETA.md`** (D1 — PDF/DWG ni qayta yuklash).
+### Читаемость карты (по требованию клиента)
 
-**Qoralamada nima qilingan:** 6 ta nostandart stend + 12 guruh (A–F, pastki qator), zonalar, obyektlar
-(registratsiya, kirish, WC, zina, yuk yo'lagi, texnik xona) joylashtirildi; validator xatosiz o'tadi;
-`exports/hall-real-DRAFT.svg` — ko'rish uchun (suv belgisi bilan, chunki qoralama).
-Panelda draft holati ko'rsatiladi va **mijozga havola bloklanadi** — noto'g'ri raqam mijozga ketmasligi uchun.
+- Сколько бы мест ни заняла одна компания — **одна общая рамка**, внутри название компании.
+  Не 4 ячейки, а 1 рамка; 8 мест — тоже 1 рамка.
+- Название компании пишется **на самом стенде** (не отдельным списком).
+- Свободные места остаются ячейками с номерами — продавец сразу видит, что свободно.
+- В управлении так же: в панели список «Занятые места» — по одной строке на компанию.
+- Бронь истекла или место освободили — рамка автоматически распадается на ячейки.
 
-## 7. Men sizdan kutayotgan fayl va undan kerak bo'ladigan ma'lumot
+### Чистота документов (PDF/SVG)
 
-Fayl istalgan formatda bo'lishi mumkin (DWG/DXF chizma, PDF, Figma havola, Excel ro'yxat, hatto qo'lda
-chizilgan eskiz skaneri). **Hozirgi holat:** siz DWG (yoki PDF) chizmani tanladingiz — uni shu yerga
-tashlang, o'lchamlarni o'qib layout'ni real ma'lumot bilan to'ldiraman. DWG'ni bevosita o'qish qiyin
-bo'lsa, undan **PDF yoki yuqori aniqlikdagi rasm** chiqarib yuborish yetarli (o'lcham yozuvlari
-ko'rinib turishi kerak). Undan quyidagilar kerak:
+Перед выпуском пакета каждая карта проверяется программой `tools/check-overlaps.mjs`:
+ни одна подпись не должна пересекаться с другой. Проверка встроена в `npm run package`,
+поэтому «наехавших» надписей в отправляемом PDF быть не может.
 
-- [ ] Zalning umumiy o'lchami (m) va shakli (to'g'ri to'rtburchakmi yoki burchak/aylana bor);
-- [ ] Har bir blokning **boshlanish nuqtasi** (zalning chap-tepa burchagidan, metrda) va ustun/qator soni;
-- [ ] Ustunlar, sahna, kirish, WC, food-zone joylashuvi (stendlar ustiga tushmasligi uchun);
-- [ ] Bloklar orasidagi yo'lak kengligi (standart 2 m qabul qilindi — boshqa bo'lsa ayting);
-- [ ] Blok nomlash tartibi (masalan `A-01` … `A-12`) — mijoz shartnomasida shu nom ishlatiladi;
-- [ ] Narx (so'm/m²) va bron uchun muddat (soat/kun).
-
-**Muhim:** agar ro'yxatda stendlar soni 8 tadan farq qiladigan bloklar bo'lsa (6 yoki 10),
-ularni **72 m² deb ko'rsatib bo'lmaydi** — yo blok 8 taga yetkaziladi, yo mijozga aniq maydon
-(54/90 m²) aytiladi. Validator aynan shu holatni ushlab, xatoni sotuvchiga yetib bormasdan to'xtatadi.
-
-## 8. Kim nima qiladi
-
-| Rol | Vazifa |
-|---|---|
-| Siz (loyiha egasi) | Real o'lchamlar/narx tasdiqlash, sotuvchilarni o'rgatish, mijozga yuboriladigan fayl qoidasi |
-| Sotuvchi | Panelda bron/sotuv, mijoz ma'lumotini to'ldirish, kvitansiyani mijozga berish |
-| Menejer (admin) | Jurnal nazorati, xato yozuvlarni bo'shatish, kunlik zaxira |
-| Men (texnik) | Layout'ni to'ldirish, keyingi modullar (shartnoma, portal, to'lov) |
-
-
----
-
-## 9. FOODERA EXPO 2026 — qilingan ishlar (v2, hozirgi holat)
-
-Chizma bo'yicha zal qayta chizildi va **hamma narsa bitta manbadan** (`layout/foodera-2026.json`) hisoblanadi.
-
-| Nima | Holat |
-|---|---|
-| Zal o'lchami | 96 × 50 m (chizmadagi o'lchamlarni 72 m² shablonga moslab tekisladik) |
-| Bloklar | **12 blok, 3 qatorda**: 1-qator A–F, **2-qator (o'rta) G–I**, 3-qator J–L — har biri 8 stend · 72 m² |
-| Uskunalar qatori | EQ-1, EQ-2 — har biri 8 × 9 m² katak (8 × 1 qator) = 72 m² (birlashtirilgan kataklar olib tashlandi) |
-| Chap qanot | A1–A6 nostandart stendlar (19,15–27,41 m², chizmadan olingan) |
-| Bo'limlar | A HoReCa · B Konserva · C Baliq va dengiz mahsulotlari · D Meva-sabzavot · E Sog'lom taom, Sport Pit · F Organika · G Yarim tayyor · H Go'sht va sut sanoati · I Ichimliklar · J Bakaleya · K Qandolat · L Ingredientlar · EQ Uskunalar · WING Chap qanot |
-| Zonalar (FOODERA chizmasi bo'yicha) | Sena (Sahna) · Zona seminarov i forum · B2B zona · Conference-Hall · Small Conference-Hall · 2× B2B · Peregovornaya · Gruzovye vorota · Vintovoy vyxod · Texnik xona · 2× WC · Registratsiya · Glavniy vxod |
-| Sarlavhalar | Har bir bo'lim nomi chizmadagidek **ruscha + o'zbekcha** yoziladi (masalan, «A bloki · HoReCa / Продукция для HoReCa») |
-| Jami | **118 stend · 1 149,18 m²** · eng tor yo'lak 2 m · validator: xato yo'q |
-| Qoida | Shablon: **faqat 72 m² bloklar va 9 m² qismlar** — nostandart katak yo'q; chap qanot A1–A6 chizmadagi maydonlari bilan (19,15–27,41 m²) |
-| Dizayn | Mijoz xaritasi „toza" uslubda: oq kataklar, bo'lim rangidagi yupqa ramka, och status fonlari (sotilgan/bron), nomlar quti ichida. Panel (sotuvchilar uchun) status ranglarini saqlaydi |
-| Narx | 1 250 000 so'm/m² (tasdiqlash kutilmoqda) |
-| Band joylar | Panel orqali kiritiladi; hozircha 18 ta **namunaviy** kompaniya bilan ko'rsatilgan |
-
-### Xarita o'qilishi (mijoz talabi bo'yicha)
-
-- Bitta kompaniya nechta joy olgan bo'lsa — **bitta umumiy quti**, ichida kompaniya nomi va
-  "N stend · X m²". 4 ta yacheyka emas, 1 ta quti; 8 ta bo'lsa ham 1 ta.
-- Kompaniya nomi endi **stendning o'zida** yoziladi (umumiy ro'yxatga chiqarilmaydi).
-- Bo'sh joylar stend raqami bilan yacheyka bo'lib qoladi — sotuvchi qaysi joy bo'shligini darhol ko'radi.
-- Boshqaruvda ham xuddi shunday: yon panelda «Band joylar» ro'yxati — har bir kompaniya uchun bitta qator.
-- Bron tugasa yoki joy bo'shatilsa quti avtomatik yacheykalarga bo'linadi.
-
-### Mijozga yuboriladigan tayyor paket
+### Готовый пакет для клиента
 
 ```bash
 node tools/package.mjs
 ```
 
-`exports/foodera-2026/` ichida 18 fayl: butun zal xaritasi, faqat bo'sh joylar xaritasi,
-har bir bo'lim uchun alohida varaq (13 ta), kompaniyalar CSV, bo'sh joylar CSV va izoh fayli.
-Paket **faqat** validatordan o'tgan va tasdiqlangan layout'dan yasaladi — xato xarita
-mijozga chiqib ketmaydi.
+В `exports/foodera-2026/` — **27 файлов**: план всего зала (SVG + PDF одной страницы), карта свободных
+мест (SVG + PDF), лист по каждому разделу (19 шт.), CSV по компаниям, CSV свободных мест и пояснение.
+Пакет собирается **только** из проверенной и утверждённой схемы — ошибочная карта к клиенту не уйдёт.
 
-### Band ro'yxatni Excel'dan yuklash
+### Загрузка списка занятых мест из Excel
 
-Manager tayyor ro'yxatni qayta terib chiqmasin:
+Чтобы менеджер не перебивал список руками:
 
 ```bash
-node tools/import-bookings.mjs band-royxat.csv           # sinov
-node tools/import-bookings.mjs band-royxat.csv --apply   # yuklash
+node tools/import-bookings.mjs zanyatye.csv           # проверка (dry-run)
+node tools/import-bookings.mjs zanyatye.csv --apply   # загрузка
 ```
 
-### Sizdan kutilayotgan 3 narsa
+### Что нужно от вас (по FOODERA)
 
-1. **Kompaniyalar ↔ stend ro'yxati** (qaysi kompaniya qaysi stendni olgan) — hozirgi 18 nom faqat namuna.
-2. **Narx** (so'm/m²) va bron muddati (hozir 72 soat qo'yildi).
-3. Chizmadagi o'lchamlar mos kelmagan joylar: blok boshlanish nuqtalari va yo'lak kengligi
-   chizmada boshqacha bo'lsa — ayting, 5 daqiqada tuzatiladi.
+1. **Наряд/договор на доп. места**, если в зале будут новые брони — вносим сразу через панель.
+2. **Подтверждение цены** (сум/м²) и срока брони (сейчас 72 часа).
+3. Если на чертеже есть расхождения по точкам привязки блоков и ширине проходов — скажите, правится за 5 минут.
 
 ---
 
-**Bir gapda:** xaritani chizishni to'xtatdik — endi u hisoblanadi va tekshiriladi;
-sotuv bitta umumiy bazada yuradi; mijozga doim bir xil, versiyalangan xarita ketadi.
-Shu uchta qoida saqlansa, "yo'q joyni sotyapsiz" degan gap takrorlanmaydi.
+## 7. Что дальше по SOF EXPO (второй проект)
+
+По запросу «сделать точнее, как в 3D-туре» разобран тур
+`my.cybermuseum.art/ru/tour/sofexpo` — см. **`docs/SOFEXPO-3D-TAHLIL.md`**:
+собраны факты (павильон >4500 м², пакеты 9 и 18 м², регистрационная зона, конференц-зал),
+структура реальной схемы (колонны A–G, крыло A1–A6, G9–G11 по 72 м², три зоны B2B, Hall,
+переговорная, грузовые ворота) и перечень файлов, которые нужны от вас
+(крупная схема зала, каталог тура, список компаний с привязкой к стендам).
+Новая схема `layout/sofexpo-2026.json` собирается по тем же правилам — 72 м² блок / 9 м² стенд.
+
+---
+
+**Одной фразой:** мы перестали рисовать карту — теперь она считается и проверяется;
+продажи идут в одной общей базе; клиенту всегда уходит одна и та же версионированная карта.
+Если эти три правила соблюдать, фраза «вы продаёте место, которого нет» больше не повторится.

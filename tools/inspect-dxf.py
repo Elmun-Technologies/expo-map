@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
 DXF chizmani o'qib, bloklar va obyektlar haqida xom ma'lumot chiqarish.
-(Tayyor layout yasamaydi — menga koordinatalarni tez aniqlash uchun yordamchi vosita.)
+(Схему не собирает — вспомогательный инструмент, чтобы быстро понять координаты.)
 
-    python3 tools/inspect-dxf.py chizma.dxf [--min-area 4]
+    python3 tools/inspect-dxf.py chertezh.dxf [--min-area 4]
 
 DXF ni avtomatik yasash mumkin: AutoCAD'da "Save As → DXF", LibreCAD/FreeCAD eksporti,
 yoki DWG → DXF konvertor. Natijada layer bo'yicha to'rtburchak (LWPOLYLINE/LINE) ro'yxati chiqadi.
@@ -55,14 +55,14 @@ print(f"\n## To'rtburchaklar (maydoni {min_area}+ ): {len(rects)} ta")
 for x, y, w, h, layer in rects:
     print(f"   x={x:9.2f} y={y:9.2f}  {w:7.2f} x {h:7.2f}  = {w*h:9.1f} m²   [{layer}]")
 
-# --- matnlar (stend/blok nomlari bo'lishi mumkin)
+# --- тексты (могут быть названиями стендов/блоков)
 texts = [(e.dxf.text if e.dxftype() == "TEXT" else e.text, (e.dxf.insert.x, e.dxf.insert.y))
          for e in msp if e.dxftype() in ("TEXT", "MTEXT")]
 print(f"\n## Yozuvlar: {len(texts)} ta (birinchi 60)")
 for txt, (x, y) in texts[:60]:
     print(f"   x={x:9.2f} y={y:9.2f}  {txt!r}")
 
-# --- INSERT (blok havolalari) — chizma blok ko'rinishida chizilgan bo'lsa
+# --- INSERT (ссылки на блоки) — если чертёж нарисован блоками
 inserts = [(e.dxf.name, (e.dxf.insert.x, e.dxf.insert.y), e.dxf.rotation) for e in msp if e.dxftype() == "INSERT"]
 if inserts:
     names = {}
@@ -71,4 +71,4 @@ if inserts:
     print(f"\n## INSERT bloklar: {len(inserts)} ta — {names}")
     for name, (x, y), rot in inserts[:40]:
         print(f"   {name}  x={x:9.2f} y={y:9.2f} rot={rot}")
-print("\n# Maslahat: bloklar 6×12 m (2 ustun × 4 qator) bo'lsa, har blok = 8 stend × 9 m² = 72 m².")
+print("\n# Подсказка: если блоки 6×12 м (2 колонки × 4 ряда), то каждый блок = 8 стендов × 9 м² = 72 м².")

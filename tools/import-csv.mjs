@@ -1,22 +1,22 @@
 #!/usr/bin/env node
 /**
- * Mavjud ro'yxatni (Excel/CSV) layout JSON ga aylantirish.
- * Qo'lda koordinata yozish shart emas — blok boshlanish nuqtasi + ustun/qator soni yetarli.
+ * Преобразует существующий список (Excel/CSV) в JSON-схему.
+ * Координаты вручную писать не нужно — достаточно точки привязки блока + числа колонок/строк.
  *
- * 1) Bloklar jadvali (tavsiya etiladi):
- *    blok,x,y,ustunlar,qatorlar,guruh,izoh
- *    A-01,4,6,4,2,1-qator,
- *    A-02,22,6,4,2,1-qator,Sahnaga yaqin
+ * 1) Таблица блоков (рекомендуется):
+ *    blok,x,y,колонок,строк,группа,примечание
+ *    A,12,6.4,2,4,Ряд 1,
+ *    B,20,6.4,2,4,Ряд 1,рядом со сценой
  *
- *    node tools/import-csv.mjs blocks.csv --hall "A zal" --width 66 --height 44 --out layout/hall-A.json
+ *    node tools/import-csv.mjs blocks.csv --hall "Крытый павильон" --width 96 --height 50 --out layout/foodera-2026.json
  *
- * 2) Ayrim stendlar (nostandart shakl):
+ * 2) Отдельные стенды (нестандартная форма):
  *    stend,blok,x,y
- *    A-01-01,A-01,4,6
- *    node tools/import-csv.mjs stands.csv --mode stands --out layout/hall-A.json
+ *    A-01,A,12,6.4
+ *    node tools/import-csv.mjs stands.csv --mode stands --out layout/foodera-2026.json
  *
- * Ustun nomlari o'zbekcha yoki inglizcha bo'lishi mumkin. Ajratgich , yoki ; avtomatik aniqlanadi.
- * Fayl Excel'dan "CSV UTF-8" qilib saqlansin.
+ * Названия колонок могут быть на русском или английском. Разделитель , или ; определяется автоматически.
+ * Файл сохранять из Excel как «CSV UTF-8».
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -53,14 +53,14 @@ const splitRow = (line) => {
 const [header, ...rows] = lines.map(splitRow);
 const ALIAS = {
   id: ['blok', 'block', 'id', 'blok_id', 'block_id'],
-  standId: ['stend', 'stand', 'stend_id', 'stand_id', 'kod'],
-  x: ['x', 'chap', 'left'],
-  y: ['y', 'tepa', 'top'],
-  cols: ['ustunlar', 'ustun', 'cols', 'columns', 'kolonkalar'],
-  rows: ['qatorlar', 'qator', 'rows'],
-  group: ['guruh', 'group', 'zona', 'zone'],
-  note: ['izoh', 'note', 'eslatma', 'comment'],
-  label: ['nom', 'label', 'nomi'],
+  standId: ['stend', 'стенд', 'stand', 'stend_id', 'stand_id', 'kod', 'код'],
+  x: ['x', 'chap', 'left', 'слева'],
+  y: ['y', 'tepa', 'top', 'сверху'],
+  cols: ['ustunlar', 'ustun', 'cols', 'columns', 'kolonkalar', 'колонок', 'столбцов'],
+  rows: ['qatorlar', 'qator', 'rows', 'строк', 'рядов'],
+  group: ['guruh', 'group', 'zona', 'zone', 'группа', 'зона'],
+  note: ['izoh', 'note', 'eslatma', 'comment', 'примечание'],
+  label: ['nom', 'label', 'nomi', 'название'],
 };
 const col = {};
 header.forEach((h, i) => {
@@ -93,8 +93,8 @@ if (mode === 'blocks') {
       label: get(r, 'label') || id,
       x: N(get(r, 'x'), 'x', r),
       y: N(get(r, 'y'), 'y', r),
-      cols: N(get(r, 'cols'), 'ustunlar', r),
-      rows: N(get(r, 'rows'), 'qatorlar', r),
+      cols: N(get(r, 'cols'), 'колонок', r),
+      rows: N(get(r, 'rows'), 'строк', r),
     };
     if (get(r, 'group')) b.group = get(r, 'group');
     if (get(r, 'note')) b.note = get(r, 'note');

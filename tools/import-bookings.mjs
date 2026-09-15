@@ -1,27 +1,27 @@
 #!/usr/bin/env node
 /**
- * BAND QILINGANLARNI OMMAVIY YUKLASH (menejer qo'lda birma-bir kiritmasin).
+ * МАССОВАЯ ЗАГРУЗКА ЗАНЯТЫХ МЕСТ (чтобы менеджер не вводил их вручную по одному).
  *
- * Excel'da bitta jadval tayyorlanadi va shu skript bilan bir marta yuklanadi:
+ * В Excel готовится одна таблица и загружается этим скриптом один раз:
  *
- *   Blok/Stend | Holat   | Kompaniya            | Mijoz (ism)     | Telefon         | Sotuvchi | Summa (so'm)
- *   A          | band    | Orient Food Group    | Aziz Karimov    | +998 71 200 10 10 | Aziz K. | 90 000 000
+ *   Blok/Stend | Статус  | Компания             | Клиент (имя)    | Телефон         | Продавец | Сумма (сум)
+ *   A          | продано | Orient Food Group    | Aziz Karimov    | +998 71 200 10 10 | Aziz K. | 90 000 000
  *   A-01-05    | band    | Navoiy Agro          | ...             | ...              | ...
- *   B          | bron    | Buxoro Sut           | ...             | ...              | ...      | 36 000 000
- *   C          | bosh    |                      |                 |                  |          |
+ *   B          | бронь   | Buxoro Sut           | ...             | ...              | ...      | 36 000 000
+ *   C          | свободно|                      |                 |                  |          |
  *
- *   node tools/import-bookings.mjs band.csv                 # avval KO'RSATADI (dry-run)
- *   node tools/import-bookings.mjs band.csv --apply         # haqiqatan yuklaydi
- *   node tools/import-bookings.mjs band.csv --apply --ttl 48
+ *   node tools/import-bookings.mjs zanyatye.csv              # сначала ПОКАЗЫВАЕТ (dry-run)
+ *   node tools/import-bookings.mjs zanyatye.csv --apply      # реально загружает
+ *   node tools/import-bookings.mjs zanyatye.csv --apply --ttl 48
  *
- * Qoidalar:
- *   - "Blok/Stend" ustunida blok ID (A, B, EQ-1...) yoki bitta stend ID (A-01-05) yoki A6 (chap qanot) bo'ladi.
- *   - Blok yozilsa — blokning BARCHA stendlari band qilinadi.
- *   - "Summa" berilsa, narx shu summadan kelib chiqib yozuvga qo'shiladi (maydon bo'yicha narxdan ustun).
- *   - Xato qatorlar yuklanmaydi va hisobot oxirida ko'rsatiladi (hech narsa "yarim" qolmaydi).
- *   - Har bir yozuv jurnalga (audit.log) tushadi: kim yukladi, qachon.
+ * Правила:
+ *   - в колонке «Blok/Stend» указывается ID блока (A, B, EQ-1…), либо один стенд (A-01), либо A6 (крыло).
+ *   - если указан блок — занимаются ВСЕ его стенды.
+ *   - если указана «Сумма», в запись попадает именно она (приоритетнее цены за м²).
+ *   - ошибочные строки не загружаются и показываются в отчёте (ничего не остаётся «наполовину»).
+ *   - каждая запись попадает в журнал (audit.log): кто загрузил и когда.
  *
- * Server ishlab turishi kerak: node server.mjs  (yoki BASE=... bilan boshqa manzil)
+ * Сервер должен быть запущен: node server.mjs  (или другой адрес через BASE=...)
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -57,14 +57,14 @@ const split = (line) => {
 };
 const [header, ...rows] = lines.map(split);
 const ALIAS = {
-  target: ['blok/stend', 'blok', 'stend', 'block', 'stand', 'joy', 'joylar', 'blok yoki stend'],
-  status: ['holat', 'status', 'sotuv', 'band'],
-  company: ['kompaniya', 'company', 'firma', 'tashkilot', 'mijoz kompaniyasi'],
-  buyer: ['mijoz', 'mijoz (ism)', 'ism', 'contact', 'kontakt'],
-  phone: ['telefon', 'phone', 'tel', 'aloqa'],
-  seller: ['sotuvchi', 'manager', 'menejer', 'sotuvchi (ism)'],
-  amount: ['summa', 'summa (so\'m)', 'narx', 'amount', 'total'],
-  note: ['izoh', 'note', 'eslatma'],
+  target: ['blok/stend', 'blok', 'stend', 'block', 'stand', 'joy', 'joylar', 'blok yoki stend', 'блок/стенд', 'блок', 'стенд'],
+  status: ['holat', 'status', 'sotuv', 'band', 'состояние', 'статус'],
+  company: ['kompaniya', 'company', 'firma', 'tashkilot', 'mijoz kompaniyasi', 'компания', 'организация'],
+  buyer: ['mijoz', 'mijoz (ism)', 'ism', 'contact', 'kontakt', 'клиент', 'имя'],
+  phone: ['telefon', 'phone', 'tel', 'aloqa', 'телефон'],
+  seller: ['sotuvchi', 'manager', 'menejer', 'sotuvchi (ism)', 'продавец', 'менеджер'],
+  amount: ['summa', 'summa (so\'m)', 'narx', 'amount', 'total', 'сумма', 'сумма (сум)'],
+  note: ['izoh', 'note', 'eslatma', 'примечание'],
 };
 const col = {};
 header.forEach((h, i) => {
@@ -72,7 +72,7 @@ header.forEach((h, i) => {
   for (const [field, names] of Object.entries(ALIAS)) if (names.includes(key)) col[field] = i;
 });
 if (col.target == null || col.status == null) {
-  console.error(`✗ в CSV обязательны колонки «Blok/Stend» и «Holat».\n  Найденный заголовок: ${header.join(' | ')}`);
+  console.error(`✗ в CSV обязательны колонки «Blok/Stend» (блок/стенд) и «Holat» (статус).\n  Найденный заголовок: ${header.join(' | ')}`);
   process.exit(1);
 }
 const get = (r, f) => (col[f] == null ? '' : (r[col[f]] ?? ''));
@@ -151,14 +151,14 @@ for (const [i, r] of rows.entries()) {
   plan.push({ lineNo, target: targetText, kind: res.kind, action, ids, buyer, company, phone, seller, note, amount: amount ? Number(amount) : null });
 }
 
-// ---------------------------------------------------------------- ko'rsatish
-const actName = { sell: 'SOTISH', reserve: 'BRON', release: "BO'SHATISH", block: 'BLOKLASH' };
+// ---------------------------------------------------------------- показ
+const actName = { sell: 'ПРОДАЖА', reserve: 'БРОНЬ', release: 'ОСВОБОЖДЕНИЕ', block: 'БЛОКИРОВКА' };
 console.log(`\n${apply ? '▶ ЗАГРУЗКА' : 'ℹ ПРОВЕРКА (dry-run)'} — ${path.basename(file)} · строк ${plan.length}\n`);
-console.log('  Блок/Стенд     Тип   Действие    Стендов  м²     Компания / клиент              Сумма');
+console.log('  Блок/Стенд     Тип   Действие      Стендов  м²     Компания / клиент              Сумма');
 for (const p of plan) {
   const area = p.ids.reduce((a, id) => a + (standsById.get(id)?.areaM2 || 0), 0);
   const amt = p.amount ?? (area * (layout.meta.pricePerM2 || 0));
-  console.log(`  ${p.target.padEnd(14)} ${p.kind.padEnd(5)} ${actName[p.action].padEnd(11)} ${String(p.ids.length).padStart(4)}  ${String(area).padStart(6)}  ${(p.buyer || '—').padEnd(28)} ${amt ? amt.toLocaleString('ru-RU') : ''}`);
+  console.log(`  ${p.target.padEnd(14)} ${p.kind.padEnd(5)} ${actName[p.action].padEnd(13)} ${String(p.ids.length).padStart(4)}  ${String(area).padStart(6)}  ${(p.buyer || '—').padEnd(28)} ${amt ? amt.toLocaleString('ru-RU') : ''}`);
 }
 if (problems.length) {
   console.log(`\n⚠ проблемных строк: ${problems.length} (не загружаются):`);
@@ -173,7 +173,7 @@ if (!apply) {
   process.exit(problems.length && !plan.length ? 1 : 0);
 }
 
-// ---------------------------------------------------------------- yuklash
+// ---------------------------------------------------------------- загрузка
 const token = await login();
 let ok = 0, fail = 0;
 for (const p of plan) {

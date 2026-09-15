@@ -1,55 +1,60 @@
-# Real chizma bo'yicha savollar (tasdiqlash anketasi)
+# Вопросы по чертежу зала (анкета на подтверждение)
 
-Manba: siz yuborgan `Screenshot 2026-09-14 at 1.53.34 PM.png` — **Крытый павильон** (yopiq pavilyon) chizmasi.
-PDF sandbox'ga yetib kelmadi (yuklash muammosi), shuning uchun hozircha **rasm nisbatlaridan** o'qib
-`layout/hall-real.json` **qoralamasi** tayyorlandi (status: `draft`, mijozga eksport bloklangan).
+Источник: чертёж заказчика **Крытый павильон** (FOODERA EXPO 2026).
+На его основе собрана рабочая схема **`layout/foodera-2026.json`** (v1.2.0, статус `approved`):
 
-Draftni ochish: `node tools/export-svg.mjs --layout layout/hall-real.json --out exports/draft.svg --force`
-yoki panelni shu layout bilan ishga tushirish:
-`LAYOUT=layout/hall-real.json STATE=data/state-real.json PORT=4174 node server.mjs`
+```
+20 блоков · 166 стендов · 1 581,18 м²
+3 ряда блоков по 6: A–F · G–L · M–R (каждый блок 8 стендов × 9 м² = 72 м²)
+линия оборудования EQ-1 и EQ-2 (по 8 × 9 м²) · левое крыло A1–A6 (нестандартные площади)
+разделы — как на чертеже заказчика; занятые места: 43 компании · 52 стенда · 468 м²
+```
 
-Quyidagi 10 ta javob kelsa — qoralama **tasdiqlangan** xaritaga aylanadi.
+Открыть панель с этой схемой: `node server.mjs` → http://localhost:4173
+Провести проверку: `npm run check`
 
-## A. O'lchamlar
+## 1. Осталось подтвердить
 
-| # | Savol | Nima uchun kerak |
+| # | Вопрос | Зачем это нужно |
 |---|---|---|
-| A1 | Zalning aniq o'lchamlari (chizmadagi mm raqamlar: 62 786 · 18 782 · 2 762 · 875 · W=5.6 m kabi). Metrga aylantirib bering yoki PDF/DWG da ko'rsating. | Xaritaning masshtabi va yo'lak kengliklari to'g'ri chiqishi uchun |
-| A2 | Asosiy zaldagi **A–F ustunlar** orasidagi yo'lak kengligi qancha? | Yo'lak 2 m dan tor bo'lsa, mijoz "siqib qo'yilgan" deb shikoyat qiladi |
-| A3 | Chap qanot (A1, A2) maydonlari — chizmada yozuvi ko'rinmadi. A3=25.4, A4=22.67, A5=20.32, A6=19.15 m² | Bu stendlar nostandart o'lchamda, narxi maydon bo'yicha hisoblanadi |
+| 1 | **Цена** — 1 250 000 сум/м² (сейчас в схеме) или другая сумма? Цена задаётся за м² и умножается на площадь стенда | В квитанции, договоре и CSV-выгрузке считается сумма — цифра должна быть верной |
+| 2 | **Срок брони** — сейчас 72 часа. Оставить или изменить? | Просроченная бронь снимается автоматически |
+| 3 | **Продавцы и PIN-коды** (`data/sellers.json`) — сейчас стоят демо-значения (Aziz 1111, Dilnoza 2222, Sardor 3333, Menejer 9999) | Перед рабочей эксплуатацией демо-PIN заменяются на реальные |
+| 4 | **Буквы блоков A–R** — подтверждаете такую последовательность? По ней формируется ID стендов (`A-01` … `R-08`), и этот же ID попадает в договор | Ключевое требование: ID в договоре = ID на карте |
+| 5 | **Нумерация внутри блока** — сейчас сначала сверху вниз в левой колонке (1–4), затем в правой (5–8) | Альтернатива — по строкам слева направо |
+| 6 | **Линия оборудования** — 8 мест в EQ-1 и 8 мест в EQ-2 (как сейчас) или другое число? | От этого зависит количество продаваемых мест |
+| 7 | **Крыло A1–A6** — оставляем нестандартные площади как на чертеже (19,15–27,41 м²) или приводим к 9 м²? | Сейчас площади взяты ровно с чертежа |
+| 8 | **Занятые места** — список компаний по стендам (кто какой стенд занимает). Сейчас в панели стоят 43 компании, прочитанные с чертежа; при необходимости уточняем | Это данные заказчика: карта и договоры должны совпадать |
 
-## B. Guruhlar (eng muhim qism)
+## 2. Если есть список броней в Excel
 
-| # | Savol | Nima uchun kerak |
-|---|---|---|
-| B1 | **Asosiy zaldagi har bir ustun (A, B, C, D, E, F) 12 ta stendmi?** Chizmada 2 ustun × 6 qator = 12 ta katak ko'rinadi (har biri 9 m²) | 12 × 9 = **108 m²** — bu **72 m² (8 stend) qoidasidan farq qiladi**. Ya'ni bu ustunni "1 blok" deb sotib bo'lmaydi: yo 8+4 ga bo'lish, yo narxni 108 m² bo'yicha aytish kerak |
-| B2 | Pastdagi qatorda: B=4 ta, C/D/E/F=8 ta, G=4 ta — to'g'rimi? (chizmada `B4..B1`, `C1..C4 + C15..C18`, `D1..D4 + D15..D18`, `E1..E4 + E15..E18`, `F1..F4 + F15..F18`, `G3..G(?)`) | 8 talik guruhlar = 72 m² (qoidaga mos), 4 taliklar = 36 m² (alohida sotiladi) |
-| B3 | Har bir katakda **ikkita raqam** bor: `A7/9м` va `B9/9м` kabi. Qaysi biri **stend raqami** (mijoz shartnomasida yoziladigan), qaysi biri **texnik/ustun raqami**? | Mijozga aytiladigan ID bitta bo'lishi shart — aks holda "men A7 ni oldim" degan mijoz bilan chalkashlik qaytadi |
-| B4 | Ustun ichida raqamlash **1..12 ketma-ket**mi yoki chizmadagidek `A7,A8 / A7,A8 / B9,B9 / B8,B8` (takrorlanadigan) shakldami? | Takrorlanadigan raqamlar bilan xarita-mijoz mosligi buziladi; yagona ID berilishi kerak |
-| B5 | Aralash o'lchamli guruh (chizmada 12м², 9м², 6м², 18м², 108м² kataklar) — qaysi guruh va qanday sotiladi (maydon birligida?) | Ular uchun ham aniq ID va narx kerak |
-| B6 | `B2B` blokchalari (o'ng tomonda) — alohida stendlar yoki shunchaki xona? | Rejaga qarab B2B zonasi alohida narxlanadi |
+Менеджеру не нужно перебивать его вручную:
 
-## C. Narx va shartlar
+```bash
+node tools/import-bookings.mjs zanyatye.csv           # проверка (dry-run, ничего не пишет)
+node tools/import-bookings.mjs zanyatye.csv --apply   # загрузка на сервер
+```
 
-| # | Savol | Nima uchun kerak |
-|---|---|---|
-| C1 | Narx: **so'm/m²** yoki **stend uchun**? (hozir tizimda so'm/m²) | 108 m² va 22.67 m² stendlar uchun to'g'ri summa chiqishi uchun |
-| C2 | Bron muddati (hozir 72 soat qilib qo'yilgan) qancha bo'lsin? | Bron avtomatik bo'shashi uchun |
-| C3 | Sotuvchilar ro'yxati va PIN'lar (`data/sellers.json`) | Hozir demo: Aziz 1111, Dilnoza 2222, Sardor 3333, Menejer 9999 |
+Колонки (достаточно узнаваемых названий):
+`Blok/Stend | Holat | Компания | Клиент | Телефон | Сумма | Продавец | Примечание`.
+Разделитель `;` или `,` определяется автоматически.
 
-## D. Texnik
+## 3. Если есть DWG/DXF чертёж
 
-| # | Savol | Nima uchun kerak |
-|---|---|---|
-| D1 | PDF yoki **DWG/DXF** ni qayta yuklay olasizmi? (PDF ham yetarli — vektor bo'lsa koordinatalarni aniq o'qiyman) | Rasm nisbatlaridan o'qilgan raqamlar ±0.5 m xato bo'lishi mumkin; DXF'da esa aniq |
-| D2 | Chizmada bloklar qanday chizilgan: yopiq polyline (bitta to'rtburchak) yoki alohida chiziqlar? Qaysi layer'da? | `tools/dxf-to-layout.py` bloklarni avtomatik topib olishi uchun (`--block-layer BLOK`) |
-| D3 | `грузовые ворота` (yuk ko'tarish yo'lagi) va texnik xona chegaralari stendlarga tegadimi? | Yo'lak 2 m dan tor bo'lmasligi uchun |
+```bash
+python3 tools/inspect-dxf.py chertezh.dxf --min-area 4        # что есть в чертеже
+python3 tools/dxf-to-layout.py chertezh.dxf --block-layer BLOK --hall-layer ZAL \
+        --label-layer YOZUV --out layout/foodera-2026.json
+```
 
-## Javob bergandan keyin nima bo'ladi
+Конвертор сам переворачивает ось Y, показывает прямоугольники, которые не 72 м²,
+и предупреждает о слишком узких проходах.
 
-1. `layout/hall-real.json` — aniq raqamlar bilan to'ldiriladi va `status: "approved"` qilinadi;
-2. `node tools/validate-layout.mjs layout/hall-real.json` — xatosiz o'tishi shart;
-3. Panelda sotuvchilar sinab ko'radi (`LAYOUT=layout/hall-real.json ... node server.mjs`);
-4. Eksport: `exports/hall-real.svg` (mijozga yuboriladigan versiya) + har bir guruh uchun alohida karta
-   (`--block A`, `--block A-01`, `--block A6` ...);
-5. Keyin shartnoma moduli: stend ID, maydon (9/19.15/108 m²), narx, xarita versiyasi avtomatik tushadi.
+## 4. Что будет после ответов
+
+1. Схема обновляется точными числами и получает статус `approved`;
+2. `npm run check` — валидатор и тесты должны пройти без ошибок;
+3. Продавцы пробуют работу в панели на тестовых местах;
+4. `npm run package` — пакет для клиента (27 файлов: планы в SVG/PDF, CSV, пояснение)
+   с автоматической проверкой чистоты: подписи на плане не могут пересекаться;
+5. Дальше — модуль договора: ID стенда, площадь, цена и версия карты попадают в договор автоматически.

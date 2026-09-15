@@ -1,18 +1,17 @@
 #!/usr/bin/env python3
 """
-DXF chizma → layout JSON (xarita qo'lda chizilmaydi).
+DXF-чертёж → JSON-схема (карта вручную не рисуется).
 
-    python3 tools/dxf-to-layout.py chizma.dxf --block-layer BLOK --out layout/hall-A.json \
-            --hall "A zal" --project "Ekspo Markazi" --price 1250000 [--hall-layer ZAL] [--label-layer YOZUV]
+    python3 tools/dxf-to-layout.py chertezh.dxf --block-layer BLOK --out layout/foodera-2026.json \
+            --hall "Крытый павильон" --project "FOODERA EXPO 2026" --price 1250000 [--hall-layer ZAL] [--label-layer YOZUV]
 
-Nima qiladi:
-  1. Chizmadan to'rtburchaklarni (yopiq polyline) o'qiydi;
-  2. Blok deb 72 m² li to'rtburchaklarni oladi (o'lchov birligi metr bo'lishi kerak: $INSUNITS=6);
-  3. **Y o'qini teskari qiladi** — DXF'da Y pastdan tepaga, bizning layout'da tepadan pastga
-     (bu eng ko'p uchraydigan "mapping teskari chiqdi" xatosi);
-  4. Koordinatalarni 3 m to'rga tekislaydi, bloklarga ID beradi (A-01, A-02 ...);
-  5. 72 m² ga to'g'ri kelmagan to'rtburchaklarni, tor yo'laklarni va ustma-ust tushishlarni
-     ro'yxat qilib beradi;
+Что делает:
+  1. Читает из чертежа прямоугольники (замкнутые polylines);
+  2. Блоками считает прямоугольники площадью 72 м² (единицы должны быть метрами: $INSUNITS=6);
+  3. **Переворачивает ось Y** — в DXF Y идёт снизу вверх, в нашей схеме сверху вниз
+     (самая частая ошибка сопоставления — «карта вышла перевёрнутой»);
+  4. Выравнивает координаты по сетке 3 м, присваивает блокам ID (A, B, …);
+  5. Выводит списком прямоугольники не по 72 м², узкие проходы и наложения;
   6. Oxirida `node tools/validate-layout.mjs` ni ishga tushirib natijani tasdiqlaydi.
 """
 import sys, os, json, math, subprocess, argparse
@@ -20,7 +19,7 @@ import sys, os, json, math, subprocess, argparse
 try:
     import ezdxf
 except ImportError:
-    print("✗ ezdxf kerak:  pip install ezdxf")
+    print("✗ нужен ezdxf:  pip install ezdxf")
     sys.exit(1)
 
 ap = argparse.ArgumentParser(add_help=False)
@@ -29,7 +28,7 @@ ap.add_argument("--block-layer", default=None)
 ap.add_argument("--hall-layer", default=None)
 ap.add_argument("--label-layer", default=None)
 ap.add_argument("--out", default="layout/imported.json")
-ap.add_argument("--hall", default="A zal")
+ap.add_argument("--hall", default="Крытый павильон")
 ap.add_argument("--project", default="Ekspo Markazi")
 ap.add_argument("--version", default="1.0.0")
 ap.add_argument("--price", type=float, default=0)
@@ -49,9 +48,9 @@ doc = ezdxf.readfile(A.dxf)
 msp = doc.modelspace()
 units = doc.header.get("$INSUNITS", 0)
 if units not in (5, 6):  # 5=sm, 6=m
-    print(f"⚠ $INSUNITS={units} (metr emas). Chizmani metrda saqlash yoki konvertorada birlikni tanlash kerak.")
+    print(f"⚠ $INSUNITS={units} (не метры). Сохраните чертёж в метрах или выберите единицы в конверторе.")
 
-# ---------------------------------------------------------------- to'rtburchaklar
+# ---------------------------------------------------------------- прямоугольники
 def rects_of(layer=None):
     out = []
     for e in msp:
@@ -81,7 +80,7 @@ if A.label_layer:
 
 all_rects = rects_of()
 if not all_rects:
-    print("✗ Chizmada yopiq to'rtburchak (LWPOLYLINE, closed) topilmadi.")
+    print("✗ В чертеже не найдено замкнутых прямоугольников (LWPOLYLINE, closed).")
     print("  Maslahat: bloklarni yopiq polyline qilib chizib, alohida layer'ga qo'ying (masalan BLOK).")
     sys.exit(1)
 
@@ -90,7 +89,7 @@ hx = min(r["x"] for r in hall_rects); hy = min(r["y"] for r in hall_rects)
 hx2 = max(r["x"] + r["w"] for r in hall_rects); hy2 = max(r["y"] + r["h"] for r in hall_rects)
 hall_w, hall_h = hx2 - hx, hy2 - hy
 
-# ---------------------------------------------------------------- blok nomlarini tanlash
+# ---------------------------------------------------------------- выбор названий блоков
 cand = [r for r in all_rects if (A.block_layer is None or r["layer"].upper() == A.block_layer.upper())]
 blocks, wrong = [], []
 for r in cand:
@@ -101,18 +100,18 @@ for r in cand:
         wrong.append(r)
 
 if not blocks:
-    print(f"✗ {A.block_area:.0f} m² li blok topilmadi. Chizmada uchraydigan to'rtburchaklar:")
+    print(f"✗ блок площадью {A.block_area:.0f} м² не найден. Прямоугольники в чертеже:")
     seen = {}
     for r in sorted(cand, key=lambda r: -(r["w"] * r["h"]))[:15]:
         key = f'{r["w"]:.1f}x{r["h"]:.1f}'
         seen[key] = seen.get(key, 0) + 1
         print(f'   {key} m = {r["w"]*r["h"]:7.1f} m²  [{r["layer"]}]')
     if wrong:
-        print(f"  ⚠ {len(wrong)} ta katta to'rtburchak 72 m² emas — blok shaklini tekshirish kerak "
+        print(f"  ⚠ {len(wrong)} больших прямоугольников не по 72 м² — проверьте форму блока "
               f"(masalan {wrong[0]['w']:.1f}×{wrong[0]['h']:.1f} m = {wrong[0]['w']*wrong[0]['h']:.0f} m²)")
     sys.exit(1)
 
-# ---------------------------------------------------------------- ID va tartib
+# ---------------------------------------------------------------- ID и порядок
 def label_for(r):
     cx, cy = r["x"] + r["w"] / 2, r["y"] + r["h"] / 2
     best = None
@@ -148,12 +147,12 @@ for i, r in enumerate(by_row):
     cols = max(1, round(r["w"] / sw))
     rows_n = max(1, round(r["h"] / sh))
     if abs(r["w"] - cols * sw) > 0.3 or abs(r["h"] - rows_n * sh) > 0.3:
-        problems.append(f"{name}: o'lcham {r['w']:.2f}×{r['h']:.2f} m — {cols}×{rows_n} stendga to'g'ri kelmaydi")
+        problems.append(f"{name}: размер {r['w']:.2f}×{r['h']:.2f} м — не совпадает с {cols}×{rows_n} стендов")
     if cols * rows_n != 8:
-        problems.append(f"{name}: {cols}×{rows_n} = {cols*rows_n} stend (8 bo'lishi kerak — 72 m² qoidasi)")
+        problems.append(f"{name}: {cols}×{rows_n} = {cols*rows_n} стендов (должно быть 8 — правило 72 м²)")
     out_blocks.append({"id": name, "x": sx, "y": sy, "cols": cols, "rows": rows_n, "sourceLayer": r["layer"]})
 
-# ustma-ust tushish (bloklar)
+# наложение блоков
 for i in range(len(out_blocks)):
     for j in range(i + 1, len(out_blocks)):
         a, b = out_blocks[i], out_blocks[j]
@@ -219,17 +218,17 @@ os.makedirs(os.path.dirname(os.path.abspath(A.out)), exist_ok=True)
 with open(A.out, "w") as f:
     json.dump(layout, f, ensure_ascii=False, indent=2)
 
-print(f'✓ {A.out}: {len(out_blocks)} blok · zal {hall_w:.1f}×{hall_h:.1f} m · Y o\'qi teskari qilindi (DXF→layout)')
+print(f'✓ {A.out}: блоков {len(out_blocks)} · зал {hall_w:.1f}×{hall_h:.1f} м · ось Y перевёрнута (DXF→схема)')
 if wrong:
-    print(f'\n⚠ {len(wrong)} ta to\'rtburchak 72 m² emas (blok bo\'lishi mumkin, lekin shakli boshqa):')
+    print(f'\n⚠ {len(wrong)} прямоугольников не по 72 м² (возможно блоки, но другой формы):')
     for r in sorted(wrong, key=lambda r: -(r["w"] * r["h"]))[:10]:
         print(f'   {r["w"]:.1f}×{r["h"]:.1f} m = {r["w"]*r["h"]:.0f} m²  [{r["layer"]}]')
 if problems:
-    print(f"\n⚠ {len(problems)} ta e'tibor talab qiladigan joy:")
+    print(f"\n⚠ мест, требующих внимания: {len(problems)}")
     for p in problems:
         print("   • " + p)
 else:
-    print("\n✓ Ko'rinadigan muammo topilmadi.")
+    print("\n✓ Видимых проблем не найдено.")
 
 sys.stdout.flush()
 val = os.path.join(os.path.dirname(os.path.abspath(__file__)), "validate-layout.mjs")

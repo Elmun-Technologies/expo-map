@@ -1,14 +1,14 @@
 /**
  * UI smoke-test: ishlab turgan serverga qarshi ilovani jsdom'da ishga tushirib,
- * login → stend/blok tanlash → sotish → konflikt → mijoz rejimi oqimlarini tekshiradi.
+ * проверяет потоки: вход → выбор стенда/блока → продажа → конфликт → режим клиента.
  *
  *   npm install            # bir marta (jsdom)
  *   npm start              # boshqa oynada server
  *   npm run smoke
  *
- * DIQQAT: test stendlarni sotadi. Shuning uchun u ALOHIDA (vaqtinchalik) holat faylida
+ * ВНИМАНИЕ: тест продаёт стенды. Поэтому по умолчанию он работает в ОТДЕЛЬНОМ (временном) файле состояния
  * ishlaydi — haqiqiy data/state.json ga tegmaydi. Xohlasangiz BASE berib tirik serverga
- * qarshi yugurtirish mumkin, lekin u holda haqiqiy holat o'zgaradi.
+ * на своём порту — реальное состояние не меняется.
  *
  *   npm run smoke              # izolyatsiya: o'zi server ko'taradi, o'zi tozalaydi
  *   BASE=http://localhost:4173 npm run smoke   # tirik serverga qarshi (ehtiyot bo'ling)
@@ -42,7 +42,7 @@ if (!BASE) {
     try { const r = await fetch(BASE + '/api/healthz'); if (r.ok) break; } catch { /* hali ko'tarilmadi */ }
     await new Promise((r) => setTimeout(r, 150));
   }
-  console.log(`ℹ izolyatsiya: vaqtinchalik holat + port ${port} (haqiqiy state.json tegilmadi)`);
+  console.log(`ℹ изоляция: временное состояние + порт ${port} (реальный state.json не затронут)`);
 } else {
   console.warn('⚠ BASE berilgan — test HAQIQIY holatni o\'zgartiradi.');
 }
@@ -163,7 +163,7 @@ fire($('#loginForm'), 'submit');
 await tick(600);
 assert($('#who').textContent.includes('Aziz'), 'вход выполнен: ' + $('#who').textContent.trim());
 
-// --- bitta stend tanlash
+// --- выбор одного стенда
 clickMap($$('#world .stand').find((g) => g.dataset.id === freeStand.id));
 await tick();
 assert(!$('#selBody').hidden, 'при клике на стенд открылась панель выбора');
@@ -171,7 +171,7 @@ assert($('#selTitle').textContent.includes(freeStand.blockId), 'блок выб�
 assert($('#selInfo').textContent.includes('9 м²'), 'показано 9 м²');
 assert($('#btnSell').disabled === false, 'кнопка «Продать» активна');
 
-// --- blok yorlig'i bosilganda butun blok (8 × 9 = 72 m²)
+// --- клик по ярлыку блока = весь блок (8 × 9 = 72 м²)
 $('#clearSel').click();
 await tick(50);
 clickMap($$('#world .block-chip').find((c) => c.dataset.block === freeBlock.id), 2);
@@ -180,7 +180,7 @@ const fbArea = freeBlock.stands.reduce((a, s) => a + s.areaM2, 0);
 const fbAreaTxt = fbArea.toLocaleString('ru-RU').replace(/\u00A0/g, ' ');
 assert($('#selChips').children.length === freeBlock.stands.length, `при клике на блок выбрано ${freeBlock.stands.length} стендов (${$('#selChips').children.length})`);
 assert($('#selInfo').textContent.replace(/\s+/g, ' ').includes(`${freeBlock.stands.length} стендов · ${fbAreaTxt} м²`),
-  'blok maydoni ko\'rsatildi: ' + $('#selInfo').textContent.replace(/\s+/g, ' ').slice(0, 90));
+  'площадь блока показана: ' + $('#selInfo').textContent.replace(/\s+/g, ' ').slice(0, 90));
 
 // --- sotish oqimi
 $('#buyer').value = 'Smoke Test MChJ';
@@ -200,7 +200,7 @@ st = await (await fetch(BASE + '/api/state')).json();
 const sold = Object.values(st.items).filter((i) => i.blockId === freeBlock.id && i.status === 'sold');
 assert(sold.length === freeBlock.stands.length, `на сервере все ${freeBlock.stands.length} стендов блока ${freeBlock.id} — "sold" (${sold.length})`);
 
-// --- bitta kompaniya = xaritada BITTA quti, nomi ichida
+// --- одна компания = ОДНА рамка на плане, название внутри
 const unit = $$('#world .booking-unit').find((u) => u.dataset.ids.split(',').includes(freeBlock.stands[0].id));
 assert(!!unit, 'занятое место стало одной рамкой (.booking-unit)');
 assert(unit.dataset.ids.split(',').length === freeBlock.stands.length,
@@ -225,13 +225,13 @@ const tok2 = (await (await fetch(BASE + '/api/login', { method: 'POST', headers:
 const r409 = await fetch(BASE + '/api/action', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + tok2 },
-  body: JSON.stringify({ action: 'sell', standIds: freeBlock.stands.slice(0, 2).map((s) => s.id), buyer: 'Ikkinchi mijoz' }),
+  body: JSON.stringify({ action: 'sell', standIds: freeBlock.stands.slice(0, 2).map((s) => s.id), buyer: 'Второй клиент' }),
 });
 const j409 = await r409.json();
 assert(r409.status === 409 && j409.error === 'conflict', `одновременная продажа отклонена (${r409.status}: ${j409.message})`);
 assert(j409.conflicts[0].buyer === 'Smoke Test MChJ', 'видно, кто продал: ' + JSON.stringify(j409.conflicts[0]));
 
-// --- mijoz rejimi
+// --- режим клиента
 const dom2 = new JSDOM(html, { url: BASE + '/?mode=client', runScripts: 'outside-only', pretendToBeVisual: true });
 dom2.window.fetch = (p, o) => fetch(new URL(p, BASE), o);
 dom2.window.SVGElement.prototype.createSVGPoint = mkPoint;

@@ -2,7 +2,7 @@
 /**
  * Validator o'z ishini qilyaptimi?  node tools/test-validator.mjs
  * Har bir "buzilgan" layout xato bilan ushlanishi shart — aks holda skript yiqiladi.
- * Bu — mijozga noto'g'ri xarita ketib qolishining oldini oluvchi regressiya to'plami.
+ * Это регрессионный набор, который не даёт отправить клиенту ошибочную карту.
  */
 import { validateLayout } from '../lib/layout.mjs';
 
@@ -53,7 +53,7 @@ const cases = [
     ] }, expect: /повторяющийся ID блока/ },
   { name: 'площадь не 72 (meta.block.areaM2 = 90)', layout: { ...base(), meta: { stand: { w: 3, h: 3, areaM2: 9 }, block: { stands: 8, areaM2: 90 }, minAisleM: 2, status: 'approved' } }, expect: /должно быть 72/ },
 
-  // --- real chizma uchun qo'shilgan imkoniyatlar ---
+  // --- возможности, добавленные под реальный чертёж ---
   { name: "нестандартный стенд: площадь совпадает с размерами (22.67 = 6 × 3.78)", layout: {
       ...base(), customStands: [{ id: 'A4', x: 1, y: 1, w: 6, h: 3.78, areaM2: 22.67 }],
     }, expect: 'ok' },
@@ -68,7 +68,7 @@ const cases = [
     }, expect: 'ok', expectWarn: /12 стендов/ },
   { name: 'стенд вышел за пределы зоны', layout: {
       ...base(),
-      zones: [{ id: 'main', label: 'Asosiy zal', x: 0, y: 0, w: 20, h: 20 }],
+      zones: [{ id: 'main', label: 'Основной зал', x: 0, y: 0, w: 20, h: 20 }],
       blocks: [{ id: 'A-01', x: 15, y: 15, cols: 2, rows: 4, zone: 'main' }],
     }, expect: /вне зоны/ },
   { name: 'статус «черновик» даёт предупреждение', layout: { ...base(), meta: { ...base().meta, status: 'draft' } }, expect: 'ok', expectWarn: /ЧЕРНОВИК/ },

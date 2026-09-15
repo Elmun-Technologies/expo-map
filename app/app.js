@@ -168,7 +168,7 @@
     // пропорция (ширина/высота) — чтобы при печати карта заполняла лист ЦЕЛИКОМ
     $('#map').style.setProperty('--map-ratio', ((W + pad * 2) / (H + pad * 2)).toFixed(4));
 
-    // zonalar (asosiy zal, chap qanot, B2B, konferens...)
+    // зоны (основной зал, левое крыло, B2B, конференц-зоны...)
     const zoneG = el('g');
     const zoneLabels = [];
     for (const z of layout.zones || []) {
@@ -181,7 +181,7 @@
     world.__zoneLabels = zoneLabels;
     world.appendChild(zoneG);
 
-    // zal
+    // зал
     const hallG = el('g');
     const outline = layout.hall.outline?.length >= 3 ? layout.hall.outline.map((p) => p.join(',')).join(' ') : `0,0 ${W},0 ${W},${H} 0,${H}`;
     hallG.appendChild(el('polygon', { points: outline, class: 'hall-outline' }));
@@ -228,7 +228,7 @@
       const label = b.label;
       const effArea = b.areaM2 + (b.merged || []).reduce((a, m) => a + m.w * m.h, 0);
       const chipText = `${label} · ${fmtNum(effArea)} м²`;
-      // kenglik YOZUV bo'yicha, lekin blokdan keng bo'lmasin (qo'shni blok chipini bosmasin)
+      // ширина — по тексту, но не шире блока (чтобы не наезжать на чип соседнего блока)
       const desired = ExpoGroups.textWidth(chipText, 1.15, true) + 1.3;
       const cw = Math.max(3.4, Math.min(desired, Math.max(3.4, b.w + 0.4)));
       const chipFs = Math.min(1.15, ((cw - 1.1) / Math.max(1e-3, ExpoGroups.textWidth(chipText, 1, true))));
@@ -956,7 +956,7 @@
         startSession();
         await loadAll();
       } else {
-        await loadAll(); // login ekrani orqasida xarita tayyor tursin
+        await loadAll(); // за экраном входа карта уже готова
       }
       setInterval(() => refreshState().catch(() => {}), 8000);
       setInterval(() => { if (isAdmin()) loadAudit(); }, 30000);

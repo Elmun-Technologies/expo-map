@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-SVG -> bir varaqli PDF (A3 landscape) — mijozga yuborish uchun tayyor fayl.
+SVG → PDF одним листом (A3 landscape) — готовый файл для отправки клиенту.
 
 Ishlatish:
-    python3 tools/export-pdf.py exports/foodera-2026/01-xarita.svg exports/foodera-2026/01-xarita.pdf
+    python3 tools/export-pdf.py exports/foodera-2026/01-план-зала-весь.svg exports/foodera-2026/01-план-зала-весь.pdf
     python3 tools/export-pdf.py kirish.svg chiqish.pdf --page A2 --margin 6
 
 Nega shunday: brauzerdagi "Save as PDF" ko'p varaqqa bo'lib tashlaydi va
@@ -70,7 +70,7 @@ FONT_MAP = {
 
 
 def remap_fonts(drawing):
-    """Chizmadagi matnlar shriftini ro'yxatdan o'tgan TTF'larga bog'laydi (kirill ishlashi uchun)."""
+    """Привязывает шрифты текста из SVG к зарегистрированным TTF (чтобы работала кириллица)."""
     used = set()
 
     def walk(node):

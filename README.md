@@ -1,295 +1,309 @@
-# Expo Map — ekspo zali xaritasi va sotuv paneli
+# Expo Map — карта экспо-зала и панель продаж
 
-**Muammo:** xarita Figma'da qo'lda chizilardi → bloklar ko'chib ketardi, stendlarda ID yo'q edi,
-bitta joy ikki marta sotilardi, mijoz "men sotib olgan joy bu emas" deb shikoyat qilardi.
+**Проблема:** карту рисовали вручную в Figma → блоки «уезжали», у стендов не было ID,
+одно и то же место продавалось дважды, клиент жаловался: «я покупал не это место».
 
-**Yechim:** xarita **qo'lda chizilmaydi** — u bitta `layout/*.json` fayldan **formula bo'yicha** chiziladi.
-O'lchamlar qat'iy: **1 stend = 3×3 m = 9 m²**, **1 blok = 8 stend = 72 m²**.
-Xato layout mijozga chiqib ketmasligi uchun har bir o'zgarish **validatordan** o'tadi.
+**Решение:** карта **не рисуется вручную** — она строится **по формуле** из одного файла `layout/*.json`.
+Размеры жёсткие: **1 стенд = 3×3 м = 9 м²**, **1 блок = 8 стендов = 72 м²**.
+Каждое изменение проходит **валидатор**, чтобы ошибочная схема не ушла клиенту.
 
 ```
-layout/hall-A.json  ──validate──▶  OK bo'lsa:  ┌─ sotuv paneli (brauzer, hamma sotuvchi uchun umumiy holat)
-  (yagona manba)                                ├─ mijozga yuboriladigan SVG/PDF
-                                                └─ CSV eksport / hisobot
+layout/foodera-2026.json ──validate──▶  если OK: ┌─ панель продаж (браузер, общее состояние для всех продавцов)
+   (единственный источник)                      ├─ SVG/PDF для клиента
+                                                └─ экспорт CSV / отчёт
 ```
+
+Весь интерфейс, экспортируемые документы, тексты ошибок и подсказок — **на русском языке**.
 
 ---
 
-## 1. Tez boshlash
+## 1. Быстрый старт
 
 ```bash
-node server.mjs                 # yoki: npm start      → http://localhost:4173
+node server.mjs                 # или: npm start      → http://localhost:4173
 ```
 
-Brauzerda ochiladi (telefonda ham ishlaydi). Demo loginlar (`data/sellers.example.json`):
+Открывается в браузере (работает и с телефона). Демо-входы (`data/sellers.example.json`):
 
-| Sotuvchi | PIN | Huquq |
+| Продавец | PIN | Права |
 |---|---|---|
-| Aziz Karimov | `1111` | oddiy sotuvchi |
-| Dilnoza Yusupova | `2222` | oddiy sotuvchi |
-| Sardor Umarov | `3333` | oddiy sotuvchi |
-| Menejer | `9999` | admin: jurnal, boshqalarning yozuvini bo'shatish |
+| Aziz Karimov | `1111` | обычный продавец |
+| Dilnoza Yusupova | `2222` | обычный продавец |
+| Sardor Umarov | `3333` | обычный продавец |
+| Menejer | `9999` | админ: журнал операций, освобождение чужих записей |
 
-Ishlab turgan holda loginlar `data/sellers.json` faylidan olinadi (git'ga tushmaydi) —
-fayl formati va izoh: `data/sellers.README.txt`.
+В рабочем режиме список берётся из `data/sellers.json` (в git не попадает) —
+формат и пояснения: `data/sellers.README.txt`. **Перед запуском в работу замените демо-PIN на реальные.**
 
+---
 
-## 2. Sotuvchi nima qiladi (3 qadam)
+## 2. Что делает продавец (3 шага)
 
-1. **Xaritadan bosadi** — bitta stend (9 m²) yoki blok yorlig'i `A-01 · 72 m²` (butun blok, 8 stend).
-2. O'ng paneldagi **mijoz** maydonlarini to'ldiradi (ism, telefon, kompaniya).
-3. **Bron qilish** (muddatli, muddat tugasa avtomatik bo'shaydi) yoki **Sotish**.
-   Tasdiqlash oynasida aynan qaysi stend ID'lari ketayotgani va summa ko'rinadi → keyin **kvitansiya**.
+1. **Кликает по карте** — один стенд (9 м²) или по ярлыку блока `A · 72 м²` (весь блок, 8 стендов).
+2. Заполняет поля **клиента** в правой панели (имя, телефон, компания).
+3. **Забронировать** (со сроком, по истечении снимается автоматически) или **Продать**.
+   В окне подтверждения видно, какие именно ID стендов уходят и какая сумма → затем **квитанция**.
 
-Band joy ustiga bosilsa tizim ogohlantiradi: kim, qachon, qaysi sotuvchi band qilgani ko'rsatiladi.
-Ikki sotuvchi bir vaqtda bir joyni sotsa — ikkinchisi **rad etiladi** (`409 conflict`), chalkashmaydi.
+Если нажать на занятое место, система покажет, кто, когда и какой продавец его занял.
+Если два продавца одновременно продают одно место — второй получает **отказ** (`409 conflict`), путаницы нет.
 
-**Mijozga havola:** `Mijoz ko'rinishi` tugmasi `?mode=client` havolasini nusxalaydi —
-u havolada faqat xarita va holat ko'rinadi (login, narx kiritish yo'q).
-**Chop etish / PDF:** sahifadagi `Chop etish / PDF` tugmasi A3 landshaft varaq chiqaradi:
-xarita + legenda + bo'sh joylar ro'yxati + bloklar jadvali (har biri 72 m²).
+**Ссылка для клиента:** кнопка `Вид для клиента` копирует ссылку `?mode=client` —
+по ней видны только карта и состояние (без входа и без цен).
+**Печать / PDF:** кнопка `Печать плана` выводит **один лист A3** — шапку (проект, дата, цена, статистика)
+и сам план зала, который заполняет лист целиком.
+Таблицы (блоки, компании, разделы) добавляются только если отмечен флажок **«с таблицами»**.
+**Скачать PDF:** кнопка `Скачать PDF` отдаёт готовый PDF-файл одной страницы
+(если на машине есть `python3` + `reportlab`/`svglib`; иначе используйте «Печать плана» → «Сохранить как PDF»).
 
-## 2b. Real chizma (Крытый павильон) — qoralama holati
+## 2b. Текущая схема FOODERA EXPO 2026 (Крытый павильон)
 
-| Fayl | Nima |
+| Файл | Что это |
 |---|---|
-| `layout/hall-A.json` | **Namuna zal** (8 blok × 72 m² = 576 m²) — tizimni sinash va o'rgatish uchun, tasdiqlangan |
-| `layout/hall-real.json` | **Sizning real zaliingiz qoralamasi** — 12 guruh (A–F ustunlar = 108 m², pastki qator 72/36 m²) + 6 nostandart stend (A1–A6) |
-| `docs/CHIZMA-ANKETA.md` | Tasdiqlash uchun savollar ro'yxati (o'lchamlar, raqamlash, narx) |
-| `exports/hall-real-DRAFT.svg` | Qoralama xarita (suv belgisi bilan) — ko'rib chiqish uchun |
+| `layout/foodera-2026.json` | **рабочая схема зала**: 3 ряда блоков (A–F, G–L, M–R) + линия оборудования EQ-1/EQ-2 + левое крыло A1–A6, разделы названы как на чертеже, статус `approved` |
+| `layout/hall-A.json` | учебный зал (8 блоков × 72 м² = 576 м²) — для проверки системы и обучения |
+| `layout/hall-real.json` | черновик первой версии зала (12 групп A–F по 108 м²) — исторический, `draft` |
+| `docs/CHIZMA-ANKETA.md` | список вопросов на подтверждение (размеры, нумерация, цена) |
+| `docs/SOFEXPO-3D-TAHLIL.md` | разбор 3D-тура SOF EXPO (геометрия, что нужно от заказчика) |
 
-Panelni real zaл bilan ochish:
+Состав текущей схемы: **20 блоков · 166 стендов · 1 581,18 м²**; занято 52 стенда (43 компании, данные заказчика).
+
+Запуск панели с другой схемой:
 
 ```bash
 LAYOUT=layout/hall-real.json STATE=data/state-real.json PORT=4174 node server.mjs
 ```
 
-**Muhim:** real chizmada asosiy zal kataklari 2×6 = **12 ta** (108 m²) — ya'ni 72 m² (8 stend) qoidasidan
-farq qiladi. Shuning uchun bu layoutda `meta.enforceBlockRule = false` (ogohlantirish, xato emas) va
-`meta.status = "draft"`. Tasdiqlangach `approved` qilinadi va suv belgisi/havola blokirovkasi o'chadi.
+**Важно:** схема со статусом `draft` не отдаётся клиенту — экспорт блокируется, а в панели висит
+предупреждение. После подтверждения размеров ставится `meta.status = "approved"`.
 
-## 3. Layout — yagona haqiqat manbai
+## 3. Layout — единственный источник правды
 
-`layout/hall-A.json` — zalning o'lchamlari, obyektlari (kirish, sahna, WC, ustunlar) va bloklarning
-**boshlanish nuqtasi + ustun/qator soni**. Stend koordinatalari shu yerdan hisoblanadi:
+`layout/*.json` содержит размеры зала, объекты (вход, сцена, WC, колонны) и блоки:
+**точку привязки + число колонок/строк**. Координаты стендов считаются отсюда:
 
 ```
-stend.x = blok.x + ustun × 3 m
-stend.y = blok.y + qator  × 3 m
-stend.id = "A-01-05"        (blok-raqam; mijoz shartnomasida ham aynan shu ID yoziladi)
+stend.x = block.x + колонка  × 3 м
+stend.y = block.y + строка   × 3 м
+stend.id = "A-01"        (буква блока + номер; этот же ID попадает в договор)
 ```
 
 ```json
-{ "id": "A-01", "x": 4, "y": 5, "cols": 2, "rows": 4 }   → 6 m × 12 m = 72 m²
+{ "id": "A", "x": 12, "y": 6.4, "cols": 2, "rows": 4 }   → 6 м × 12 м = 72 м²
 ```
 
-**Qoidalar:** standart blokda `cols × rows = 8` (72 m²). Real zalda guruhlar boshqacha bo'lishi mumkin
-(masalan 2×6 = 12 stend = 108 m²) — bunday holda `meta.enforceBlockRule = false` qilinadi va tizim
-ogohlantirish bilan ishlaydi, har bir guruhning aniq maydonini ko'rsatib.
-Nostandart **yakka** stendlar `customStands` bo'limida beriladi (maydoni aniq yoziladi, geometriyasi tekshiriladi):
+**Правила:** у стандартного блока `cols × rows = 8` (72 м²). Форма блока может быть любой
+(`cols: 4, rows: 2`, `cols: 8, rows: 1`), но стенды внутри блока обязаны стоять **сплошняком**,
+иначе валидатор отклоняет блок. Отдельные стенды нестандартной площади задаются в `customStands`
+(площадь указывается явно, геометрия проверяется):
 
 ```json
 "customStands": [
-  { "id": "A3", "x": 1, "y": 15.3, "w": 6, "h": 4.23, "areaM2": 25.4, "group": "Chap qanot", "color": "#e8a33d" }
+  { "id": "A3", "x": 1, "y": 17.6, "w": 6, "h": 4.233, "areaM2": 25.4, "section": "WING", "color": "#e8a33d" }
 ]
 ```
 
-Zonalar (`zones`) — xaritada rangli fon: asosiy zal, chap qanot, B2B, sahna, konferens-zal. Standart shakl — **2 ustun × 4 qator** (6 m × 12 m),
-lekin har bir blok o'z shakliga ega bo'lishi mumkin: `cols: 4, rows: 2` (12×6 m), `cols: 8, rows: 1`
-(24×3 m) va h.k. Raqamlash standart bo'yicha chapdan-o'ngga, yuqoridan-pastga (`"numbering": "col-major"`
-bilan ustun bo'ylab raqamlash ham mumkin). Nostandart shakl kerak bo'lsa:
-`"stands": [{ "col": 0, "row": 0, "no": 1 }, ...]` — lekin stendlar uzluksiz (yonma-yon) bo'lishi shart,
-aks holda validator blokni rad etadi.
+Зоны (`zones`) — цветной фон на карте: основной зал, левое крыло, B2B, сцена, конференц-зоны.
+Разделы (`sections`) связываются с блоками через `block.section` и задают название раздела на плане
+и в отчётах. Нумерация — по умолчанию слева-направо и сверху-вниз; при необходимости
+`"numbering": "col-major"` (по столбцам).
 
-### Validator nimalarni ushlaydi
+### Что ловит валидатор
 
-`node tools/validate-layout.mjs layout/hall-A.json` (sert xato — xarita chiqmaydi):
+`node tools/validate-layout.mjs layout/foodera-2026.json` (жёсткая ошибка — карта не выпускается):
 
-* stend 9 m² emas / blok 72 m² emas / blokda 8 tadan boshqa stend;
-* stendlar **ustma-ust tushishi** yoki **uzilib qolishi** (mapping xatolarining asosiy manbai);
-* bloklar bir-biriga yopishib qolishi, **yo'lakcha 2 m dan tor** (ogohlantirish);
-* stend ustun/sahna/devor ustiga chiqib ketishi, zal chegarasidan tashqariga chiqishi;
-* ID takrorlanishi.
+* площадь стенда не 9 м² / блока не 72 м² / число стендов в блоке не 8;
+* стенды **накладываются** друг на друга или **разрываются** (главный источник ошибок сопоставления);
+* блоки «слиплись», проход **уже 2 м** (предупреждение);
+* стенд заходит на колонну/сцену/стену или выходит за границу зала;
+* дубли ID, блок без раздела, раздел без стендов.
 
 ```bash
-npm run check          # validator + 12 ta regressiya testi (tools/test-validator.mjs)
+npm run check          # валидатор + 18 регрессионных тестов (tools/test-validator.mjs)
+npm run smoke          # smoke-тест интерфейса (jsdom, изолированный сервер и состояние)
 ```
 
-## 4. Mijozga yuboriladigan xarita fayli
+## 4. Файлы для клиента
 
-**Eng oson yo'l — tayyor paket** (17–20 fayl bir buyruqda):
+**Самый простой путь — готовый пакет** (27 файлов одной командой):
 
 ```bash
-node tools/package.mjs                            # exports/foodera-2026/ ichiga hammasi
+node tools/package.mjs                            # всё в exports/foodera-2026/
 node tools/package.mjs --layout layout/hall-A.json --out exports/A-zal
 ```
 
-Paket ichida:
-| Fayl | Kim uchun |
+Внутри пакета:
+
+| Файл | Для кого |
 |---|---|
-| `01-план-зала-весь.svg` | mijoz/rahbariyat: bo'limlar, bron va sotilgan joylar bilan |
-| `01-план-зала-весь.pdf` | shu xaritaning **bitta varaqli** PDF'i (A3 landscape) — yuborish uchun |
-| `02-план-свободные-места.svg` | sotuvchi: faqat bo'sh joylar |
-| `02-план-свободные-места.pdf` | bo'sh joylar xaritasining bitta varaqli PDF'i |
-| `03-раздел-<ID>-*.svg` | mijozga aynan o'z bo'limi (A, B, ... EQ, WING) |
-| `04-компании.csv` | band joylar: kompaniya, stend ID lari, summa — **bitta kompaniya = bitta qator** (Excel) |
-| `05-свободные-места.csv` | bo'sh joylar ro'yxati narxi bilan |
-| `00-ПОЯСНЕНИЕ.txt` | versiya, qoidalar, bo'limlar jadvali |
+| `01-план-зала-весь.svg` | клиент/руководство: разделы, брони и проданные места |
+| `01-план-зала-весь.pdf` | тот же план **одним листом A3** — для отправки |
+| `02-план-свободные-места.svg` | продавец: только свободные места |
+| `02-план-свободные-места.pdf` | карта свободных мест одним листом A3 |
+| `03-раздел-<ID>-*.svg` | клиенту ровно его раздел (A, B, … EQ, WING) |
+| `04-компании.csv` | занятые места: компания, ID стендов, сумма — **одна компания = одна строка** (Excel) |
+| `05-свободные-места.csv` | список свободных мест с ценой |
+| `00-ПОЯСНЕНИЕ.txt` | версия, правила, таблица по разделам |
 
-Paket faqat layout validatordan o'tgan va `meta.status: "approved"` bo'lsa yasaladi
-(qoralamadan mijozga ketmaydi).
+Пакет собирается только если схема прошла валидатор и имеет `meta.status: "approved"`.
+Перед сборкой `tools/package.mjs` прогоняет **проверку чистоты**: ни одна подпись на плане
+не должна пересекаться с другой (`tools/check-overlaps.mjs`).
 
-Bitta fayl kerak bo'lsa:
-
-```bash
-node tools/export-svg.mjs                         # exports/foodera-2026.svg (butun zal)
-node tools/export-svg.mjs --section A              # faqat A bo'limi
-node tools/export-svg.mjs --block EQ-1 --scale 40  # bitta blok kartasi
-node tools/export-svg.mjs --no-state               # barcha joylar bo'sh holda (katalog uchun)
-```
-
-SVG har qanday brauzerda ochiladi; undan PNG/PDF olish mumkin. Chop etishda "xarita versiyasi"
-(`layout v1.0.0`) va sana faylda ko'rinadi — qaysi fayl yuborilganini keyin aniqlash oson.
-
-**Asosiy qoida (xarita o'qilishi):** bitta kompaniya nechta joy olgan bo'lsa (9, 18, 36 m² yoki
-butun blok) — xaritada ular alohida yacheykalar emas, **bitta umumiy quti** bo'lib chiziladi va
-kompaniya nomi o'sha qutining **ichida** yoziladi. Yonma-yon tushgan keyingi xaridlar ham shu
-qutiga qo'shiladi. Buni `app/groups.js` hisoblaydi (brauzer ham, eksport ham, boshqaruv ro'yxati ham
-shu bitta hisobdan foydalanadi).
-
-**Qoida:** mijozga faqat shu skript chiqargan fayl yuboriladi. Figma/Photoshop'dan saqlangan
-rasm yuborilmaydi — aks holda xarita bilan holat yana ajralib ketadi.
-
-## 4b. Mavjud band ro'yxatini Excel'dan yuklash (manager qayta terib chiqmasin)
+Нужен один файл:
 
 ```bash
-node tools/import-bookings.mjs band-royxat.csv             # avval sinov (dry-run)
-node tools/import-bookings.mjs band-royxat.csv --apply     # haqiqiy yuklash
+node tools/export-svg.mjs                         # вся карта зала
+node tools/export-svg.mjs --map --out exports/plan.svg   # только план (лист под A3)
+node tools/export-svg.mjs --section A             # только раздел A
+node tools/export-svg.mjs --block EQ-1 --scale 40  # карточка одного блока
+node tools/export-svg.mjs --no-state              # все места свободные (для каталога)
+python3 tools/export-pdf.py plan.svg plan.pdf --page A3  # SVG → PDF, один лист
 ```
 
-CSV ustunlari (nomlar tanish bo'lsa yetadi): `Blok/Stend | Holat | Kompaniya | Mijoz | Telefon | Summa | Sotuvchi | Izoh`.
-Ajratgich `;` yoki `,` — avtomatik aniqlanadi; Excel'da "CSV UTF-8" qilib saqlash kifoya.
-Qolgan parametrlar: `--ttl 48`, `--user Menejer --pin 9999`. Allaqachon band qilingan qatorlar
-o'tkazib yuboriladi va hisobotda ko'rsatiladi.
+SVG открывается в любом браузере, из него при необходимости получают PNG/PDF.
+В файле видна **версия схемы** и дата — легко понять, какой файл ушёл клиенту.
 
-## 5. Yangi zal yoki mavjud ro'yxatni ko'chirish
+**Главное правило читаемости:** сколько бы мест ни заняла одна компания (9, 18, 36 м² или целый блок),
+на карте это не отдельные ячейки, а **одна общая рамка**, и название компании пишется **внутри** неё.
+Соседние покупки той же компании присоединяются к этой же рамке. Считает это `app/groups.js`
+(браузер, экспорт и список занятых мест используют один и тот же расчёт).
 
-Excel/CSV ni to'g'ridan-to'g'ri layout'ga aylantirish:
+**Правило:** клиенту отправляем только файл, выпущенный этими скриптами. Картинка, сохранённая
+из Figma/Photoshop, не отправляется — иначе карта и состояние снова разойдутся.
+
+## 4b. Загрузка существующего списка занятых мест из Excel (чтобы менеджер не перебивал вручную)
+
+```bash
+node tools/import-bookings.mjs zanyatye.csv            # сначала проверка (dry-run)
+node tools/import-bookings.mjs zanyatye.csv --apply    # реальная загрузка
+```
+
+Колонки CSV (достаточно узнаваемых названий): `Blok/Stend | Holat | Компания | Клиент | Телефон | Сумма | Продавец | Примечание`.
+Разделитель `;` или `,` определяется автоматически; в Excel сохранить как «CSV UTF-8».
+Дополнительно: `--ttl 48`, `--user Menejer --pin 9999`. Уже занятые строки пропускаются и попадают в отчёт.
+
+## 5. Новый зал или перенос существующего списка
+
+Преобразование Excel/CSV в схему:
 
 ```csv
-blok,x,y,ustunlar,qatorlar,guruh,izoh
-A-01,4,6,4,2,1-qator,
-A-02,22,6,4,2,1-qator,Sahnaga yaqin
+blok,x,y,колонок,строк,группа,примечание
+A,12,6.4,2,4,Ряд 1,
+B,20,6.4,2,4,Ряд 1,рядом со сценой
 ```
 
 ```bash
-node tools/import-csv.mjs blocks.csv --hall "A zal" --width 66 --height 44 \
-     --price 1250000 --out layout/hall-A.json
+node tools/import-csv.mjs blocks.csv --hall "Крытый павильон" --width 96 --height 50 \
+     --price 1250000 --out layout/foodera-2026.json
 ```
 
-Skript oxirida validator natijasini ko'rsatadi. Xato bo'lsa — fayl yozilgan bo'lsa ham xarita chiqmaydi,
-to'g'rilab qayta ishga tushirasiz. Nostandart shakl uchun: `--mode stands` (`stend,blok,x,y`).
+В конце скрипт показывает результат валидатора. При ошибке карта не выпускается, даже если файл записан —
+исправляете и запускаете снова. Для нестандартной формы: `--mode stands` (`stend,blok,x,y`).
 
-## 5b. DWG/DXF chizma bo'lsa (real zal fayli)
+## 5b. Если есть чертёж DWG/DXF
 
 ```bash
-pip install ezdxf                                  # bir marta
+pip install ezdxf                                  # один раз
 
-# 1) chizmada nima borligini ko'rish (layerlar, to'rtburchaklar, yozuvlar)
+# 1) посмотреть, что есть в чертеже (слои, прямоугольники, подписи)
 python3 tools/inspect-dxf.py zal.dxf --min-area 4
 
-# 2) avtomatik layout yasash
+# 2) автоматически собрать схему
 python3 tools/dxf-to-layout.py zal.dxf --block-layer BLOK --hall-layer ZAL \
         --feature XONA:room --feature USTUN:column --label-layer YOZUV \
-        --out layout/hall-A.json --hall "A zal" --project "Ekspo Markazi" --price 1250000
+        --out layout/foodera-2026.json --hall "Крытый павильон" --project "FOODERA EXPO 2026" --price 1250000
 ```
 
-Konvertor nimalarni o'zi ushlaydi (mijozga xato ketmasligi uchun):
+Что конвертор берёт на себя (чтобы ошибка не ушла клиенту):
 
-* **Y o'qini teskari qiladi** — DXF'da Y pastdan tepaga, layout'da tepadan pastga
-  (xaritaning "oynadagidek teskari" chiqishi eng ko'p uchraydigan mapping xatosi);
-* 72 m² **bo'lmagan** to'rtburchaklarni alohida ro'yxat qilib ko'rsatadi (masalan 6×9 m = 54 m²);
-* blok koordinatasi 3 m to'rga tushmasa, yo'lak 2 m dan tor bo'lsa, bloklar ustma-ust tushsa — ogohlantiradi;
-* oxirida `tools/validate-layout.mjs` ni ishga tushirib yakuniy hukmni beradi.
+* **переворачивает ось Y** — в DXF Y снизу вверх, в схеме сверху вниз
+  (перевёрнутая карта — самая частая ошибка сопоставления);
+* отдельным списком показывает прямоугольники, которые **не** 72 м² (например 6×9 м = 54 м²);
+* предупреждает, если координата блока не попадает в сетку 3 м, если проход уже 2 м или блоки накладываются;
+* в конце запускает `tools/validate-layout.mjs` и выносит финальный вердикт.
 
-DXF kerak bo'lsa: AutoCAD/LibreCAD'da "Save As → DXF", yoki DWG→DXF konvertor.
-Alternativa — `tools/import-csv.mjs` (Excel ro'yxat bo'lsa).
+DXF: в AutoCAD/LibreCAD «Сохранить как → DXF», либо конвертор DWG→DXF.
+Альтернатива — `tools/import-csv.mjs` (если есть список в Excel).
 
-## 6. Server: API va ma'lumot
+## 6. Сервер: API и данные
 
-Server — bitta Node fayli, tashqi kutubxonasiz (`server.mjs`). Ma'lumot `data/` da:
+Сервер — один файл Node без внешних библиотек (`server.mjs`). Данные в `data/`:
 
-| Fayl | Nima |
+| Файл | Что это |
 |---|---|
-| `data/state.json` | barcha bron/sotuvlar (yagona haqiqat), `revision` bilan |
-| `data/audit.log` | har bir amal jurnali: kim, qachon, qaysi joy, kimga (JSON lines, o'chirilmaydi) |
-| `data/sellers.json` | sotuvchilar va PIN'lar (`role: admin` — menejer) |
+| `data/state.json` | все брони/продажи (единственный источник правды), с `revision` |
+| `data/audit.log` | журнал каждого действия: кто, когда, какое место, кому (JSON lines, не удаляется) |
+| `data/sellers.json` | продавцы и PIN-коды (`role: admin` — менеджер) |
 
-| Endpoint | Vazifa |
+| Endpoint | Задача |
 |---|---|
 | `POST /api/login` | `{name, pin}` → token |
-| `GET /api/layout` | zal, bloklar, stendlar (koordinatalar bilan) |
-| `GET /api/state` | bron/sotuv holati + `revision` |
-| `POST /api/action` | `reserve` \| `sell` \| `release` \| `block` (atomik, konfliktni rad etadi) |
-| `GET /api/audit` | amallar jurnali (faqat admin) |
-| `GET /api/export.csv` | to'liq ro'yxat: stend, holat, mijoz, summa, sotuvchi (Excel uchun) |
+| `GET /api/layout` | зал, блоки, стенды (с координатами) |
+| `GET /api/state` | состояние броней/продаж + `revision` |
+| `POST /api/action` | `reserve` \| `sell` \| `release` \| `block` (атомарно, конфликт отклоняется) |
+| `GET /api/audit` | журнал операций (только админ) |
+| `GET /api/export.csv` | полный список: стенд, статус, клиент, сумма, продавец (для Excel) |
+| `GET /api/export/pdf` | готовый PDF карты одним листом A3 (кнопка «Скачать PDF») |
 
-**Demo holat:** `node tools/demo.mjs --seed` bir nechta bron/sotuv qo'shadi (ranglar ko'rinadi),
-`node tools/demo.mjs --reset` hammasini bo'shatadi — sinovdan keyin toza holat kerak bo'lsa.
+**Демо-данные:** `node tools/seed-foodera.mjs` расставляет реальные компании FOODERA по схеме,
+`node tools/seed-foodera.mjs --reset` освобождает всё, `--dry` — только показать.
+`node tools/demo.mjs --seed | --reset` — старый демо-набор для учебного зала.
 
-**Zaxira (backup):** har kuni ish oxirida `data/state.json` va `data/audit.log` nusxalanadi
-(`cp data/state.json backups/state-$(date +%F).json`). Fayllar kichik, 1 daqiqada bajariladi.
+**Резервная копия:** в конце рабочего дня копируются `data/state.json` и `data/audit.log`
+(`cp data/state.json backups/state-$(date +%F).json`). Файлы маленькие, занимает минуту.
 
-## 7. Xavfsizlik va cheklovlar (hozirgi bosqich)
+## 7. Безопасность и ограничения (текущий этап)
 
-* PIN — oddiy himoya, ichki foydalanish uchun; internetga ochiq qo'yishdan oldin **HTTPS + kuchli
-  parol/SSO** qilinishi kerak.
-* Server bitta jarayonda — kichik jamoa (5–10 sotuvchi) uchun yetarli. Katta yuklamada keyingi bosqich:
-  PostgreSQL (yoki SQLite) + WebSocket (jonli yangilanish).
-* Hozir yangilanish 8 sekundda bir marta (so'rov orqali). Ishlab chiqarishda WebSocket qilinadi.
+* PIN — простая защита для внутреннего использования; перед публикацией в интернет нужны
+  **HTTPS + надёжный пароль/SSO**.
+* Сервер в одном процессе — достаточно для небольшой команды (5–10 продавцов). При большой нагрузке
+  следующий этап: PostgreSQL (или SQLite) + WebSocket (живое обновление).
+* Сейчас состояние обновляется раз в 8 секунд (запросом). В рабочем варианте — WebSocket.
 
-## 8. Keyingi bosqichlar (taklif)
+## 8. Следующие шаги (предложение)
 
-1. **Shartnoma moduli** — stend ID, maydon (9/72 m²), narx va xarita versiyasi avtomatik shartnomaga tushadi.
-2. **Mijoz portali** — shaxsiy havola: o'zi to'lagan joylar, to'lov holati, QR-check-in (kelganda skaner).
-3. **To'lov integratsiyasi** (Payme/Click yoki bank), hisob-faktura va akt generatsiyasi.
-4. **Zallar boshqaruvi** — bir nechta zal, tadbir sanasi bo'yicha alohida holat (bugun A zal, keyingi hafta B zal).
-5. **Excel'dan import** — mavjud shartnomalar bazasini bir marta ko'chirish (`tools/import-csv.mjs` kengaytmasi).
+1. **Модуль договора** — ID стенда, площадь (9/72 м²), цена и версия карты автоматически попадают в договор.
+2. **Портал клиента** — персональная ссылка: свои места, статус оплаты, QR-check-in на входе.
+3. **Платёжная интеграция** (Payme/Click или банк), счёт-фактура и акт.
+4. **Управление залами** — несколько залов, состояние по дате мероприятия.
+5. **Импорт из Excel** — единоразовый перенос базы существующих договоров (расширение `tools/import-csv.mjs`).
 
-## 9. Fayllar
+## 9. Файлы
 
 ```
-server.mjs              # API + statik fayllar (bog'liqliksiz)
-lib/layout.mjs          # layout yadrosi: 9 m²/72 m² qoidalari, expand + validate
-layout/hall-A.json      # A zalning yagona manbasi (namuna)
-app/index.html|style.css|app.js   # sotuv paneli (vanilla JS, build yo'q)
-app/groups.js                     # band joylarni birlashtirish: bitta kompaniya = bitta quti
-lib/groups.mjs                    # app/groups.js ni Node'dan ishlatish (eksport, paket)
-tools/validate-layout.mjs         # CLI validator (CI uchun)
-docs/CHIZMA-ANKETA.md             # real chizma bo'yicha tasdiqlash savollari
-tools/test-validator.mjs          # 18 ta buzilgan layout testi
-tools/export-svg.mjs              # mijozga yuboriladigan xarita (SVG)
-tools/import-csv.mjs              # Excel/CSV → layout JSON
-tools/inspect-dxf.py              # DXF: layerlar, to'rtburchaklar, yozuvlar ro'yxati (ezdxf)
-tools/dxf-to-layout.py            # DXF → layout JSON (Y o'qini teskari qiladi, xatolarni sanaydi)
-tools/demo.mjs                    # demo holat: --seed / --reset
-tools/import-bookings.mjs         # Excel/CSV → serverga ommaviy yuklash (dry-run default)
-tools/package.mjs                 # mijozga tayyor paket: xarita + bo'limlar + CSV + izoh
-tests/smoke.mjs                   # UI smoke-test (jsdom; ishlab turgan serverga qarshi)
-exports/                # chiqarilgan xaritalar
-data/                   # holat + jurnal (git'ga tushmaydi)
+server.mjs              # API + статика (без зависимостей)
+lib/layout.mjs          # ядро схемы: правила 9 м²/72 м², expand + validate
+layout/foodera-2026.json # единственный источник схемы зала FOODERA
+app/index.html|style.css|app.js   # панель продаж (vanilla JS, без сборки)
+app/groups.js                     # объединение занятых мест: одна компания = одна рамка
+lib/groups.mjs                    # app/groups.js для Node (экспорт, пакет)
+tools/validate-layout.mjs         # CLI-валидатор (для CI)
+tools/test-validator.mjs          # 18 тестов на «сломанные» схемы
+tools/export-svg.mjs              # SVG для клиента (план, раздел, блок)
+tools/export-pdf.py               # SVG → PDF одним листом A3 (DejaVu, кириллица)
+tools/check-overlaps.mjs          # проверка чистоты: пересечения подписей на плане
+tools/package.mjs                 # готовый пакет: план + разделы + CSV + пояснение
+tools/seed-foodera.mjs            # реальные компании FOODERA → состояние
+tools/import-csv.mjs              # Excel/CSV → схема JSON
+tools/import-bookings.mjs         # Excel/CSV → массовая загрузка на сервер (dry-run по умолчанию)
+tools/inspect-dxf.py              # DXF: слои, прямоугольники, подписи (ezdxf)
+tools/dxf-to-layout.py            # DXF → схема JSON (переворачивает ось Y, считает ошибки)
+tools/app-preview.mjs             # предпросмотр плана из приложения в PNG (без браузера)
+tests/smoke.mjs                   # smoke-тест интерфейса (jsdom; свой порт и своё состояние)
+docs/CHIZMA-ANKETA.md             # вопросы на подтверждение по чертежу
+exports/                          # выпущенные пакеты и карты
+data/                             # состояние + журнал (в git не попадает)
 ```
 
-## 10. Ishga tushirish (server)
+## 10. Запуск на сервере
 
 ```bash
-# oddiy holatda
+# обычный режим
 node server.mjs
 
-# systemd (Linux server) misoli
+# пример systemd (Linux)
 # /etc/systemd/system/expo-map.service
 [Unit]
-Description=Expo Map sotuv paneli
+Description=Expo Map — панель продаж
 After=network.target
 [Service]
 WorkingDirectory=/srv/expo-map
@@ -300,5 +314,5 @@ Environment=PORT=4173
 WantedBy=multi-user.target
 ```
 
-Oldinda nginx + HTTPS + ichki tarmoq (faqat ofis/sotuvchilar uchun) — mijoz portali esa alohida
-subdomen orqali. Bu bosqichga o'tishdan oldin `data/sellers.json` ni kuchli parolga o'tkazamiz.
+Далее — nginx + HTTPS + внутренняя сеть (только офис/продавцы), портал клиента — отдельным поддоменом.
+Перед этим этапом `data/sellers.json` переводится на надёжные PIN-коды.
