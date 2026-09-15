@@ -1,0 +1,212 @@
+{
+  "schemaVersion": 1,
+  "meta": {
+    "project": "Ekspo Markazi",
+    "hall": "Зал A",
+    "version": "1.1.0",
+    "status": "approved",
+    "updatedAt": "2026-09-14",
+    "units": "meters",
+    "stand": {
+      "w": 3,
+      "h": 3,
+      "areaM2": 9
+    },
+    "block": {
+      "stands": 8,
+      "areaM2": 72,
+      "cols": 2,
+      "rows": 4
+    },
+    "minAisleM": 2,
+    "currency": "UZS",
+    "pricePerM2": 1250000,
+    "reserveTtlHours": 72
+  },
+  "hall": {
+    "width": 66,
+    "height": 46,
+    "outline": [
+      [
+        0,
+        0
+      ],
+      [
+        66,
+        0
+      ],
+      [
+        66,
+        46
+      ],
+      [
+        0,
+        46
+      ]
+    ]
+  },
+  "zones": [
+    {
+      "id": "main",
+      "label": "Основной зал",
+      "color": "#eef4fb",
+      "x": 0,
+      "y": 0,
+      "w": 66,
+      "h": 46,
+      "kind": "hall"
+    }
+  ],
+  "features": [
+    {
+      "type": "entrance",
+      "label": "Вход",
+      "x": 28,
+      "y": 43,
+      "w": 10,
+      "h": 3
+    },
+    {
+      "type": "service",
+      "label": "Ro'yxatga olish",
+      "x": 1,
+      "y": 42.5,
+      "w": 12,
+      "h": 3.5
+    },
+    {
+      "type": "wc",
+      "label": "WC",
+      "x": 54,
+      "y": 41.5,
+      "w": 12,
+      "h": 4.5
+    },
+    {
+      "type": "food",
+      "label": "Food zone",
+      "x": 54,
+      "y": 4,
+      "w": 12,
+      "h": 12
+    },
+    {
+      "type": "stage",
+      "label": "Сцена",
+      "x": 2,
+      "y": 19,
+      "w": 14,
+      "h": 6.5
+    },
+    {
+      "type": "column",
+      "label": "Ustun",
+      "x": 18,
+      "y": 22.5,
+      "w": 1.2,
+      "h": 1.2
+    },
+    {
+      "type": "column",
+      "label": "Ustun",
+      "x": 34,
+      "y": 22.5,
+      "w": 1.2,
+      "h": 1.2
+    },
+    {
+      "type": "column",
+      "label": "Ustun",
+      "x": 48,
+      "y": 22.5,
+      "w": 1.2,
+      "h": 1.2
+    }
+  ],
+  "blocks": [
+    {
+      "id": "A-01",
+      "x": 4,
+      "y": 5,
+      "cols": 2,
+      "rows": 4,
+      "group": "Ряд 1",
+      "zone": "main",
+      "color": "#2f6db5",
+      "note": "Рядом со сценой"
+    },
+    {
+      "id": "A-02",
+      "x": 17,
+      "y": 5,
+      "cols": 2,
+      "rows": 4,
+      "group": "Ряд 1",
+      "zone": "main",
+      "color": "#2f6db5"
+    },
+    {
+      "id": "A-03",
+      "x": 30,
+      "y": 5,
+      "cols": 2,
+      "rows": 4,
+      "group": "Ряд 1",
+      "zone": "main",
+      "color": "#2f6db5"
+    },
+    {
+      "id": "A-04",
+      "x": 43,
+      "y": 5,
+      "cols": 2,
+      "rows": 4,
+      "group": "Ряд 1",
+      "zone": "main",
+      "color": "#2f6db5"
+    },
+    {
+      "id": "A-05",
+      "x": 4,
+      "y": 30,
+      "cols": 2,
+      "rows": 4,
+      "group": "Ряд 2",
+      "zone": "main",
+      "color": "#2f6db5",
+      "note": "В начале прохода"
+    },
+    {
+      "id": "A-06",
+      "x": 17,
+      "y": 30,
+      "cols": 2,
+      "rows": 4,
+      "group": "Ряд 2",
+      "zone": "main",
+      "color": "#2f6db5"
+    },
+    {
+      "id": "A-07",
+      "x": 30,
+      "y": 30,
+      "cols": 2,
+      "rows": 4,
+      "group": "Ряд 2",
+      "zone": "main",
+      "color": "#2f6db5",
+      "note": "Рядом со входом"
+    },
+    {
+      "id": "A-08",
+      "x": 43,
+      "y": 30,
+      "cols": 2,
+      "rows": 4,
+      "group": "Ряд 2",
+      "zone": "main",
+      "color": "#2f6db5",
+      "note": "Kassaga yaqin"
+    }
+  ]
+}

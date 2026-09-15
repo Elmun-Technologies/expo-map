@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="721" height="724" viewBox="0 0 721 724" font-family="DejaVu Sans, Helvetica, Arial, sans-serif">
+<rect width="721" height="724" fill="#ffffff"/>
+<text x="46" y="66" font-size="20" font-weight="bold" fill="#0f2233">A-01 bloki · 6 × 12 m · 8 stend × 9 m² = 72 m²</text>
+<text x="46" y="87" font-size="13" fill="#5b6b7a">1 stend = 3×3 m = 9 m² · 1 blok = 8 stend = 72 m² · layout v1.1.0 · 14.09.2026</text>
+<rect x="46.00" y="138.00" width="240.00" height="480.00" fill="none" stroke="#90a4b5" stroke-width="1.4" stroke-dasharray="7 5" rx="4"/>
+<rect x="46.00" y="106.00" width="118.72" height="25" rx="5" fill="#2f6db5"/>
+<text x="105.36" y="123.05" font-size="13" font-weight="bold" fill="#ffffff" text-anchor="middle">A-01 · 72 m²</text>
+<rect x="46.00" y="138.00" width="120.00" height="120.00" rx="3" fill="#c62828" stroke="#2f6db5" stroke-width="1.1"/>
+<text x="106.00" y="196.00" font-size="15" font-weight="bold" fill="#ffffff" text-anchor="middle">1</text>
+<text x="106.00" y="214.00" font-size="10" fill="#ffffff" text-anchor="middle" opacity="0.85">01</text>
+<rect x="166.00" y="138.00" width="120.00" height="120.00" rx="3" fill="#c62828" stroke="#2f6db5" stroke-width="1.1"/>
+<text x="226.00" y="196.00" font-size="15" font-weight="bold" fill="#ffffff" text-anchor="middle">2</text>
+<text x="226.00" y="214.00" font-size="10" fill="#ffffff" text-anchor="middle" opacity="0.85">02</text>
+<rect x="46.00" y="258.00" width="120.00" height="120.00" rx="3" fill="#c62828" stroke="#2f6db5" stroke-width="1.1"/>
+<text x="106.00" y="316.00" font-size="15" font-weight="bold" fill="#ffffff" text-anchor="middle">3</text>
+<text x="106.00" y="334.00" font-size="10" fill="#ffffff" text-anchor="middle" opacity="0.85">03</text>
+<rect x="166.00" y="258.00" width="120.00" height="120.00" rx="3" fill="#c62828" stroke="#2f6db5" stroke-width="1.1"/>
+<text x="226.00" y="316.00" font-size="15" font-weight="bold" fill="#ffffff" text-anchor="middle">4</text>
+<text x="226.00" y="334.00" font-size="10" fill="#ffffff" text-anchor="middle" opacity="0.85">04</text>
+<rect x="46.00" y="378.00" width="120.00" height="120.00" rx="3" fill="#c62828" stroke="#2f6db5" stroke-width="1.1"/>
+<text x="106.00" y="436.00" font-size="15" font-weight="bold" fill="#ffffff" text-anchor="middle">5</text>
+<text x="106.00" y="454.00" font-size="10" fill="#ffffff" text-anchor="middle" opacity="0.85">05</text>
+<rect x="166.00" y="378.00" width="120.00" height="120.00" rx="3" fill="#c62828" stroke="#2f6db5" stroke-width="1.1"/>
+<text x="226.00" y="436.00" font-size="15" font-weight="bold" fill="#ffffff" text-anchor="middle">6</text>
+<text x="226.00" y="454.00" font-size="10" fill="#ffffff" text-anchor="middle" opacity="0.85">06</text>
+<rect x="46.00" y="498.00" width="120.00" height="120.00" rx="3" fill="#c62828" stroke="#2f6db5" stroke-width="1.1"/>
+<text x="106.00" y="556.00" font-size="15" font-weight="bold" fill="#ffffff" text-anchor="middle">7</text>
+<text x="106.00" y="574.00" font-size="10" fill="#ffffff" text-anchor="middle" opacity="0.85">07</text>
+<rect x="166.00" y="498.00" width="120.00" height="120.00" rx="3" fill="#c62828" stroke="#2f6db5" stroke-width="1.1"/>
+<text x="226.00" y="556.00" font-size="15" font-weight="bold" fill="#ffffff" text-anchor="middle">8</text>
+<text x="226.00" y="574.00" font-size="10" fill="#ffffff" text-anchor="middle" opacity="0.85">08</text>
+<rect x="46.00" y="634.00" width="15" height="15" rx="3" fill="#eaf6ec" stroke="#2e7d32" stroke-width="1.4"/>
+<text x="69.00" y="647.00" font-size="13" fill="#33454f">Bo'sh: 0 stend · 0 m²</text>
+<rect x="253.26" y="634.00" width="15" height="15" rx="3" fill="#fff3d6" stroke="#f59e0b" stroke-width="1.4"/>
+<text x="276.26" y="647.00" font-size="13" fill="#33454f">Bron: 0 stend · 0 m²</text>
+<rect x="46.00" y="659.00" width="15" height="15" rx="3" fill="#c62828" stroke="#8e1b1b" stroke-width="1.4"/>
+<text x="69.00" y="672.00" font-size="13" fill="#33454f">Sotilgan: 8 stend · 72 m²</text>
+<text x="674.68" y="690" font-size="12" fill="#33454f" text-anchor="end">Jami: 8 stend · 72 m²</text>
+</svg>

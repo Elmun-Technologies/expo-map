@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Экспо-карта — панель продаж</title>
+<link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+
+<!-- ================= ВХОД ================= -->
+<div id="login" class="login">
+  <form class="login-card" id="loginForm">
+    <h1>Экспо-карта</h1>
+    <p class="muted">Панель продаж — бронирование и продажа стендов</p>
+    <label>Продавец
+      <input id="loginName" autocomplete="username" placeholder="имя или ID" required />
+    </label>
+    <label>PIN-код
+      <input id="loginPin" type="password" inputmode="numeric" autocomplete="current-password" placeholder="••••" required />
+    </label>
+    <button class="btn primary" type="submit">Войти</button>
+    <p class="error" id="loginError"></p>
+    <div class="demo-hint">
+      Демо: <button type="button" class="chip" data-user="Aziz Karimov" data-pin="1111">Aziz · 1111</button>
+      <button type="button" class="chip" data-user="Dilnoza Yusupova" data-pin="2222">Dilnoza · 2222</button>
+      <button type="button" class="chip" data-user="Менеджер" data-pin="9999">Менеджер · 9999</button>
+    </div>
+  </form>
+</div>
+
+<!-- ================= ПРИЛОЖЕНИЕ ================= -->
+<header class="topbar">
+  <div class="brand">
+    <strong id="hallTitle">Карта</strong>
+    <span class="muted" id="hallSub"></span>
+  </div>
+  <div class="tools">
+    <input id="search" class="search" placeholder="Поиск: A1, B12, HoReCa" />
+    <span class="zoom-box">
+      <button class="btn" id="zoomOut" title="Уменьшить">−</button>
+      <span class="zoom-pct" id="zoomPct">100%</span>
+      <button class="btn" id="zoomIn" title="Увеличить">+</button>
+    </span>
+    <button class="btn" id="zoomFit" title="Показать весь зал">Весь зал</button>
+    <button class="btn" id="clientMode" title="Режим для клиента">Вид для клиента</button>
+    <button class="btn" id="printBtn" title="Одна страница A4 landscape: только план зала">Печать плана</button>
+    <button class="btn" id="pdfBtn" title="Скачать готовый PDF-файл (A4 landscape, одна страница)">Скачать PDF</button>
+    <label class="chk" title="Таблицы (блоки, компании, разделы) печатаются отдельными страницами после плана"><input type="checkbox" id="printTables" /> с таблицами</label>
+    <span class="who" id="who"></span>
+    <button class="btn ghost" id="logoutBtn">Выход</button>
+  </div>
+</header>
+
+<!-- ================= СТАТИСТИКА ПО ЗАЛУ ================= -->
+<section class="cards" id="statCards"></section>
+
+<!-- ================= ЗАКЛАДКИ ПАНЕЛИ ================= -->
+<nav class="tabs" id="viewTabs">
+  <button class="tab is-on" data-tab="map">Карта</button>
+  <button class="tab" data-tab="deals">Сделки <span class="cnt" id="dealsCount">0</span></button>
+  <button class="tab" data-tab="history">История действий</button>
+  <button class="tab" data-tab="source">Исходный план</button>
+  <span class="updated" id="updatedAt"></span>
+</nav>
+
+<div id="draftBanner" class="draft-banner" hidden></div>
+
+<div class="pane" id="pane-map">
+<main class="layout">
+  <section class="map-wrap">
+    <svg id="map" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="hatchReserved" width="0.6" height="0.6" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+          <rect width="0.6" height="0.6" fill="#fff8e1" />
+          <line x1="0" y1="0" x2="0" y2="0.6" stroke="#f59e0b" stroke-width="0.22" />
+        </pattern>
+        <pattern id="hatchSold" width="0.6" height="0.6" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+          <rect width="0.6" height="0.6" fill="#fdecea" />
+          <line x1="0" y1="0" x2="0" y2="0.6" stroke="#c62828" stroke-width="0.28" />
+          <line x1="0" y1="0" x2="0.6" y2="0" stroke="#c62828" stroke-width="0.16" opacity="0.55" />
+        </pattern>
+        <pattern id="hatchBlocked" width="0.5" height="0.5" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+          <rect width="0.5" height="0.5" fill="#eceff1" />
+          <line x1="0" y1="0" x2="0" y2="0.5" stroke="#607d8b" stroke-width="0.2" />
+        </pattern>
+      </defs>
+      <g id="world"></g>
+    </svg>
+    <div class="legend" id="legend"></div>
+    <p class="map-note">План строится автоматически из <code>layout/*.json</code>. Одна компания — <b>одна рамка</b>, название внутри.</p>
+  </section>
+
+  <aside class="panel">
+    <div class="stats" id="stats"></div>
+
+    <div id="sectionsCard" class="card" hidden>
+      <h2>Разделы выставки</h2>
+      <div id="sectionChips" class="chips sec-chips"></div>
+      <div id="sectionInfo" hidden></div>
+      <div class="actions" id="sectionActions" hidden>
+        <button class="btn" id="secSelectFree">Выбрать свободные места</button>
+        <button class="btn ghost" id="secClear">Сбросить фильтр</button>
+      </div>
+      <p class="muted" id="secHint">Нажмите название раздела — на плане останется только он.</p>
+    </div>
+    <div id="bookingsCard" class="card" hidden>
+      <h2>Занятые места (компании)</h2>
+      <p class="muted">Одна компания — одна строка, сколько бы стендов она ни заняла. Нажмите — покажем на плане.</p>
+      <div id="bookingsList" class="bookings"></div>
+    </div>
+    <div id="selectionBox" class="card">
+      <h2>Выбор</h2>
+      <p class="muted" id="selHint">Нажмите стенд или название блока на плане.</p>
+      <div id="selBody" hidden>
+        <div class="sel-head">
+          <span class="pill" id="selTitle"></span>
+          <button class="btn ghost small" id="clearSel">Очистить</button>
+        </div>
+        <div id="selChips" class="chips"></div>
+        <div class="kv" id="selInfo"></div>
+
+        <div id="formFields">
+          <h3>Клиент</h3>
+          <label>Имя / представитель компании<input id="buyer" placeholder="Например: Азиз Каримов" /></label>
+          <label>Телефон<input id="phone" inputmode="tel" placeholder="+998 90 000 00 00" /></label>
+          <label>Компания<input id="company" placeholder="ООО «...»" /></label>
+          <label class="inline">Срок брони (часов)<input id="ttl" type="number" min="1" max="720" value="72" /></label>
+          <label>Примечание<input id="note" placeholder="не обязательно" /></label>
+          <div class="actions">
+            <button class="btn reserve" id="btnReserve">Забронировать</button>
+            <button class="btn sell" id="btnSell">Продать</button>
+            <button class="btn ghost" id="btnRelease">Освободить</button>
+          </div>
+        </div>
+
+        <div id="details" class="details"></div>
+      </div>
+    </div>
+    <div id="receipt" class="card receipt" hidden></div>
+    <div id="auditCard" class="card" hidden>
+      <h2>Журнал операций</h2>
+      <div id="auditList" class="audit"></div>
+    </div>
+  </aside>
+</main>
+</div>
+
+<div class="pane" id="pane-deals" hidden>
+  <section class="wide-card">
+    <h2>Сделки и брони</h2>
+    <p class="muted">Одна компания — одна строка, сколько бы стендов она ни заняла. Нажмите строку — карта откроется на этом месте.</p>
+    <div class="table-wrap" id="dealsTable"></div>
+  </section>
+</div>
+
+<div class="pane" id="pane-history" hidden>
+  <section class="wide-card">
+    <h2>История действий</h2>
+    <p class="muted">Кто, когда и что менял: время, продавец, действие, стенды, клиент. Доступно администратору.</p>
+    <div class="table-wrap" id="historyTable"></div>
+  </section>
+</div>
+
+<div class="pane" id="pane-source" hidden>
+  <section class="wide-card">
+    <h2>Исходный план</h2>
+    <p class="muted" id="sourceHint">Чертёж, по которому собран план зала.</p>
+    <div class="source-plan" id="sourcePlan"></div>
+    <div class="actions">
+      <button class="btn" id="sourceShowA3">Показать готовый лист A4</button>
+    </div>
+  </section>
+</div>
+
+<div id="toasts" class="toasts"></div>
+<div id="confirm" class="modal" hidden>
+  <div class="modal-card">
+    <h2 id="confirmTitle">Подтверждение</h2>
+    <div id="confirmBody"></div>
+    <div class="actions">
+      <button class="btn primary" id="confirmOk">Подтвердить</button>
+      <button class="btn ghost" id="confirmCancel">Отмена</button>
+    </div>
+  </div>
+</div>
+
+<div id="pdfHelp" class="modal" hidden>
+  <div class="modal-card pdf-help" role="dialog" aria-labelledby="pdfHelpTitle">
+    <button class="pdf-x" id="pdfHelpClose" title="Закрыть" aria-label="Закрыть">×</button>
+    <h2 id="pdfHelpTitle">Лист A4 готов</h2>
+    <p class="muted pdf-sub">Одна страница A4. Скачайте файл — или сохраните его печатью в PDF.</p>
+    <div class="pdf-view">
+      <img id="pdfHelpImg" alt="Предпросмотр листа A4" />
+      <p class="muted" id="pdfHelpNote" hidden>Предпросмотр недоступен — скачайте файл или сохраните его печатью.</p>
+    </div>
+    <p class="muted pdf-hint" id="pdfHelpWhy"></p>
+    <div class="pdf-actions">
+      <button class="btn primary" id="pdfHelpSave">Скачать PDF-файл</button>
+      <button class="btn" id="pdfHelpPrint">Сохранить печатью (PDF)</button>
+      <a class="btn ghost" id="pdfHelpOpen" href="/api/export/pdf?disp=inline" target="_blank" rel="noopener">Открыть в новом окне</a>
+      <button class="btn link" id="pdfHelpCopy">Скопировать ссылку</button>
+    </div>
+  </div>
+</div>
+
+<script src="./dejavu-metrics.js"></script>
+<script src="./groups.js"></script>
+<script src="./app.js"></script>
+</body>
+</html>

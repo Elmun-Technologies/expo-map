@@ -1,0 +1,22 @@
+{
+  "sellers": [
+    {
+      "id": "s1",
+      "name": "Aziz Karimov",
+      "pin": "1111",
+      "role": "seller"
+    },
+    {
+      "id": "s2",
+      "name": "Dilnoza Yusupova",
+      "pin": "2222",
+      "role": "seller"
+    },
+    {
+      "id": "m1",
+      "name": "Менеджер",
+      "pin": "9999",
+      "role": "admin"
+    }
+  ]
+}

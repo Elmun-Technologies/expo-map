@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="642" height="548" viewBox="0 0 642 548" font-family="DejaVu Sans, Helvetica, Arial, sans-serif">
+<rect x="0.00" y="0.00" width="642.00" height="548.00" fill="#ffffff"/>
+<polygon points="-339.00,-293.80 1520.00,-293.80 1520.00,806.20 -339.00,806.20" fill="#ffffff" fill-opacity="0.55" stroke="#0f2233" stroke-width="2.2"/>
+<rect x="101.00" y="155.00" width="132.00" height="264.00" fill="none" stroke="#C0553E" stroke-width="1.6" rx="5"/>
+<rect x="98.00" y="124.50" width="138.00" height="28.00" fill="#ffffff" stroke="#C0553E" stroke-width="1.5" rx="5"/>
+<text x="167.00" y="137.50" font-size="12.50" fill="#C0553E" font-weight="bold" text-anchor="middle">H · 72 м²</text>
+<text x="167.00" y="147.50" font-size="9.50" fill="#7b8b99" text-anchor="middle">Мясо и молоко</text>
+<rect x="167.00" y="221.00" width="66.00" height="66.00" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="200.00" y="253.00" font-size="14.00" fill="#C0553E" font-weight="bold" text-anchor="middle">H4</text>
+<rect x="167.00" y="287.00" width="66.00" height="66.00" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="200.00" y="319.00" font-size="14.00" fill="#C0553E" font-weight="bold" text-anchor="middle">H6</text>
+<rect x="167.00" y="353.00" width="66.00" height="66.00" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="200.00" y="385.00" font-size="14.00" fill="#C0553E" font-weight="bold" text-anchor="middle">H8</text>
+<path d="M101 155L167 155L167 221L101 221Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="102.50" y="156.50" width="63.00" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="134.00" y="175.11" font-size="15.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Oltin</text>
+<text x="134.00" y="194.07" font-size="15.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Go'sht</text>
+<text x="134.00" y="213.03" font-size="15.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Sari</text>
+<path d="M167 155L233 155L233 221L167 221Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="168.50" y="156.50" width="63.00" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="200.00" y="170.16" font-size="12.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Saldis</text>
+<text x="200.00" y="185.28" font-size="12.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Trading</text>
+<text x="200.00" y="200.40" font-size="12.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Group</text>
+<text x="200.00" y="215.52" font-size="12.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">(2)</text>
+<path d="M101 221L167 221L167 287L101 287Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="102.50" y="222.50" width="63.00" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="134.00" y="241.11" font-size="15.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Oltin</text>
+<text x="134.00" y="260.07" font-size="15.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Go'sht</text>
+<text x="134.00" y="279.03" font-size="15.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Turon</text>
+<path d="M101 287L167 287L167 353L101 353Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="102.50" y="288.50" width="63.00" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="134.00" y="309.23" font-size="13.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Saldis</text>
+<text x="134.00" y="325.07" font-size="13.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Trading</text>
+<text x="134.00" y="340.91" font-size="13.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Group</text>
+<path d="M101 353L167 353L167 419L101 419Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="102.50" y="354.50" width="63.00" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="134.00" y="384.44" font-size="7.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Dobroye</text>
+<text x="134.00" y="393.08" font-size="7.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Derevenskoye</text>
+<text x="24.00" y="40.00" font-size="20.00" fill="#0f2233" font-weight="bold">Мясная и молочная индустрия · раздел H</text>
+<rect x="24.00" y="68.00" width="13.00" height="13.00" fill="#ffffff" stroke="#cbd6de" stroke-width="1.3" rx="3"/>
+<text x="24.00" y="97.50" font-size="12.00" fill="#7b8b99">1 стенд = 3 × 3 м = 9 м² · 1 блок = 8 стендов = 72 м² · версия плана v1.4.1 · 15.09.2026</text>
+<text x="43.00" y="78.50" font-size="11.50" fill="#44586a">Свободно: 3 · 27 м²</text>
+<rect x="189.67" y="68.00" width="13.00" height="13.00" fill="#fff6e0" stroke="#e0a300" stroke-width="1.3" rx="3"/>
+<text x="208.67" y="78.50" font-size="11.50" fill="#44586a">Забронировано: 0</text>
+<rect x="343.84" y="68.00" width="13.00" height="13.00" fill="#fdecea" stroke="#c62828" stroke-width="1.3" rx="3"/>
+<text x="362.84" y="78.50" font-size="11.50" fill="#44586a">Продано: 5 · 45 м²</text>
+<text x="24.00" y="497.50" font-size="11.50" fill="#5b6b7a">FOODERA EXPO 2026 · Крытый павильон</text>
+<text x="24.00" y="515.00" font-size="11.50" fill="#5b6b7a">Итого: 8 стендов · 72 м² · свободно: 3 (27 м²)</text>
+<text x="24.00" y="532.50" font-size="11.50" fill="#93a4b2">1 стенд = 3 × 3 м = 9 м² · 1 блок = 8 стендов = 72 м² · версия плана v1.4.1</text>
+</svg>
