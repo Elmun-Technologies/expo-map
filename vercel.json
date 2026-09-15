@@ -1,0 +1,28 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "server.mjs",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": [
+          "app/**",
+          "data/sellers.example.json",
+          "data/sellers.json",
+          "layout/**",
+          "lib/**",
+          "tools/**"
+        ]
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "server.mjs"
+    }
+  ],
+  "env": {
+    "STATE": "/tmp/expo-map-state.json"
+  }
+}
