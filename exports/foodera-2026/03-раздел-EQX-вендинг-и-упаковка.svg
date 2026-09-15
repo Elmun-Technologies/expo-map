@@ -15,7 +15,7 @@
 <rect x="563.00" y="155.00" width="66.00" height="66.00" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="596.00" y="187.00" font-size="14.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">X8</text>
 <text x="24.00" y="40.00" font-size="20.00" fill="#0f2233" font-weight="bold">Вендинговые аппараты, упаковка и фасовка · раздел EQX</text>
 <rect x="24.00" y="68.00" width="13.00" height="13.00" fill="#ffffff" stroke="#cbd6de" stroke-width="1.3" rx="3"/>
-<text x="24.00" y="97.50" font-size="12.00" fill="#7b8b99">1 стенд = 3 × 3 м = 9 м² · 1 блок = 8 стендов = 72 м² · версия плана v1.4.1 · 15.09.2026</text>
+<text x="24.00" y="97.50" font-size="12.00" fill="#7b8b99">1 стенд = 3 × 3 м = 9 м² · 1 блок = 8 стендов = 72 м² · версия плана v1.4.2 · 15.09.2026</text>
 <text x="43.00" y="78.50" font-size="11.50" fill="#44586a">Свободно: 8 · 72 м²</text>
 <rect x="189.67" y="68.00" width="13.00" height="13.00" fill="#fff6e0" stroke="#e0a300" stroke-width="1.3" rx="3"/>
 <text x="208.67" y="78.50" font-size="11.50" fill="#44586a">Забронировано: 0</text>
@@ -23,5 +23,5 @@
 <text x="362.84" y="78.50" font-size="11.50" fill="#44586a">Продано: 0</text>
 <text x="24.00" y="299.50" font-size="11.50" fill="#5b6b7a">FOODERA EXPO 2026 · Крытый павильон</text>
 <text x="24.00" y="317.00" font-size="11.50" fill="#5b6b7a">Итого: 8 стендов · 72 м² · свободно: 8 (72 м²)</text>
-<text x="24.00" y="334.50" font-size="11.50" fill="#93a4b2">1 стенд = 3 × 3 м = 9 м² · 1 блок = 8 стендов = 72 м² · версия плана v1.4.1</text>
+<text x="24.00" y="334.50" font-size="11.50" fill="#93a4b2">1 стенд = 3 × 3 м = 9 м² · 1 блок = 8 стендов = 72 м² · версия плана v1.4.2</text>
 </svg>

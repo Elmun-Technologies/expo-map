@@ -69,6 +69,7 @@
 <div class="pane" id="pane-map">
 <main class="layout">
   <section class="map-wrap">
+    <div class="legend" id="legend"></div>
     <svg id="map" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <pattern id="hatchReserved" width="0.6" height="0.6" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
@@ -87,7 +88,6 @@
       </defs>
       <g id="world"></g>
     </svg>
-    <div class="legend" id="legend"></div>
     <p class="map-note">План строится автоматически из <code>layout/*.json</code>. Одна компания — <b>одна рамка</b>, название внутри.</p>
   </section>
 

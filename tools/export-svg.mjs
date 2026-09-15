@@ -215,7 +215,10 @@ if (sectionFilter) {
 } else {
   // рамка с учётом выступов (чипы блоков уходят выше зала) — как раньше: chipTop
   const chipTop = Math.min(...blocks.filter((b) => b.kind !== 'custom').map((b) => b.y - 2.15), 0);
-  content = { x: 0, y: Math.min(0, chipTop - 0.3), w: exp.hall.width, h: exp.hall.height - Math.min(0, chipTop - 0.3) };
+  // зона с вертикальной подписью слева (левое крыло A1–A6) — оставляем под неё поле
+  const leftLabel = (exp.zones || []).some((z) => z.labelPos === 'left' && z.w && z.h && z.x < 2);
+  const leftM = leftLabel ? 3 : 0;
+  content = { x: -leftM, y: Math.min(0, chipTop - 0.3), w: exp.hall.width + leftM, h: exp.hall.height - Math.min(0, chipTop - 0.3) };
 }
 
 // ---------------------------------------------------------------- содержимое
@@ -577,6 +580,16 @@ for (const u of units) {
 
 // ---------------------------------------------------------------- подписи зон (последними, с проверкой пересечений)
 for (const { z, pos, fs } of zoneLabels) {
+  // вертикальная подпись вдоль левой стены (например «Левое крыло A1–A6»):
+  // места сверху/внутри нет — пишем снаружи зала, текст читается снизу вверх
+  if (pos === 'left') {
+    if (X(z.x) < PAD || X(z.x) > pageWpx - PAD) continue;        // зона вне этого листа
+    const lfs = Math.max(9, Math.min(F.zone, (S(z.h) - 20) / Math.max(4, textWidth(z.label, 1))));
+    const lx = X(z.x) - S(1.2), ly = Y(z.y + z.h / 2);
+    L.labels.push(`<text x="${r2(lx)}" y="${r2(ly)}" font-size="${r2(lfs)}" fill="#93a4b2" font-weight="bold" text-anchor="middle" letter-spacing="0.3" transform="rotate(-90 ${r2(lx)} ${r2(ly)})">${esc(z.label)}</text>`);
+    addOcc(lx - lfs, ly - textWidth(z.label, lfs) / 2 - 2, lfs * 2, textWidth(z.label, lfs) + 4);
+    continue;
+  }
   const w = textWidth(z.label, fs);
   const h = fs * 1.25;
   const cx = X(z.x + z.w / 2);

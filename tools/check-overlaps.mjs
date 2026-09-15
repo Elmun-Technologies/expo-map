@@ -67,7 +67,23 @@ for (const m of svg.matchAll(/<text\b([^>]*)>([^<]*)<\/text>/g)) {
     || (Number(/(^|;)\s*letter-spacing:\s*([\d.]+)px/.exec(cssRule(cls))?.[2]) || 0);
   const w = textWidth(text, fs, bold) + ls * text.length;
   const x0 = anchor === 'middle' ? x - w / 2 : anchor === 'end' ? x - w : x;
-  boxes.push({ text, fs, x0, x1: x0 + w, y0: y - fs * 0.78, y1: y + fs * 0.24, cls });
+  let box = { x0, x1: x0 + w, y0: y - fs * 0.78, y1: y + fs * 0.24 };
+  // вертикальная подпись (rotate ±90 cx cy): рамку текста тоже поворачиваем,
+  // иначе проверка посчитает её горизонтальной и найдет ложное наложение
+  const rot = /rotate\((-?[\d.]+)\s+(-?[\d.]+)\s+(-?[\d.]+)\)/.exec(attr('transform') || '');
+  if (rot) {
+    const a = ((Math.round(Number(rot[1])) % 360) + 360) % 360;
+    if (a === 90 || a === 270) {
+      const cx = Number(rot[2]), cy = Number(rot[3]);
+      const pts = [[box.x0, box.y0], [box.x1, box.y0], [box.x1, box.y1], [box.x0, box.y1]]
+        .map(([px, py]) => (a === 270 ? [cx + (py - cy), cy - (px - cx)] : [cx - (py - cy), cy + (px - cx)]));
+      box = {
+        x0: Math.min(...pts.map((p) => p[0])), x1: Math.max(...pts.map((p) => p[0])),
+        y0: Math.min(...pts.map((p) => p[1])), y1: Math.max(...pts.map((p) => p[1])),
+      };
+    }
+  }
+  boxes.push({ text, fs, ...box, cls });
 }
 function cssRule(cls) {
   if (!cls) return '';

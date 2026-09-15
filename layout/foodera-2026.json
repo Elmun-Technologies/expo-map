@@ -3,7 +3,7 @@
   "meta": {
     "project": "FOODERA EXPO 2026",
     "hall": "Крытый павильон",
-    "version": "1.4.1",
+    "version": "1.4.2",
     "status": "approved",
     "updatedAt": "2026-09-15",
     "units": "meters",
@@ -237,7 +237,7 @@
       "w": 7,
       "h": 28.5,
       "kind": "wing",
-      "labelPos": "none"
+      "labelPos": "left"
     },
     {
       "id": "seminar",
