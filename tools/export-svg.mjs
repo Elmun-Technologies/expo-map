@@ -17,7 +17,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { expandLayout, validateLayout } from '../lib/layout.mjs';
+import { expandLayout, validateLayout, ruleNote } from '../lib/layout.mjs';
 import { groupBookings, unionPath, fitText, largestRect, mergedAsStands, textWidth } from '../lib/groups.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -215,7 +215,10 @@ if (sectionFilter) {
 } else {
   // рамка с учётом выступов (чипы блоков уходят выше зала) — как раньше: chipTop
   const chipTop = Math.min(...blocks.filter((b) => b.kind !== 'custom').map((b) => b.y - 2.15), 0);
-  content = { x: 0, y: Math.min(0, chipTop - 0.3), w: exp.hall.width, h: exp.hall.height - Math.min(0, chipTop - 0.3) };
+  // зона с вертикальной подписью слева (левое крыло A1–A6) — оставляем под неё поле
+  const leftLabel = (exp.zones || []).some((z) => z.labelPos === 'left' && z.w && z.h && z.x < 2);
+  const leftM = leftLabel ? 3 : 0;
+  content = { x: -leftM, y: Math.min(0, chipTop - 0.3), w: exp.hall.width + leftM, h: exp.hall.height - Math.min(0, chipTop - 0.3) };
 }
 
 // ---------------------------------------------------------------- содержимое
@@ -241,7 +244,7 @@ const mergedDrawn = new Set(units.flatMap((u) => u.ids.filter((id) => id.include
 const title = sectionFilter ? (() => { const s = sectionById(sectionFilter); return `${s.label} · раздел ${s.id}`; })()
   : blockFilter ? `Блок ${blockFilter} · ${fmtNum(content.w - 5)} × ${fmtNum(content.h - 5)} м`
   : `${exp.meta.project} — ${exp.meta.hall} · план залов`;
-const sub = `${exp.meta.pricePerM2 && !detail ? fmtNum(exp.meta.pricePerM2) + ' сум/м² · ' : ''}1 стенд = 3 × 3 м = 9 м² · 1 блок = 8 стендов = 72 м² · версия плана v${exp.meta.version || '?'} · ${new Date().toLocaleDateString('ru-RU')}`;
+const sub = `${exp.meta.pricePerM2 && !detail ? fmtNum(exp.meta.pricePerM2) + ' сум/м² · ' : ''}${ruleNote(exp)} · версия плана v${exp.meta.version || '?'} · ${new Date().toLocaleDateString('ru-RU')}`;
 
 // ---------------------------------------------------------------- легенда (нужна для расчёта ширины листа)
 const legendParts = legendKeys.map((k) => ({ k, text: `${tint(k).label}: ${counts[k]}` + (counts[k] ? ` · ${fmtNum(areas[k])} м²` : '') }));
@@ -455,8 +458,10 @@ if (!detail) {
   }
 }
 // ---------------------------------------------------------------- стенды и блоки
-/** Подпись стенда: A-01 → «A1», EQ-H-03 → «H3» (как на чертеже заказчика). */
+/** Подпись стенда: A-01 → «A1», EQ-H-03 → «H3» (как на чертеже заказчика);
+ *  чертёжные стенды (manual) подписаны как на самом чертеже — без префикса блока. */
 const idText = (b, s) => {
+  if (s.manual) return String(s.noLabel || s.no);
   const eq = /^EQ-([A-Z])$/.exec(b.id);
   if (eq) return `${eq[1]}${s.no}`;
   return b.label.includes('-') ? `${b.label.replace(/^(\w+)-(\d+)$/, '$1$2')}-${s.no}` : `${b.label}${s.no}`;
@@ -577,6 +582,16 @@ for (const u of units) {
 
 // ---------------------------------------------------------------- подписи зон (последними, с проверкой пересечений)
 for (const { z, pos, fs } of zoneLabels) {
+  // вертикальная подпись вдоль левой стены (например «Левое крыло A1–A6»):
+  // места сверху/внутри нет — пишем снаружи зала, текст читается снизу вверх
+  if (pos === 'left') {
+    if (X(z.x) < PAD || X(z.x) > pageWpx - PAD) continue;        // зона вне этого листа
+    const lfs = Math.max(9, Math.min(F.zone, (S(z.h) - 20) / Math.max(4, textWidth(z.label, 1))));
+    const lx = X(z.x) - S(1.2), ly = Y(z.y + z.h / 2);
+    L.labels.push(`<text x="${r2(lx)}" y="${r2(ly)}" font-size="${r2(lfs)}" fill="#93a4b2" font-weight="bold" text-anchor="middle" letter-spacing="0.3" transform="rotate(-90 ${r2(lx)} ${r2(ly)})">${esc(z.label)}</text>`);
+    addOcc(lx - lfs, ly - textWidth(z.label, lfs) / 2 - 2, lfs * 2, textWidth(z.label, lfs) + 4);
+    continue;
+  }
   const w = textWidth(z.label, fs);
   const h = fs * 1.25;
   const cx = X(z.x + z.w / 2);
@@ -617,7 +632,7 @@ if (sheetMode) {
     // все по левому краю: так они не могут наехать друг на друга
     L.footer.push(t(PAD, pageHpx - F.foot * 3 - 16, F.foot, '#5b6b7a', `${exp.meta.project} · ${exp.meta.hall}`));
     L.footer.push(t(PAD, pageHpx - F.foot * 2 - 10, F.foot, '#5b6b7a', footText));
-    L.footer.push(t(PAD, pageHpx - F.foot - 4, F.foot, '#93a4b2', `1 стенд = 3 × 3 м = 9 м² · 1 блок = 8 стендов = 72 м² · версия плана v${exp.meta.version || '?'}`));
+    L.footer.push(t(PAD, pageHpx - F.foot - 4, F.foot, '#93a4b2', `${ruleNote(exp)} · версия плана v${exp.meta.version || '?'}`));
   } else {
   let ly = contentTop + content.h * SCALE + F.legend + 14;
   for (const k of legendKeys) {

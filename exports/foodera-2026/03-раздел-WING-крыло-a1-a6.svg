@@ -1,21 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="642" height="846" viewBox="0 0 642 846" font-family="DejaVu Sans, Helvetica, Arial, sans-serif">
-<rect x="0.00" y="0.00" width="642.00" height="846.00" fill="#ffffff"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="642" height="952" viewBox="0 0 642 952" font-family="DejaVu Sans, Helvetica, Arial, sans-serif">
+<rect x="0.00" y="0.00" width="642.00" height="952.00" fill="#ffffff"/>
 <polygon points="79.00,23.00 1938.00,23.00 1938.00,1123.00 79.00,1123.00" fill="#ffffff" fill-opacity="0.55" stroke="#0f2233" stroke-width="2.2"/>
 <rect x="101.00" y="155.00" width="132.00" height="70.22" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6" rx="3"/><text x="167.00" y="184.86" font-size="15.00" fill="#243b4a" font-weight="bold" text-anchor="middle">A6</text><text x="167.00" y="201.36" font-size="10.80" fill="#7b8b99" text-anchor="middle">19,15 м²</text>
 <rect x="101.00" y="234.20" width="132.00" height="74.51" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6" rx="3"/><text x="167.00" y="266.21" font-size="15.00" fill="#243b4a" font-weight="bold" text-anchor="middle">A5</text><text x="167.00" y="282.71" font-size="10.80" fill="#7b8b99" text-anchor="middle">20,32 м²</text>
 <rect x="101.00" y="317.80" width="132.00" height="83.12" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6" rx="3"/><text x="167.00" y="354.11" font-size="15.00" fill="#243b4a" font-weight="bold" text-anchor="middle">A4</text><text x="167.00" y="370.61" font-size="10.80" fill="#7b8b99" text-anchor="middle">22,67 м²</text>
 <rect x="101.00" y="410.20" width="132.00" height="93.13" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6" rx="3"/><text x="167.00" y="451.51" font-size="15.00" fill="#243b4a" font-weight="bold" text-anchor="middle">A3</text><text x="167.00" y="468.01" font-size="10.80" fill="#7b8b99" text-anchor="middle">25,4 м²</text>
-<rect x="101.00" y="511.40" width="132.00" height="96.18" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6" rx="3"/><text x="167.00" y="554.24" font-size="15.00" fill="#243b4a" font-weight="bold" text-anchor="middle">A2</text><text x="167.00" y="570.74" font-size="10.80" fill="#7b8b99" text-anchor="middle">26,23 м²</text>
-<rect x="101.00" y="617.00" width="132.00" height="100.50" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6" rx="3"/><text x="167.00" y="662.00" font-size="15.00" fill="#243b4a" font-weight="bold" text-anchor="middle">A1</text><text x="167.00" y="678.50" font-size="10.80" fill="#7b8b99" text-anchor="middle">27,41 м²</text>
+<rect x="101.00" y="617.00" width="132.00" height="96.18" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6" rx="3"/><text x="167.00" y="659.84" font-size="15.00" fill="#243b4a" font-weight="bold" text-anchor="middle">A2</text><text x="167.00" y="676.34" font-size="10.80" fill="#7b8b99" text-anchor="middle">26,23 м²</text>
+<rect x="101.00" y="722.60" width="132.00" height="100.50" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6" rx="3"/><text x="167.00" y="767.60" font-size="15.00" fill="#243b4a" font-weight="bold" text-anchor="middle">A1</text><text x="167.00" y="784.10" font-size="10.80" fill="#7b8b99" text-anchor="middle">27,41 м²</text>
 <text x="24.00" y="40.00" font-size="20.00" fill="#0f2233" font-weight="bold">Левое крыло — A1–A6 · раздел WING</text>
 <rect x="24.00" y="68.00" width="13.00" height="13.00" fill="#ffffff" stroke="#cbd6de" stroke-width="1.3" rx="3"/>
-<text x="24.00" y="97.50" font-size="12.00" fill="#7b8b99">1 стенд = 3 × 3 м = 9 м² · 1 блок = 8 стендов = 72 м² · версия плана v1.4.1 · 15.09.2026</text>
+<text x="24.00" y="97.50" font-size="12.00" fill="#7b8b99">1 стенд = 3 × 3 м = 9 м² · 1 блок = 8 стендов = 72 м² · версия плана v1.4.3 · 15.09.2026</text>
 <text x="43.00" y="78.50" font-size="11.50" fill="#44586a">Свободно: 6 · 141,18 м²</text>
 <rect x="216.45" y="68.00" width="13.00" height="13.00" fill="#fff6e0" stroke="#e0a300" stroke-width="1.3" rx="3"/>
 <text x="235.45" y="78.50" font-size="11.50" fill="#44586a">Забронировано: 0</text>
 <rect x="370.62" y="68.00" width="13.00" height="13.00" fill="#fdecea" stroke="#c62828" stroke-width="1.3" rx="3"/>
 <text x="389.62" y="78.50" font-size="11.50" fill="#44586a">Продано: 0</text>
-<text x="24.00" y="795.50" font-size="11.50" fill="#5b6b7a">FOODERA EXPO 2026 · Крытый павильон</text>
-<text x="24.00" y="813.00" font-size="11.50" fill="#5b6b7a">Итого: 6 стендов · 141,18 м² · свободно: 6 (141,18 м²)</text>
-<text x="24.00" y="830.50" font-size="11.50" fill="#93a4b2">1 стенд = 3 × 3 м = 9 м² · 1 блок = 8 стендов = 72 м² · версия плана v1.4.1</text>
+<text x="24.00" y="901.50" font-size="11.50" fill="#5b6b7a">FOODERA EXPO 2026 · Крытый павильон</text>
+<text x="24.00" y="919.00" font-size="11.50" fill="#5b6b7a">Итого: 6 стендов · 141,18 м² · свободно: 6 (141,18 м²)</text>
+<text x="24.00" y="936.50" font-size="11.50" fill="#93a4b2">1 стенд = 3 × 3 м = 9 м² · 1 блок = 8 стендов = 72 м² · версия плана v1.4.3</text>
 </svg>

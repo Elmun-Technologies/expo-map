@@ -16,6 +16,16 @@
 
   // ------------------------------------------------------------ utils
   const fmtNum = (n) => Number(n || 0).toLocaleString('ru-RU').replace(/\u00A0/g, ' ');
+  // строка «правила плана»: классическая сетка 9 м² или диапазон площадей по чертежу
+  const standRuleNote = () => {
+    if (!layout || !layout.stands) return '';
+    const uniq = [...new Set(layout.stands.map((s) => Number(s.areaM2)).filter((x) => x > 0))].sort((a, b) => a - b);
+    const byDrawing = layout.meta.enforceBlockRule === false;
+    const blockPart = byDrawing ? 'блоки повторяют разбивку чертежа' : '1 блок = 8 стендов = 72 м²';
+    if (uniq.length <= 1) return `1 стенд = 3×3 м = ${fmtNum(uniq[0] || 9)} м² · ${blockPart}`;
+    const range = uniq.length > 4 ? `${fmtNum(uniq[0])}–${fmtNum(uniq[uniq.length - 1])}` : uniq.map(fmtNum).join('/');
+    return `стенды ${range} м² (по чертежу) · базовая ячейка 3×3 м · ${blockPart}`;
+  };
   const fmtMoney = (n) => `${fmtNum(n)} сум`;
   const fmtMln = (n) => `${(Number(n || 0) / 1e6).toLocaleString('ru-RU', { maximumFractionDigits: 2 })} млн сум`;
   const fmtDate = (iso) => (iso ? new Date(iso).toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—');
@@ -69,7 +79,7 @@
     if ((layout.meta.status || 'draft') !== 'approved') {
       msgs.push(`⚠ ЧЕРНОВИК ПЛАНА (v${layout.meta.version || '?'}) — размеры не подтверждены, клиенту отправлять нельзя.`);
     }
-    const deviants = (layout.blocks || []).filter((b) => b.kind !== 'custom' && Math.abs((b.areaM2 + (b.merged || []).reduce((a, m) => a + m.w * m.h, 0)) - 72) > 0.01);
+    const deviants = (layout.blocks || []).filter((b) => b.kind !== 'custom' && layout.meta?.enforceBlockRule !== false && Math.abs((b.areaM2 + (b.merged || []).reduce((a, m) => a + m.w * m.h, 0)) - 72) > 0.01);
     if (deviants.length) {
       const some = deviants.slice(0, 4).map((b) => `${b.label} = ${fmtNum(b.areaM2)} м²`).join(', ');
       msgs.push(`ℹ Группы в этом зале отличаются от правила 72 м² (8×9): ${some}${deviants.length > 4 ? ` и ещё ${deviants.length - 4}` : ''}. Площадь и цена считаются по каждой группе.`);
@@ -82,7 +92,7 @@
       $('#draftBanner').textContent = msgs.join('  |  ');
     }
     $('#hallTitle').textContent = `${layout.meta.project} — ${layout.meta.hall}`;
-    $('#hallSub').textContent = `${layout.blocks.length} блоков · ${layout.stands.length} стендов · ${fmtNum(layout.stands.length * 9)} м² · версия плана v${layout.meta.version || '?'}`;
+    $('#hallSub').textContent = `${layout.blocks.length} блоков · ${layout.stands.length} стендов · ${fmtNum(layout.stands.reduce((a, s) => a + s.areaM2, 0))} м² · версия плана v${layout.meta.version || '?'}`;
   }
 
   async function refreshState(force) {
@@ -294,7 +304,7 @@
       chip.appendChild(tnum);
       occupied.push({ x: b.x, y: chipY, w: cw, h: chH });
       const secForChip = sectionById(b.section);
-      chip.appendChild(el('title', {}, `${label} — блок${secForChip ? ' · раздел ' + secForChip.label : ''} · ${b.stands.length} стендов × 9 м² = ${fmtNum(b.areaM2)} м². Нажмите — выберется весь блок.`));
+      chip.appendChild(el('title', {}, `${label} — блок${secForChip ? ' · раздел ' + secForChip.label : ''} · ${b.stands.length} ${plural(b.stands.length, ['стенд', 'стенда', 'стендов'])} · ${fmtNum(b.areaM2)} м². Нажмите — выберется весь блок.`));
       blockG.appendChild(chip);
 
       for (const s of b.stands) if (!bookedIds.has(s.id)) { standG.appendChild(standNode(s)); occupied.push({ x: s.x, y: s.y, w: s.w, h: s.h }); }
@@ -350,6 +360,18 @@
       && Math.min(r.y + r.h, y + h / 2) - Math.max(r.y, y - h / 2) > 0.05);
     for (const zl of (world.__zoneLabels || [])) {
       const z = zl.z;
+      // вертикальная подпись слева от зоны (например «Левое крыло A1–A6»):
+      // места внутри/сверху нет — пишем вдоль стены, текст читается снизу вверх
+      if ((z.labelPos || 'none') === 'left') {
+        const lw = ExpoGroups.textWidth(z.label, 1, true);
+        const fs = Math.max(0.75, Math.min(1.15, (z.h - 1.6) / Math.max(4, lw)));
+        const lx = z.x - 1.2, ly = z.y + z.h / 2;
+        const t = el('text', { x: lx, y: ly, fill: '#8fa0af', 'text-anchor': 'middle', 'font-weight': 'bold', transform: `rotate(-90 ${lx} ${ly})`, class: 'zone-label' }, z.label);
+        t.style.fontSize = fs + 'px';
+        lastG.appendChild(t);
+        occupied.push({ x: lx - fs, y: ly - (lw * fs) / 2 - 0.3, w: fs * 2, h: lw * fs + 0.6 });
+        continue;
+      }
       const fs = Math.max(0.7, Math.min(zlFs, (z.w - 0.8) / Math.max(4, z.label.length) / 0.62));
       const w = Math.min(z.w - 0.4, zlW(z.label));
       const cx = z.x + z.w / 2, x1 = cx - w / 2, x2 = cx + w / 2;
@@ -390,9 +412,11 @@
     } else {
       const n = items[s.id]?.buyer ? null : String(s.noLabel);
       const blockId = String(s.blockId || '');
-      // подпись на стенде: A-01 → «A1», EQ-H-03 → «H3» (как на чертеже заказчика)
+      // подпись на стенде: A-01 → «A1», EQ-H-03 → «H3» (как на чертеже заказчика);
+      // чертёжные стенды (manual) подписаны как на самом чертеже — без префикса блока
       const eq = /^EQ-([A-Z])$/.exec(blockId);
-      const num = eq ? `${eq[1]}${s.noLabel}`
+      const num = s.manual ? String(s.noLabel)
+        : eq ? `${eq[1]}${s.noLabel}`
         : blockId.includes('-') ? `${blockId.replace(/^(\w+)-(\d+)$/, '$1$2')}-${s.noLabel}`
           : `${blockId}${s.noLabel}`;
       if (n) {
@@ -437,11 +461,20 @@
     const boxes = ExpoGroups.largestRect(u.stands.map((s) => ({ x: s.x, y: s.y, w: s.w, h: s.h })), 0.25);
     const onlyMerged = u.stands.every((st) => st.mergedCell);
     const unitLabel = softLabel(u.label || STATUS_LABEL[u.status]);
-    const metaTxt = onlyMerged
-      ? `${fmtNum(u.areaM2)} м²`
+    // подпись рамки: берём самый длинный вариант, который влезает в читаемом
+    // размере (не мельче 0.55 м — иначе на экране текст не разбирается);
+    // в узких рамках остаётся только площадь, например «36 м²»
+    const metaVariants = onlyMerged
+      ? [`${fmtNum(u.areaM2)} м²`]
       : u.stands.length > 1
-        ? `${u.stands.length} стендов · ${fmtNum(u.areaM2)} м²`
-        : (Math.abs(u.areaM2 - 9) > 0.01 ? `${fmtNum(u.areaM2)} м²` : '');
+        ? [`${u.stands.length} ${plural(u.stands.length, ['стенд', 'стенда', 'стендов'])} · ${fmtNum(u.areaM2)} м²`, `${fmtNum(u.areaM2)} м²`]
+        : (Math.abs(u.areaM2 - 9) > 0.01 ? [`${fmtNum(u.areaM2)} м²`] : []);
+    let metaTxt = '';
+    let metaFs = 0;
+    for (const v of metaVariants) {
+      const f = Math.min(0.72, (boxes.w - 0.5) / ExpoGroups.textWidth(v, 1));
+      if (f >= 0.55) { metaTxt = v; metaFs = f; break; }
+    }
     const withMeta = !!metaTxt && boxes.h > 2.4;
     const fit = ExpoGroups.fitLabel(unitLabel, boxes.w - 0.6, boxes.h - (withMeta ? 1.5 : 0.5), {
       chunk: boxes.w > 6 ? 12 : 10,
@@ -456,8 +489,7 @@
     if (withMeta) {
       // подпись «4 стенда · 36 м²» — строго внутри рамки, у нижнего края
       const my = Math.min(cy + shift + fit.fs * 0.6, boxes.y + boxes.h - 0.35);
-      const mfs = Math.min(0.72, Math.max(0.55, fit.fs * 0.5), (boxes.w - 0.5) / ExpoGroups.textWidth(metaTxt, 1));
-      g.appendChild(el('text', { x: cx, y: my, class: 'unit-meta', 'font-size': mfs }, metaTxt));
+      g.appendChild(el('text', { x: cx, y: my, class: 'unit-meta', 'font-size': metaFs }, metaTxt));
     }
     g.appendChild(el('title', {}, `${u.label || 'Занято'} — ${STATUS_LABEL[u.status]} · ${u.ids.length} стендов · ${fmtNum(u.areaM2)} м²`
       + `\nСтенды: ${u.ids.join(', ')}${u.sellerName ? '\nПродавец: ' + u.sellerName : ''}${u.phone ? ' · ' + u.phone : ''}`));
@@ -589,8 +621,8 @@
     const releasable = stands.filter((s) => statusOf(s.id) !== 'free' && (isAdmin() || items[s.id]?.sellerId === seller?.id || statusOf(s.id) === 'blocked'));
     $('#btnRelease').disabled = !canAct || releasable.length === 0;
     $('#btnRelease').textContent = `Освободить${releasable.length && releasable.length < stands.length ? ` (${releasable.length})` : ''}`;
-    $('#btnReserve').textContent = free.length ? `Забронировать (${fmtNum(free.length * 9)} м²)` : 'Забронировать';
-    $('#btnSell').textContent = free.length ? `Продать (${fmtNum(free.length * 9)} м²)` : 'Продать';
+    $('#btnReserve').textContent = free.length ? `Забронировать (${fmtNum(free.reduce((a, s) => a + s.areaM2, 0))} м²)` : 'Забронировать';
+    $('#btnSell').textContent = free.length ? `Продать (${fmtNum(free.reduce((a, s) => a + s.areaM2, 0))} м²)` : 'Продать';
     if (!$('#ttl').value) $('#ttl').value = ttlDefault();
 
     // детали выбранных мест
@@ -660,13 +692,14 @@
   function renderLegend() {
     const counts = { free: 0, reserved: 0, sold: 0, blocked: 0 };
     for (const s of layout.stands) counts[statusOf(s.id)] = (counts[statusOf(s.id)] || 0) + 1;
+    // легенда — горизонтальная полоса над картой: она не должна ничего закрывать на плане
     $('#legend').innerHTML = Object.keys(STATUS_LABEL).filter((k) => counts[k] || k !== 'blocked').map((k) => `
       <div class="row">
         <span class="sw" style="background:${k === 'free' ? '#eaf6ec' : k === 'reserved' ? '#fff8e1' : k === 'sold' ? '#fdecea' : '#eceff1'};border-color:${STATUS_COLOR[k]}"></span>
         <label><input type="checkbox" data-st="${k}" ${hiddenStatuses.has(k) ? '' : 'checked'}/> ${STATUS_LABEL[k]} (${counts[k] || 0})</label>
-      </div>`).join('') + `<div class="row muted" style="font-size:11.5px">1 стенд = 3×3 м = 9 м² · 1 блок = 8 стендов = 72 м²
-        <br>Номер стенда — буква блока + номер сверху вниз: A1…A8.
-        ${layout.customStands?.length ? `<br>${layout.customStands.length} стендов нестандартной площади (A1–A6 слева) — площадь указана на плане.` : ''}</div>`;
+      </div>`).join('')
+      + `<div class="note">${standRuleNote()} · ${layout.stands.some((s) => s.manual) ? 'нумерация и размеры — по чертежу' : 'нумерация: буква блока + номер сверху вниз (A1…A8)'}`
+      + (layout.customStands?.length ? ` · ${layout.customStands.length} стендов нестандартной площади (${layout.customStands[0].id}…${layout.customStands[layout.customStands.length - 1].id}) — площадь на плане` : '') + `</div>`;
     $$('#legend input[data-st]').forEach((cb) => cb.addEventListener('change', () => {
       cb.checked ? hiddenStatuses.delete(cb.dataset.st) : hiddenStatuses.add(cb.dataset.st);
       applyFilters();
@@ -725,7 +758,7 @@
     const list = sectionStats();
     const found = list.find((x) => x.sec.id === activeSection);
     if (!found) { box.hidden = true; $('#sectionActions').hidden = true; return; }
-    const { sec, stands, free, area, freeArea, amount } = found;
+    const { sec, stands, free, area, freeArea, amount, mergedArea } = found;
     box.hidden = false;
     $('#sectionActions').hidden = CLIENT;
     const rows = list.map((r) => `<tr>
@@ -835,7 +868,7 @@
       <p style="font-size:15px"><b>${free.map((s) => s.id).join(', ')}</b></p>
       <table>
         <tr><td>Блок(и)</td><td>${blocks.join(', ')}</td></tr>
-        <tr><td>Площадь</td><td>${standsWord(free.length)} × 9 м² = ${fmtNum(area)} м²</td></tr>
+        <tr><td>Площадь</td><td>${standsWord(free.length)} = ${fmtNum(area)} м²</td></tr>
         <tr><td>Клиент</td><td>${buyer} ${$('#phone').value ? '· ' + $('#phone').value : ''}</td></tr>
         <tr><td><b>Сумма</b></td><td><b>${amount ? fmtMoney(amount) : 'цена не указана'}</b></td></tr>
       </table>
@@ -916,7 +949,7 @@
         <div class="ph-date">${new Date().toLocaleDateString('ru-RU')}</div>
       </div>
       <div class="ph-sub">
-        План залов · версия v${layout.meta.version || '?'} · 1 стенд = 3 × 3 м = 9 м² · 1 блок = 8 стендов = 72 м²${layout.meta.pricePerM2 ? ' · ' + fmtMoney(layout.meta.pricePerM2) + '/м²' : ''}
+        План залов · версия v${layout.meta.version || '?'} · ${standRuleNote()}${layout.meta.pricePerM2 ? ' · ' + fmtMoney(layout.meta.pricePerM2) + '/м²' : ''}
       </div>
       <div class="ph-sub">
         <b>Свободно: ${standsWord(by.free)} · ${fmtNum(area.free)} м²</b> ·
@@ -939,7 +972,7 @@
     const rows = layout.blocks.filter((b) => b.kind !== 'custom').map((b) => {
       const cnt = { free: 0, reserved: 0, sold: 0, blocked: 0 };
       b.stands.forEach((s) => cnt[statusOf(s.id)]++);
-      return `<tr><td>${b.id}</td><td>${b.stands.length} × 9 = ${fmtNum(b.areaM2)} м²</td><td>${cnt.free}</td><td>${cnt.reserved}</td><td>${cnt.sold}</td><td>${cnt.free ? b.stands.filter((s) => statusOf(s.id) === 'free').map((s) => s.id).join(', ') : '—'}</td></tr>`;
+      return `<tr><td>${b.id}</td><td>${b.stands.length} стенд. = ${fmtNum(b.areaM2)} м²</td><td>${cnt.free}</td><td>${cnt.reserved}</td><td>${cnt.sold}</td><td>${cnt.free ? b.stands.filter((s) => statusOf(s.id) === 'free').map((s) => s.id).join(', ') : '—'}</td></tr>`;
     }).join('');
     const secRows = sectionStats().map(({ sec, stands, free, area, freeArea }) => `<tr>
         <td>${sec.label}</td>
@@ -949,8 +982,8 @@
       </tr>`).join('');
     sheet.innerHTML = `
       <h2>${layout.meta.project} — ${layout.meta.hall} · план залов (v${layout.meta.version})</h2>
-      <p>1 стенд = 3×3 м = 9 м² · 1 блок = 8 стендов = 72 м² · Цена: ${layout.meta.pricePerM2 ? fmtMoney(layout.meta.pricePerM2) + '/м²' : '—'} · Дата: ${fmtDate(new Date().toISOString())}</p>
-      <p><b>Свободные места (${freeIds.length} стендов = ${fmtNum(freeIds.length * 9)} м²):</b> ${freeIds.join(', ') || '—'}</p>
+      <p>${standRuleNote()} · Цена: ${layout.meta.pricePerM2 ? fmtMoney(layout.meta.pricePerM2) + '/м²' : '—'} · Дата: ${fmtDate(new Date().toISOString())}</p>
+      <p><b>Свободные места (${freeIds.length} ${plural(freeIds.length, ['стенд', 'стенда', 'стендов'])} = ${fmtNum(freeIds.reduce((a, id) => a + (layout.stands.find((s) => s.id === id)?.areaM2 || 0), 0))} м²):</b> ${freeIds.join(', ') || '—'}</p>
       <table>
         <thead><tr><th>Блок</th><th>Площадь</th><th>Свободно</th><th>Бронь</th><th>Продано</th><th>ID свободных стендов</th></tr></thead>
         <tbody>${rows}</tbody>

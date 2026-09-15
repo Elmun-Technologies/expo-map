@@ -18,7 +18,7 @@
 <text x="200.00" y="193.84" font-size="15.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">AKULA</text>
 <text x="24.00" y="40.00" font-size="20.00" fill="#0f2233" font-weight="bold">Рыба и морепродукты (2) · раздел I</text>
 <rect x="24.00" y="68.00" width="13.00" height="13.00" fill="#ffffff" stroke="#cbd6de" stroke-width="1.3" rx="3"/>
-<text x="24.00" y="97.50" font-size="12.00" fill="#7b8b99">1 стенд = 3 × 3 м = 9 м² · 1 блок = 8 стендов = 72 м² · версия плана v1.4.1 · 15.09.2026</text>
+<text x="24.00" y="97.50" font-size="12.00" fill="#7b8b99">1 стенд = 3 × 3 м = 9 м² · 1 блок = 8 стендов = 72 м² · версия плана v1.4.3 · 15.09.2026</text>
 <text x="43.00" y="78.50" font-size="11.50" fill="#44586a">Свободно: 3 · 27 м²</text>
 <rect x="189.67" y="68.00" width="13.00" height="13.00" fill="#fff6e0" stroke="#e0a300" stroke-width="1.3" rx="3"/>
 <text x="208.67" y="78.50" font-size="11.50" fill="#44586a">Забронировано: 0</text>
@@ -26,5 +26,5 @@
 <text x="362.84" y="78.50" font-size="11.50" fill="#44586a">Продано: 5 · 45 м²</text>
 <text x="24.00" y="497.50" font-size="11.50" fill="#5b6b7a">FOODERA EXPO 2026 · Крытый павильон</text>
 <text x="24.00" y="515.00" font-size="11.50" fill="#5b6b7a">Итого: 8 стендов · 72 м² · свободно: 3 (27 м²)</text>
-<text x="24.00" y="532.50" font-size="11.50" fill="#93a4b2">1 стенд = 3 × 3 м = 9 м² · 1 блок = 8 стендов = 72 м² · версия плана v1.4.1</text>
+<text x="24.00" y="532.50" font-size="11.50" fill="#93a4b2">1 стенд = 3 × 3 м = 9 м² · 1 блок = 8 стендов = 72 м² · версия плана v1.4.3</text>
 </svg>
