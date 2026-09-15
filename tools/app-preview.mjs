@@ -42,6 +42,18 @@ window.eval(fs.readFileSync(path.join(ROOT, 'app/groups.js'), 'utf8'));
 window.eval(fs.readFileSync(path.join(ROOT, 'app/app.js'), 'utf8'));
 await wait(2500);
 
+// — проверяем также печатную шапку (то, что уходит на бумагу/в PDF)
+if (process.argv.includes('--print')) {
+  const w2 = window;
+  w2.dispatchEvent(new w2.Event('beforeprint'));
+  const head = w2.document.querySelector('#printHead');
+  const text = head ? head.textContent.replace(/\s+/g, ' ').trim() : '(нет #printHead)';
+  const sheet = w2.document.querySelector('#printSheet');
+  console.log('── печатная шапка: ' + text);
+  console.log('── таблицы на листе: ' + (sheet ? sheet.querySelectorAll('table').length : 0) + ' шт., body.print-tables = ' + w2.document.body.classList.contains('print-tables'));
+  console.log('── контур листа: ' + w2.document.querySelector('#printHead').children.length + ' блока(ов)');
+}
+
 const svg = window.document.querySelector('#map');
 if (!svg || !svg.querySelectorAll('.stand, .booking-unit').length) {
   console.error('✗ карта не отрисовалась'); srv.kill('SIGKILL'); process.exit(1);

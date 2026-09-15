@@ -198,6 +198,18 @@ for (const old of ['00-IZOH.txt', '04-kompaniyalar.csv', '05-bosh-joylar.csv', '
   if (fs.existsSync(p)) fs.rmSync(p);
 }
 
+// ---- проверка чистоты: ни одна подпись не должна наезжать на другую
+{
+  const { spawnSync } = await import('node:child_process');
+  const checker = path.join(ROOT, 'tools/check-overlaps.mjs');
+  let bad = 0;
+  for (const f of made.filter((x) => x.endsWith('.svg'))) {
+    const r = spawnSync('node', [checker, f], { cwd: ROOT, encoding: 'utf8' });
+    if (r.status !== 0) { bad++; process.stdout.write(r.stdout || ''); }
+  }
+  console.log(bad ? `\n⚠ Наложения подписей: ${bad} файл(ов) — см. выше` : '\n✓ Проверка чистоты: наложений подписей нет');
+}
+
 console.log('\nФайлы:');
 for (const f of made) console.log(`  ${path.relative(ROOT, f)}`);
 console.log(`\n✓ Пакет готов: ${path.relative(ROOT, outDir)} (${made.length} файлов)\n`);

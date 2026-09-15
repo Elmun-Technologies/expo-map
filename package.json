@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Ekspo zali xaritasi va sotuv paneli — 1 stend = 3x3 m = 9 m², 1 blok = 8 stend = 72 m²",
+  "description": "Карта экспо-зала и панель продаж — 1 стенд = 3×3 м = 9 м², 1 блок = 8 стендов = 72 м²",
   "scripts": {
     "start": "node server.mjs",
     "validate": "node tools/validate-layout.mjs layout/hall-A.json",

@@ -35,7 +35,7 @@ const opt = (name, def) => {
   return v && !v.startsWith('--') ? v : true;
 };
 const file = args.find((a) => !a.startsWith('--') && !['apply', 'ttl', 'user', 'pin', 'seller', 'out'].includes(a));
-if (!file) { console.error('Ishlatish: node tools/import-bookings.mjs <band.csv> [--apply] [--ttl 48] [--user "Menejer" --pin 9999]'); process.exit(2); }
+if (!file) { console.error('Использование: node tools/import-bookings.mjs <занятые.csv> [--apply] [--ttl 48] [--user "Menejer" --pin 9999]'); process.exit(2); }
 const apply = args.includes('--apply');
 const ttlHours = Number(opt('ttl', 0)) || undefined;
 const userName = String(opt('user', 'Menejer'));
@@ -72,7 +72,7 @@ header.forEach((h, i) => {
   for (const [field, names] of Object.entries(ALIAS)) if (names.includes(key)) col[field] = i;
 });
 if (col.target == null || col.status == null) {
-  console.error(`✗ CSV'da "Blok/Stend" va "Holat" ustunlari bo'lishi shart.\n  Topilgan sarlavha: ${header.join(' | ')}`);
+  console.error(`✗ в CSV обязательны колонки «Blok/Stend» и «Holat».\n  Найденный заголовок: ${header.join(' | ')}`);
   process.exit(1);
 }
 const get = (r, f) => (col[f] == null ? '' : (r[col[f]] ?? ''));
@@ -153,23 +153,23 @@ for (const [i, r] of rows.entries()) {
 
 // ---------------------------------------------------------------- ko'rsatish
 const actName = { sell: 'SOTISH', reserve: 'BRON', release: "BO'SHATISH", block: 'BLOKLASH' };
-console.log(`\n${apply ? '▶ YUKLANADI' : 'ℹ TEKSHIRUV (dry-run)'} — ${path.basename(file)} · ${plan.length} qator\n`);
-console.log('  Blok/Stend     Tur   Amal        Stend  m²     Kompaniya / mijoz              Summa');
+console.log(`\n${apply ? '▶ ЗАГРУЗКА' : 'ℹ ПРОВЕРКА (dry-run)'} — ${path.basename(file)} · строк ${plan.length}\n`);
+console.log('  Блок/Стенд     Тип   Действие    Стендов  м²     Компания / клиент              Сумма');
 for (const p of plan) {
   const area = p.ids.reduce((a, id) => a + (standsById.get(id)?.areaM2 || 0), 0);
   const amt = p.amount ?? (area * (layout.meta.pricePerM2 || 0));
   console.log(`  ${p.target.padEnd(14)} ${p.kind.padEnd(5)} ${actName[p.action].padEnd(11)} ${String(p.ids.length).padStart(4)}  ${String(area).padStart(6)}  ${(p.buyer || '—').padEnd(28)} ${amt ? amt.toLocaleString('ru-RU') : ''}`);
 }
 if (problems.length) {
-  console.log(`\n⚠ ${problems.length} ta muammoli qator (yuklanmaydi):`);
+  console.log(`\n⚠ проблемных строк: ${problems.length} (не загружаются):`);
   for (const p of problems) console.log('   • ' + p);
 }
 const totalArea = plan.filter((p) => p.action !== 'release').reduce((a, p) => a + p.ids.reduce((x, id) => x + (standsById.get(id)?.areaM2 || 0), 0), 0);
 const totalAmount = plan.filter((p) => p.action !== 'release').reduce((a, p) => a + (p.amount ?? p.ids.reduce((x, id) => x + (standsById.get(id)?.areaM2 || 0) * (layout.meta.pricePerM2 || 0), 0)), 0);
-console.log(`\nJami: ${plan.filter((p) => p.action !== 'release').reduce((a, p) => a + p.ids.length, 0)} stend · ${totalArea.toFixed(2)} m² · ${totalAmount.toLocaleString('ru-RU')} so'm`);
+console.log(`\nИтого: ${plan.filter((p) => p.action !== 'release').reduce((a, p) => a + p.ids.length, 0)} стендов · ${totalArea.toFixed(2)} м² · ${totalAmount.toLocaleString('ru-RU')} сум`);
 
 if (!apply) {
-  console.log('\nYuklash uchun: node tools/import-bookings.mjs ' + path.basename(file) + ' --apply');
+  console.log('\nДля загрузки: node tools/import-bookings.mjs ' + path.basename(file) + ' --apply');
   process.exit(problems.length && !plan.length ? 1 : 0);
 }
 
@@ -182,8 +182,8 @@ for (const p of plan) {
   if (p.action === 'reserve' && ttlHours) body.ttlHours = ttlHours;
   const r = await fetch(BASE + '/api/action', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token }, body: JSON.stringify(body) });
   const j = await r.json();
-  if (r.ok) { ok++; console.log(`✓ ${p.target}: ${actName[p.action]} ${p.ids.length} stend${p.buyer ? ' · ' + p.buyer : ''}`); }
+  if (r.ok) { ok++; console.log(`✓ ${p.target}: ${actName[p.action]} ${p.ids.length} стендов${p.buyer ? ' · ' + p.buyer : ''}`); }
   else { fail++; console.log(`✗ ${p.target}: ${j.message || r.status}`); }
 }
-console.log(`\n${ok} qator yuklandi, ${fail} xato.${problems.length ? ` ${problems.length} qator o'tkazib yuborildi.` : ''}`);
-console.log('Jurnal: data/audit.log (har bir amal yozildi)');
+console.log(`\nзагружено строк: ${ok}, ошибок: ${fail}.${problems.length ? ` Пропущено строк: ${problems.length}.` : ''}`);
+console.log('Журнал: data/audit.log (записано каждое действие)');

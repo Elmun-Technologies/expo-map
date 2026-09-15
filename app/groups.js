@@ -1,17 +1,17 @@
 /*
- * Band joylarni BIRLASHTIRISH.
+ * ОБЪЕДИНЕНИЕ занятых мест.
  *
- * Qoida (mijoz talabi): bitta kompaniya nechta stend olsa (9, 18, 36 m² yoki butun blok) —
- * xaritada ular alohida yacheykalar emas, BITTA umumiy quti bo'lib ko'rinadi va
- * kompaniya nomi o'sha qutining ichida yoziladi.
+ * Правило (требование клиента): сколько бы стендов ни заняла одна компания
+ * (9, 18, 36 м² или целый блок) — на плане это не отдельные ячейки, а ОДНА общая
+ * рамка, и название компании пишется внутри неё.
  *
- * Guruh = bir xil mijoz (kompaniya) + bir xil holat (bron/sotilgan) + qirra bilan
- * tutashib turgan stendlar. Mijoz ro'yxatda bo'lmasa (bo'sh stend) — guruh yo'q.
+ * Группа = один клиент (компания) + один статус (бронь/продано) + стенды,
+ * примыкающие друг к другу сторонами. Если клиента нет (стенд свободен) — группы нет.
  *
- * Bu fayl ikki joyda ishlatiladi:
- *   - brauzer: app/index.html → <script src="./groups.js"> (window.ExpoGroups)
- *   - Node:    lib/groups.mjs orqali (export-svg, package, server)
- * Shuning uchun bu yerda faqat sof hisob-kitob, hech qanday DOM ishlatilmaydi.
+ * Файл используется в двух местах:
+ *   - браузер: app/index.html → <script src="./groups.js"> (window.ExpoGroups)
+ *   - Node:    через lib/groups.mjs (export-svg, package, server)
+ * Поэтому здесь только чистые вычисления, без DOM.
  */
 (function (root) {
   'use strict';
@@ -19,7 +19,7 @@
   const r3 = (v) => Math.round(v * 1000) / 1000;
   const span = (a1, a2, b1, b2) => Math.min(a2, b2) - Math.max(a1, b1);
 
-  /** Ikki to'rtburchak qirra bilan tutashib turadimi (burchak bilan emas). */
+  /** Примыкают ли два прямоугольника сторонами (не углами). */
   function touches(a, b) {
     const vOverlap = span(a.y, a.y + a.h, b.y, b.y + b.h) > EPS;
     const hOverlap = span(a.x, a.x + a.w, b.x, b.x + b.w) > EPS;
@@ -31,10 +31,10 @@
   const unitKey = (it) => `${it.status}|${String(it.company || it.buyer || '').trim().toLowerCase()}`;
 
   /**
-   * Band stendlarni guruhlarga ajratadi.
+   * Раскладывает занятые стенды по группам.
    * @param {Array} stands — layout.stands (id, x, y, w, h, areaM2, blockId, section, ...)
    * @param {Object} items — standId -> {status, buyer, company, phone, ...}
-   * @returns {Array} guruhlar: {ids, stands, x, y, w, h, areaM2, label, status, ...}
+   * @returns {Array} группы: {ids, stands, x, y, w, h, areaM2, label, status, ...}
    */
   function groupBookings(stands, items) {
     const booked = stands.filter((s) => items[s.id] && items[s.id].status && items[s.id].status !== 'free');
@@ -89,8 +89,8 @@
   }
 
   /**
-   * Kataklar birlashmasining TASHQI konturi (bitta yopiq ko'p qirrali chiziq).
-   * Ichki qirralar yo'qoladi — natijada bitta quti chiziladi.
+   * ВНЕШНИЙ контур объединённых ячеек (один замкнутый многоугольник).
+   * Внутренние границы исчезают — получается одна рамка.
    * @returns {string} SVG path ("M…Z")
    */
   function unionPath(cells) {
@@ -141,9 +141,9 @@
   }
 
   /**
-   * Birlashma ichidagi ENG KATTA to'g'ri to'rtburchak — nom shu yerga yoziladi
-   * (L shaklidagi guruhlarda nom yonidagi bo'sh yacheykaga chiqib ketmasligi uchun).
-   * 0.25 m qadam bilan hisoblanadi.
+   * НАИБОЛЬШИЙ прямоугольник внутри объединения — сюда пишется название
+   * (чтобы в Г-образных группах имя не вылезало в соседнюю пустую ячейку).
+   * Считается с шагом 0,25 м.
    */
   function largestRect(cells, step) {
     if (!cells.length) return { x: 0, y: 0, w: 0, h: 0, area: 0 };
@@ -183,8 +183,8 @@
   }
 
   /**
-   * Layout'dagi "birlashtirilgan kataklar" (kompaniya bir necha stendni birlashtirgan)
-   * ham xuddi stend kabi guruhlanadi — natijada bitta quti, bitta nom.
+   * «Объединённые ячейки» схемы (компания объединила несколько стендов)
+   * группируются так же, как обычные стенды — одна рамка, одно название.
    */
   function mergedAsStands(blocks) {
     const stands = [], items = {};
@@ -200,10 +200,10 @@
   }
 
   /**
-   * Matn kengligi (em birliklarida) — DejaVu Sans / Arial o'rtacha ko'rsatkichlari.
-   * Nega kerak: yorliqlar bir-birini bosmasligi uchun matn kengligini OLDINDAN
-   * aniq bilish shart (eski "0.6 × belgilar soni" taxmini kirillcha matnda
-   * kichik chiqib, yozuvlar ustma-ust tushardi).
+   * Ширина текста (в единицах em) — средние показатели DejaVu Sans / Arial.
+   * Зачем: чтобы подписи не наезжали друг на друга, ширину текста нужно знать
+   * ЗАРАНЕЕ (прежняя оценка «0,6 × число символов» занижала кириллицу,
+   * и надписи накладывались).
    */
   const NARROW = /[ijltfrI.,:;!|'"`()[\]{}\-–—•·]/;
   const WIDE = /[mwMWШЩшщюЮМФ]/;
@@ -216,7 +216,7 @@
     if (UPPER.test(ch)) return 0.7;
     return 0.56;
   }
-  /** Matnning piksel (yoki SVG user-unit) kengligi. bold=true bo'lsa 5% qo'shiladi. */
+  /** Ширина текста в пикселях (или единицах SVG). При bold=true добавляется 5 %. */
   function textWidth(text, fs, bold) {
     const s = String(text ?? '');
     let w = 0;
@@ -224,7 +224,7 @@
     return w * fs * (bold ? 1.05 : 1) + s.length * fs * 0.02;
   }
 
-  /** Matnni berilgan kenglik/balandlikka sig'adigan qatorlarga bo'ladi va shrift o'lchamini tanlaydi. */
+  /** Разбивает текст на строки под заданную ширину/высоту и подбирает размер шрифта. */
   function fitText(text, maxW, maxH, o) {
     const opt = o || {};
     const minFs = opt.minFs || 0.7;

@@ -41,7 +41,9 @@
     <button class="btn" id="zoomIn" title="Увеличить">+</button>
     <button class="btn" id="zoomFit" title="Показать весь зал">Весь зал</button>
     <button class="btn" id="clientMode" title="Режим для клиента">Вид для клиента</button>
-    <button class="btn" id="printBtn">Печать / PDF</button>
+    <button class="btn" id="printBtn" title="Одна страница A3: только план зала">Печать плана</button>
+    <button class="btn" id="pdfBtn" title="Скачать готовый PDF-файл (A3, одна страница)" hidden>Скачать PDF</button>
+    <label class="chk" title="Печатать таблицы: блоки, компании, разделы"><input type="checkbox" id="printTables" /> с таблицами</label>
     <span class="who" id="who"></span>
     <button class="btn ghost" id="logoutBtn">Выход</button>
   </div>
@@ -70,7 +72,7 @@
       <g id="world"></g>
     </svg>
     <div class="legend" id="legend"></div>
-    <p class="map-note">План строится автоматически из <code>layout/*.json</code>. Одна компания — <b>одна рамка</b>, название внутри. Всё на русском языке.</p>
+    <p class="map-note">План строится автоматически из <code>layout/*.json</code>. Одна компания — <b>одна рамка</b>, название внутри.</p>
   </section>
 
   <aside class="panel">

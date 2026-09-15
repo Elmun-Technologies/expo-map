@@ -18,7 +18,7 @@ import tempfile
 
 FONT_DIR = '/usr/share/fonts/truetype/dejavu'
 FONT_FILES = {
-    # SVG'dagi nom -> TTF fayl
+    # имя шрифта в SVG -> файл TTF
     'DejaVuSans': 'DejaVuSans.ttf',
     'DejaVuSansBold': 'DejaVuSans-Bold.ttf',
     'DejaVuSans-Bold': 'DejaVuSans-Bold.ttf',
@@ -55,10 +55,10 @@ def inline_font_family(svg):
     return re.sub(r'<text\b[^>]*>', fix, svg)
 
 
-# svglib bu versiyada bold matnni topa olmaydi va 'Helvetica' ga tushib qoladi.
-# Shuning uchun chizma ichidagi shrift nomlarini o'zimiz tuzatamiz.
+# svglib в этой версии не находит bold-шрифт и подменяет его на 'Helvetica'.
+# Поэтому имена шрифтов внутри SVG правим сами.
 FONT_MAP = {
-    'Helvetica': 'DejaVuSans-Bold',      # bold matn shu yerga tushadi
+    'Helvetica': 'DejaVuSans-Bold',      # сюда попадает весь жирный текст
     'Helvetica-Bold': 'DejaVuSans-Bold',
     'Helvetica-Oblique': 'DejaVuSans',
     'DejaVuSansBold': 'DejaVuSans-Bold',

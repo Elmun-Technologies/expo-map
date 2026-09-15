@@ -22,7 +22,7 @@
     "currency": "UZS",
     "pricePerM2": 1250000,
     "reserveTtlHours": 72,
-    "source": "FOODERA EXPO 2026 расми — разделы и разметка (по плану зала)",
+    "source": "Чертёж FOODERA EXPO 2026 — разделы и разметка (по плану зала)",
     "note": "План зала: 3 ряда блоков (A–F, G–L, M–R) · 1 блок = 8 стендов × 9 м² = 72 м² · линия оборудования + левое крыло A1–A6"
   },
   "hall": {
@@ -177,13 +177,13 @@
       "x": 10,
       "y": 0.2,
       "w": 52.5,
-      "h": 4.2,
+      "h": 4.0,
       "kind": "equipment",
       "labelPos": "none"
     },
     {
       "id": "top",
-      "label": "1-й ряд",
+      "label": "Ряд 1: разделы A–F",
       "color": "#f6f9fc",
       "x": 10.5,
       "y": 6.4,
@@ -194,7 +194,7 @@
     },
     {
       "id": "mid",
-      "label": "2-й ряд",
+      "label": "Ряд 2: разделы G–L",
       "color": "#f7fbf7",
       "x": 10.5,
       "y": 20.4,
@@ -205,7 +205,7 @@
     },
     {
       "id": "bottom",
-      "label": "3-й ряд",
+      "label": "Ряд 3: разделы M–R",
       "color": "#f6f9fc",
       "x": 10.5,
       "y": 34.4,
@@ -216,7 +216,7 @@
     },
     {
       "id": "wing",
-      "label": "Левое крыло",
+      "label": "Левое крыло A1–A6",
       "color": "#fff6e5",
       "x": 0.5,
       "y": 5,
@@ -479,7 +479,7 @@
       "cols": 2,
       "rows": 4,
       "section": "A",
-      "group": "1-qator",
+      "group": "Ряд 1 (A–F)",
       "color": "#E8A33D"
     },
     {
@@ -490,7 +490,7 @@
       "cols": 2,
       "rows": 4,
       "section": "B",
-      "group": "1-qator",
+      "group": "Ряд 1 (A–F)",
       "color": "#2E8B8B"
     },
     {
@@ -501,7 +501,7 @@
       "cols": 2,
       "rows": 4,
       "section": "C",
-      "group": "1-qator",
+      "group": "Ряд 1 (A–F)",
       "color": "#3E7BB6"
     },
     {
@@ -512,7 +512,7 @@
       "cols": 2,
       "rows": 4,
       "section": "D",
-      "group": "1-qator",
+      "group": "Ряд 1 (A–F)",
       "color": "#B8860B"
     },
     {
@@ -523,7 +523,7 @@
       "cols": 2,
       "rows": 4,
       "section": "E",
-      "group": "1-qator",
+      "group": "Ряд 1 (A–F)",
       "color": "#3E9B5F"
     },
     {
@@ -534,7 +534,7 @@
       "cols": 2,
       "rows": 4,
       "section": "F",
-      "group": "1-qator",
+      "group": "Ряд 1 (A–F)",
       "color": "#9B59B6"
     },
     {
@@ -545,7 +545,7 @@
       "cols": 2,
       "rows": 4,
       "section": "G",
-      "group": "2-qator",
+      "group": "Ряд 2 (G–L)",
       "color": "#C96F2B"
     },
     {
@@ -556,7 +556,7 @@
       "cols": 2,
       "rows": 4,
       "section": "H",
-      "group": "2-qator",
+      "group": "Ряд 2 (G–L)",
       "color": "#C0553E"
     },
     {
@@ -567,7 +567,7 @@
       "cols": 2,
       "rows": 4,
       "section": "I",
-      "group": "2-qator",
+      "group": "Ряд 2 (G–L)",
       "color": "#3E7BB6"
     },
     {
@@ -578,7 +578,7 @@
       "cols": 2,
       "rows": 4,
       "section": "J",
-      "group": "2-qator",
+      "group": "Ряд 2 (G–L)",
       "color": "#2A9D8F"
     },
     {
@@ -589,7 +589,7 @@
       "cols": 2,
       "rows": 4,
       "section": "K",
-      "group": "2-qator",
+      "group": "Ряд 2 (G–L)",
       "color": "#9B59B6"
     },
     {
@@ -600,7 +600,7 @@
       "cols": 2,
       "rows": 4,
       "section": "L",
-      "group": "2-qator",
+      "group": "Ряд 2 (G–L)",
       "color": "#C96F2B"
     },
     {
@@ -611,7 +611,7 @@
       "cols": 2,
       "rows": 4,
       "section": "M",
-      "group": "3-qator",
+      "group": "Ряд 3 (M–R)",
       "color": "#2A9D8F"
     },
     {
@@ -622,7 +622,7 @@
       "cols": 2,
       "rows": 4,
       "section": "N",
-      "group": "3-qator",
+      "group": "Ряд 3 (M–R)",
       "color": "#C0553E"
     },
     {
@@ -633,7 +633,7 @@
       "cols": 2,
       "rows": 4,
       "section": "O",
-      "group": "3-qator",
+      "group": "Ряд 3 (M–R)",
       "color": "#D2691E"
     },
     {
@@ -644,7 +644,7 @@
       "cols": 2,
       "rows": 4,
       "section": "P",
-      "group": "3-qator",
+      "group": "Ряд 3 (M–R)",
       "color": "#C2185B"
     },
     {
@@ -655,7 +655,7 @@
       "cols": 2,
       "rows": 4,
       "section": "Q",
-      "group": "3-qator",
+      "group": "Ряд 3 (M–R)",
       "color": "#5E7A8C"
     },
     {
@@ -666,29 +666,29 @@
       "cols": 2,
       "rows": 4,
       "section": "R",
-      "group": "3-qator",
+      "group": "Ряд 3 (M–R)",
       "color": "#7A6C4F"
     },
     {
       "id": "EQ-1",
       "label": "EQ-1",
       "x": 11,
-      "y": 1.4,
+      "y": 0.8,
       "cols": 8,
       "rows": 1,
       "section": "EQ",
-      "group": "Uskunalar qatori",
+      "group": "Линия оборудования",
       "color": "#2E8B8B"
     },
     {
       "id": "EQ-2",
       "label": "EQ-2",
       "x": 37,
-      "y": 1.4,
+      "y": 0.8,
       "cols": 8,
       "rows": 1,
       "section": "EQ",
-      "group": "Uskunalar qatori",
+      "group": "Линия оборудования",
       "color": "#2E8B8B"
     }
   ]

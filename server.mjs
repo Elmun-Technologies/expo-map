@@ -1,19 +1,21 @@
 #!/usr/bin/env node
 /**
- * Ekspo xarita serveri — bog'liqliksiz (faqat Node standart kutubxonasi).
+ * Сервер экспо-карты — без внешних зависимостей (только стандартная библиотека Node).
  *
  * Задачи:
- *   - layout'ni yuklaydi va VALIDATSIYADAN o'tkazadi (o'tmasa server ko'tarilmaydi);
- *   - barcha sotuvchilar uchun YAGONA holatni (state) saqlaydi;
- *   - bron / sotuv / bo'shatish amallarini atomik bajaradi va jurnalga yozadi.
+ *   - загружает схему и ПРОВЕРЯЕТ её (без проверки сервер не поднимается);
+ *   - хранит ЕДИНОЕ состояние (state) для всех продавцов;
+ *   - атомарно выполняет бронь / продажу / освобождение и пишет их в журнал.
  *
- * Ishga tushirish:  node server.mjs        (PORT=4173, LAYOUT=layout/hall-A.json)
+ * Запуск:  node server.mjs        (PORT=4173, LAYOUT=layout/foodera-2026.json)
  */
 import http from 'node:http';
 import fs from 'node:fs';
 import fsp from 'node:fs/promises';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import os from 'node:os';
+import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { expandLayout, validateLayout } from './lib/layout.mjs';
 
@@ -22,12 +24,20 @@ const PORT = Number(process.env.PORT || 4173);
 const HOST = process.env.HOST || '0.0.0.0';
 const LAYOUT_PATH = path.resolve(ROOT, process.env.LAYOUT || 'layout/foodera-2026.json');
 const DATA_DIR = path.join(ROOT, 'data');
-// test/sinov uchun alohida holat fayli: STATE=data/state-test.json
+// отдельный файл состояния для тестов: STATE=data/state-test.json
 const STATE_FILE = process.env.STATE ? path.resolve(ROOT, process.env.STATE) : path.join(DATA_DIR, 'state.json');
 const AUDIT_FILE = process.env.STATE ? STATE_FILE + '.audit.log' : path.join(DATA_DIR, 'audit.log');
 const SELLERS_FILE = path.join(DATA_DIR, 'sellers.json');
 const SELLERS_EXAMPLE = path.join(DATA_DIR, 'sellers.example.json');
 const APP_DIR = path.join(ROOT, 'app');
+
+/** Есть ли на машине python3 + reportlab/svglib — тогда кнопка «Скачать PDF» работает. */
+const PDF_EXPORT = (() => {
+  try {
+    const r = spawnSync('python3', ['-c', 'import reportlab, svglib'], { stdio: 'ignore', timeout: 8000 });
+    return r.status === 0;
+  } catch { return false; }
+})();
 
 // ---------------------------------------------------------------- layout
 const rawLayout = JSON.parse(fs.readFileSync(LAYOUT_PATH, 'utf8'));
@@ -95,7 +105,7 @@ function audit(entry) {
   fs.appendFileSync(AUDIT_FILE, JSON.stringify(entry) + '\n');
 }
 
-/** Muddati o'tgan bronlarni bo'shatish. */
+/** Снимает истёкшие брони. */
 function expire() {
   const now = Date.now();
   let changed = 0;
@@ -205,7 +215,7 @@ function applyAction(sess, body) {
   }
 
   const ttlHours = Number(body.ttlHours || ttlDefault);
-  // Bitta kompaniya nechta joy olsa — bitta guruh (xaritada ham, boshqaruvda ham bitta quti).
+  // Сколько бы мест ни заняла одна компания — это одна группа (одна рамка и на плане, и в списке).
   // Yonma-yon tushgan joylar avtomatik shu guruhga qo'shiladi.
   const buyerKey = (company || buyer).trim().toLowerCase();
   const adj = (a, b) => {
@@ -271,7 +281,7 @@ const server = http.createServer(async (req, res) => {
   const p = url.pathname;
 
   try {
-    if (p === '/api/healthz') return send(res, 200, { ok: true, revision: state.revision });
+    if (p === '/api/healthz') return send(res, 200, { ok: true, revision: state.revision, pdf: PDF_EXPORT, layout: rawLayout.meta?.version || null });
 
     if (p === '/api/login' && req.method === 'POST') {
       const b = await readBody(req);
@@ -342,6 +352,26 @@ const server = http.createServer(async (req, res) => {
       return send(res, 200, '\uFEFF' + csv, 'text/csv; charset=utf-8');
     }
 
+    if (p === '/api/export/pdf' && req.method === 'GET') {
+      const page = String(url.searchParams.get('page') || 'A3').toUpperCase();
+      if (!PDF_EXPORT) return send(res, 503, { error: 'no_pdf', message: 'На сервере нет python3 + reportlab — используйте «Печать плана» (Сохранить как PDF).' });
+      const tmp = await fsp.mkdtemp(path.join(os.tmpdir(), 'expo-pdf-'));
+      const svgPath = path.join(tmp, 'plan.svg'), pdfPath = path.join(tmp, 'plan.pdf');
+      const svgRun = spawnSync('node', [path.join(ROOT, 'tools/export-svg.mjs'), '--map', '--out', svgPath], { cwd: ROOT, encoding: 'utf8' });
+      if (svgRun.status !== 0) { console.error(svgRun.stderr); return send(res, 500, { error: 'svg_failed', message: (svgRun.stderr || '').split('\n')[0] }); }
+      const pyRun = spawnSync('python3', [path.join(ROOT, 'tools/export-pdf.py'), svgPath, pdfPath, '--page', page], { cwd: ROOT, encoding: 'utf8' });
+      if (pyRun.status !== 0) { console.error(pyRun.stderr); return send(res, 500, { error: 'pdf_failed', message: (pyRun.stderr || '').split('\n')[0] }); }
+      const buf = await fsp.readFile(pdfPath);
+      const fname = `FOODERA-EXPO-2026-plan-${page}.pdf`;
+      res.writeHead(200, {
+        'Content-Type': 'application/pdf',
+        'Content-Disposition': `attachment; filename="${fname}"`,
+        'Content-Length': buf.length,
+        'Cache-Control': 'no-store',
+      });
+      return res.end(buf);
+    }
+
     if (p.startsWith('/api/')) return send(res, 404, { error: 'not_found', path: p });
     return serveStatic(res, p);
   } catch (e) {
@@ -352,5 +382,6 @@ const server = http.createServer(async (req, res) => {
 
 server.listen(PORT, HOST, () => {
   console.log(`\n🚀 Панель продаж: http://localhost:${PORT}  (0.0.0.0:${PORT})`);
-  console.log(`   1 стенд = 9 м² · 1 блок = 8 стендов = 72 м² · цена ${pricePerM2.toLocaleString('ru-RU')} сум/м²\n`);
+  console.log(`   1 стенд = 9 м² · 1 блок = 8 стендов = 72 м² · цена ${pricePerM2.toLocaleString('ru-RU')} сум/м²`);
+  console.log(PDF_EXPORT ? '   PDF-экспорт: /api/export/pdf (кнопка «Скачать PDF» в панели)\n' : '   PDF-экспорт недоступен (нет python3 + reportlab) — работает «Печать плана»\n');
 });

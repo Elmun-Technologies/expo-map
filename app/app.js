@@ -19,6 +19,15 @@
   const fmtMoney = (n) => `${fmtNum(n)} сум`;
   const fmtMln = (n) => `${(Number(n || 0) / 1e6).toLocaleString('ru-RU', { maximumFractionDigits: 2 })} млн сум`;
   const fmtDate = (iso) => (iso ? new Date(iso).toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—');
+  /** Русское склонение: 1 стенд · 2 стенда · 5 стендов. */
+  const plural = (n, forms) => {
+    const v = Math.abs(Number(n) || 0) % 100, d = v % 10;
+    if (v > 10 && v < 20) return forms[2];
+    if (d === 1) return forms[0];
+    if (d >= 2 && d <= 4) return forms[1];
+    return forms[2];
+  };
+  const standsWord = (n) => `${fmtNum(n)} ${plural(n, ['стенд', 'стенда', 'стендов'])}`;
   const statusOf = (id) => items[id]?.status || 'free';
   const STATUS_LABEL = { free: 'Свободно', reserved: 'Забронировано', sold: 'Продано', blocked: 'Блокировано' };
   const STATUS_COLOR = { free: '#2e7d32', reserved: '#f59e0b', sold: '#c62828', blocked: '#607d8b' };
@@ -82,7 +91,7 @@
     revision = s.revision;
     items = s.items || {};
     if (changed) {
-      // tanlovdagi joy band bo'lib qolgan bo'lsa — ogohlantiramiz
+      // если место из выборки уже занято — предупреждаем
       if (selection.size) {
         const taken = [...selection].filter((id) => statusOf(id) !== 'free');
         if (taken.length) {
@@ -156,7 +165,7 @@
     const { width: W, height: H } = layout.hall;
     pad = Math.max(3, W * 0.04);
     $('#map').setAttribute('viewBox', `${-pad} ${-pad} ${W + pad * 2} ${H + pad * 2}`);
-    // chop etishda xarita varaqni TO'LIQ to'ldirishi uchun nisbat (kenglik/balandlik)
+    // пропорция (ширина/высота) — чтобы при печати карта заполняла лист ЦЕЛИКОМ
     $('#map').style.setProperty('--map-ratio', ((W + pad * 2) / (H + pad * 2)).toFixed(4));
 
     // zonalar (asosiy zal, chap qanot, B2B, konferens...)
@@ -197,13 +206,13 @@
 
     const blockG = el('g');
     const standG = el('g');
-    // yorliqlar bir-birini bosmasligi uchun band joylar ro'yxati
+    // список занятых областей — чтобы подписи не наезжали друг на друга
     const occupied = [];
     for (const f of layout.features || []) {
       const fw = f.w ?? 2, fh = f.h ?? 2;
       if (f.label) occupied.push({ x: f.x + 0.4, y: f.y + fh / 2 - 1.0, w: Math.max(1, fw - 0.8), h: 2.0 });
     }
-    // BAND joylar: bitta kompaniya nechta stend olgan bo'lsa — bitta umumiy quti
+    // ЗАНЯТЫЕ места: сколько стендов ни заняла бы одна компания — одна общая рамка
     const extra = ExpoGroups.mergedAsStands(layout.blocks || []);
     const allStands = [...(layout.stands || []), ...extra.stands];
     const allItems = Object.assign({}, items, extra.items);
@@ -213,20 +222,23 @@
       blockG.appendChild(el('rect', { x: b.x, y: b.y, width: b.w, height: b.h, class: 'block-outline', rx: 0.3, stroke: b.color || '#90a4b5' }));
       occupied.push({ x: b.x, y: b.y, w: b.w, h: b.h });
 
-      // blok nomi — bosilsa butun blok tanlanadi (chap qanot stendlari o'lchami o'zida yozilgan)
+      // имя блока: по нажатию выбирается весь блок (у стендов крыла размер свой)
       if (b.kind === 'custom') continue;
       const chip = el('g', { class: 'block-chip', 'data-block': b.id, tabindex: '0' });
       const label = b.label;
       const effArea = b.areaM2 + (b.merged || []).reduce((a, m) => a + m.w * m.h, 0);
       const chipText = `${label} · ${fmtNum(effArea)} м²`;
-      // кenglik YOZUV bo'yicha (matn qutidan chiqib ketmasin)
-      const cw = Math.max(4.6, ExpoGroups.textWidth(chipText, 1.15, true) + 1.4);
-      const chH = 1.6;
+      // kenglik YOZUV bo'yicha, lekin blokdan keng bo'lmasin (qo'shni blok chipini bosmasin)
+      const desired = ExpoGroups.textWidth(chipText, 1.15, true) + 1.3;
+      const cw = Math.max(3.4, Math.min(desired, Math.max(3.4, b.w + 0.4)));
+      const chipFs = Math.min(1.15, ((cw - 1.1) / Math.max(1e-3, ExpoGroups.textWidth(chipText, 1, true))));
+      const chH = 1.5;
       let chipY = b.y - chH - 0.35;
       if (chipY < 0 && b.y - 0.45 > 0) chipY = -chH - 0.2;
       chip.appendChild(el('rect', { x: b.x, y: chipY, width: cw, height: chH, rx: 0.3, class: 'chip-bg', stroke: b.color || '#0f2233' }));
-      const tnum = el('text', { x: b.x + cw / 2, y: chipY + 1.05 }, chipText);
+      const tnum = el('text', { x: b.x + cw / 2, y: chipY + chH / 2 + chipFs * 0.34 }, chipText);
       tnum.style.fill = b.color || '#0f2233';
+      tnum.style.fontSize = chipFs + 'px';
       chip.appendChild(tnum);
       occupied.push({ x: b.x, y: chipY, w: cw, h: chH });
       const secForChip = sectionById(b.section);
@@ -234,8 +246,8 @@
       blockG.appendChild(chip);
 
       for (const s of b.stands) if (!bookedIds.has(s.id)) { standG.appendChild(standNode(s)); occupied.push({ x: s.x, y: s.y, w: s.w, h: s.h }); }
-      // birlashtirilgan kataklar — holati/egasi bo'lsa yuqorida bitta quti bo'lib chiqadi,
-      // bu yerda faqat bo'sh (texnik) kataklar qoladi
+      // объединённые ячейки: если у них есть статус/владелец, выше они рисуются
+      // одной рамкой — здесь остаются только пустые (технические) ячейки
       for (const m of (b.merged || []).filter((m) => !m.status && !m.buyer)) {
         const g = el('g', { class: 'merged', 'data-block': b.id });
         occupied.push({ x: m.x, y: m.y, w: m.w, h: m.h });
@@ -248,18 +260,19 @@
         g.appendChild(el('title', {}, `${b.label}: ${m.label || 'объединённая ячейка'} · ${fmtNum(m.w * m.h)} м²${m.buyer ? ' · ' + m.buyer : ''}${st ? ' · ' + st : ''}`));
         standG.appendChild(g);
       }
-      // bo'lim nomi blok ostida — faqat joy yetarli bo'lsa (chip ustiga tushmasin)
+      // название раздела под блоком — только если хватает места (не задевая чип)
       const sec = sectionById(b.section);
       if (sec) {
         const cx = b.x + b.w / 2;
-        blockG.appendChild(el('rect', { x: cx - 1.7, y: b.y + b.h + 0.55, width: 3.4, height: 0.28, rx: 0.14, fill: sec.color, class: 'sec-bar' }));
         const gap = [...layout.blocks, ...(layout.features || [])].reduce((g, o) => {
           if (o.id === b.id) return g;
           const ow = o.w ?? 2, oh = o.h ?? 2;
           const ov = Math.min(o.x + ow, b.x + b.w) - Math.max(o.x, b.x);
           return ov > 0.1 && o.y - (b.y + b.h) >= 0 ? Math.min(g, o.y - (b.y + b.h)) : g;
         }, 99);
+        // цветная метка и название — только если хватает места (не задевая нижний ряд)
         if (gap > 3.2) {
+          blockG.appendChild(el('rect', { x: cx - 1.7, y: b.y + b.h + 0.55, width: 3.4, height: 0.28, rx: 0.14, fill: sec.color, class: 'sec-bar' }));
           const fitFs = (txt) => Math.max(0.62, Math.min(1.05, (b.w - 1.2) / Math.max(4, txt.length) / 0.62));
           const l1 = `Блок ${b.label}`;
           const l2 = sec.short || sec.label;
@@ -272,12 +285,12 @@
         }
       }
     }
-    // nostandart o'lchamdagi stendlar (A1–A6 kabi)
+    // стенды нестандартного размера (типа A1–A6)
     for (const s of layout.customStands || []) if (!bookedIds.has(s.id)) { standG.appendChild(standNode(s, true)); occupied.push({ x: s.x, y: s.y, w: s.w, h: s.h }); }
     for (const u of units) { standG.appendChild(unitNode(u)); occupied.push({ x: u.x, y: u.y, w: u.w, h: u.h }); }
     world.appendChild(blockG);
     world.appendChild(standG);
-    // zona yorliqlari eng ustida (hech narsa bosmasin)
+    // подписи зон — самым верхним слоем (чтобы ничего не перекрывали)
     const lastG = el('g');
     const zlFs = 1.2;                       // .zone-label CSS bilan bir xil
     const zlW = (txt) => txt.length * zlFs * 0.6;
@@ -288,7 +301,7 @@
       const fs = Math.max(0.7, Math.min(zlFs, (z.w - 0.8) / Math.max(4, z.label.length) / 0.62));
       const w = Math.min(z.w - 0.4, zlW(z.label));
       const cx = z.x + z.w / 2, x1 = cx - w / 2, x2 = cx + w / 2;
-      // nomzodlar: avval mo'ljallangan joy, keyin zona ichi (yuqoridan pastga), keyin tashqarisi
+      // кандидаты: сначала заданное место, затем внутри зоны (сверху вниз), затем снаружи
       const cands = [zl.y];
       for (let y = z.y + 0.8; y <= z.y + z.h - 0.4; y += 0.25) cands.push(y);
       cands.push(z.y - 0.6, z.y + z.h + 0.9);
@@ -326,7 +339,7 @@
         tn.style.fontSize = fs + 'px';
         g.appendChild(tn);
       } else {
-        // занятый стенд: имя компании — прямо в ячейке
+        // занятый стенд: название компании — прямо в ячейке
         const fit = ExpoGroups.fitLabel(String(items[s.id].buyer), s.w - 0.5, s.h - 0.55, { minFs: 0.8, maxFs: 1.15, chunk: 10, floor: 0.5 });
         (fit.lines.length ? fit.lines : [String(items[s.id].buyer)]).forEach((ln, i) => {
           const tn = el('text', { x: s.x + s.w / 2, y: s.y + s.h / 2 + (i - (fit.lines.length - 1) / 2) * fit.fs * 1.2 + fit.fs * 0.35, class: 'name', 'font-size': fit.fs }, ln);
@@ -341,9 +354,11 @@
   /** Uzun bitta so'z (Ansor-Zoxir, ZominFarms) qutiga sig'masa — chiziqcha/bo'g'in bo'ylab bo'lamiz. */
   function softLabel(text) {
     return String(text).split(/\s+/).map((w) => {
-      if (w.length <= 12) return w.includes('-') ? w.replace(/-/g, '- ').trim() : w;
+      if (w.length <= 13) return w.includes('-') ? w.replace(/-/g, '- ').trim() : w;
+      const n = Math.ceil(w.length / 11);          // bo'laklar SONI
+      const len = Math.ceil(w.length / n);         // teng bo'laklar
       const parts = [];
-      for (let i = 0; i < w.length; i += 10) parts.push(w.slice(i, i + 10));
+      for (let i = 0; i < w.length; i += len) parts.push(w.slice(i, i + len));
       return parts.join(' ');
     }).join(' ');
   }
@@ -355,17 +370,18 @@
     const fill = u.status === 'sold' ? '#fdecea' : u.status === 'reserved' ? '#fff6e0' : '#f1f4f6';
     g.appendChild(el('path', { d, class: 'unit-fill', fill }));
     g.appendChild(el('path', { d, class: 'unit-line' }));
-    // nom guruh ichidagi eng katta to'rtburchakka yoziladi (L shaklda ham to'g'ri joy)
+    // название пишется в наибольший прямоугольник группы (корректно и для Г-формы)
     const boxes = ExpoGroups.largestRect(u.stands.map((s) => ({ x: s.x, y: s.y, w: s.w, h: s.h })), 0.25);
     const onlyMerged = u.stands.every((st) => st.mergedCell);
+    const unitLabel = softLabel(u.label || STATUS_LABEL[u.status]);
     const metaTxt = onlyMerged
       ? `${fmtNum(u.areaM2)} м²`
       : u.stands.length > 1
         ? `${u.stands.length} стендов · ${fmtNum(u.areaM2)} м²`
         : (Math.abs(u.areaM2 - 9) > 0.01 ? `${fmtNum(u.areaM2)} м²` : '');
     const withMeta = !!metaTxt && boxes.h > 2.4;
-    const fit = ExpoGroups.fitLabel(u.label || STATUS_LABEL[u.status], boxes.w - 0.7, boxes.h - (withMeta ? 1.5 : 0.5), {
-      chunk: boxes.w > 6 ? 12 : 8,
+    const fit = ExpoGroups.fitLabel(unitLabel, boxes.w - 0.6, boxes.h - (withMeta ? 1.5 : 0.5), {
+      chunk: boxes.w > 6 ? 12 : 10,
       minFs: 0.62,
       floor: 0.5,
       maxFs: Math.min(2.4, boxes.h / (withMeta ? 2.9 : 2.3)),
@@ -489,14 +505,14 @@
     $('#selBody').hidden = !has;
     if (!has) { $('#details').innerHTML = ''; return; }
     const { stands, free, taken, area, amount, blocks } = selectionInfo();
-    const kind = stands.every((s) => s.blockId === blocks[0]) && stands.length === 8 ? 'Весь блок (72 м²)' : `${stands.length} стендов`;
+    const kind = stands.every((s) => s.blockId === blocks[0]) && stands.length === 8 ? 'Весь блок (72 м²)' : standsWord(stands.length);
     $('#selTitle').textContent = `${blocks.join(', ')} · ${kind}`;
     $('#selChips').innerHTML = stands.map((s) => `<span class="chip ${statusOf(s.id)}" data-id="${s.id}" title="${STATUS_LABEL[statusOf(s.id)]}">${s.id.replace(/^.*?-(?=\d+$)/, '')}</span>`).join('');
     $$('#selChips .chip').forEach((c) => c.addEventListener('click', (e) => { e.stopPropagation(); toggleStand(c.dataset.id); }));
 
     $('#selInfo').innerHTML = `
-      <dt>Свободно</dt><dd><b>${free.length}</b> стендов · ${fmtNum(area)} м²</dd>
-      ${taken.length ? `<dt>Занято</dt><dd>${taken.length} стендов (${taken.map((s) => STATUS_LABEL[statusOf(s.id)]).filter((v, i, a) => a.indexOf(v) === i).join(', ')})</dd>` : ''}
+      <dt>Свободно</dt><dd><b>${standsWord(free.length)}</b> · ${fmtNum(area)} м²</dd>
+      ${taken.length ? `<dt>Занято</dt><dd>${standsWord(taken.length)} (${taken.map((s) => STATUS_LABEL[statusOf(s.id)]).filter((v, i, a) => a.indexOf(v) === i).join(', ')})</dd>` : ''}
       <dt>Цена</dt><dd>${pricePerM2() ? fmtMoney(amount) : '—'}<br><span class="muted">${pricePerM2() ? fmtMln(amount) + ' · ' + fmtMoney(pricePerM2()) + '/м²' : 'цена не задана'}</span></dd>`;
 
     const canAct = !CLIENT;
@@ -510,7 +526,7 @@
     $('#btnSell').textContent = free.length ? `Продать (${fmtNum(free.length * 9)} м²)` : 'Продать';
     if (!$('#ttl').value) $('#ttl').value = ttlDefault();
 
-    // tanlangan joylarning tafsiloti
+    // детали выбранных мест
     const rows = stands.map((s) => {
       const it = items[s.id];
       return `<div style="margin:5px 0">
@@ -530,7 +546,7 @@
       <div class="booking-row" data-ids="${u.ids.join(',')}" data-x="${u.x}" data-y="${u.y}" data-w="${u.w}" data-h="${u.h}">
         <span class="sw" style="background:${STATUS_COLOR[u.status]}"></span>
         <b title="${u.ids.join(', ')}">${u.label || 'Занято'}</b>
-        <span class="bmuted">${u.ids.length} стендов · ${fmtNum(u.areaM2)} м²</span>
+        <span class="bmuted">${standsWord(u.ids.length)} · ${fmtNum(u.areaM2)} м²</span>
         <span class="bids">${u.ids.length > 6 ? u.ids.slice(0, 6).join(', ') + ' +' + (u.ids.length - 6) : u.ids.join(', ')}</span>
       </div>`).join('');
     $$('#bookingsList .booking-row').forEach((r) => r.addEventListener('click', () => {
@@ -554,7 +570,7 @@
     const by = { free: 0, reserved: 0, sold: 0, blocked: 0 };
     const area = { free: 0, reserved: 0, sold: 0, blocked: 0 };
     let revenue = 0;
-    // birlashgan kataklar ham zal maydonining bir qismi
+    // объединённые ячейки — тоже часть площади зала
     const merged = (layout.blocks || []).flatMap((b) => (b.merged || []).map((m) => ({
       id: `${b.id}~m`, areaM2: m.w * m.h, status: m.status || 'sold',
     })));
@@ -569,7 +585,7 @@
       <div class="stat"><b>${by.free}</b><span>свободно · ${fmtNum(area.free)} м²</span></div>
       <div class="stat"><b>${by.reserved}</b><span>бронь · ${fmtNum(area.reserved)} м²</span></div>
       <div class="stat"><b>${by.sold}</b><span>продано · ${fmtNum(area.sold)} м²</span></div>
-      <div class="stat"><b>${fmtNum(totalArea)}</b><span>всего м² (занято ${by.sold + by.reserved})</span></div>
+      <div class="stat"><b>${fmtNum(totalArea)}</b><span>всего м² · занято ${by.sold + by.reserved}</span></div>
       <div class="stat" style="grid-column:1/-1"><b>${fmtNum(revenue)}</b><span>сум продаж · ${fmtMln(revenue)}</span></div>`;
   }
 
@@ -580,8 +596,9 @@
       <div class="row">
         <span class="sw" style="background:${k === 'free' ? '#eaf6ec' : k === 'reserved' ? '#fff8e1' : k === 'sold' ? '#fdecea' : '#eceff1'};border-color:${STATUS_COLOR[k]}"></span>
         <label><input type="checkbox" data-st="${k}" ${hiddenStatuses.has(k) ? '' : 'checked'}/> ${STATUS_LABEL[k]} (${counts[k] || 0})</label>
-      </div>`).join('') + `<div class="row muted" style="font-size:11.5px">1 стенд = 3×3 м = 9 м² · 1 блок = 8 стендов = 72 м²`
-      + (layout.customStands?.length ? `<br>${layout.customStands.length} нестандартных стендов (площадь на плане)` : '') + `</div>`;
+      </div>`).join('') + `<div class="row muted" style="font-size:11.5px">1 стенд = 3×3 м = 9 м² · 1 блок = 8 стендов = 72 м²
+        <br>Номер стенда — буква блока + номер сверху вниз: A1…A8.
+        ${layout.customStands?.length ? `<br>${layout.customStands.length} стендов нестандартной площади (A1–A6 слева) — площадь указана на плане.` : ''}</div>`;
     $$('#legend input[data-st]').forEach((cb) => cb.addEventListener('change', () => {
       cb.checked ? hiddenStatuses.delete(cb.dataset.st) : hiddenStatuses.add(cb.dataset.st);
       applyFilters();
@@ -606,7 +623,7 @@
     });
   }
 
-  // ------------------------------------------------------------ bo'limlar
+  // ------------------------------------------------------------ разделы
   function sectionStats() {
     return (layout.sections || []).map((sec) => {
       const stands = layout.stands.filter((s) => s.section === sec.id);
@@ -658,8 +675,8 @@
         <tbody>${rows}</tbody>
       </table>
       <div class="kv">
-        <dt>В разделе</dt><dd><b>${stands.length}</b> стендов · ${fmtNum(area)} м²${mergedArea ? ` <span class="muted">(${fmtNum(mergedArea)} м² объединённые ячейки)</span>` : ''}</dd>
-        <dt>Свободно</dt><dd><b>${free.length}</b> стендов · ${fmtNum(freeArea)} м²</dd>
+        <dt>В разделе</dt><dd><b>${standsWord(stands.length)}</b> · ${fmtNum(area)} м²${mergedArea ? ` <span class="muted">(${fmtNum(mergedArea)} м² объединённые ячейки)</span>` : ''}</dd>
+        <dt>Свободно</dt><dd><b>${standsWord(free.length)}</b> · ${fmtNum(freeArea)} м²</dd>
         <dt>Цена (свободные места)</dt><dd>${pricePerM2() ? fmtMoney(amount) : '—'}</dd>
       </div>
       ${free.length && free.length <= 24 ? `<div class="muted">Свободно: ${free.map((s) => s.id).join(', ')}</div>` : ''}`;
@@ -702,7 +719,7 @@
   async function doAction(action, standIds, extra = {}) {
     try {
       const r = await api('/api/action', { method: 'POST', body: { action, standIds, expectedRevision: revision, ...extra } });
-      await refreshState(true);   // xarita darhol yangilanadi (bitta kompaniya = bitta quti)
+      await refreshState(true);   // карта обновляется сразу (одна компания = одна рамка)
       renderStats(); renderLegend();
       const ids = standIds;
       if (action === 'sell') showReceipt(ids, extra, r.items);
@@ -728,7 +745,7 @@
     if (!buyer) return fail('Введите имя клиента');
     const ttl = Number($('#ttl').value || ttlDefault());
     const ok = await confirmDialog('Подтвердите бронь', `
-      <p>${free.length} стендов (${fmtNum(area)} м²) бронируются на ${ttl} ч.:</p>
+      <p>${standsWord(free.length)} (${fmtNum(area)} м²) бронируются на ${ttl} ч.:</p>
       <p><b>${free.map((s) => s.id).join(', ')}</b></p>
       <table>
         <tr><td>Блок(и)</td><td>${blocks.join(', ')}</td></tr>
@@ -750,7 +767,7 @@
       <p style="font-size:15px"><b>${free.map((s) => s.id).join(', ')}</b></p>
       <table>
         <tr><td>Блок(и)</td><td>${blocks.join(', ')}</td></tr>
-        <tr><td>Площадь</td><td>${free.length} × 9 = ${fmtNum(area)} м²</td></tr>
+        <tr><td>Площадь</td><td>${standsWord(free.length)} × 9 м² = ${fmtNum(area)} м²</td></tr>
         <tr><td>Клиент</td><td>${buyer} ${$('#phone').value ? '· ' + $('#phone').value : ''}</td></tr>
         <tr><td><b>Сумма</b></td><td><b>${fmtMoney(amount)}</b></td></tr>
       </table>
@@ -797,7 +814,7 @@
     toast(`${s.id} · ${STATUS_LABEL[st]} · 9 м²`);
   }
 
-  // ------------------------------------------------------------ mijoz rejimi / print / share
+  // ------------------------------------------------------------ режим клиента / печать / ссылка
   $('#clientMode').addEventListener('click', async () => {
     if ((layout?.meta?.status || 'draft') !== 'approved') {
       return fail('План ещё ЧЕРНОВИК — перед отправкой клиенту подтвердите размеры (meta.status = "approved").');
@@ -807,6 +824,40 @@
     try { await navigator.clipboard.writeText(url.toString()); toast('Ссылка для клиента скопирована: ' + url.toString()); }
     catch { window.open(url.toString(), '_blank'); }
   });
+
+  /** Печать: шапка листа (проект, дата, цена) + строка «свободно/продано» над планом. */
+  function buildPrintHead() {
+    let head = $('#printHead');
+    if (!head) {
+      head = document.createElement('div');
+      head.id = 'printHead';
+      head.className = 'print-only-head';
+      $('.map-wrap').prepend(head);
+    }
+    const by = { free: 0, reserved: 0, sold: 0, blocked: 0 };
+    let area = { free: 0, sold: 0, reserved: 0 };
+    for (const s of layout.stands) {
+      const st = statusOf(s.id);
+      by[st] = (by[st] || 0) + 1;
+      if (area[st] !== undefined) area[st] += s.areaM2;
+    }
+    const totalArea = layout.stands.reduce((a, s) => a + s.areaM2, 0);
+    head.innerHTML = `
+      <div class="ph-row">
+        <div class="ph-title">${layout.meta.project} — ${layout.meta.hall}</div>
+        <div class="ph-date">${new Date().toLocaleDateString('ru-RU')}</div>
+      </div>
+      <div class="ph-sub">
+        План залов · версия v${layout.meta.version || '?'} · 1 стенд = 3 × 3 м = 9 м² · 1 блок = 8 стендов = 72 м²${layout.meta.pricePerM2 ? ' · ' + fmtMoney(layout.meta.pricePerM2) + '/м²' : ''}
+      </div>
+      <div class="ph-sub">
+        <b>Свободно: ${standsWord(by.free)} · ${fmtNum(area.free)} м²</b> ·
+        продано: ${standsWord(by.sold)} · ${fmtNum(area.sold)} м² ·
+        бронь: ${by.reserved}${by.blocked ? ' · блокировано: ' + by.blocked : ''} ·
+        всего: ${standsWord(layout.stands.length)} · ${fmtNum(totalArea)} м²
+      </div>`;
+    return head;
+  }
 
   function buildPrintSheet() {
     let sheet = $('#printSheet');
@@ -869,12 +920,27 @@
     svg.style.height = (vb[3] * k).toFixed(1) + 'mm';
     svg.style.maxWidth = 'none';
   }
-  window.addEventListener('beforeprint', fitPrintPage);
   window.addEventListener('afterprint', () => {
     const s2 = $('#map');
     s2.style.width = ''; s2.style.height = ''; s2.style.maxWidth = '';
   });
-  $('#printBtn').addEventListener('click', () => { buildPrintSheet(); fitPrintPage(); window.print(); });
+  function preparePrint() {
+    document.body.classList.toggle('print-tables', !!$('#printTables')?.checked);
+    buildPrintHead();
+    buildPrintSheet();
+    fitPrintPage();
+  }
+  window.addEventListener('beforeprint', preparePrint);
+  $('#printBtn').addEventListener('click', () => { preparePrint(); window.print(); });
+
+  // ------------------------------------------------------------ скачать PDF
+  (async () => {
+    try {
+      const h = await fetch('/api/healthz').then((r) => r.json());
+      if (h?.pdf) $('#pdfBtn').hidden = false;
+    } catch { /* сервер не ответил — кнопки не будет */ }
+  })();
+  $('#pdfBtn')?.addEventListener('click', () => { window.location.href = '/api/export/pdf?page=' + (layout?.meta?.format || 'A3'); });
 
   // ------------------------------------------------------------ start
   (async () => {

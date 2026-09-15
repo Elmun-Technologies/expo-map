@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * FOODERA EXPO 2026 chizmasidagi HAQIQIY kompaniyalarni xaritaga joylaydi.
+ * Расставляет РЕАЛЬНЫЕ компании из чертежа FOODERA EXPO 2026 по карте.
  *
  *   node tools/seed-foodera.mjs           → данные пишутся в data/state.json (перезапустите сервер)
  *   node tools/seed-foodera.mjs --dry     → только показать, не записывать
@@ -8,7 +8,7 @@
  *
  * Размеры ячеек на исходном плане (12/18/36/40 м²) приводятся к сетке 9 м²:
  * 12 m² → 1 katak · 18 m² → 2 katak · 36 va 40 m² → 4 katak.
- * Chizmadagi asl maydon `note` ichida saqlanadi.
+ * Исходная площадь с чертежа сохраняется в поле `note`.
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -28,7 +28,7 @@ const SELLERS = [
   { sellerId: 's3', sellerName: 'Sardor Umarov' },
 ];
 
-/** [blok, [[kompaniya, chizmadagi m², status?], ...]] — FOODERA chizmasidan o'qildi */
+/** [блок, [[компания, м² по чертежу, статус?], ...]] — прочитано с чертежа FOODERA */
 const PLAN = [
   ['A', [['Silver', 9], ['YaTT Sh.X.T.', 12], ['Ecocups', 12]]],
   ['B', [['Ansor-Zoxir', 9], ['B12 — бронь', 9, 'reserved']]],
@@ -62,19 +62,44 @@ if (reset) {
 }
 
 const cells = (a) => Math.max(1, Math.round(a / 9));
+
+/**
+ * Выбор мест внутри блока: каждая компания по возможности занимает ОДИН столбец,
+ * сверху вниз, подряд. В итоге «одна компания = один прямоугольник»
+ * (Г-образные «лестницы» не появляются).
+ */
+function allocate(block, count, used) {
+  const cols = new Map();
+  for (const s of block.stands) {
+    const c = Math.round((s.x - block.x) / (s.w || 3));
+    if (!cols.has(c)) cols.set(c, []);
+    cols.get(c).push(s);
+  }
+  for (const list of cols.values()) list.sort((a, b) => a.y - b.y);
+  for (const [, list] of [...cols].sort((a, b) => a[0] - b[0])) {
+    const free = list.filter((s) => !used.has(s.id));
+    if (free.length >= count) return free.slice(0, count);
+  }
+  const rest = block.stands.filter((s) => !used.has(s.id));
+  return rest.slice(0, count);
+}
+
 const items = {};
 let gid = 0;
 let n = 0;
 
 for (const [blockId, companies] of PLAN) {
   const block = exp.blocks.find((b) => b.id === blockId);
-  if (!block) { console.log(`• ${blockId} bloki topilmadi`); continue; }
-  let cursor = 0;
-  for (const [name, planArea, status] of companies) {
+  if (!block) { console.log(`• блок ${blockId} не найден`); continue; }
+  const used = new Set();
+  // крупные компании идут первыми — свободные места остаются ОДНИМ куском
+  // (продавец видит свободные 27 м² как единый блок)
+  const ordered = [...companies].sort((a, b) => cells(b[1]) - cells(a[1]));
+  for (const [name, planArea, status] of ordered) {
     const count = cells(planArea);
-    const take = block.stands.slice(cursor, cursor + count);
-    cursor += count;
-    if (!take.length) { console.log(`• ${blockId}: ${name} uchun joy yetmadi`); continue; }
+    const take = allocate(block, count, used);
+    take.forEach((s) => used.add(s.id));
+    if (!take.length) { console.log(`• ${blockId}: для «${name}» не хватило мест`); continue; }
     const seller = SELLERS[n % SELLERS.length];
     const areaM2 = take.length * 9;
     const groupId = `gf${gid++}`;
@@ -114,5 +139,5 @@ const soldN = allItems.filter((i) => i.status === 'sold').length;
 const resN = allItems.filter((i) => i.status === 'reserved').length;
 const areaN = allItems.filter((i) => i.status === 'sold' || i.status === 'reserved')
   .reduce((a, i) => a + Number(i.areaM2 || 0), 0);
-console.log(`\n✓ ${n} компаний · продано ${soldN} + бронь ${resN} = ${soldN + resN} стендов · ${areaN.toLocaleString('ru-RU')} м² (revision ${state.revision})`);
+console.log(`\n✓ компаний: ${n} · продано ${soldN} + бронь ${resN} = ${soldN + resN} стендов · ${areaN.toLocaleString('ru-RU')} м² (revision ${state.revision})`);
 if (dry) console.log('(--dry: файл не записан)');

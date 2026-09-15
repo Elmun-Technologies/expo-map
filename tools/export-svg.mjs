@@ -110,7 +110,8 @@ const r2 = (v) => Number(v).toFixed(2);
 function fitLabel(text, maxW, maxH, o = {}) {
   const maxFs = o.maxFs || 11;
   const minFs = o.minFs || 5.2;
-  const words = softBreak(text, o.chunk || 12).split(/\s+/).filter(Boolean);
+  // делить слово на части будем только если оно не влезает даже мелким шрифтом
+  const words = splitWords(text, o.chunk || 12, maxW, Math.min(minFs, 4.4), true);
   const wrapAt = (fs) => {
     const lines = [];
     let cur = '';
@@ -131,14 +132,20 @@ function fitLabel(text, maxW, maxH, o = {}) {
   return { lines: wrapAt(fs), fs: Number(fs.toFixed(2)) };
 }
 
-/** Длинные слова («Derevenskoye») режем на части — иначе имя не влезает в ячейку 3×3 м. */
-function softBreak(text, chunk = 10) {
-  return String(text).split(/\s+/).map((w) => {
-    if (w.length <= chunk) return w;
+/**
+ * Разбивает подпись на слова. Длинное слово («Derevenskoye», «Javohirlar») режем
+ * на части ТОЛЬКО если оно не влезает в ячейку даже самым мелким шрифтом,
+ * и переносим с дефисом — иначе получалось «Javohirl / ar» и клиент путался.
+ */
+function splitWords(text, chunk = 10, maxW = 0, minFs = 5.2, bold = true) {
+  const out = [];
+  for (const w of String(text).trim().split(/\s+/).filter(Boolean)) {
+    if (!maxW || textWidth(w, minFs, bold) <= maxW || w.length <= chunk) { out.push(w); continue; }
     const parts = [];
     for (let i = 0; i < w.length; i += chunk) parts.push(w.slice(i, i + chunk));
-    return parts.join(' ');
-  }).join(' ');
+    parts.forEach((p, i) => out.push(i < parts.length - 1 ? p + '-' : p));
+  }
+  return out;
 }
 
 /** Перенос строки по ширине (в пикселях). */
@@ -287,16 +294,24 @@ L.header.push(t(PAD, PAD + F.title + F.sub + 4, F.sub, SUB, sub));
 {
   const titleW = textWidth(title, F.title, true);
   const rightRoom = pageWpx - PAD * 2 - titleW - 30;
+  // строка, ниже которой НЕЛЬЗЯ опускаться: там подзаголовок
+  const subBottom = PAD + F.title + F.sub + 12;
   let x = PAD, y = PAD + 2;
   if (legendTotal <= rightRoom) x = pageWpx - PAD - legendTotal;                       // справа, в строке заголовка
-  else y = PAD + F.title + F.sub + 10;                                                 // отдельной строкой ниже подзаголовка
+  else y = subBottom;                                                                  // отдельной строкой ниже подзаголовка
   for (const p of legendParts) {
     const w = LEG_SW + 6 + textWidth(p.text, F.legend);
-    if (x > PAD && x + w > pageWpx - PAD) { y += F.legend + 12; x = PAD; }             // переносим на следующую строку
+    // переносим на следующую строку — но никогда на строку подзаголовка
+    if (x > PAD && x + w > pageWpx - PAD) { y = Math.max(y + F.legend + 12, subBottom); x = PAD; }
     const cl = tint(p.k);
     L.header.push(rect(x, y, LEG_SW, LEG_SW, cl.fill, ` stroke="${cl.bar || LINE}" stroke-width="1.3" rx="3"`));
     L.header.push(t(x + LEG_SW + 6, y + LEG_SW - 2.5, F.legend, '#44586a', p.text));
     x += w + LEG_GAP;
+  }
+  // если легенда заняла строку подзаголовка — сам подзаголовок уходит ниже
+  if (y >= subBottom) {
+    L.header = L.header.filter((n) => !n.includes('>' + esc(sub) + '</text>'));
+    L.header.splice(2, 0, t(PAD, y + F.legend + F.sub + 6, F.sub, SUB, sub));
   }
   if (y > PAD + 2) headerH = Math.max(headerH, y - PAD + F.legend + 12);
 }
@@ -374,7 +389,7 @@ function drawStand(s, b, custom) {
     const fsN = Math.max(8, Math.min(F.num, (S(s.w) - 8) / Math.max(2, textWidth(num, 1, true))));
     const cy = Y(s.y + s.h / 2);
     if (buyer) {
-      const fitB = fitLabel(buyer, S(s.w) - 7, S(s.h) - 6, { maxFs: Math.min(10.5, S(s.h) / 2.4), minFs: 5.2 });
+      const fitB = fitLabel(buyer, S(s.w) - 6, S(s.h) - 6, { maxFs: Math.min(10.5, S(s.h) / 2.4), minFs: 5.2 });
       const lh = fitB.fs * 1.16;
       const y0 = cy - (fitB.lines.length - 1) * lh / 2 + fitB.fs * 0.35;
       fitB.lines.forEach((ln, i) => parts.push(t(cx, y0 + i * lh, fitB.fs, cl.ink || INK, ln, ' font-weight="bold" text-anchor="middle"')));
@@ -445,8 +460,8 @@ for (const u of units) {
       ? `${u.stands.length} стендов · ${fmtNum(u.areaM2)} м²`
       : (Math.abs(u.areaM2 - 9) > 0.01 ? `${fmtNum(u.areaM2)} м²` : '');
   const withMeta = !!metaTxt && boxH > 46 && boxW >= 62;
-  const fitU = fitLabel(u.label || tint(u.status).label, boxW - 9, boxH - (withMeta ? 22 : 6), {
-    maxFs: Math.min(F.unitName, boxH / 2.2), minFs: 5.8, chunk: boxW > 90 ? 11 : 8,
+  const fitU = fitLabel(u.label || tint(u.status).label, boxW - 6, boxH - (withMeta ? 22 : 6), {
+    maxFs: Math.min(F.unitName, boxH / 2.2), minFs: 5.4, chunk: boxW > 90 ? 12 : 10,
   });
   const lines = fitU.lines.length ? fitU.lines : [u.label || ''];
   const fs = fitU.fs;
@@ -455,7 +470,11 @@ for (const u of units) {
   const lh = fs * 1.2;
   const shift = (lines.length * lh) / 2 + (withMeta ? 5 : 0);
   lines.forEach((ln, i) => L.units.push(t(cx, cy - shift + lh * (i + 0.82), fs, cl.ink, ln, ' font-weight="bold" text-anchor="middle"')));
-  if (withMeta) L.units.push(t(cx, cy + shift + 2, Math.max(8, fs * 0.58), cl.sub, metaTxt, ' text-anchor="middle"'));
+  if (withMeta) {
+    // подпись «2 стенда · 18 м²»: шрифт подбираем так, чтобы она влезала в рамку
+    const mfs = Math.min(Math.max(8, fs * 0.58), (boxW - 8) / Math.max(1e-3, textWidth(metaTxt, 1)));
+    if (mfs >= 6) L.units.push(t(cx, cy + shift + 2, mfs, cl.sub, metaTxt, ' text-anchor="middle"'));
+  }
   addOcc(boxX - 1, boxY - 1, boxW + 2, boxH + 2);
 }
 

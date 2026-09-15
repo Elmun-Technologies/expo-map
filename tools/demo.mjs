@@ -10,7 +10,7 @@
 const BASE = process.env.BASE || 'http://localhost:4173';
 const mode = process.argv.includes('--reset') ? 'reset' : process.argv.includes('--seed') ? 'seed' : null;
 if (!mode) {
-  console.error('Ishlatish: node tools/demo.mjs --seed | --reset');
+  console.error('Использование: node tools/demo.mjs --seed | --reset');
   process.exit(2);
 }
 
@@ -36,12 +36,12 @@ const taken = (id) => !!state.items[id];
 
 if (mode === 'reset') {
   const all = layout.stands.filter((s) => taken(s.id)).map((s) => s.id);
-  if (!all.length) console.log("Bo'shatadigan joy yo'q — holat allaqachon toza.");
-  else console.log(`↺ ${all.length} joy bo'shatilmoqda...`);
+  if (!all.length) console.log("Освобождать нечего — состояние уже чистое.");
+  else console.log(`↺ освобождаем мест: ${all.length}...`);
   for (let i = 0; i < all.length; i += 20) {
     for (const id of all.slice(i, i + 20)) await call(admin, { action: 'release', standIds: [id] });
   }
-  console.log("✓ Holat toza.");
+  console.log("✓ Состояние чистое.");
 } else {
   const byId = new Map(layout.blocks.map((b) => [b.id, b]));
   const pick = (blockId, nos) => {
@@ -80,13 +80,13 @@ if (mode === 'reset') {
 
   for (const [blockId, token, action, nos, buyer, phone, note] of plan) {
     const ids = pick(blockId, nos);
-    if (!ids || !ids.length) { console.log(`• ${blockId} topilmadi — o'tkazib yuborildi`); continue; }
-    if (ids.some(taken)) { console.log(`• ${blockId} (${ids.length} stend) band — o'tkazib yuborildi`); continue; }
+    if (!ids || !ids.length) { console.log(`• блок ${blockId} не найден — пропущен`); continue; }
+    if (ids.some(taken)) { console.log(`• блок ${blockId} (${ids.length} стендов) занят — пропущен`); continue; }
     const r = await call(token, { action, standIds: ids, buyer, phone, note, ttlHours: action === 'reserve' ? 48 : undefined });
-    console.log(`${r.status === 200 ? '✓' : '•'} ${blockId}: ${action} ${ids.length} stend · ${buyer}`);
+    console.log(`${r.status === 200 ? '✓' : '•'} ${blockId}: ${action} · ${ids.length} стендов · ${buyer}`);
   }
   for (const [standId, token, action, buyer, phone] of wingPlan) {
-    if (taken(standId)) { console.log(`• ${standId} band — o'tkazib yuborildi`); continue; }
+    if (taken(standId)) { console.log(`• ${standId} занят — пропущен`); continue; }
     const r = await call(token, { action, standIds: [standId], buyer, phone, ttlHours: action === 'reserve' ? 48 : undefined });
     console.log(`${r.status === 200 ? '✓' : '•'} ${standId}: ${action} · ${buyer}`);
   }
@@ -95,5 +95,5 @@ if (mode === 'reset') {
   const c = {};
   Object.values(st.items).forEach((i) => { c[i.status] = (c[i.status] || 0) + 1; });
   const bookedArea = Object.values(st.items).reduce((a, i) => a + (i.areaM2 || 0), 0);
-  console.log(`\nDemo holat tayyor: ${JSON.stringify(c)} · band ${bookedArea.toFixed(2)} m² (revision ${st.revision})`);
+  console.log(`\nДемо-состояние готово: ${JSON.stringify(c)} · занято ${bookedArea.toFixed(2)} м² (revision ${st.revision})`);
 }

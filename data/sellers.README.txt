@@ -1,10 +1,10 @@
-Bu fayl (data/sellers.json) git'ga tushmaydi — PIN'lar shu yerda saqlanadi.
+Этот файл (data/sellers.json) в git не попадает — PIN-коды хранятся здесь.
 
  Format: { "sellers": [ { "id": "s1", "name": "Ism", "pin": "1234", "role": "seller|admin" } ] }
 
- - role: "seller"  → bron qiladi/sotadi, faqat o'z yozuvini bo'shata oladi
- - role: "admin"   → jurnalni ko'radi, sotilgan joyni ham bo'shata oladi
- - Ism login uchun ham ishlatiladi (kirish oynasida ism yoki ID yoziladi)
+ - role: "seller"  → бронирует и продаёт, освобождает только свои записи
+ - role: "admin"   → видит журнал операций, освобождает и проданные места
+ - Имя используется и для входа (в окне входа можно ввести имя или ID)
 
-Hozirgi demo PIN'lar: Aziz 1111, Dilnoza 2222, Sardor 3333, Menejer 9999.
-Ishga tushirishdan OLDIN haqiqiy PIN'larga almashtiring.
+Текущие демо PIN-коды: Aziz 1111, Dilnoza 2222, Sardor 3333, Menejer 9999.
+Перед запуском в работу ЗАМЕНИТЕ их на реальные PIN-коды.

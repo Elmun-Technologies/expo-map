@@ -47,8 +47,8 @@ if (!BASE) {
   console.warn('⚠ BASE berilgan — test HAQIQIY holatni o\'zgartiradi.');
 }
 const cleanup = () => {
-  try { child?.kill('SIGTERM'); } catch { /* bo'ldi */ }
-  try { if (tmpDir) fs.rmSync(tmpDir, { recursive: true, force: true }); } catch { /* bo'ldi */ }
+  try { child?.kill('SIGTERM'); } catch { /* заглушка */ }
+  try { if (tmpDir) fs.rmSync(tmpDir, { recursive: true, force: true }); } catch { /* заглушка */ }
 };
 process.on('exit', cleanup);
 process.on('SIGINT', () => { cleanup(); process.exit(130); });
@@ -63,18 +63,18 @@ try {
   const r = await fetch(BASE + '/api/healthz');
   if (!r.ok) throw new Error('healthz ' + r.status);
 } catch (e) {
-  console.error(`✗ Server javob bermayapti (${BASE}). Avval "npm start" qiling.`);
+  console.error(`✗ Сервер не отвечает (${BASE}). Сначала запустите "npm start".`);
   process.exit(2);
 }
 
-// --- bo'выбираем блок со свободными местами (состояние чистое,lmasa ham test ishlashi uchun)
+// --- выбираем блок, где все стенды свободны (чтобы тест работал на любом состоянии)
 const layout = await (await fetch(BASE + '/api/layout')).json();
 let st = await (await fetch(BASE + '/api/state')).json();
-// nostandart (custom) bloklar stendi blok ID'совпадает с ladi — sinov uchun oddiy blok kerak
+// у нестандартных (custom) стендов ID не совпадает с ID блока — для теста нужен обычный блок
 const gridBlocks = layout.blocks.filter((b) => b.kind !== 'custom');
 let freeBlock = gridBlocks.find((b) => b.stands.every((s) => !st.items[s.id]));
 if (!freeBlock) {
-  // eng ko'p bo'блок со свободными местамиshatamiz (menejer huquqi bilan)
+  // берём блок, где меньше всего занятых мест, и освобождаем их (права менеджера)
   const tok0 = (await (await fetch(BASE + '/api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: 'Menejer', pin: '9999' }) })).json()).token;
   const cand = gridBlocks.map((b) => ({ b, booked: b.stands.filter((s) => st.items[s.id]) })).sort((x, y) => x.booked.length - y.booked.length)[0];
   if (cand.booked.length) {
@@ -84,16 +84,16 @@ if (!freeBlock) {
       body: JSON.stringify({ action: 'release', standIds: cand.booked.map((s) => s.id) }),
     });
     st = await (await fetch(BASE + '/api/state')).json();
-    console.log(`ℹ sinov uchun ${cand.b.id} bloki bo'shatildi (${cand.booked.length} stend)`);
+    console.log(`ℹ для теста освобождён блок ${cand.b.id} (${cand.booked.length} стендов)`);
   }
   freeBlock = cand.b;
 }
 const freeStand = layout.stands.find((s) => !st.items[s.id]);
 if (!freeBlock || !freeStand) {
-  console.error('✗ Butunlay bo\'sh blok yo\'q — "node tools/demo.mjs --reset" qilib qayta urinib ko\'ring.');
+  console.error('✗ Нет полностью свободного блока — выполните "node tools/demo.mjs --reset" и повторите.');
   process.exit(2);
 }
-console.log(`ℹ sinov bloki: ${freeBlock.id}, sinov stendi: ${freeStand.id}`);
+console.log(`ℹ тестовый блок: ${freeBlock.id}, тестовый стенд: ${freeStand.id}`);
 
 const dom = new JSDOM(html, { url: BASE + '/', runScripts: 'outside-only', pretendToBeVisual: true });
 const { window } = dom;
@@ -143,7 +143,7 @@ await tick(600);
 assert(errors.length === 0, 'приложение загрузилось без ошибок' + (errors.length ? ' → ' + errors.join(' | ') : ''));
 assert($('#hallTitle').textContent.includes(layout.meta.project) || $('#hallTitle').textContent.includes(layout.meta.hall),
   'план загружен: ' + $('#hallTitle').textContent);
-// band joylar endi bitta quti bo'рисуется — число стендов = своsh yacheykalar + qutilar ichidagi stendlar
+// занятые места рисуются одной рамкой: стендов = свободные ячейки + стенды внутри рамок
 const unitStands = $$('#world .booking-unit').flatMap((u) => u.dataset.ids.split(',').filter((id) => !id.includes('~m')));
 const customUnitStands = unitStands.filter((id) => (layout.customStands || []).some((c) => c.id === id));
 assert(!layout.customStands?.length
@@ -153,7 +153,7 @@ if ((layout.meta.status || 'draft') !== 'approved') {
   assert(!$('#draftBanner').hidden, 'баннер «ЧЕРНОВИК» показан');
 }
 assert($$('#world .stand').length + unitStands.length === layout.stands.length,
-  `xaritada ${layout.stands.length} stend chizildi (bo'sh ${$$('#world .stand').length} + qutilarda ${unitStands.length})`);
+  `на плане ${layout.stands.length} стендов (свободных ячеек ${$$('#world .stand').length} + внутри рамок ${unitStands.length})`);
 assert($('#stats').textContent.includes('свободно'), 'статистика показана');
 
 // --- login
@@ -161,7 +161,7 @@ $('#loginName').value = 'Aziz Karimov';
 $('#loginPin').value = '1111';
 fire($('#loginForm'), 'submit');
 await tick(600);
-assert($('#who').textContent.includes('Aziz'), 'login ishladi: ' + $('#who').textContent.trim());
+assert($('#who').textContent.includes('Aziz'), 'вход выполнен: ' + $('#who').textContent.trim());
 
 // --- bitta stend tanlash
 clickMap($$('#world .stand').find((g) => g.dataset.id === freeStand.id));
@@ -188,17 +188,17 @@ $('#phone').value = '+998900000000';
 $('#btnSell').click();
 await tick(200);
 assert(!$('#confirm').hidden, 'окно подтверждения показано');
-assert($('#confirmBody').textContent.includes(freeBlock.stands[0].id), 'tasdiqlashda stend ID\'lari ko\'rsatildi');
+assert($('#confirmBody').textContent.includes(freeBlock.stands[0].id), 'в окне подтверждения показаны ID стендов');
 $('#confirmOk').click();
 await tick(900);
 assert(!$('#receipt').hidden, 'квитанция о продаже показана');
 assert($('#receipt').textContent.includes('Smoke Test MChJ'), 'в квитанции есть имя клиента');
 assert($('#receipt').textContent.replace(/\u00A0/g, ' ').includes(`${fbAreaTxt} м²`), 'в квитанции площадь блока');
-assert(errors.length === 0, 'sotuvdan keyin ham xato yo\'q' + (errors.length ? ' → ' + errors.join(' | ') : ''));
+assert(errors.length === 0, 'после продажи ошибок нет' + (errors.length ? ' → ' + errors.join(' | ') : ''));
 
 st = await (await fetch(BASE + '/api/state')).json();
 const sold = Object.values(st.items).filter((i) => i.blockId === freeBlock.id && i.status === 'sold');
-assert(sold.length === freeBlock.stands.length, `serverda ${freeBlock.id} ning ${freeBlock.stands.length} stendi "sold" (${sold.length})`);
+assert(sold.length === freeBlock.stands.length, `на сервере все ${freeBlock.stands.length} стендов блока ${freeBlock.id} — "sold" (${sold.length})`);
 
 // --- bitta kompaniya = xaritada BITTA quti, nomi ichida
 const unit = $$('#world .booking-unit').find((u) => u.dataset.ids.split(',').includes(freeBlock.stands[0].id));
@@ -207,9 +207,9 @@ assert(unit.dataset.ids.split(',').length === freeBlock.stands.length,
   `quti butun guruhni o\'z ichiga oldi (${unit.dataset.ids.split(',').length}/${freeBlock.stands.length})`);
 const unitText = unit.textContent.replace(/\s+/g, ' ');
 assert(unitText.includes('Smoke Test MChJ'), 'название компании написано ВНУТРИ рамки: ' + unitText.slice(0, 60));
-assert($$('#world .stand').every((g) => !g.dataset.id.startsWith(freeBlock.id + '-')), 'band stendlar alohida yacheyka bo\'lib qolmadi');
+assert($$('#world .stand').every((g) => !g.dataset.id.startsWith(freeBlock.id + '-')), 'занятые стенды не остались отдельными ячейками');
 const row = $$('#bookingsList .booking-row').find((r) => r.textContent.includes('Smoke Test MChJ'));
-assert(!!row, 'boshqaruv ro\'yxatida ham bitta qator');
+assert(!!row, 'в списке занятых мест тоже одна строка');
 assert(row.textContent.replace(/\s+/g, ' ').includes(`${freeBlock.stands.length} стендов`), 'в строке количество стендов одним числом');
 
 // --- для проданного блока кнопка «Продать» заблокирована
@@ -217,7 +217,7 @@ $('#clearSel').click();
 await tick(50);
 clickMap($$('#world .block-chip').find((c) => c.dataset.block === freeBlock.id), 3);
 await tick(150);
-assert($('#btnSell').disabled === true, 'sotilgan blok qayta tanlanganda "Sotish" o\'chirilgan');
+assert($('#btnSell').disabled === true, 'для проданного блока кнопка «Продать» отключена');
 assert($('#selInfo').textContent.includes('Свободно'), 'для занятого блока показано «свободно 0»');
 
 // --- boshqa sotuvchi bir vaqtda xuddi shu joyni sotmoqchi: server rad etadi
@@ -229,7 +229,7 @@ const r409 = await fetch(BASE + '/api/action', {
 });
 const j409 = await r409.json();
 assert(r409.status === 409 && j409.error === 'conflict', `одновременная продажа отклонена (${r409.status}: ${j409.message})`);
-assert(j409.conflicts[0].buyer === 'Smoke Test MChJ', 'kim sotgani ko\'rsatildi: ' + JSON.stringify(j409.conflicts[0]));
+assert(j409.conflicts[0].buyer === 'Smoke Test MChJ', 'видно, кто продал: ' + JSON.stringify(j409.conflicts[0]));
 
 // --- mijoz rejimi
 const dom2 = new JSDOM(html, { url: BASE + '/?mode=client', runScripts: 'outside-only', pretendToBeVisual: true });
@@ -241,10 +241,10 @@ dom2.window.eval(groupsJs);
 dom2.window.eval(appJs);
 await new Promise((r) => setTimeout(r, 800));
 const d2 = dom2.window.document;
-assert(d2.querySelector('#login').style.display === 'none', 'mijoz rejimida login yo\'q');
+assert(d2.querySelector('#login').style.display === 'none', 'в режиме клиента нет формы входа');
 const drawnStands = d2.querySelectorAll('#world .stand').length;
 const drawnUnits = d2.querySelectorAll('#world .booking-unit').length;
-assert(drawnStands + drawnUnits > 0 && drawnUnits > 0, `в режиме клиента план нарисован (${drawnStands} свободных стендов + ${drawnUnits} band quti)`);
+assert(drawnStands + drawnUnits > 0 && drawnUnits > 0, `в режиме клиента план нарисован (${drawnStands} свободных стендов + ${drawnUnits} рамок занятых мест)`);
 assert(d2.querySelector('#stats').textContent.includes('продано'), 'в режиме клиента статистика видна');
 
 window.close();

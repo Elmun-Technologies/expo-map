@@ -49,6 +49,8 @@ body {
 .topbar .btn.ghost { background: transparent; color: #cfe0ee; border-color: rgba(255,255,255,.35); }
 .topbar .btn.ghost:hover { background: rgba(255,255,255,.12); }
 .btn.small { padding: 3px 8px; font-size: 12px; }
+.chk { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: #cfe0ee; cursor: pointer; user-select: none; }
+.chk input { margin: 0; }
 .search { padding: 8px 10px; border-radius: 8px; border: 1px solid transparent; width: 240px; font: inherit; font-size: 14px; }
 
 /* ---------- layout ---------- */
@@ -158,7 +160,7 @@ label.inline input { width: 92px; margin: 0; }
 .demo-hint { font-size: 12px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 10px; margin-top: 6px; display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
 .chip { background: #eef3f8; border: 1px solid var(--line); border-radius: 6px; padding: 2px 6px; font: inherit; font-size: 12px; }
 
-/* ---------- toasts / modal ---------- */
+/* ---------- уведомления / модальные окна ---------- */
 .toasts { position: fixed; right: 16px; bottom: 16px; display: flex; flex-direction: column; gap: 8px; z-index: 60; }
 .toast { background: #0f2233; color: #fff; padding: 10px 14px; border-radius: 8px; font-size: 14px; max-width: 380px; box-shadow: 0 6px 18px rgba(0,0,0,.18); }
 .toast.err { background: #8e1b1b; }
@@ -169,26 +171,34 @@ label.inline input { width: 92px; margin: 0; }
 .modal-card td { padding: 3px 0; border-bottom: 1px dotted var(--line); }
 .modal-card td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
 
-/* ---------- print (mijozga yuboriladigan / PDF) ---------- */
+/* ---------- печать (для клиента / PDF) ---------- */
 .print-only { display: none; }
+.print-only-head { display: none; }
 @media print {
-  /* bitta varaq: faqat ASOSIY XARITA (A3 landscape) */
+  /* один лист: заголовок + ОСНОВНАЯ КАРТА (A3 landscape) */
   @page { size: A3 landscape; margin: 8mm; }
   html, body { background: #fff !important; display: block; }
   .topbar, .panel, #toasts, .login, .map-note, #confirm, .draft-banner, .legend,
-  .stats, .print-only, #report, .zoombar, .toolbar, .toast { display: none !important; }
+  .stats, #report, .zoombar, .toolbar, .toast { display: none !important; }
   .layout { display: block; padding: 0 !important; }
   .map-wrap { padding: 0 !important; border: none !important; box-shadow: none !important; overflow: visible !important; width: 100% !important; }
-  /* SVG'ning standart o'lchami (300x150px) bo'lib qolmasin - varaqni to'liq egallaydi */
+  /* шапка листа: проект, дата, цена, статистика */
+  .print-only-head { display: block !important; margin: 0 0 3mm; }
+  .print-only-head .ph-row { display: flex; align-items: baseline; justify-content: space-between; gap: 8mm; }
+  .print-only-head .ph-title { font-size: 15pt; font-weight: 700; color: #0f2233; }
+  .print-only-head .ph-date { font-size: 10pt; color: #5b6b7a; }
+  .print-only-head .ph-sub { font-size: 9pt; color: #44586a; margin-top: 1mm; }
+  /* чтобы SVG не оставался размером 300x150 px по умолчанию — занимает весь лист */
   #map {
     display: block; margin: 0 auto; border: none !important;
-    width: 100% !important; height: auto !important; max-height: 276mm;
+    width: 100% !important; height: auto !important; max-height: 262mm;
     aspect-ratio: var(--map-ratio, 1.8);
   }
-  /* jadvallar faqat "Tafsilot" rejimida chop etiladi */
-  body.print-tables .print-only { display: block !important; font-size: 10pt; }
+  /* таблицы (блоки, компании, разделы) — только если отмечено «с таблицами» */
+  .print-only { display: none !important; }
+  body.print-tables .print-only { display: block !important; font-size: 9.5pt; }
 }
-/* ---------- responsive (sotuvchi telefonda) ---------- */
+/* ---------- адаптив (продавец с телефона) ---------- */
 @media (max-width: 900px) {
   .layout { grid-template-columns: 1fr; }
   .panel { border-left: none; border-top: 1px solid var(--line); max-height: 55vh; }
@@ -196,7 +206,7 @@ label.inline input { width: 92px; margin: 0; }
   .search { width: 150px; }
 }
 
-/* kvitansiya chop etilganda faqat kvitansiya ko'rinadi */
+/* при печати квитанции видна только квитанция */
 @media print {
   body.print-receipt .map-wrap, body.print-receipt .stats, body.print-receipt #selectionBox, body.print-receipt #auditCard { display: none !important; }
   body.print-receipt .panel { display: block !important; border: none; max-height: none; overflow: visible; }
@@ -205,7 +215,7 @@ label.inline input { width: 92px; margin: 0; }
 }
 
 
-/* ---------- band joy qutisi: bitta kompaniya = bitta quti, nomi ichida ---------- */
+/* ---------- рамка занятых мест: одна компания = одна рамка, название внутри ---------- */
 .booking-unit { cursor: pointer; }
 .booking-unit .unit-fill { stroke: none; fill-opacity: .92; }
 .booking-unit .unit-line { fill: none; stroke: #7a1f1f; stroke-width: .2; pointer-events: none; }
@@ -219,7 +229,7 @@ label.inline input { width: 92px; margin: 0; }
 .booking-unit.dim { opacity: .16; }
 .booking-unit.sec-off { opacity: .12; }
 
-/* ---------- «Band joylar» ro'yxati (menejer ko'rinishi) ---------- */
+/* ---------- список «Занятые места» (вид менеджера) ---------- */
 .bookings { display: flex; flex-direction: column; gap: 5px; max-height: 260px; overflow: auto; margin-top: 8px; }
 .booking-row { display: grid; grid-template-columns: 10px 1fr auto; gap: 6px 8px; align-items: center;
   padding: 6px 8px; border: 1px solid #e2e8ee; border-radius: 8px; cursor: pointer; background: #fbfcfe; }
@@ -229,6 +239,6 @@ label.inline input { width: 92px; margin: 0; }
 .booking-row .bmuted { font-size: 11.5px; color: #5b6b7a; text-align: right; }
 .booking-row .bids { grid-column: 2 / -1; font-size: 11px; color: #7a8894; }
 
-/* MUHIM: [hidden] atributi har qanday display qoidasidan ustun bo'lishi kerak.
-   Busiz .modal/.login kabi elementlar (display:grid) sahifa ochilganda darhol ko'rinib qoladi. */
+/* ВАЖНО: атрибут [hidden] должен перекрывать любое правило display.
+   Иначе .modal/.login (display:grid) видны сразу при открытии страницы. */
 [hidden] { display: none !important; }

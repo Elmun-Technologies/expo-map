@@ -31,7 +31,7 @@ const opt = (name, def) => {
 };
 const file = args.find((a) => !a.startsWith('--') && !['blocks', 'stands', 'hall', 'width', 'height', 'out', 'mode', 'project', 'version', 'stand', 'price', 'min-aisle', 'ttl'].includes(a));
 if (!file) {
-  console.error('Ishlatish: node tools/import-csv.mjs <fayl.csv> [--mode blocks|stands] [--out layout/hall-A.json]');
+  console.error('Использование: node tools/import-csv.mjs <файл.csv> [--mode blocks|stands] [--out layout/hall-A.json]');
   process.exit(2);
 }
 
@@ -68,12 +68,12 @@ header.forEach((h, i) => {
   for (const [field, names] of Object.entries(ALIAS)) if (names.includes(key)) col[field] = i;
 });
 const need = (f) => {
-  if (col[f] == null) { console.error(`✗ CSV'da "${f}" ustuni topilmadi. Sarlavha: ${header.join(' | ')}`); process.exit(1); }
+  if (col[f] == null) { console.error(`✗ в CSV нет колонки «${f}». Заголовок: ${header.join(' | ')}`); process.exit(1); }
 };
 const get = (r, f) => (col[f] == null ? '' : r[col[f]] ?? '');
 const N = (v, f, row) => {
   const n = Number(String(v).replace(',', '.'));
-  if (!Number.isFinite(n)) { console.error(`✗ ${f} raqam emas: "${v}" (qator: ${row.join(' | ')})`); process.exit(1); }
+  if (!Number.isFinite(n)) { console.error(`✗ ${f} — не число: "${v}" (строка: ${row.join(' | ')})`); process.exit(1); }
   return n;
 };
 
@@ -98,7 +98,7 @@ if (mode === 'blocks') {
     };
     if (get(r, 'group')) b.group = get(r, 'group');
     if (get(r, 'note')) b.note = get(r, 'note');
-    if (byId.has(id)) { console.error(`✗ CSV'da ${id} bloki ikki marta bor`); process.exit(1); }
+    if (byId.has(id)) { console.error(`✗ блок ${id} встречается в CSV дважды`); process.exit(1); }
     byId.set(id, b);
     blocks.push(b);
   });
@@ -151,12 +151,12 @@ fs.mkdirSync(path.dirname(outPath), { recursive: true });
 fs.writeFileSync(outPath, JSON.stringify(layout, null, 2));
 
 const check = validateLayout(layout);
-console.log(`✓ ${path.relative(process.cwd(), outPath)} yozildi: ${blocks.length} blok`);
-console.log(check.stats ? `  ${check.stats.stands} stend · ${check.stats.totalAreaM2} m²` : '');
+console.log(`✓ записан ${path.relative(process.cwd(), outPath)}: блоков ${blocks.length}`);
+console.log(check.stats ? `  ${check.stats.stands} стендов · ${check.stats.totalAreaM2} м²` : '');
 for (const w of check.warnings) console.log('  ⚠ ' + w);
 for (const e of check.errors) console.log('  ✗ ' + e);
 if (!check.ok) {
-  console.log('\n✗ Layout XATO bilan chiqdi — xato(lar)ni tuzating (koordinata, ustun/qator soni) va qaytadan urinib ko\'ring.');
+  console.log('\n✗ Схема не прошла проверку — исправьте ошибки (координаты, число колонок/строк) и повторите.');
   process.exit(1);
 }
-console.log('\n✓ Layout tekshiruvdan o\'tdi. Endi: node tools/validate-layout.mjs ' + path.relative(process.cwd(), outPath));
+console.log('\n✓ Схема проверена. Дальше: node tools/validate-layout.mjs ' + path.relative(process.cwd(), outPath));
