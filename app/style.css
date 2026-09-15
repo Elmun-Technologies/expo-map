@@ -248,3 +248,37 @@ label.inline input { width: 92px; margin: 0; }
 .pdf-help .pdf-view { height: 44vh; min-height: 240px; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: #f7f9fb; margin: 10px 0; }
 .pdf-help .pdf-view img { width: 100%; height: 100%; object-fit: contain; display: block; }
 .pdf-help-steps { margin: 4px 0 0 18px; font-size: 13px; color: #5b6b7a; }
+
+
+/* ---------- карточки статистики, закладки и таблицы ---------- */
+.cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; padding: 0 16px; margin: 12px 0 0; }
+.card-stat { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 13px 15px; display: grid; gap: 6px; }
+.card-stat .cs-name { font-size: 12.5px; color: #5b6b7a; }
+.card-stat .cs-value { font-size: 25px; font-weight: 700; color: #16232e; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.card-stat .cs-value small { font-size: 13px; font-weight: 600; color: #7a8894; margin-left: 3px; }
+.card-stat .cs-note { font-size: 12px; color: #7a8894; }
+.card-stat .cs-bar { height: 4px; border-radius: 2px; background: #eef2f6; overflow: hidden; }
+.card-stat .cs-bar i { display: block; height: 100%; border-radius: 2px; }
+
+.tabs { display: flex; align-items: center; gap: 2px; padding: 0 16px; margin: 14px 0 12px; border-bottom: 1px solid var(--line); }
+.tabs .tab { border: 0; background: transparent; padding: 9px 12px; font: inherit; font-size: 14px; color: #5b6b7a; cursor: pointer; border-bottom: 2px solid transparent; }
+.tabs .tab:hover { color: #16232e; }
+.tabs .tab.is-on { color: #16232e; font-weight: 600; border-bottom-color: var(--accent); }
+.tabs .cnt { display: inline-block; min-width: 20px; padding: 1px 6px; border-radius: 999px; background: #eef2f6; font-size: 12px; color: #5b6b7a; }
+.tabs .updated { margin-left: auto; font-size: 12px; color: #7a8894; }
+
+.wide-card { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; margin: 0 16px 16px; }
+.wide-card h2 { margin: 0 0 4px; font-size: 18px; }
+.table-wrap { overflow: auto; margin-top: 8px; }
+table.data { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+table.data th { text-align: left; font-size: 11.5px; text-transform: uppercase; letter-spacing: .03em; color: #7a8894; font-weight: 600; padding: 8px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+table.data td { padding: 8px 10px; border-bottom: 1px solid #eef2f6; vertical-align: top; }
+table.data tr[data-ids] { cursor: pointer; }
+table.data tr[data-ids]:hover td { background: #f7fafd; }
+table.data .num { text-align: right; font-variant-numeric: tabular-nums; }
+.source-plan { display: grid; place-items: center; min-height: 220px; border: 1px dashed var(--line); border-radius: 12px; background: #f9fbfd; overflow: hidden; margin-top: 8px; }
+.source-plan img { max-width: 100%; height: auto; display: block; }
+@media (max-width: 980px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+.zoom-box { display: inline-flex; align-items: center; gap: 4px; }
+.zoom-box .zoom-pct { min-width: 46px; text-align: center; font-size: 13px; color: #5b6b7a; font-variant-numeric: tabular-nums; }

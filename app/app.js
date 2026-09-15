@@ -90,6 +90,8 @@
     const changed = force || s.revision !== revision;
     revision = s.revision;
     items = s.items || {};
+    const stamp = $('#updatedAt');
+    if (stamp) stamp.textContent = 'Обновлено: ' + new Date().toLocaleTimeString('ru-RU');
     if (changed) {
       // если место из выборки уже занято — предупреждаем
       if (selection.size) {
@@ -100,6 +102,7 @@
         }
       }
       renderMap(); renderStats(); renderLegend(); renderSections(); renderBookings(); renderSelection();
+      if ($('#pane-deals') && !$('#pane-deals').hidden) renderDeals();
     }
   }
 
@@ -412,7 +415,11 @@
     paintSelection();
   }
 
-  function applyView() { $('#world').setAttribute('transform', `translate(${view.tx} ${view.ty}) scale(${view.k})`); }
+  function applyView() {
+    $('#world').setAttribute('transform', `translate(${view.tx} ${view.ty}) scale(${view.k})`);
+    const pct = $('#zoomPct');
+    if (pct) pct.textContent = Math.round(view.k * 100) + '%';
+  }
   function fit() { view.k = 1; view.tx = 0; view.ty = 0; applyView(); }
 
   const toUser = (ev) => {
@@ -591,6 +598,7 @@
       <div class="stat"><b>${by.sold}</b><span>продано · ${fmtNum(area.sold)} м²</span></div>
       <div class="stat"><b>${fmtNum(totalArea)}</b><span>всего м² · занято ${by.sold + by.reserved}</span></div>
       <div class="stat" style="grid-column:1/-1"><b>${fmtNum(revenue)}</b><span>сум продаж · ${fmtMln(revenue)}</span></div>`;
+    renderStatCards();
   }
 
   function renderLegend() {
@@ -1044,6 +1052,147 @@
       btn.disabled = false;
       btn.textContent = label;
     }
+  });
+
+  // ------------------------------------------------------------ карточки, закладки, таблицы
+  function planTotals() {
+    const merged = (layout.blocks || []).flatMap((b) => (b.merged || []).map((m) => ({
+      id: `${b.id}~m`, areaM2: m.w * m.h, status: m.status || 'sold',
+    })));
+    const all = [...(layout.stands || []), ...merged];
+    const by = { free: 0, reserved: 0, sold: 0, blocked: 0 };
+    const area = { free: 0, reserved: 0, sold: 0, blocked: 0 };
+    for (const s of all) {
+      const st = statusOf(s.id);
+      by[st] = (by[st] || 0) + 1;
+      area[st] = (area[st] || 0) + s.areaM2;
+    }
+    return {
+      by, area,
+      total: all.reduce((a, s) => a + s.areaM2, 0),
+      places: all.length,
+      blocks: (layout.blocks || []).filter((b) => (b.kind || 'grid') !== 'custom').length,
+      custom: (layout.blocks || []).filter((b) => b.kind === 'custom').length,
+      deals: ExpoGroups.groupBookings(layout.stands || [], items).length,
+    };
+  }
+
+  function renderStatCards() {
+    const box = $('#statCards');
+    if (!box || !layout) return;
+    const t = planTotals();
+    const card = (name, num, unit, note, color) => `
+      <div class="card-stat">
+        <span class="cs-name">${name}</span>
+        <span class="cs-value">${fmtNum(num)}<small>${unit}</small></span>
+        <span class="cs-bar"><i style="width:${t.total ? Math.round((num / t.total) * 100) : 0}%;background:${color}"></i></span>
+        <span class="cs-note">${note}</span>
+      </div>`;
+    const note = `Мест: ${fmtNum(t.places)} · блоков: ${fmtNum(t.blocks)}${t.custom ? ` · нестандартных: ${fmtNum(t.custom)}` : ''}`;
+    const cnt = $('#dealsCount');
+    if (cnt) cnt.textContent = String(t.deals);
+    box.innerHTML =
+      card('Общая площадь', t.total, 'м²', note, '#90a4ae') +
+      card('Доступно для продажи', t.area.free, 'м²', `Свободных мест: ${fmtNum(t.by.free)}`, '#2e7d32') +
+      card('Забронировано', t.area.reserved, 'м²', `Забронировано ячеек: ${fmtNum(t.by.reserved)}`, '#f59e0b') +
+      card('Продано', t.area.sold, 'м²', `Активных сделок: ${fmtNum(t.deals)}`, '#c62828');
+  }
+
+  function setTab(name) {
+    $$('#viewTabs .tab').forEach((b) => b.classList.toggle('is-on', b.dataset.tab === name));
+    for (const t of ['map', 'deals', 'history', 'source']) {
+      const pane = $('#pane-' + t);
+      if (pane) pane.hidden = t !== name;
+    }
+    if (name === 'deals') renderDeals();
+    if (name === 'history') renderHistory();
+    if (name === 'source') renderSourcePlan();
+  }
+  $$('#viewTabs .tab').forEach((b) => b.addEventListener('click', () => setTab(b.dataset.tab)));
+  if (CLIENT) $('#viewTabs').hidden = true;
+
+  // Сделки: одна строка — одна компания (даже если она заняла несколько стендов).
+  function renderDeals() {
+    const box = $('#dealsTable');
+    if (!box || !layout) return;
+    const units = ExpoGroups.groupBookings(layout.stands || [], items);
+    const cnt = $('#dealsCount');
+    if (cnt) cnt.textContent = String(units.length);
+    if (!units.length) { box.innerHTML = '<p class="muted">Пока нет ни одной брони или продажи.</p>'; return; }
+    const price = pricePerM2();
+    const rows = units.map((u) => {
+      const it = items[u.ids[0]] || {};
+      const amount = it.amount || (price ? u.areaM2 * price : 0);
+      return `<tr data-ids="${u.ids.join(',')}" data-x="${u.x}" data-y="${u.y}" data-w="${u.w}" data-h="${u.h}">
+        <td><b>${u.label || 'Без названия'}</b>${it.buyer && it.company ? `<br><span class="muted">${it.buyer}</span>` : ''}</td>
+        <td>${u.ids.join(', ')}</td>
+        <td class="num">${fmtNum(u.areaM2)} м²</td>
+        <td>${STATUS_LABEL[u.status] || u.status}</td>
+        <td>${it.sellerName || '—'}</td>
+        <td>${it.phone || '—'}</td>
+        <td class="num">${amount ? fmtMoney(amount) : '—'}</td>
+        <td>${fmtDate(it.updatedAt)}</td>
+      </tr>`;
+    }).join('');
+    box.innerHTML = `<table class="data"><thead><tr><th>Компания</th><th>Стенды</th><th>Площадь</th><th>Статус</th>
+      <th>Продавец</th><th>Телефон</th><th>Сумма</th><th>Обновлено</th></tr></thead><tbody>${rows}</tbody></table>`;
+    $$('#dealsTable tr[data-ids]').forEach((tr) => tr.addEventListener('click', () => {
+      selection = new Set(tr.dataset.ids.split(','));
+      setTab('map');
+      zoomToBox(+tr.dataset.x - 4, +tr.dataset.y - 4, +tr.dataset.w + 8, +tr.dataset.h + 8);
+      renderSelection();
+      paintSelection();
+    }));
+  }
+
+  // История действий — журнал операций (только администратор).
+  async function renderHistory() {
+    const box = $('#historyTable');
+    if (!box) return;
+    if (!isAdmin()) { box.innerHTML = '<p class="muted">История доступна только администратору.</p>'; return; }
+    box.innerHTML = '<p class="muted">Загружаем…</p>';
+    try {
+      const r = await api('/api/audit?limit=200');
+      const ACT = { sell: 'Продажа', reserve: 'Бронь', release: 'Освобождение', block: 'Блокировка', expire: 'Снятие брони', login: 'Вход' };
+      if (!r.entries.length) { box.innerHTML = '<p class="muted">Записей пока нет.</p>'; return; }
+      box.innerHTML = `<table class="data"><thead><tr><th>Время</th><th>Продавец</th><th>Действие</th><th>Стенды</th><th>Клиент</th></tr></thead><tbody>${
+        r.entries.map((e) => `<tr><td>${fmtDate(e.ts)}</td><td>${e.sellerName || e.sellerId || '—'}</td>
+          <td>${ACT[e.action] || e.action}</td><td>${(e.standIds || []).join(', ') || '—'}</td><td>${e.buyer || '—'}</td></tr>`).join('')}</tbody></table>`;
+    } catch (e) {
+      box.innerHTML = `<p class="muted">Не удалось загрузить историю: ${e.message}</p>`;
+    }
+  }
+
+  // Исходный план — чертёж зала. Файл кладётся рядом с панелью: app/plan-source.png (или .jpg/.jpeg).
+  function renderSourcePlan() {
+    const box = $('#sourcePlan');
+    const hint = $('#sourceHint');
+    if (!box) return;
+    const miss = () => {
+      box.innerHTML = '<p class="muted">Исходный чертёж не загружен.</p>';
+      if (hint) hint.textContent = 'Пришлите файл чертежа (PNG/JPG) — положите его рядом с панелью как app/plan-source.png, и он появится здесь. Пока посмотрите готовый лист A3.';
+    };
+    if (hint) hint.textContent = 'Чертёж, по которому собран план зала.';
+    box.innerHTML = '<p class="muted">Загружаем…</p>';
+    const candidates = ['plan-source.png', 'plan-source.jpg', 'plan-source.jpeg'];
+    let i = 0;
+    const tryNext = () => {
+      if (i >= candidates.length) { miss(); return; }
+      const img = new Image();
+      img.alt = 'Исходный план зала';
+      img.onload = () => {
+        box.innerHTML = '';
+        box.appendChild(img);
+        if (hint) hint.textContent = 'Чертёж, по которому собран план зала.';
+      };
+      img.onerror = () => { i += 1; tryNext(); };
+      img.src = candidates[i];
+    };
+    tryNext();
+    setTimeout(() => { if (!box.querySelector('img')) miss(); }, 1500);
+  }
+  $('#sourceShowA3')?.addEventListener('click', () => {
+    showPdfHelp('Готовый лист A3: так план уходит клиенту. Скачайте файл или сохраните его через печать.');
   });
 
   // ------------------------------------------------------------ start
