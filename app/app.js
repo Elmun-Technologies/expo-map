@@ -938,13 +938,63 @@
   $('#printBtn').addEventListener('click', () => { preparePrint(); window.print(); });
 
   // ------------------------------------------------------------ скачать PDF
+  const pdfPage = () => String(layout?.meta?.format || 'A3').toUpperCase();
+  const pdfUrl = (disp) => `/api/export/pdf?page=${encodeURIComponent(pdfPage())}${disp ? '&disp=' + disp : ''}`;
+  const pdfName = () => `FOODERA-EXPO-2026-plan-${pdfPage()}.pdf`;
+  const isEmbedded = () => { try { return window.self !== window.top; } catch { return true; } };
+
+  let pdfReady = null; // null — сервер ещё не ответил, true/false — его ответ
   (async () => {
     try {
       const h = await fetch('/api/healthz').then((r) => r.json());
-      if (h?.pdf) $('#pdfBtn').hidden = false;
-    } catch { /* сервер не ответил — кнопки не будет */ }
+      pdfReady = !!h?.pdf;
+    } catch { /* сервер не ответил — проверим при клике */ }
   })();
-  $('#pdfBtn')?.addEventListener('click', () => { window.location.href = '/api/export/pdf?page=' + (layout?.meta?.format || 'A3'); });
+
+  $('#pdfBtn')?.addEventListener('click', async () => {
+    const btn = $('#pdfBtn');
+    const label = btn.textContent;
+    if (pdfReady === false) {
+      return fail('На сервере нет PDF-модуля (python3 + reportlab). Используйте «Печать плана» → «Сохранить как PDF».');
+    }
+    btn.disabled = true;
+    btn.textContent = 'Готовим PDF…';
+    try {
+      // 1) Панель открыта внутри рамки (предпросмотр) — скачивание файлов там обычно запрещено,
+      //    поэтому PDF показываем в отдельной вкладке: сохранить его можно кнопкой браузера.
+      if (isEmbedded()) {
+        const win = window.open(pdfUrl('inline'), '_blank');
+        if (win) { toast('PDF открыт в новой вкладке — сохраните его кнопкой браузера'); return; }
+        // всплывающее окно заблокировано — показываем PDF прямо в текущей рамке
+        toast('Открываем PDF для просмотра — сохранить его можно кнопкой браузера');
+        window.location.href = pdfUrl('inline');
+        return;
+      }
+      // 2) Обычное скачивание: забираем файл и отдаём браузеру под готовым именем.
+      const r = await fetch(pdfUrl());
+      if (!r.ok) {
+        let m = `Не удалось получить PDF (${r.status})`;
+        try { const j = await r.json(); if (j?.message) m = j.message; } catch { /* ответ не JSON */ }
+        throw new Error(m);
+      }
+      const blob = await r.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = pdfName(); a.rel = 'noopener';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 10000);
+      toast(`Файл ${pdfName()} — скачивается`);
+    } catch (e) {
+      // 3) Последний шанс: открыть PDF в новой вкладке, иначе показать его прямо в рамке.
+      const w = window.open(pdfUrl('inline'), '_blank');
+      if (w) { toast('PDF открыт в новой вкладке — сохраните его кнопкой браузера'); return; }
+      fail(`Не удалось скачать PDF: ${e.message}. Открываем для просмотра…`);
+      setTimeout(() => { window.location.href = pdfUrl('inline'); }, 1500);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = label;
+    }
+  });
 
   // ------------------------------------------------------------ start
   (async () => {

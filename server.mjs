@@ -355,6 +355,8 @@ const server = http.createServer(async (req, res) => {
 
     if (p === '/api/export/pdf' && req.method === 'GET') {
       const page = String(url.searchParams.get('page') || 'A3').toUpperCase();
+      // disp=inline — отдать PDF для просмотра в браузере (в новой вкладке), иначе — на скачивание
+      const disp = url.searchParams.get('disp') === 'inline' ? 'inline' : 'attachment';
       if (!PDF_EXPORT) return send(res, 503, { error: 'no_pdf', message: 'На сервере нет python3 + reportlab — используйте «Печать плана» (Сохранить как PDF).' });
       const tmp = await fsp.mkdtemp(path.join(os.tmpdir(), 'expo-pdf-'));
       const svgPath = path.join(tmp, 'plan.svg'), pdfPath = path.join(tmp, 'plan.pdf');
@@ -366,7 +368,7 @@ const server = http.createServer(async (req, res) => {
       const fname = `FOODERA-EXPO-2026-plan-${page}.pdf`;
       res.writeHead(200, {
         'Content-Type': 'application/pdf',
-        'Content-Disposition': `attachment; filename="${fname}"`,
+        'Content-Disposition': `${disp}; filename="${fname}"`,
         'Content-Length': buf.length,
         'Cache-Control': 'no-store',
       });
