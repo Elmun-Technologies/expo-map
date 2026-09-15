@@ -45,7 +45,7 @@ const cases = [
       { id: 'A-01', x: 5, y: 5, cols: 4, rows: 2 },
       { id: 'A-02', x: 18, y: 5, cols: 4, rows: 2 },
     ] }, expect: 'ok', expectWarn: /1\.00 м/ },
-  { name: 'стенд заходит в колонну', layout: { ...base(), blocks: [{ id: 'A-01', x: 5, y: 5, cols: 4, rows: 2 }], features: [{ type: 'column', label: 'Ustun', x: 11, y: 5, w: 1.2, h: 1.2 }] }, expect: /заходит внутрь объекта/ },
+  { name: 'стенд заходит в колонну', layout: { ...base(), blocks: [{ id: 'A-01', x: 5, y: 5, cols: 4, rows: 2 }], features: [{ type: 'column', label: 'Колонна', x: 11, y: 5, w: 1.2, h: 1.2 }] }, expect: /заходит внутрь объекта/ },
   { name: 'стенд вне границы зала', layout: { ...base(), hall: { width: 20, height: 20, outline: [[0, 0], [20, 0], [20, 20], [0, 20]] }, blocks: [{ id: 'A-01', x: 18, y: 5, cols: 4, rows: 2 }] }, expect: /выходит за границу зала/ },
   { name: 'повторяющийся ID блока', layout: { ...base(), blocks: [
       { id: 'A-01', x: 5, y: 5, cols: 4, rows: 2 },

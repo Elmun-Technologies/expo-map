@@ -355,7 +355,7 @@
     return g;
   }
 
-  /** Uzun bitta so'z (Ansor-Zoxir, ZominFarms) qutiga sig'masa — chiziqcha/bo'g'in bo'ylab bo'lamiz. */
+  /** Длинное слово (Ansor-Zoxir, ZominFarms), не влезающее в ячейку, делим по слогам/дефису. */
   function softLabel(text) {
     return String(text).split(/\s+/).map((w) => {
       if (w.length <= 13) return w.includes('-') ? w.replace(/-/g, '- ').trim() : w;

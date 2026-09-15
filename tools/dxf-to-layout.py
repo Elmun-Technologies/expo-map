@@ -38,7 +38,7 @@ ap.add_argument("--block-area", type=float, default=72.0)
 ap.add_argument("--min-aisle", type=float, default=2.0)
 ap.add_argument("--prefix", default="A")
 ap.add_argument("--feature", action="append", default=[], metavar="LAYER:TYPE",
-                help="Obyekt layeri: turi (masalan XONA:room, USTUN:column, SAHNA:stage, WC:wc, FOOD:food)")
+                help="Слой с объектами: тип (например XONA:room, USTUN:column, SAHNA:stage, WC:wc, FOOD:food)")
 ap.add_argument("-h", "--help", action="help")
 A = ap.parse_args()
 
@@ -81,7 +81,7 @@ if A.label_layer:
 all_rects = rects_of()
 if not all_rects:
     print("✗ В чертеже не найдено замкнутых прямоугольников (LWPOLYLINE, closed).")
-    print("  Maslahat: bloklarni yopiq polyline qilib chizib, alohida layer'ga qo'ying (masalan BLOK).")
+    print("  Совет: нарисуйте блоки замкнутыми polyline на отдельном слое (например BLOK).")
     sys.exit(1)
 
 hall_rects = rects_of(A.hall_layer) if A.hall_layer else all_rects

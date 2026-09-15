@@ -130,7 +130,7 @@ const layout = {
   schemaVersion: 1,
   meta: {
     project: String(opt('project', 'Ekspo Markazi')),
-    hall: String(opt('hall', 'A zal')),
+    hall: String(opt('hall', 'Крытый павильон')),
     version: String(opt('version', '1.0.0')),
     updatedAt: new Date().toISOString().slice(0, 10),
     units: 'meters',

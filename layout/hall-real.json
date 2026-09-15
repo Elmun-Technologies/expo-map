@@ -1,20 +1,20 @@
 {
   "schemaVersion": 1,
-  "_comment": "QORALAMA. Chizma nisbatlaridan o'qildi (rasm), aniq raqamlar DWG/PDF dan tasdiqlanishi kerak. meta.status='draft' bo'lgani uchun mijozga eksport bloklangan. Tasdiqlangach status='approved' qilinadi.",
+  "_comment": "ЧЕРНОВИК. Прочитано по пропорциям чертежа (изображение); точные цифры нужно подтвердить по DWG/PDF. Пока meta.status='draft', экспорт клиенту заблокирован. После подтверждения статус меняется на 'approved'.",
   "_verify": [
-    "Zalning aniq o'lchamlari (chizmadagi mm o'lchamlar: 62 786 / 18 782 / 875 / 2 762 ...)",
-    "Chap qanot: A1 va A2 maydonlari (chizmada yozuvi ko'rinmadi); A3=25.4, A4=22.67, A5=20.32, A6=19.15 m²",
-    "Asosiy zaldagi har bir ustun (A–F) guruhida nechta stend: 12 ta (2x6) yoki 8+4 bo'linadimi?",
-    "Pastdagi qatorda guruhlar 2x4 = 8 stendmi (72 m²)? B guruhi 1x4 = 4 stend ko'rinadi",
-    "Aralash o'lchamli guruh (12/9/6/18 m²) — bu qaysi guruh va qanday sotiladi?",
-    "B2B zona va Small Conference Hall ichida stendlar bormi yoki faqat xonalarmi?",
-    "Raqamlash tartibi: har bir ustunda 1..N ketma-ketligi va qaysi stend qaysi guruhga tegishli",
-    "Yo'lak kengliklari (ustunlar orasi) va ustunlar (konstruktiv kolonnalar) joylashuvi",
-    "Yuk ko'tarish yo'lagi (грузовые ворота) va texnik xona chegaralari"
+    "Точные размеры зала (в чертеже указаны мм: 62 786 / 18 782 / 875 / 2 762 …)",
+    "Левое крыло: площади A1 и A2 (на чертеже подписи не читались); A3=25.4, A4=22.67, A5=20.32, A6=19.15 м²",
+    "Сколько стендов в каждой колонне основного зала (A–F): 12 (2×6) или делится 8+4?",
+    "В нижнем ряду группы по 2×4 = 8 стендов (72 м²)? У группы B видно 1×4 = 4 стенда",
+    "Группа смешанных площадей (12/9/6/18 м²) — что это за группа и как продаётся?",
+    "Есть ли стенды внутри зоны B2B и Small Conference Hall или это только помещения?",
+    "Порядок нумерации: последовательность 1..N в каждой колонне и принадлежность стенда к группе",
+    "Ширина проходов (между колоннами) и расположение конструктивных колонн",
+    "Границы грузовых ворот и технической комнаты"
   ],
   "meta": {
     "project": "Крытый павильон",
-    "hall": "Yopiq pavilyon (asosiy zal)",
+    "hall": "Крытый павильон (основной зал)",
     "version": "0.1.0-draft",
     "status": "draft",
     "enforceBlockRule": false,
@@ -35,7 +35,7 @@
     "currency": "UZS",
     "pricePerM2": 0,
     "reserveTtlHours": 72,
-    "source": "chizma (PDF/rasm) — nisbatlardan taxminiy o'qildi"
+    "source": "чертёж (PDF/изображение) — прочитано приблизительно по пропорциям"
   },
   "hall": {
     "width": 84,
@@ -62,7 +62,7 @@
   "zones": [
     {
       "id": "wing",
-      "label": "Chap qanot (A1–A6)",
+      "label": "Левое крыло (A1–A6)",
       "color": "#fff6e5",
       "x": 0,
       "y": 3,
@@ -72,7 +72,7 @@
     },
     {
       "id": "main",
-      "label": "Asosiy zal (A–F ustunlar)",
+      "label": "Основной зал (колонны A–F)",
       "color": "#f4f8fd",
       "x": 9,
       "y": 1,
@@ -82,7 +82,7 @@
     },
     {
       "id": "main-bottom",
-      "label": "Pastki qator guruhlari",
+      "label": "Группы нижнего ряда",
       "color": "#f7fbf7",
       "x": 9,
       "y": 24,
@@ -92,7 +92,7 @@
     },
     {
       "id": "stage",
-      "label": "Sahna zonasi",
+      "label": "Зона сцены",
       "color": "#eef2f6",
       "x": 62,
       "y": 1,
@@ -112,7 +112,7 @@
     },
     {
       "id": "conf",
-      "label": "Kichik konferens-zal",
+      "label": "Малый конференц-зал",
       "color": "#f0f6ff",
       "x": 76,
       "y": 1,
@@ -124,7 +124,7 @@
   "features": [
     {
       "type": "stage",
-      "label": "Sahna",
+      "label": "Сцена",
       "x": 62.5,
       "y": 1.5,
       "w": 13,
@@ -132,7 +132,7 @@
     },
     {
       "type": "room",
-      "label": "Kichik konferens-zal",
+      "label": "Малый конференц-зал",
       "x": 76.5,
       "y": 1.5,
       "w": 6,
@@ -156,7 +156,7 @@
     },
     {
       "type": "entrance",
-      "label": "Bosh kirish",
+      "label": "Главный вход",
       "x": 40,
       "y": 45,
       "w": 12,
@@ -196,7 +196,7 @@
     },
     {
       "type": "cargo",
-      "label": "Yuk ko'tarish yo'lagi",
+      "label": "Грузовые ворота",
       "x": 62,
       "y": 41,
       "w": 20,
@@ -212,7 +212,7 @@
       "w": 6,
       "h": 3.19,
       "areaM2": 19.15,
-      "group": "Chap qanot",
+      "group": "Левое крыло",
       "color": "#e8a33d",
       "zone": "wing",
       "note": "19,15 m² (chizmada yozilgan)"
@@ -225,7 +225,7 @@
       "w": 6,
       "h": 3.39,
       "areaM2": 20.32,
-      "group": "Chap qanot",
+      "group": "Левое крыло",
       "color": "#e8a33d",
       "zone": "wing",
       "note": "20,32 m²"
@@ -238,7 +238,7 @@
       "w": 6,
       "h": 3.78,
       "areaM2": 22.67,
-      "group": "Chap qanot",
+      "group": "Левое крыло",
       "color": "#e8a33d",
       "zone": "wing",
       "note": "22,67 m²"
@@ -251,7 +251,7 @@
       "w": 6,
       "h": 4.23,
       "areaM2": 25.4,
-      "group": "Chap qanot",
+      "group": "Левое крыло",
       "color": "#e8a33d",
       "zone": "wing",
       "note": "25,4 m²"
@@ -264,7 +264,7 @@
       "w": 6,
       "h": 3.75,
       "areaM2": 22.5,
-      "group": "Chap qanot",
+      "group": "Левое крыло",
       "color": "#e8a33d",
       "zone": "wing",
       "note": "MAYDON TASDIQLANMAGAN"
@@ -277,7 +277,7 @@
       "w": 6,
       "h": 3.75,
       "areaM2": 22.5,
-      "group": "Chap qanot",
+      "group": "Левое крыло",
       "color": "#e8a33d",
       "zone": "wing",
       "note": "MAYDON TASDIQLANMAGAN"
@@ -291,10 +291,10 @@
       "y": 3,
       "cols": 2,
       "rows": 6,
-      "group": "Asosiy zal",
+      "group": "Основной зал",
       "color": "#e8a33d",
       "zone": "main",
-      "note": "12 stend = 108 m² (tasdiqlanishi kerak)"
+      "note": "12 стендов = 108 м² (нужно подтвердить)"
     },
     {
       "id": "B",
@@ -303,10 +303,10 @@
       "y": 3,
       "cols": 2,
       "rows": 6,
-      "group": "Asosiy zal",
+      "group": "Основной зал",
       "color": "#2f6db5",
       "zone": "main",
-      "note": "12 stend = 108 m² (tasdiqlanishi kerak)"
+      "note": "12 стендов = 108 м² (нужно подтвердить)"
     },
     {
       "id": "C",
@@ -315,10 +315,10 @@
       "y": 3,
       "cols": 2,
       "rows": 6,
-      "group": "Asosiy zal",
+      "group": "Основной зал",
       "color": "#c0392b",
       "zone": "main",
-      "note": "12 stend = 108 m² (tasdiqlanishi kerak)"
+      "note": "12 стендов = 108 м² (нужно подтвердить)"
     },
     {
       "id": "D",
@@ -327,10 +327,10 @@
       "y": 3,
       "cols": 2,
       "rows": 6,
-      "group": "Asosiy zal",
+      "group": "Основной зал",
       "color": "#1f3a5f",
       "zone": "main",
-      "note": "12 stend = 108 m² (tasdiqlanishi kerak)"
+      "note": "12 стендов = 108 м² (нужно подтвердить)"
     },
     {
       "id": "E",
@@ -339,10 +339,10 @@
       "y": 3,
       "cols": 2,
       "rows": 6,
-      "group": "Asosiy zal",
+      "group": "Основной зал",
       "color": "#2e7d32",
       "zone": "main",
-      "note": "12 stend = 108 m² (tasdiqlanishi kerak)"
+      "note": "12 стендов = 108 м² (нужно подтвердить)"
     },
     {
       "id": "F",
@@ -351,10 +351,10 @@
       "y": 3,
       "cols": 2,
       "rows": 6,
-      "group": "Asosiy zal",
+      "group": "Основной зал",
       "color": "#8e44ad",
       "zone": "main",
-      "note": "12 stend = 108 m² (tasdiqlanishi kerak)"
+      "note": "12 стендов = 108 м² (нужно подтвердить)"
     },
     {
       "id": "B-4",
@@ -363,10 +363,10 @@
       "y": 25,
       "cols": 1,
       "rows": 4,
-      "group": "Pastki qator",
+      "group": "Нижний ряд",
       "color": "#2f6db5",
       "zone": "main-bottom",
-      "note": "4 stend = 36 m²"
+      "note": "4 стендов = 36 м²"
     },
     {
       "id": "C-8",
@@ -375,10 +375,10 @@
       "y": 25,
       "cols": 2,
       "rows": 4,
-      "group": "Pastki qator",
+      "group": "Нижний ряд",
       "color": "#c0392b",
       "zone": "main-bottom",
-      "note": "8 stend = 72 m²"
+      "note": "8 стендов = 72 м²"
     },
     {
       "id": "D-8",
@@ -387,10 +387,10 @@
       "y": 25,
       "cols": 2,
       "rows": 4,
-      "group": "Pastki qator",
+      "group": "Нижний ряд",
       "color": "#1f3a5f",
       "zone": "main-bottom",
-      "note": "8 stend = 72 m²"
+      "note": "8 стендов = 72 м²"
     },
     {
       "id": "E-8",
@@ -399,10 +399,10 @@
       "y": 25,
       "cols": 2,
       "rows": 4,
-      "group": "Pastki qator",
+      "group": "Нижний ряд",
       "color": "#2e7d32",
       "zone": "main-bottom",
-      "note": "8 stend = 72 m²"
+      "note": "8 стендов = 72 м²"
     },
     {
       "id": "F-8",
@@ -411,10 +411,10 @@
       "y": 25,
       "cols": 2,
       "rows": 4,
-      "group": "Pastki qator",
+      "group": "Нижний ряд",
       "color": "#8e44ad",
       "zone": "main-bottom",
-      "note": "8 stend = 72 m²"
+      "note": "8 стендов = 72 м²"
     },
     {
       "id": "G-4",
@@ -423,10 +423,10 @@
       "y": 25,
       "cols": 1,
       "rows": 4,
-      "group": "Pastki qator",
+      "group": "Нижний ряд",
       "color": "#00838f",
       "zone": "main-bottom",
-      "note": "4 stend = 36 m²"
+      "note": "4 стендов = 36 м²"
     }
   ]
 }

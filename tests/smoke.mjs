@@ -75,7 +75,7 @@ const gridBlocks = layout.blocks.filter((b) => b.kind !== 'custom');
 let freeBlock = gridBlocks.find((b) => b.stands.every((s) => !st.items[s.id]));
 if (!freeBlock) {
   // берём блок, где меньше всего занятых мест, и освобождаем их (права менеджера)
-  const tok0 = (await (await fetch(BASE + '/api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: 'Menejer', pin: '9999' }) })).json()).token;
+  const tok0 = (await (await fetch(BASE + '/api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: 'Менеджер', pin: '9999' }) })).json()).token;
   const cand = gridBlocks.map((b) => ({ b, booked: b.stands.filter((s) => st.items[s.id]) })).sort((x, y) => x.booked.length - y.booked.length)[0];
   if (cand.booked.length) {
     await fetch(BASE + '/api/action', {

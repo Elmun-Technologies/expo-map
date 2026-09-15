@@ -6,7 +6,7 @@
  *
  *   Blok/Stend | Статус  | Компания             | Клиент (имя)    | Телефон         | Продавец | Сумма (сум)
  *   A          | продано | Orient Food Group    | Aziz Karimov    | +998 71 200 10 10 | Aziz K. | 90 000 000
- *   A-01-05    | band    | Navoiy Agro          | ...             | ...              | ...
+ *   A-01       | продано | Navoiy Agro          | ...             | ...              | ...
  *   B          | бронь   | Buxoro Sut           | ...             | ...              | ...      | 36 000 000
  *   C          | свободно|                      |                 |                  |          |
  *
@@ -35,10 +35,10 @@ const opt = (name, def) => {
   return v && !v.startsWith('--') ? v : true;
 };
 const file = args.find((a) => !a.startsWith('--') && !['apply', 'ttl', 'user', 'pin', 'seller', 'out'].includes(a));
-if (!file) { console.error('Использование: node tools/import-bookings.mjs <занятые.csv> [--apply] [--ttl 48] [--user "Menejer" --pin 9999]'); process.exit(2); }
+if (!file) { console.error('Использование: node tools/import-bookings.mjs <занятые.csv> [--apply] [--ttl 48] [--user "Менеджер" --pin 9999]'); process.exit(2); }
 const apply = args.includes('--apply');
 const ttlHours = Number(opt('ttl', 0)) || undefined;
-const userName = String(opt('user', 'Menejer'));
+const userName = String(opt('user', 'Менеджер'));
 const userPin = String(opt('pin', '9999'));
 
 // ---------------------------------------------------------------- CSV
@@ -95,23 +95,23 @@ const STATUS_WORDS = {
   bloklangan: 'block', blocked: 'block', block: 'block',
 };
 
-/** Blok/stend yozuvini stend ID'lar ro'yxatiga aylantirish */
+/** Превращает запись «блок/стенд» в список ID стендов. */
 function resolveTarget(text) {
   const t = String(text).toUpperCase().trim();
-  if (!t) return { error: "bo'sh" };
+  if (!t) return { error: 'пусто' };
   const block = blocksById.get(t);
   if (block) {
-    // blok: barcha stendlari (nostandart stend uchun — o'zi)
-    return { ids: [...new Set(block.stands.map((s) => s.id))], kind: block.kind === 'custom' ? 'stend' : 'blok', label: block.label };
+    // блок: все его стенды (для нестандартного стенда — он сам)
+    return { ids: [...new Set(block.stands.map((s) => s.id))], kind: block.kind === 'custom' ? 'стенд' : 'блок', label: block.label };
   }
   const stand = standsById.get(t);
   if (stand) return { ids: [stand.id], kind: 'stand' };
-  // A6-01 kabi noto'g'ri variantni tutish
+  // ловим неверный вариант вида A6-01
   if (/^[A-Z]+-\d+-\d+$/.test(t)) {
     const shorter = t.replace(/-(\d+)$/, '');
-    return { error: `stend topilmadi: ${text}${standsById.has(shorter) ? ` (ehtimol ${shorter}?)` : ''}` };
+    return { error: `стенд не найден: ${text}${standsById.has(shorter) ? ` (возможно ${shorter}?)` : ''}` };
   }
-  return { error: `"${text}" — bunday blok ham, stend ham yo'q` };
+  return { error: `«${text}» — ни такого блока, ни такого стенда нет` };
 }
 
 const plan = [];
@@ -122,9 +122,9 @@ for (const [i, r] of rows.entries()) {
   if (!targetText) continue;
   const statusWord = get(r, 'status').toLowerCase().replace(/\s+/g, '_');
   const action = STATUS_WORDS[statusWord];
-  if (!action) { problems.push(`${lineNo}-qator: "${get(r, 'status')}" holati noma'lum (band/bron/bosh yozing)`); continue; }
+  if (!action) { problems.push(`строка ${lineNo}: статус «${get(r, 'status')}» не распознан (пишите: продано / бронь / свободно)`); continue; }
   const res = resolveTarget(targetText);
-  if (res.error) { problems.push(`${lineNo}-qator: ${res.error}`); continue; }
+  if (res.error) { problems.push(`строка ${lineNo}: ${res.error}`); continue; }
 
   const company = get(r, 'company');
   const buyer = get(r, 'buyer') || company;
@@ -134,7 +134,7 @@ for (const [i, r] of rows.entries()) {
   const seller = get(r, 'seller');
 
   if ((action === 'sell' || action === 'reserve') && !buyer) {
-    problems.push(`${lineNo}-qator: ${targetText} — mijoz/kompaniya ismi yo'q`);
+    problems.push(`строка ${lineNo}: ${targetText} — не указан клиент/компания`);
     continue;
   }
 
@@ -142,9 +142,9 @@ for (const [i, r] of rows.entries()) {
     const cur = state.items[id];
     if (!cur) return true;
     if (action === 'release') return true;
-    // allaqachon shu holatda va shu mijozga tegishli bo'lsa — qayta yozish shart emas
+    // если место уже в этом статусе и у этого же клиента — перезаписывать не нужно
     if (cur.status === (action === 'sell' ? 'sold' : action === 'reserve' ? 'reserved' : 'blocked') && cur.buyer === buyer) return false;
-    problems.push(`${lineNo}-qator: ${id} allaqachon band (${cur.status}${cur.buyer ? ', ' + cur.buyer : ''}) — o'tkazib yuborildi`);
+    problems.push(`строка ${lineNo}: ${id} уже занят (${cur.status}${cur.buyer ? ', ' + cur.buyer : ''}) — пропущено`);
     return false;
   });
 

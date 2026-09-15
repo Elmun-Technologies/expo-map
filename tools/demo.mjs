@@ -26,7 +26,7 @@ async function call(token, body) {
   return { status: r.status, body: j };
 }
 
-const admin = await login('Menejer', '9999');
+const admin = await login('Менеджер', '9999');
 const aziz = await login('Aziz Karimov', '1111');
 const dilnoza = await login('Dilnoza Yusupova', '2222');
 const sardor = await login('Sardor Umarov', '3333');
@@ -54,11 +54,11 @@ if (mode === 'reset') {
     ['A', aziz, 'sell', [1, 2, 3, 4, 5, 6, 7, 8], 'Orient Food Group', '+998 71 200 10 10', 'весь блок под HoReCa'],
     ['B', dilnoza, 'sell', [1, 2, 3, 4], 'Navoiy Konserva Zavodi', '+998 79 220 30 40', ''],
     ['B', sardor, 'reserve', [5, 6], 'Buxoro Sut Mahsulotlari', '+998 65 221 33 44', ''],
-    ['C', aziz, 'reserve', [1, 2, 3, 4], 'Silk Road Seafood', '+998 93 300 44 55', '48 soatga bron'],
+    ['C', aziz, 'reserve', [1, 2, 3, 4], 'Silk Road Seafood', '+998 93 300 44 55', 'бронь на 48 часов'],
     ['D', dilnoza, 'sell', [1, 2, 5, 6], 'Fergana Fruit Export', '+998 73 244 55 66', ''],
     ['E', sardor, 'sell', [1, 2, 3, 4, 5, 6, 7, 8], 'Biosifat Organik', '+998 90 900 70 80', ''],
     ['F', aziz, 'reserve', [3, 4, 7, 8], 'EcoFood Uzbekistan', '+998 91 111 22 33', ''],
-    ['J', dilnoza, 'sell', [1, 2, 3, 4, 5, 6], 'Toshkent Yarim Tayyor', '+998 93 555 22 11', ''],
+    ['J', dilnoza, 'sell', [1, 2, 3, 4, 5, 6], 'Toshkent Polufabrikat', '+998 93 555 22 11', ''],
     ['I', sardor, 'sell', [1, 2, 3, 4], 'Aqua Water Company', '+998 71 288 99 00', ''],
     ['K', aziz, 'reserve', [1, 2, 3, 4, 5, 6], 'Galla Bakaleya Savdosi', '+998 66 233 44 55', ''],
     ['L', dilnoza, 'sell', [5, 6, 7, 8], 'Qandolat Olam', '+998 70 610 20 30', ''],

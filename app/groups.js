@@ -125,7 +125,7 @@
         const nextPt = `${r3(b[0])},${r3(b[1])}`;
         const outs = (from.get(nextPt) || []).filter((x) => !done.has(x));
         if (!outs.length) { k = null; break; }
-        // eng "to'g'ri" davomini tanlaymiz (burilishni kamaytiradi)
+        // выбираем самое «прямое» продолжение (меньше поворотов контура)
         const cur = { x: b[0] - a[0], y: b[1] - a[1] };
         outs.sort((x, y) => {
           const e1 = edges.get(x), e2 = edges.get(y);
