@@ -363,7 +363,12 @@ if (!detail) {
 }
 
 // ---------------------------------------------------------------- стенды и блоки
-const idText = (b, s) => (b.label.includes('-') ? `${b.label.replace(/^(\w+)-(\d+)$/, '$1$2')}-${s.no}` : `${b.label}${s.no}`);
+/** Подпись стенда: A-01 → «A1», EQ-H-03 → «H3» (как на чертеже заказчика). */
+const idText = (b, s) => {
+  const eq = /^EQ-([A-Z])$/.exec(b.id);
+  if (eq) return `${eq[1]}${s.no}`;
+  return b.label.includes('-') ? `${b.label.replace(/^(\w+)-(\d+)$/, '$1$2')}-${s.no}` : `${b.label}${s.no}`;
+};
 
 function drawStand(s, b, custom) {
   const key = statusOf(s.id);

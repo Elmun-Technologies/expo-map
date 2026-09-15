@@ -346,7 +346,8 @@ const server = http.createServer(async (req, res) => {
       const rows = [['Блок', 'Стенд', 'Статус', 'Площадь, м2', 'Сумма', 'Клиент', 'Телефон', 'Компания', 'Продавец', 'Обновлено']];
       for (const s of exp.stands) {
         const it = state.items[s.id];
-        rows.push([s.blockId, s.id, ST[it ? it.status : 'free'] || 'свободно', String(s.areaM2), it ? String(it.amount) : String(pricePerM2 * s.areaM2), it?.buyer || '', it?.phone || '', it?.company || '', it?.sellerName || '', it?.updatedAt || '']);
+        const amount = it ? (it.amount || 0) : pricePerM2 * s.areaM2;
+        rows.push([s.blockId, s.id, ST[it ? it.status : 'free'] || 'свободно', String(s.areaM2), amount ? String(amount) : '', it?.buyer || '', it?.phone || '', it?.company || '', it?.sellerName || '', it?.updatedAt || '']);
       }
       const csv = rows.map((r) => r.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(';')).join('\n');
       return send(res, 200, '\uFEFF' + csv, 'text/csv; charset=utf-8');
@@ -382,6 +383,6 @@ const server = http.createServer(async (req, res) => {
 
 server.listen(PORT, HOST, () => {
   console.log(`\n🚀 Панель продаж: http://localhost:${PORT}  (0.0.0.0:${PORT})`);
-  console.log(`   1 стенд = 9 м² · 1 блок = 8 стендов = 72 м² · цена ${pricePerM2.toLocaleString('ru-RU')} сум/м²`);
+  console.log(`   1 стенд = 9 м² · 1 блок = 8 стендов = 72 м² · ${pricePerM2 ? 'цена ' + pricePerM2.toLocaleString('ru-RU') + ' сум/м²' : 'цена не указана (суммы не считаются)'}`);
   console.log(PDF_EXPORT ? '   PDF-экспорт: /api/export/pdf (кнопка «Скачать PDF» в панели)\n' : '   PDF-экспорт недоступен (нет python3 + reportlab) — работает «Печать плана»\n');
 });

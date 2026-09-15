@@ -128,11 +128,14 @@ fs.writeFileSync(f4, csv);
 made.push(f4);
 
 // 4б) свободные места (для продавца)
-const freeRows = [['Раздел', 'Блок', 'Стенд', 'м2', 'Цена, сум']];
+const price = Number(raw.meta.pricePerM2 || 0);
+const freeRows = [price ? ['Раздел', 'Блок', 'Стенд', 'м2', 'Цена, сум'] : ['Раздел', 'Блок', 'Стенд', 'м2']];
 for (const s of exp.stands) {
   if (statusOf(s.id) !== 'free') continue;
   const sec = (exp.sections || []).find((x) => x.id === s.section);
-  freeRows.push([sec ? sec.label : '', s.blockId, s.id, String(s.areaM2), String(Math.round(s.areaM2 * (raw.meta.pricePerM2 || 0)))]);
+  const row = [sec ? sec.label : '', s.blockId, s.id, String(s.areaM2)];
+  if (price) row.push(String(Math.round(s.areaM2 * price)));
+  freeRows.push(row);
 }
 const f4b = path.join(outDir, '05-свободные-места.csv');
 fs.writeFileSync(f4b, '\uFEFF' + freeRows.map((r) => r.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(';')).join('\n'));
@@ -158,13 +161,13 @@ const izoh = `${raw.meta.project} — ${raw.meta.hall}
 ПРАВИЛА
   1 стенд = 3×3 м = 9 м²
   1 блок  = 8 стендов = 72 м²
-  У каждого стенда свой ID (например A1, K7, EQ1-3). И в договоре, и на плане
+  У каждого стенда свой ID (например A-01, K-07, EQ-H-03). И в договоре, и на плане
   используется один и тот же ID — никаких «место посередине».
 
 ОБЩЕЕ
   Всего: ${totalStands} стендов · ${totalArea.toFixed(2)} м²
   Свободно: ${freeStands.length} стендов · ${freeArea.toFixed(2)} м²
-  Цена: ${raw.meta.pricePerM2 ? raw.meta.pricePerM2.toLocaleString('ru-RU') + ' сум/м²' : 'не задана'}
+  Цена: ${raw.meta.pricePerM2 ? raw.meta.pricePerM2.toLocaleString('ru-RU') + ' сум/м²' : 'пока не указана (суммы в документах не считаются)'}
 
 РАЗДЕЛЫ
 ${secTable}
@@ -174,7 +177,7 @@ ${secTable}
   02-план-свободные-места.*    только свободные места (продавцу, для каталога)
   03-раздел-*.svg              каждый раздел отдельным листом (клиенту — только его раздел)
   04-компании.csv              занятые места: компания, ID стендов, сумма, продавец
-  05-свободные-места.csv       свободные места с ценой
+  05-свободные-места.csv       свободные места (с ценой, если цена задана)
   00-ПОЯСНЕНИЕ.txt             этот файл
 
 ЦВЕТА (в плане)

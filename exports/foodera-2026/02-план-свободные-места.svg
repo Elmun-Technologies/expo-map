@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1460" height="1344" viewBox="0 0 1460 1344" font-family="DejaVu Sans, Helvetica, Arial, sans-serif">
-<rect x="0.00" y="0.00" width="1460.00" height="1344.00" fill="#ffffff"/>
-<rect x="179.00" y="137.25" width="761.25" height="58.00" fill="#f0f7f7" fill-opacity="0.85" stroke="#dbe4ea" stroke-width="1" stroke-dasharray="8 6" rx="6"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1460" height="1384" viewBox="0 0 1460 1384" font-family="DejaVu Sans, Helvetica, Arial, sans-serif">
+<rect x="0.00" y="0.00" width="1460.00" height="1384.00" fill="#ffffff"/>
+<rect x="142.75" y="137.25" width="1123.75" height="60.90" fill="#f0f7f7" fill-opacity="0.85" stroke="#dbe4ea" stroke-width="1" stroke-dasharray="8 6" rx="6"/>
 <rect x="186.25" y="227.15" width="696.00" height="191.40" fill="#f6f9fc" fill-opacity="0.85" stroke="#dbe4ea" stroke-width="1" stroke-dasharray="8 6" rx="6"/>
 <rect x="186.25" y="430.15" width="696.00" height="191.40" fill="#f7fbf7" fill-opacity="0.85" stroke="#dbe4ea" stroke-width="1" stroke-dasharray="8 6" rx="6"/>
 <rect x="186.25" y="633.15" width="696.00" height="191.40" fill="#f6f9fc" fill-opacity="0.85" stroke="#dbe4ea" stroke-width="1" stroke-dasharray="8 6" rx="6"/>
@@ -13,8 +13,8 @@
 <rect x="48.50" y="143.05" width="87.00" height="46.40" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
 <text x="92.00" y="163.42" font-size="11.78" fill="#5b6b7a" text-anchor="middle">Техническая</text>
 <text x="92.00" y="177.32" font-size="11.78" fill="#5b6b7a" text-anchor="middle">комната</text>
-<rect x="1223.00" y="143.05" width="188.50" height="46.40" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
-<text x="1317.25" y="170.97" font-size="13.50" fill="#5b6b7a" text-anchor="middle">Грузовые ворота</text>
+<rect x="1252.00" y="143.05" width="174.00" height="46.40" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
+<text x="1339.00" y="170.97" font-size="13.50" fill="#5b6b7a" text-anchor="middle">Грузовые ворота</text>
 <rect x="954.75" y="228.60" width="195.75" height="81.20" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
 <text x="1052.63" y="273.93" font-size="13.50" fill="#5b6b7a" text-anchor="middle">Сцена</text>
 <rect x="1214.30" y="206.85" width="197.20" height="165.30" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
@@ -112,14 +112,18 @@
 <rect x="785.00" y="605.15" width="93.00" height="25.50" fill="#ffffff" stroke="#7A6C4F" stroke-width="1.5" rx="5"/>
 <text x="831.50" y="616.65" font-size="11.00" fill="#7A6C4F" font-weight="bold" text-anchor="middle">R · 72 м²</text>
 <text x="831.50" y="625.65" font-size="8.50" fill="#7b8b99" text-anchor="middle">Прочие</text>
-<rect x="193.50" y="145.95" width="348.00" height="43.50" fill="none" stroke="#2E8B8B" stroke-width="1.6" rx="5"/>
-<rect x="305.25" y="117.95" width="124.50" height="25.50" fill="#ffffff" stroke="#2E8B8B" stroke-width="1.5" rx="5"/>
-<text x="367.50" y="129.45" font-size="11.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">EQ-1 · 72 м²</text>
-<text x="367.50" y="138.45" font-size="8.50" fill="#7b8b99" text-anchor="middle">Оборудование</text>
-<rect x="570.50" y="145.95" width="348.00" height="43.50" fill="none" stroke="#2E8B8B" stroke-width="1.6" rx="5"/>
-<rect x="682.25" y="117.95" width="124.50" height="25.50" fill="#ffffff" stroke="#2E8B8B" stroke-width="1.5" rx="5"/>
-<text x="744.50" y="129.45" font-size="11.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">EQ-2 · 72 м²</text>
-<text x="744.50" y="138.45" font-size="8.50" fill="#7b8b99" text-anchor="middle">Оборудование</text>
+<rect x="150.00" y="145.95" width="348.00" height="43.50" fill="none" stroke="#2E8B8B" stroke-width="1.6" rx="5"/>
+<rect x="261.75" y="117.95" width="124.50" height="25.50" fill="#ffffff" stroke="#2E8B8B" stroke-width="1.5" rx="5"/>
+<text x="324.00" y="129.45" font-size="11.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">H · 72 м²</text>
+<text x="324.00" y="138.45" font-size="8.50" fill="#7b8b99" text-anchor="middle">Оборудование</text>
+<rect x="527.00" y="145.95" width="348.00" height="43.50" fill="none" stroke="#2E8B8B" stroke-width="1.6" rx="5"/>
+<rect x="638.75" y="117.95" width="124.50" height="25.50" fill="#ffffff" stroke="#2E8B8B" stroke-width="1.5" rx="5"/>
+<text x="701.00" y="129.45" font-size="11.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">W · 72 м²</text>
+<text x="701.00" y="138.45" font-size="8.50" fill="#7b8b99" text-anchor="middle">Консервные линии</text>
+<rect x="904.00" y="145.95" width="348.00" height="43.50" fill="none" stroke="#2E8B8B" stroke-width="1.6" rx="5"/>
+<rect x="1015.75" y="117.95" width="124.50" height="25.50" fill="#ffffff" stroke="#2E8B8B" stroke-width="1.5" rx="5"/>
+<text x="1078.00" y="129.45" font-size="11.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">X · 72 м²</text>
+<text x="1078.00" y="138.45" font-size="8.50" fill="#7b8b99" text-anchor="middle">Вендинг и упаковка</text>
 <rect x="208.00" y="227.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="229.75" y="247.90" font-size="12.00" fill="#E8A33D" font-weight="bold" text-anchor="middle">A1</text>
 <rect x="251.50" y="227.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="273.25" y="247.90" font-size="12.00" fill="#E8A33D" font-weight="bold" text-anchor="middle">A2</text>
 <rect x="208.00" y="270.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="229.75" y="291.40" font-size="12.00" fill="#E8A33D" font-weight="bold" text-anchor="middle">A3</text>
@@ -264,22 +268,30 @@
 <rect x="831.50" y="720.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="853.25" y="740.90" font-size="12.00" fill="#7A6C4F" font-weight="bold" text-anchor="middle">R6</text>
 <rect x="788.00" y="763.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="809.75" y="784.40" font-size="12.00" fill="#7A6C4F" font-weight="bold" text-anchor="middle">R7</text>
 <rect x="831.50" y="763.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="853.25" y="784.40" font-size="12.00" fill="#7A6C4F" font-weight="bold" text-anchor="middle">R8</text>
-<rect x="193.50" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="215.25" y="166.70" font-size="10.74" fill="#2E8B8B" font-weight="bold" text-anchor="middle">EQ1-1</text>
-<rect x="237.00" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="258.75" y="166.70" font-size="10.74" fill="#2E8B8B" font-weight="bold" text-anchor="middle">EQ1-2</text>
-<rect x="280.50" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="302.25" y="166.70" font-size="10.74" fill="#2E8B8B" font-weight="bold" text-anchor="middle">EQ1-3</text>
-<rect x="324.00" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="345.75" y="166.70" font-size="10.74" fill="#2E8B8B" font-weight="bold" text-anchor="middle">EQ1-4</text>
-<rect x="367.50" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="389.25" y="166.70" font-size="10.74" fill="#2E8B8B" font-weight="bold" text-anchor="middle">EQ1-5</text>
-<rect x="411.00" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="432.75" y="166.70" font-size="10.74" fill="#2E8B8B" font-weight="bold" text-anchor="middle">EQ1-6</text>
-<rect x="454.50" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="476.25" y="166.70" font-size="10.74" fill="#2E8B8B" font-weight="bold" text-anchor="middle">EQ1-7</text>
-<rect x="498.00" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="519.75" y="166.70" font-size="10.74" fill="#2E8B8B" font-weight="bold" text-anchor="middle">EQ1-8</text>
-<rect x="570.50" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="592.25" y="166.70" font-size="10.74" fill="#2E8B8B" font-weight="bold" text-anchor="middle">EQ2-1</text>
-<rect x="614.00" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="635.75" y="166.70" font-size="10.74" fill="#2E8B8B" font-weight="bold" text-anchor="middle">EQ2-2</text>
-<rect x="657.50" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="679.25" y="166.70" font-size="10.74" fill="#2E8B8B" font-weight="bold" text-anchor="middle">EQ2-3</text>
-<rect x="701.00" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="722.75" y="166.70" font-size="10.74" fill="#2E8B8B" font-weight="bold" text-anchor="middle">EQ2-4</text>
-<rect x="744.50" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="766.25" y="166.70" font-size="10.74" fill="#2E8B8B" font-weight="bold" text-anchor="middle">EQ2-5</text>
-<rect x="788.00" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="809.75" y="166.70" font-size="10.74" fill="#2E8B8B" font-weight="bold" text-anchor="middle">EQ2-6</text>
-<rect x="831.50" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="853.25" y="166.70" font-size="10.74" fill="#2E8B8B" font-weight="bold" text-anchor="middle">EQ2-7</text>
-<rect x="875.00" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="896.75" y="166.70" font-size="10.74" fill="#2E8B8B" font-weight="bold" text-anchor="middle">EQ2-8</text>
+<rect x="150.00" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="171.75" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">H1</text>
+<rect x="193.50" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="215.25" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">H2</text>
+<rect x="237.00" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="258.75" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">H3</text>
+<rect x="280.50" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="302.25" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">H4</text>
+<rect x="324.00" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="345.75" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">H5</text>
+<rect x="367.50" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="389.25" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">H6</text>
+<rect x="411.00" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="432.75" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">H7</text>
+<rect x="454.50" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="476.25" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">H8</text>
+<rect x="527.00" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="548.75" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">W1</text>
+<rect x="570.50" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="592.25" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">W2</text>
+<rect x="614.00" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="635.75" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">W3</text>
+<rect x="657.50" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="679.25" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">W4</text>
+<rect x="701.00" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="722.75" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">W5</text>
+<rect x="744.50" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="766.25" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">W6</text>
+<rect x="788.00" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="809.75" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">W7</text>
+<rect x="831.50" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="853.25" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">W8</text>
+<rect x="904.00" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="925.75" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">X1</text>
+<rect x="947.50" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="969.25" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">X2</text>
+<rect x="991.00" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="1012.75" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">X3</text>
+<rect x="1034.50" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="1056.25" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">X4</text>
+<rect x="1078.00" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="1099.75" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">X5</text>
+<rect x="1121.50" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="1143.25" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">X6</text>
+<rect x="1165.00" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="1186.75" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">X7</text>
+<rect x="1208.50" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="1230.25" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">X8</text>
 <rect x="48.50" y="221.35" width="87.00" height="46.28" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6" rx="3"/><text x="92.00" y="239.73" font-size="13.61" fill="#243b4a" font-weight="bold" text-anchor="middle">A6</text><text x="92.00" y="254.70" font-size="9.80" fill="#7b8b99" text-anchor="middle">19,15 м²</text>
 <rect x="48.50" y="273.55" width="87.00" height="49.11" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6" rx="3"/><text x="92.00" y="293.05" font-size="14.44" fill="#243b4a" font-weight="bold" text-anchor="middle">A5</text><text x="92.00" y="308.94" font-size="10.40" fill="#7b8b99" text-anchor="middle">20,32 м²</text>
 <rect x="48.50" y="328.65" width="87.00" height="54.78" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6" rx="3"/><text x="92.00" y="350.79" font-size="15.00" fill="#243b4a" font-weight="bold" text-anchor="middle">A4</text><text x="92.00" y="367.29" font-size="10.80" fill="#7b8b99" text-anchor="middle">22,67 м²</text>
@@ -292,14 +304,14 @@
 <text x="965.70" y="838.65" font-size="12.00" fill="#93a4b2" font-weight="bold" text-anchor="middle" letter-spacing="0.3">Парковка</text>
 <text x="34.00" y="49.00" font-size="19.00" fill="#0f2233" font-weight="bold">FOODERA EXPO 2026 — Крытый павильон · план залов</text>
 <rect x="1001.58" y="36.00" width="13.00" height="13.00" fill="#ffffff" stroke="#cbd6de" stroke-width="1.3" rx="3"/>
-<text x="34.00" y="105.00" font-size="11.50" fill="#7b8b99">1 250 000 сум/м² · 1 стенд = 3 × 3 м = 9 м² · 1 блок = 8 стендов = 72 м² · версия плана v1.2.0 · 15.09.2026</text>
-<text x="1020.58" y="46.50" font-size="11.00" fill="#44586a">Свободно: 166 · 1 581,18 м²</text>
+<text x="34.00" y="105.00" font-size="11.50" fill="#7b8b99">1 стенд = 3 × 3 м = 9 м² · 1 блок = 8 стендов = 72 м² · версия плана v1.3.0 · 15.09.2026</text>
+<text x="1020.58" y="46.50" font-size="11.00" fill="#44586a">Свободно: 174 · 1 653,18 м²</text>
 <rect x="1204.65" y="36.00" width="13.00" height="13.00" fill="#fff6e0" stroke="#e0a300" stroke-width="1.3" rx="3"/>
 <text x="1223.65" y="46.50" font-size="11.00" fill="#44586a">Забронировано: 0</text>
 <rect x="34.00" y="76.50" width="13.00" height="13.00" fill="#fdecea" stroke="#c62828" stroke-width="1.3" rx="3"/>
 <text x="53.00" y="87.00" font-size="11.00" fill="#44586a">Продано: 0</text>
 <rect x="34.00" y="874.35" width="11.00" height="11.00" fill="#ffffff" stroke="#cbd6de" stroke-width="1.3" rx="3"/>
-<text x="53.00" y="884.35" font-size="11.00" fill="#44586a">Свободно: 166 стендов · 1 581,18 м²</text>
+<text x="53.00" y="884.35" font-size="11.00" fill="#44586a">Свободно: 174 стендов · 1 653,18 м²</text>
 <rect x="34.00" y="897.35" width="11.00" height="11.00" fill="#fff6e0" stroke="#e0a300" stroke-width="1.3" rx="3"/>
 <text x="53.00" y="907.35" font-size="11.00" fill="#44586a">Забронировано: 0 стендов · 0 м²</text>
 <rect x="34.00" y="920.35" width="11.00" height="11.00" fill="#fdecea" stroke="#c62828" stroke-width="1.3" rx="3"/>
@@ -360,10 +372,16 @@
 <text x="53.00" y="1322.35" font-size="11.00" fill="#44586a">Прочие экспоненты</text>
 <text x="316.91" y="1322.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
 <rect x="34.00" y="1332.35" width="11.00" height="11.00" fill="#2E8B8B" rx="2"/>
-<text x="53.00" y="1342.35" font-size="11.00" fill="#44586a">Оборудование, консервные линии, упаковка</text>
-<text x="316.91" y="1342.35" font-size="11.00" fill="#44586a">16 стендов · 144 м² · свободно: 16 (144 м²)</text>
-<rect x="34.00" y="1352.35" width="11.00" height="11.00" fill="#E8A33D" rx="2"/>
-<text x="53.00" y="1362.35" font-size="11.00" fill="#44586a">Левое крыло — A1–A6</text>
-<text x="316.91" y="1362.35" font-size="11.00" fill="#44586a">6 стендов · 141,18 м² · свободно: 6 (141,18 м²)</text>
-<text x="1426.00" y="1332.00" font-size="11.00" fill="#5b6b7a" text-anchor="end">Итого: 166 стендов · 1 581,18 м² · свободно: 166 (1 581,18 м²)</text>
+<text x="53.00" y="1342.35" font-size="11.00" fill="#44586a">Оборудование</text>
+<text x="316.91" y="1342.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
+<rect x="34.00" y="1352.35" width="11.00" height="11.00" fill="#2E8B8B" rx="2"/>
+<text x="53.00" y="1362.35" font-size="11.00" fill="#44586a">Консервные линии</text>
+<text x="316.91" y="1362.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
+<rect x="34.00" y="1372.35" width="11.00" height="11.00" fill="#2E8B8B" rx="2"/>
+<text x="53.00" y="1382.35" font-size="11.00" fill="#44586a">Вендинговые аппараты, упаковка и фасовка</text>
+<text x="316.91" y="1382.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
+<rect x="34.00" y="1392.35" width="11.00" height="11.00" fill="#E8A33D" rx="2"/>
+<text x="53.00" y="1402.35" font-size="11.00" fill="#44586a">Левое крыло — A1–A6</text>
+<text x="316.91" y="1402.35" font-size="11.00" fill="#44586a">6 стендов · 141,18 м² · свободно: 6 (141,18 м²)</text>
+<text x="1426.00" y="1372.00" font-size="11.00" fill="#5b6b7a" text-anchor="end">Итого: 174 стендов · 1 653,18 м² · свободно: 174 (1 653,18 м²)</text>
 </svg>

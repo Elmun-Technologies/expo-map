@@ -331,7 +331,11 @@
     } else {
       const n = items[s.id]?.buyer ? null : String(s.noLabel);
       const blockId = String(s.blockId || '');
-      const num = blockId.includes('-') ? `${blockId.replace(/^(\w+)-(\d+)$/, '$1$2')}-${s.noLabel}` : `${blockId}${s.noLabel}`;
+      // подпись на стенде: A-01 → «A1», EQ-H-03 → «H3» (как на чертеже заказчика)
+      const eq = /^EQ-([A-Z])$/.exec(blockId);
+      const num = eq ? `${eq[1]}${s.noLabel}`
+        : blockId.includes('-') ? `${blockId.replace(/^(\w+)-(\d+)$/, '$1$2')}-${s.noLabel}`
+          : `${blockId}${s.noLabel}`;
       if (n) {
         const fs = Math.max(0.62, Math.min(1.15, (s.w - 0.4) / ExpoGroups.textWidth(num, 1, true)));
         const tn = el('text', { x: s.x + s.w / 2, y: s.y + s.h / 2, class: 'num' }, num);
@@ -750,7 +754,7 @@
       <table>
         <tr><td>Блок(и)</td><td>${blocks.join(', ')}</td></tr>
         <tr><td>Клиент</td><td>${buyer}</td></tr>
-        <tr><td>Сумма (по согласованию)</td><td>${fmtMoney(amount)}</td></tr>
+        <tr><td>Сумма (по согласованию)</td><td>${amount ? fmtMoney(amount) : 'цена не указана'}</td></tr>
       </table>
       <p class="muted">Бронь действует до ${fmtDate(new Date(Date.now() + ttl * 3600e3).toISOString())}, затем снимается автоматически.</p>`);
     if (!ok) return;
@@ -769,7 +773,7 @@
         <tr><td>Блок(и)</td><td>${blocks.join(', ')}</td></tr>
         <tr><td>Площадь</td><td>${standsWord(free.length)} × 9 м² = ${fmtNum(area)} м²</td></tr>
         <tr><td>Клиент</td><td>${buyer} ${$('#phone').value ? '· ' + $('#phone').value : ''}</td></tr>
-        <tr><td><b>Сумма</b></td><td><b>${fmtMoney(amount)}</b></td></tr>
+        <tr><td><b>Сумма</b></td><td><b>${amount ? fmtMoney(amount) : 'цена не указана'}</b></td></tr>
       </table>
       ${taken.length ? `<p class="muted">Внимание: из выбранных ${taken.length} стендов часть занята — продаются только свободные.</p>` : ''}
       <p class="muted">Операция записывается в журнал: кто, когда и какие места продал.</p>`);
@@ -801,7 +805,7 @@
       <div>Проданные места: <b>${standIds.join(', ')}</b></div>
       <div>Группы: ${blockIds.join(', ')} · Площадь: ${standIds.length} стендов = <b>${fmtNum(area)} м²</b></div>
       <div>Клиент: <b>${extra.buyer || ''}</b> ${extra.phone || ''} ${extra.company ? '· ' + extra.company : ''}</div>
-      <div>Сумма: <b>${fmtMoney(amount)}</b> (${fmtMln(amount)})</div>
+      <div>Сумма: <b>${amount ? fmtMoney(amount) : 'цена не указана'}</b>${amount ? ` (${fmtMln(amount)})` : ''}</div>
       <div class="muted">Продавец: ${seller?.name || ''} · ${fmtDate(new Date().toISOString())} · ${layout.meta.project}, ${layout.meta.hall} · версия плана v${layout.meta.version}</div>
       <div class="actions"><button class="btn" id="printReceipt">Печать квитанции</button></div>`;
     $('#printReceipt').onclick = () => { document.body.classList.add('print-receipt'); window.print(); };

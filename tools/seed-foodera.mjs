@@ -18,7 +18,7 @@ import { expandLayout } from '../lib/layout.mjs';
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const LAYOUT = process.env.LAYOUT || path.join(ROOT, 'layout/foodera-2026.json');
 const STATE = path.join(ROOT, 'data/state.json');
-const PRICE = 1_250_000;
+const PRICE = 0;   // narx hali kelishilmagan — summalar 0 bo'lib turadi
 const dry = process.argv.includes('--dry');
 const reset = process.argv.includes('--reset');
 
