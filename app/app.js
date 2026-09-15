@@ -940,36 +940,68 @@
   // ------------------------------------------------------------ скачать PDF
   const pdfPage = () => String(layout?.meta?.format || 'A3').toUpperCase();
   const pdfUrl = (disp) => `/api/export/pdf?page=${encodeURIComponent(pdfPage())}${disp ? '&disp=' + disp : ''}`;
+  const pngUrl = (scale = 1.6) => `/api/export/png?page=${encodeURIComponent(pdfPage())}&scale=${scale}`;
   const pdfName = () => `FOODERA-EXPO-2026-plan-${pdfPage()}.pdf`;
   const isEmbedded = () => { try { return window.self !== window.top; } catch { return true; } };
 
   let pdfReady = null; // null — сервер ещё не ответил, true/false — его ответ
+  let pngReady = null; // есть ли предпросмотр картинкой (pypdfium2 на сервере)
   (async () => {
     try {
       const h = await fetch('/api/healthz').then((r) => r.json());
       pdfReady = !!h?.pdf;
+      pngReady = !!h?.png;
     } catch { /* сервер не ответил — проверим при клике */ }
   })();
 
   // Новая вкладка: в песочнице она может быть запрещена — тогда просто вернём null.
   function openTab(url) { try { return window.open(url, '_blank', 'noopener'); } catch { return null; } }
 
-  // Последний вариант: окно с просмотром PDF, ссылкой и печатью в PDF.
+  // Скачиваем файл под готовым именем (то же самое, что делает обычная ссылка с download).
+  async function downloadPdf() {
+    const r = await fetch(pdfUrl());
+    if (!r.ok) {
+      let m = `не удалось получить PDF (${r.status})`;
+      try { const j = await r.json(); if (j?.message) m = j.message; } catch { /* ответ не JSON */ }
+      throw new Error(m);
+    }
+    const blob = await r.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = pdfName(); a.rel = 'noopener';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 10000);
+    toast(`Файл ${pdfName()} — скачивается`);
+    return true;
+  }
+
+  // Окно «PDF готов»: предпросмотр листа + все способы сохранить файл.
   function showPdfHelp(why) {
     const box = $('#pdfHelp');
     if (!box) return;
-    const url = pdfUrl('inline');
-    $('#pdfHelpWhy').textContent = why || 'Браузер не даёт скачать файл прямо из этого окна — так бывает в предпросмотре.';
-    $('#pdfHelpOpen').href = url;
-    const frame = $('#pdfHelpFrame');
-    if (frame && frame.getAttribute('src') !== url) frame.setAttribute('src', url);
+    if (why) $('#pdfHelpWhy').textContent = why;
+    const img = $('#pdfHelpImg');
+    const note = $('#pdfHelpNote');
+    if (img) {
+      if (pngReady === false) {
+        img.hidden = true; img.removeAttribute('src');
+        if (note) note.hidden = false;
+      } else {
+        img.hidden = false;
+        if (note) note.hidden = true;
+        const src = pngUrl();
+        if (img.getAttribute('src') !== src) img.setAttribute('src', src);
+      }
+    }
+    const open = $('#pdfHelpOpen');
+    if (open) open.href = pdfUrl('inline');
     box.hidden = false;
   }
   function hidePdfHelp() {
     const box = $('#pdfHelp');
     if (!box) return;
     box.hidden = true;
-    $('#pdfHelpFrame')?.removeAttribute('src');
+    $('#pdfHelpImg')?.removeAttribute('src');
   }
   $('#pdfHelpClose')?.addEventListener('click', hidePdfHelp);
   $('#pdfHelp')?.addEventListener('click', (e) => { if (e.target.id === 'pdfHelp') hidePdfHelp(); });
@@ -979,6 +1011,10 @@
     catch { toast('Ссылка: ' + url); }
   });
   $('#pdfHelpPrint')?.addEventListener('click', () => { hidePdfHelp(); preparePrint(); window.print(); });
+  $('#pdfHelpSave')?.addEventListener('click', async () => {
+    try { await downloadPdf(); }
+    catch (e) { fail(`Не удалось скачать PDF: ${e.message}. Используйте «Печать → Сохранить как PDF».`); }
+  });
 
   $('#pdfBtn')?.addEventListener('click', async () => {
     const btn = $('#pdfBtn');
@@ -989,30 +1025,17 @@
     btn.disabled = true;
     btn.textContent = 'Готовим PDF…';
     try {
-      // 1) Панель открыта внутри рамки (предпросмотр): скачивание файлов там обычно запрещено,
-      //    поэтому PDF показываем в отдельной вкладке, а если и она запрещена — в окне-подсказке.
+      // 1) Панель открыта внутри рамки (предпросмотр): браузеры запрещают и скачивание, и просмотр PDF
+      //    в таких окнах — поэтому сразу показываем окно «PDF готов» с картинкой листа и кнопками.
       if (isEmbedded()) {
-        const win = openTab(pdfUrl('inline'));
-        if (win) { toast('PDF открыт в новой вкладке — сохраните его кнопкой браузера'); return; }
-        showPdfHelp('Новую вкладку браузер заблокировал. Ниже — сам PDF: откройте его в новом окне или сохраните через печать.');
+        showPdfHelp('План готов. Ниже — предпросмотр листа A3: скачайте файл или сохраните его через печать.');
+        toast('PDF готов — сохраните его из окна');
         return;
       }
       // 2) Обычное скачивание: забираем файл и отдаём браузеру под готовым именем.
-      const r = await fetch(pdfUrl());
-      if (!r.ok) {
-        let m = `Не удалось получить PDF (${r.status})`;
-        try { const j = await r.json(); if (j?.message) m = j.message; } catch { /* ответ не JSON */ }
-        throw new Error(m);
-      }
-      const blob = await r.blob();
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = pdfName(); a.rel = 'noopener';
-      document.body.appendChild(a); a.click(); a.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 10000);
-      toast(`Файл ${pdfName()} — скачивается`);
+      await downloadPdf();
     } catch (e) {
-      // 3) Не вышло скачать — предлагаем вкладку, просмотр на месте и печать в PDF.
+      // 3) Не вышло скачать — предлагаем вкладку, предпросмотр на месте и печать в PDF.
       const win = openTab(pdfUrl('inline'));
       if (win) { toast('PDF открыт в новой вкладке — сохраните его кнопкой браузера'); return; }
       fail(`Не удалось скачать PDF: ${e.message}`);

@@ -39,6 +39,27 @@ const PDF_EXPORT = (() => {
   } catch { return false; }
 })();
 
+/** Есть ли pypdfium2 + Pillow — тогда PDF можно показать картинкой прямо в панели
+    (нужно там, где браузер запрещает встроенный просмотрщик PDF: песочница предпросмотра). */
+const PDF_PNG = PDF_EXPORT && (() => {
+  try {
+    const r = spawnSync('python3', ['-c', 'import pypdfium2, PIL'], { stdio: 'ignore', timeout: 8000 });
+    return r.status === 0;
+  } catch { return false; }
+})();
+
+/** Собрать PDF плана (один лист) — общий код для скачивания и для предпросмотра. */
+async function buildPlanPdf(page) {
+  const tmp = await fsp.mkdtemp(path.join(os.tmpdir(), 'expo-pdf-'));
+  const svgPath = path.join(tmp, 'plan.svg');
+  const pdfPath = path.join(tmp, 'plan.pdf');
+  const svgRun = spawnSync('node', [path.join(ROOT, 'tools/export-svg.mjs'), '--map', '--out', svgPath], { cwd: ROOT, encoding: 'utf8' });
+  if (svgRun.status !== 0) throw Object.assign(new Error((svgRun.stderr || '').split('\n')[0] || 'сборка SVG не удалась'), { code: 'svg_failed' });
+  const pyRun = spawnSync('python3', [path.join(ROOT, 'tools/export-pdf.py'), svgPath, pdfPath, '--page', page], { cwd: ROOT, encoding: 'utf8' });
+  if (pyRun.status !== 0) throw Object.assign(new Error((pyRun.stderr || '').split('\n')[0] || 'сборка PDF не удалась'), { code: 'pdf_failed' });
+  return { tmp, svgPath, pdfPath };
+}
+
 // ---------------------------------------------------------------- layout
 const rawLayout = JSON.parse(fs.readFileSync(LAYOUT_PATH, 'utf8'));
 const check = validateLayout(rawLayout);
@@ -281,7 +302,7 @@ const server = http.createServer(async (req, res) => {
   const p = url.pathname;
 
   try {
-    if (p === '/api/healthz') return send(res, 200, { ok: true, revision: state.revision, pdf: PDF_EXPORT, layout: rawLayout.meta?.version || null });
+    if (p === '/api/healthz') return send(res, 200, { ok: true, revision: state.revision, pdf: PDF_EXPORT, png: PDF_PNG, layout: rawLayout.meta?.version || null });
 
     if (p === '/api/login' && req.method === 'POST') {
       const b = await readBody(req);
@@ -358,17 +379,46 @@ const server = http.createServer(async (req, res) => {
       // disp=inline — отдать PDF для просмотра в браузере (в новой вкладке), иначе — на скачивание
       const disp = url.searchParams.get('disp') === 'inline' ? 'inline' : 'attachment';
       if (!PDF_EXPORT) return send(res, 503, { error: 'no_pdf', message: 'На сервере нет python3 + reportlab — используйте «Печать плана» (Сохранить как PDF).' });
-      const tmp = await fsp.mkdtemp(path.join(os.tmpdir(), 'expo-pdf-'));
-      const svgPath = path.join(tmp, 'plan.svg'), pdfPath = path.join(tmp, 'plan.pdf');
-      const svgRun = spawnSync('node', [path.join(ROOT, 'tools/export-svg.mjs'), '--map', '--out', svgPath], { cwd: ROOT, encoding: 'utf8' });
-      if (svgRun.status !== 0) { console.error(svgRun.stderr); return send(res, 500, { error: 'svg_failed', message: (svgRun.stderr || '').split('\n')[0] }); }
-      const pyRun = spawnSync('python3', [path.join(ROOT, 'tools/export-pdf.py'), svgPath, pdfPath, '--page', page], { cwd: ROOT, encoding: 'utf8' });
-      if (pyRun.status !== 0) { console.error(pyRun.stderr); return send(res, 500, { error: 'pdf_failed', message: (pyRun.stderr || '').split('\n')[0] }); }
-      const buf = await fsp.readFile(pdfPath);
+      let built;
+      try {
+        built = await buildPlanPdf(page);
+      } catch (e) {
+        console.error(e.message);
+        return send(res, 500, { error: e.code || 'pdf_failed', message: e.message });
+      }
+      const buf = await fsp.readFile(built.pdfPath);
       const fname = `FOODERA-EXPO-2026-plan-${page}.pdf`;
       res.writeHead(200, {
         'Content-Type': 'application/pdf',
         'Content-Disposition': `${disp}; filename="${fname}"`,
+        'Content-Length': buf.length,
+        'Cache-Control': 'no-store',
+      });
+      return res.end(buf);
+    }
+
+    // Картинка первой страницы PDF — предпросмотр плана прямо в панели (без просмотрщика PDF).
+    if (p === '/api/export/png' && req.method === 'GET') {
+      const page = String(url.searchParams.get('page') || 'A3').toUpperCase();
+      const scale = Math.min(3, Math.max(1, Number(url.searchParams.get('scale') || 1.6)));
+      if (!PDF_EXPORT) return send(res, 503, { error: 'no_pdf', message: 'На сервере нет python3 + reportlab — используйте «Печать плана» (Сохранить как PDF).' });
+      if (!PDF_PNG) return send(res, 503, { error: 'no_png', message: 'На сервере нет pypdfium2/Pillow — предпросмотр недоступен, скачайте PDF-файл.' });
+      let built;
+      try {
+        built = await buildPlanPdf(page);
+      } catch (e) {
+        console.error(e.message);
+        return send(res, 500, { error: e.code || 'png_failed', message: e.message });
+      }
+      const pngPath = path.join(built.tmp, 'plan.png');
+      const run = spawnSync('python3', [path.join(ROOT, 'tools/pdf-to-png.py'), built.pdfPath, pngPath, String(scale)], { cwd: ROOT, encoding: 'utf8' });
+      if (run.status !== 0) {
+        console.error(run.stderr);
+        return send(res, 500, { error: 'png_failed', message: (run.stderr || '').split('\n')[0] });
+      }
+      const buf = await fsp.readFile(pngPath);
+      res.writeHead(200, {
+        'Content-Type': 'image/png',
         'Content-Length': buf.length,
         'Cache-Control': 'no-store',
       });
@@ -386,5 +436,5 @@ const server = http.createServer(async (req, res) => {
 server.listen(PORT, HOST, () => {
   console.log(`\n🚀 Панель продаж: http://localhost:${PORT}  (0.0.0.0:${PORT})`);
   console.log(`   1 стенд = 9 м² · 1 блок = 8 стендов = 72 м² · ${pricePerM2 ? 'цена ' + pricePerM2.toLocaleString('ru-RU') + ' сум/м²' : 'цена не указана (суммы не считаются)'}`);
-  console.log(PDF_EXPORT ? '   PDF-экспорт: /api/export/pdf (кнопка «Скачать PDF» в панели)\n' : '   PDF-экспорт недоступен (нет python3 + reportlab) — работает «Печать плана»\n');
+  console.log(PDF_EXPORT ? '   PDF-экспорт: /api/export/pdf (кнопка «Скачать PDF» в панели)' + (PDF_PNG ? ' · предпросмотр: /api/export/png\n' : '\n') : '   PDF-экспорт недоступен (нет python3 + reportlab) — работает «Печать плана»\n');
 });
