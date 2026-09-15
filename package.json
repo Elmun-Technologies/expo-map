@@ -19,8 +19,8 @@
     "preview": "node tools/svg2png.mjs"
   },
   "devDependencies": {
-    "jsdom": "^24.1.3",
-    "@resvg/resvg-js": "^2.6.2"
+    "@resvg/resvg-js": "^2.6.2",
+    "jsdom": "^24.1.3"
   },
   "engines": {
     "node": ">=18"

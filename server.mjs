@@ -48,6 +48,20 @@ const PDF_PNG = PDF_EXPORT && (() => {
   } catch { return false; }
 })();
 
+/** Разметка готового листа A3 (тот же файл, что уходит клиенту) — с коротким кешем. */
+let svgCache = { key: '', svg: '' };
+async function buildPlanSvg() {
+  const key = `${state.revision}|${rawLayout.meta?.version || ''}`;
+  if (svgCache.key === key && svgCache.svg) return svgCache.svg;
+  const tmp = await fsp.mkdtemp(path.join(os.tmpdir(), 'expo-svg-'));
+  const svgPath = path.join(tmp, 'plan.svg');
+  const run = spawnSync('node', [path.join(ROOT, 'tools/export-svg.mjs'), '--map', '--out', svgPath], { cwd: ROOT, encoding: 'utf8' });
+  if (run.status !== 0) throw Object.assign(new Error((run.stderr || '').split('\n')[0] || 'сборка SVG не удалась'), { code: 'svg_failed' });
+  const svg = await fsp.readFile(svgPath, 'utf8');
+  svgCache = { key, svg };
+  return svg;
+}
+
 /** Собрать PDF плана (один лист) — общий код для скачивания и для предпросмотра. */
 async function buildPlanPdf(page) {
   const tmp = await fsp.mkdtemp(path.join(os.tmpdir(), 'expo-pdf-'));
@@ -395,6 +409,18 @@ const server = http.createServer(async (req, res) => {
         'Cache-Control': 'no-store',
       });
       return res.end(buf);
+    }
+
+    // Разметка готового листа A3 — для печати «ровно одна страница» прямо из панели.
+    if (p === '/api/export/svg' && req.method === 'GET') {
+      try {
+        const svg = await buildPlanSvg();
+        res.writeHead(200, { 'Content-Type': 'image/svg+xml; charset=utf-8', 'Content-Length': Buffer.byteLength(svg), 'Cache-Control': 'no-store' });
+        return res.end(svg);
+      } catch (e) {
+        console.error(e.message);
+        return send(res, 500, { error: e.code || 'svg_failed', message: e.message });
+      }
     }
 
     // Картинка первой страницы PDF — предпросмотр плана прямо в панели (без просмотрщика PDF).

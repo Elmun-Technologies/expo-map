@@ -877,7 +877,7 @@
       sheet = document.createElement('div');
       sheet.id = 'printSheet';
       sheet.className = 'print-only';
-      $('.map-wrap').appendChild(sheet);
+      document.body.appendChild(sheet);
     }
     const freeIds = layout.stands.filter((s) => statusOf(s.id) === 'free').map((s) => s.id);
     const rows = layout.blocks.filter((b) => b.kind !== 'custom').map((b) => {
@@ -936,14 +936,58 @@
     const s2 = $('#map');
     s2.style.width = ''; s2.style.height = ''; s2.style.maxWidth = '';
   });
-  function preparePrint() {
-    document.body.classList.toggle('print-tables', !!$('#printTables')?.checked);
-    buildPrintHead();
-    buildPrintSheet();
-    fitPrintPage();
+  // ------------------------------------------------------------ печать листа A3
+  // Готовый лист берём у сервера (/api/export/svg) — тот самый файл, что уходит клиенту:
+  // он уже сверстан под А3, поэтому печать даёт ровно одну страницу, без склейки и полей.
+  let planSvgMarkup = null;
+
+  async function ensurePrintPage() {
+    let page = document.getElementById('printPage');
+    if (!page) {
+      page = document.createElement('div');
+      page.id = 'printPage';
+      document.body.appendChild(page);
+    }
+    if (!planSvgMarkup) {
+      const r = await fetch('/api/export/svg');
+      if (!r.ok) throw new Error(`лист A3 недоступен (${r.status})`);
+      planSvgMarkup = await r.text();
+    }
+    if (!page.querySelector('svg')) {
+      page.innerHTML = planSvgMarkup;
+      const svg = page.querySelector('svg');
+      const vb = (svg.getAttribute('viewBox') || '').split(/[\s,]+/).map(Number);
+      if (svg && vb.length === 4 && vb[2] > 0) {
+        const mm = 419; // ширина листа A3 минус запас: вписываем чертёж в страницу целиком
+        const k = mm / vb[2];
+        svg.removeAttribute('width');
+        svg.removeAttribute('height');
+        svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+        svg.style.width = mm + 'mm';
+        svg.style.height = (vb[3] * k).toFixed(2) + 'mm';
+      }
+    }
+    return page;
   }
-  window.addEventListener('beforeprint', preparePrint);
-  $('#printBtn').addEventListener('click', () => { preparePrint(); window.print(); });
+
+  async function preparePrint() {
+    const tables = !!$('#printTables')?.checked;
+    document.body.classList.add('print-a3');
+    document.body.classList.toggle('print-tables', tables);
+    buildPrintSheet();
+    try {
+      await ensurePrintPage();
+      document.body.classList.add('print-sheet-ok');
+    } catch (e) {
+      // запасной путь: печатаем живую карту (как раньше) — без готового листа
+      document.body.classList.remove('print-sheet-ok');
+      buildPrintHead();
+      fitPrintPage();
+      console.warn('печать: ' + e.message);
+    }
+  }
+  window.addEventListener('beforeprint', () => { preparePrint().catch(() => {}); });
+  $('#printBtn').addEventListener('click', async () => { await preparePrint(); window.print(); });
 
   // ------------------------------------------------------------ скачать PDF
   const pdfPage = () => String(layout?.meta?.format || 'A3').toUpperCase();
@@ -987,7 +1031,8 @@
   function showPdfHelp(why) {
     const box = $('#pdfHelp');
     if (!box) return;
-    if (why) $('#pdfHelpWhy').textContent = why;
+    const whyEl = $('#pdfHelpWhy');
+    if (whyEl) { whyEl.textContent = why || ''; whyEl.hidden = !why; }
     const img = $('#pdfHelpImg');
     const note = $('#pdfHelpNote');
     if (img) {
@@ -1018,7 +1063,18 @@
     try { await navigator.clipboard.writeText(url); toast('Ссылка скопирована: ' + url); }
     catch { toast('Ссылка: ' + url); }
   });
-  $('#pdfHelpPrint')?.addEventListener('click', () => { hidePdfHelp(); preparePrint(); window.print(); });
+  $('#pdfHelpPrint')?.addEventListener('click', async function () {
+    const b = this;
+    const label = b.textContent;
+    b.disabled = true; b.textContent = 'Готовим лист…';
+    try {
+      hidePdfHelp();
+      await preparePrint();
+      window.print();
+    } finally {
+      b.disabled = false; b.textContent = label;
+    }
+  });
   $('#pdfHelpSave')?.addEventListener('click', async () => {
     try { await downloadPdf(); }
     catch (e) { fail(`Не удалось скачать PDF: ${e.message}. Используйте «Печать → Сохранить как PDF».`); }
@@ -1036,8 +1092,8 @@
       // 1) Панель открыта внутри рамки (предпросмотр): браузеры запрещают и скачивание, и просмотр PDF
       //    в таких окнах — поэтому сразу показываем окно «PDF готов» с картинкой листа и кнопками.
       if (isEmbedded()) {
-        showPdfHelp('План готов. Ниже — предпросмотр листа A3: скачайте файл или сохраните его через печать.');
-        toast('PDF готов — сохраните его из окна');
+        showPdfHelp('');
+        toast('Лист A3 готов — сохраните его из окна');
         return;
       }
       // 2) Обычное скачивание: забираем файл и отдаём браузеру под готовым именем.

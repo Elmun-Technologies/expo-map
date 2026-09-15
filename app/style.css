@@ -171,6 +171,25 @@ label.inline input { width: 92px; margin: 0; }
 .modal-card td { padding: 3px 0; border-bottom: 1px dotted var(--line); }
 .modal-card td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
 
+/* ---------- печать готового листа A3 (ровно одна страница) ---------- */
+#printPage { display: none; }
+@media print {
+  /* лист А3 целиком: поля контролируем сами, браузерных полей нет */
+  @page { size: A3 landscape; margin: 0; }
+  body.print-a3.print-sheet-ok { margin: 0 !important; padding: 0 !important; }
+  body.print-a3.print-sheet-ok > * { display: none !important; }
+  body.print-a3.print-sheet-ok > #printPage {
+    display: flex !important; align-items: center; justify-content: center;
+    /* чуть меньше самого листа A3 (420×297) — чтобы округление не вытолкнуло вторую страницу */
+    width: 419mm; height: 295mm; overflow: hidden; background: #fff;
+  }
+  body.print-a3.print-sheet-ok > #printPage svg { display: block; }
+  /* таблицы — только если отмечено «с таблицами» (начинаются со следующей страницы) */
+  body.print-a3.print-sheet-ok.print-tables > #printSheet {
+    display: block !important; break-before: page; padding: 10mm; font-size: 9.5pt;
+  }
+}
+
 /* ---------- печать (для клиента / PDF) ---------- */
 .print-only { display: none; }
 .print-only-head { display: none; }
@@ -244,10 +263,18 @@ label.inline input { width: 92px; margin: 0; }
 [hidden] { display: none !important; }
 
 /* Окно-подсказка, если браузер не даёт скачать PDF прямо из рамки предпросмотра */
-.pdf-help { width: 720px; }
-.pdf-help .pdf-view { height: 44vh; min-height: 240px; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: #f7f9fb; margin: 10px 0; }
-.pdf-help .pdf-view img { width: 100%; height: 100%; object-fit: contain; display: block; }
-.pdf-help-steps { margin: 4px 0 0 18px; font-size: 13px; color: #5b6b7a; }
+.pdf-help { width: 780px; max-height: 92vh; overflow: auto; padding: 18px 20px 16px; border-radius: 16px; box-shadow: 0 18px 50px rgba(15, 34, 51, .28); position: relative; }
+.pdf-help h2 { margin: 0 34px 2px 0; font-size: 19px; }
+.pdf-help .pdf-sub { font-size: 13px; margin: 0 0 12px; }
+.pdf-help .pdf-view { height: 46vh; min-height: 230px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: #f4f7fa; display: grid; place-items: center; margin: 0; }
+.pdf-help .pdf-view img { width: 100%; height: 100%; object-fit: contain; display: block; padding: 6px; box-sizing: border-box; }
+.pdf-help .pdf-hint { font-size: 12.5px; margin: 8px 2px 0; }
+.pdf-help .pdf-x { position: absolute; top: 10px; right: 10px; width: 30px; height: 30px; border: 0; border-radius: 8px; background: transparent; font-size: 22px; line-height: 1; color: #7a8894; cursor: pointer; }
+.pdf-help .pdf-x:hover { background: #f0f4f8; color: #16232e; }
+.pdf-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.pdf-actions .btn { flex: 0 0 auto; }
+.btn.link { border: 0; background: transparent; color: #2a6fb0; padding: 6px 8px; margin-left: auto; }
+.btn.link:hover { background: #eef4fb; }
 
 
 /* ---------- карточки статистики, закладки и таблицы ---------- */
