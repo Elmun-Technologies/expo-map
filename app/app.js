@@ -16,6 +16,16 @@
 
   // ------------------------------------------------------------ utils
   const fmtNum = (n) => Number(n || 0).toLocaleString('ru-RU').replace(/\u00A0/g, ' ');
+  // строка «правила плана»: классическая сетка 9 м² или диапазон площадей по чертежу
+  const standRuleNote = () => {
+    if (!layout || !layout.stands) return '';
+    const uniq = [...new Set(layout.stands.map((s) => Number(s.areaM2)).filter((x) => x > 0))].sort((a, b) => a - b);
+    const byDrawing = layout.meta.enforceBlockRule === false;
+    const blockPart = byDrawing ? 'блоки повторяют разбивку чертежа' : '1 блок = 8 стендов = 72 м²';
+    if (uniq.length <= 1) return `1 стенд = 3×3 м = ${fmtNum(uniq[0] || 9)} м² · ${blockPart}`;
+    const range = uniq.length > 4 ? `${fmtNum(uniq[0])}–${fmtNum(uniq[uniq.length - 1])}` : uniq.map(fmtNum).join('/');
+    return `стенды ${range} м² (по чертежу) · базовая ячейка 3×3 м · ${blockPart}`;
+  };
   const fmtMoney = (n) => `${fmtNum(n)} сум`;
   const fmtMln = (n) => `${(Number(n || 0) / 1e6).toLocaleString('ru-RU', { maximumFractionDigits: 2 })} млн сум`;
   const fmtDate = (iso) => (iso ? new Date(iso).toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—');
@@ -688,8 +698,8 @@
         <span class="sw" style="background:${k === 'free' ? '#eaf6ec' : k === 'reserved' ? '#fff8e1' : k === 'sold' ? '#fdecea' : '#eceff1'};border-color:${STATUS_COLOR[k]}"></span>
         <label><input type="checkbox" data-st="${k}" ${hiddenStatuses.has(k) ? '' : 'checked'}/> ${STATUS_LABEL[k]} (${counts[k] || 0})</label>
       </div>`).join('')
-      + `<div class="note">1 стенд = 3×3 м = 9 м² · 1 блок = 8 стендов = 72 м² · нумерация: буква блока + номер сверху вниз (A1…A8)`
-      + (layout.customStands?.length ? ` · ${layout.customStands.length} стендов нестандартной площади (левое крыло A1–A6) — площадь на плане` : '') + `</div>`;
+      + `<div class="note">${standRuleNote()} · ${layout.stands.some((s) => s.manual) ? 'нумерация и размеры — по чертежу' : 'нумерация: буква блока + номер сверху вниз (A1…A8)'}`
+      + (layout.customStands?.length ? ` · ${layout.customStands.length} стендов нестандартной площади (${layout.customStands[0].id}…${layout.customStands[layout.customStands.length - 1].id}) — площадь на плане` : '') + `</div>`;
     $$('#legend input[data-st]').forEach((cb) => cb.addEventListener('change', () => {
       cb.checked ? hiddenStatuses.delete(cb.dataset.st) : hiddenStatuses.add(cb.dataset.st);
       applyFilters();
@@ -939,7 +949,7 @@
         <div class="ph-date">${new Date().toLocaleDateString('ru-RU')}</div>
       </div>
       <div class="ph-sub">
-        План залов · версия v${layout.meta.version || '?'} · 1 стенд = 3 × 3 м = 9 м² · 1 блок = 8 стендов = 72 м²${layout.meta.pricePerM2 ? ' · ' + fmtMoney(layout.meta.pricePerM2) + '/м²' : ''}
+        План залов · версия v${layout.meta.version || '?'} · ${standRuleNote()}${layout.meta.pricePerM2 ? ' · ' + fmtMoney(layout.meta.pricePerM2) + '/м²' : ''}
       </div>
       <div class="ph-sub">
         <b>Свободно: ${standsWord(by.free)} · ${fmtNum(area.free)} м²</b> ·
@@ -972,7 +982,7 @@
       </tr>`).join('');
     sheet.innerHTML = `
       <h2>${layout.meta.project} — ${layout.meta.hall} · план залов (v${layout.meta.version})</h2>
-      <p>1 стенд = 3×3 м = 9 м² · 1 блок = 8 стендов = 72 м² · Цена: ${layout.meta.pricePerM2 ? fmtMoney(layout.meta.pricePerM2) + '/м²' : '—'} · Дата: ${fmtDate(new Date().toISOString())}</p>
+      <p>${standRuleNote()} · Цена: ${layout.meta.pricePerM2 ? fmtMoney(layout.meta.pricePerM2) + '/м²' : '—'} · Дата: ${fmtDate(new Date().toISOString())}</p>
       <p><b>Свободные места (${freeIds.length} ${plural(freeIds.length, ['стенд', 'стенда', 'стендов'])} = ${fmtNum(freeIds.reduce((a, id) => a + (layout.stands.find((s) => s.id === id)?.areaM2 || 0), 0))} м²):</b> ${freeIds.join(', ') || '—'}</p>
       <table>
         <thead><tr><th>Блок</th><th>Площадь</th><th>Свободно</th><th>Бронь</th><th>Продано</th><th>ID свободных стендов</th></tr></thead>

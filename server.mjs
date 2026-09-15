@@ -17,7 +17,7 @@ import crypto from 'node:crypto';
 import os from 'node:os';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { expandLayout, validateLayout } from './lib/layout.mjs';
+import { expandLayout, validateLayout, ruleNote } from './lib/layout.mjs';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const PORT = Number(process.env.PORT || 4173);
@@ -472,7 +472,7 @@ if (!process.env.VERCEL) {
   const server = http.createServer(handleRequest);
   server.listen(PORT, HOST, () => {
     console.log(`\n🚀 Панель продаж: http://localhost:${PORT}  (0.0.0.0:${PORT})`);
-    console.log(`   1 стенд = 9 м² · 1 блок = 8 стендов = 72 м² · ${pricePerM2 ? 'цена ' + pricePerM2.toLocaleString('ru-RU') + ' сум/м²' : 'цена не указана (суммы не считаются)'}`);
+    console.log(`   ${ruleNote(exp)} · ${pricePerM2 ? 'цена ' + pricePerM2.toLocaleString('ru-RU') + ' сум/м²' : 'цена не указана (суммы не считаются)'}`);
     console.log(PDF_EXPORT ? '   PDF-экспорт: /api/export/pdf (кнопка «Скачать PDF» в панели)' + (PDF_PNG ? ' · предпросмотр: /api/export/png\n' : '\n') : '   PDF-экспорт недоступен (нет python3 + reportlab) — работает «Печать плана»\n');
   });
 }

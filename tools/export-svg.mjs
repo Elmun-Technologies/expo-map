@@ -17,7 +17,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { expandLayout, validateLayout } from '../lib/layout.mjs';
+import { expandLayout, validateLayout, ruleNote } from '../lib/layout.mjs';
 import { groupBookings, unionPath, fitText, largestRect, mergedAsStands, textWidth } from '../lib/groups.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -244,7 +244,7 @@ const mergedDrawn = new Set(units.flatMap((u) => u.ids.filter((id) => id.include
 const title = sectionFilter ? (() => { const s = sectionById(sectionFilter); return `${s.label} · раздел ${s.id}`; })()
   : blockFilter ? `Блок ${blockFilter} · ${fmtNum(content.w - 5)} × ${fmtNum(content.h - 5)} м`
   : `${exp.meta.project} — ${exp.meta.hall} · план залов`;
-const sub = `${exp.meta.pricePerM2 && !detail ? fmtNum(exp.meta.pricePerM2) + ' сум/м² · ' : ''}1 стенд = 3 × 3 м = 9 м² · 1 блок = 8 стендов = 72 м² · версия плана v${exp.meta.version || '?'} · ${new Date().toLocaleDateString('ru-RU')}`;
+const sub = `${exp.meta.pricePerM2 && !detail ? fmtNum(exp.meta.pricePerM2) + ' сум/м² · ' : ''}${ruleNote(exp)} · версия плана v${exp.meta.version || '?'} · ${new Date().toLocaleDateString('ru-RU')}`;
 
 // ---------------------------------------------------------------- легенда (нужна для расчёта ширины листа)
 const legendParts = legendKeys.map((k) => ({ k, text: `${tint(k).label}: ${counts[k]}` + (counts[k] ? ` · ${fmtNum(areas[k])} м²` : '') }));
@@ -632,7 +632,7 @@ if (sheetMode) {
     // все по левому краю: так они не могут наехать друг на друга
     L.footer.push(t(PAD, pageHpx - F.foot * 3 - 16, F.foot, '#5b6b7a', `${exp.meta.project} · ${exp.meta.hall}`));
     L.footer.push(t(PAD, pageHpx - F.foot * 2 - 10, F.foot, '#5b6b7a', footText));
-    L.footer.push(t(PAD, pageHpx - F.foot - 4, F.foot, '#93a4b2', `1 стенд = 3 × 3 м = 9 м² · 1 блок = 8 стендов = 72 м² · версия плана v${exp.meta.version || '?'}`));
+    L.footer.push(t(PAD, pageHpx - F.foot - 4, F.foot, '#93a4b2', `${ruleNote(exp)} · версия плана v${exp.meta.version || '?'}`));
   } else {
   let ly = contentTop + content.h * SCALE + F.legend + 14;
   for (const k of legendKeys) {
