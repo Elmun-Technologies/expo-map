@@ -951,6 +951,35 @@
     } catch { /* сервер не ответил — проверим при клике */ }
   })();
 
+  // Новая вкладка: в песочнице она может быть запрещена — тогда просто вернём null.
+  function openTab(url) { try { return window.open(url, '_blank', 'noopener'); } catch { return null; } }
+
+  // Последний вариант: окно с просмотром PDF, ссылкой и печатью в PDF.
+  function showPdfHelp(why) {
+    const box = $('#pdfHelp');
+    if (!box) return;
+    const url = pdfUrl('inline');
+    $('#pdfHelpWhy').textContent = why || 'Браузер не даёт скачать файл прямо из этого окна — так бывает в предпросмотре.';
+    $('#pdfHelpOpen').href = url;
+    const frame = $('#pdfHelpFrame');
+    if (frame && frame.getAttribute('src') !== url) frame.setAttribute('src', url);
+    box.hidden = false;
+  }
+  function hidePdfHelp() {
+    const box = $('#pdfHelp');
+    if (!box) return;
+    box.hidden = true;
+    $('#pdfHelpFrame')?.removeAttribute('src');
+  }
+  $('#pdfHelpClose')?.addEventListener('click', hidePdfHelp);
+  $('#pdfHelp')?.addEventListener('click', (e) => { if (e.target.id === 'pdfHelp') hidePdfHelp(); });
+  $('#pdfHelpCopy')?.addEventListener('click', async () => {
+    const url = new URL(pdfUrl('inline'), location.href).href;
+    try { await navigator.clipboard.writeText(url); toast('Ссылка скопирована: ' + url); }
+    catch { toast('Ссылка: ' + url); }
+  });
+  $('#pdfHelpPrint')?.addEventListener('click', () => { hidePdfHelp(); preparePrint(); window.print(); });
+
   $('#pdfBtn')?.addEventListener('click', async () => {
     const btn = $('#pdfBtn');
     const label = btn.textContent;
@@ -960,14 +989,12 @@
     btn.disabled = true;
     btn.textContent = 'Готовим PDF…';
     try {
-      // 1) Панель открыта внутри рамки (предпросмотр) — скачивание файлов там обычно запрещено,
-      //    поэтому PDF показываем в отдельной вкладке: сохранить его можно кнопкой браузера.
+      // 1) Панель открыта внутри рамки (предпросмотр): скачивание файлов там обычно запрещено,
+      //    поэтому PDF показываем в отдельной вкладке, а если и она запрещена — в окне-подсказке.
       if (isEmbedded()) {
-        const win = window.open(pdfUrl('inline'), '_blank');
+        const win = openTab(pdfUrl('inline'));
         if (win) { toast('PDF открыт в новой вкладке — сохраните его кнопкой браузера'); return; }
-        // всплывающее окно заблокировано — показываем PDF прямо в текущей рамке
-        toast('Открываем PDF для просмотра — сохранить его можно кнопкой браузера');
-        window.location.href = pdfUrl('inline');
+        showPdfHelp('Новую вкладку браузер заблокировал. Ниже — сам PDF: откройте его в новом окне или сохраните через печать.');
         return;
       }
       // 2) Обычное скачивание: забираем файл и отдаём браузеру под готовым именем.
@@ -985,11 +1012,11 @@
       setTimeout(() => URL.revokeObjectURL(url), 10000);
       toast(`Файл ${pdfName()} — скачивается`);
     } catch (e) {
-      // 3) Последний шанс: открыть PDF в новой вкладке, иначе показать его прямо в рамке.
-      const w = window.open(pdfUrl('inline'), '_blank');
-      if (w) { toast('PDF открыт в новой вкладке — сохраните его кнопкой браузера'); return; }
-      fail(`Не удалось скачать PDF: ${e.message}. Открываем для просмотра…`);
-      setTimeout(() => { window.location.href = pdfUrl('inline'); }, 1500);
+      // 3) Не вышло скачать — предлагаем вкладку, просмотр на месте и печать в PDF.
+      const win = openTab(pdfUrl('inline'));
+      if (win) { toast('PDF открыт в новой вкладке — сохраните его кнопкой браузера'); return; }
+      fail(`Не удалось скачать PDF: ${e.message}`);
+      showPdfHelp(`Не удалось скачать файл: ${e.message}`);
     } finally {
       btn.disabled = false;
       btn.textContent = label;

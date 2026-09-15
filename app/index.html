@@ -141,6 +141,24 @@
   </div>
 </div>
 
+<div id="pdfHelp" class="modal" hidden>
+  <div class="modal-card pdf-help">
+    <h2>PDF готов</h2>
+    <p class="muted" id="pdfHelpWhy"></p>
+    <div class="pdf-view"><iframe id="pdfHelpFrame" title="План зала (PDF)"></iframe></div>
+    <ol class="pdf-help-steps">
+      <li>Откройте файл в новом окне и сохраните его кнопкой браузера.</li>
+      <li>Или нажмите «Печать → Сохранить как PDF» — получится один лист A3.</li>
+    </ol>
+    <div class="actions">
+      <a class="btn primary" id="pdfHelpOpen" href="/api/export/pdf?disp=inline" target="_blank" rel="noopener">Открыть в новом окне</a>
+      <button class="btn" id="pdfHelpCopy">Скопировать ссылку</button>
+      <button class="btn" id="pdfHelpPrint">Печать → Сохранить как PDF</button>
+      <button class="btn ghost" id="pdfHelpClose">Закрыть</button>
+    </div>
+  </div>
+</div>
+
 <script src="./groups.js"></script>
 <script src="./app.js"></script>
 </body>
