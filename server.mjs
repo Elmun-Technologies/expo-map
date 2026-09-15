@@ -344,6 +344,7 @@ const server = http.createServer(async (req, res) => {
         zones: exp.zones,
         sections: exp.sections,
         features: exp.features,
+        service: exp.service,
         blocks: exp.blocks,
         customStands: exp.customStands,
         stands: exp.stands,

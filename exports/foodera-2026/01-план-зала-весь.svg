@@ -1,515 +1,533 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1460" height="1384" viewBox="0 0 1460 1384" font-family="DejaVu Sans, Helvetica, Arial, sans-serif">
-<rect x="0.00" y="0.00" width="1460.00" height="1384.00" fill="#ffffff"/>
-<rect x="142.75" y="137.25" width="1123.75" height="60.90" fill="#f0f7f7" fill-opacity="0.85" stroke="#dbe4ea" stroke-width="1" stroke-dasharray="8 6" rx="6"/>
-<rect x="186.25" y="227.15" width="696.00" height="191.40" fill="#f6f9fc" fill-opacity="0.85" stroke="#dbe4ea" stroke-width="1" stroke-dasharray="8 6" rx="6"/>
-<rect x="186.25" y="430.15" width="696.00" height="191.40" fill="#f7fbf7" fill-opacity="0.85" stroke="#dbe4ea" stroke-width="1" stroke-dasharray="8 6" rx="6"/>
-<rect x="186.25" y="633.15" width="696.00" height="191.40" fill="#f6f9fc" fill-opacity="0.85" stroke="#dbe4ea" stroke-width="1" stroke-dasharray="8 6" rx="6"/>
-<rect x="41.25" y="206.85" width="101.50" height="413.25" fill="#fff6e5" fill-opacity="0.85" stroke="#dbe4ea" stroke-width="1" stroke-dasharray="8 6" rx="6"/>
-<rect x="918.50" y="206.85" width="268.25" height="217.50" fill="#eef3fb" fill-opacity="0.85" stroke="#dbe4ea" stroke-width="1" stroke-dasharray="8 6" rx="6"/>
-<rect x="918.50" y="431.60" width="268.25" height="232.00" fill="#f3f0fb" fill-opacity="0.85" stroke="#dbe4ea" stroke-width="1" stroke-dasharray="8 6" rx="6"/>
-<rect x="1199.80" y="206.85" width="220.40" height="522.00" fill="#f0f6ff" fill-opacity="0.85" stroke="#dbe4ea" stroke-width="1" stroke-dasharray="8 6" rx="6"/>
-<rect x="933.00" y="821.65" width="261.00" height="33.35" fill="#f7f7f7" fill-opacity="0.85" stroke="#dbe4ea" stroke-width="1" stroke-dasharray="8 6" rx="6"/>
-<polygon points="34.00,134.35 1426.00,134.35 1426.00,859.35 34.00,859.35" fill="#ffffff" fill-opacity="0.55" stroke="#0f2233" stroke-width="2.2"/>
-<rect x="48.50" y="143.05" width="87.00" height="46.40" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
-<text x="92.00" y="163.61" font-size="11.02" fill="#5b6b7a" text-anchor="middle">Техническая</text>
-<text x="92.00" y="176.61" font-size="11.02" fill="#5b6b7a" text-anchor="middle">комната</text>
-<rect x="1252.00" y="143.05" width="174.00" height="46.40" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
-<text x="1339.00" y="170.97" font-size="13.50" fill="#5b6b7a" text-anchor="middle">Грузовые ворота</text>
-<rect x="954.75" y="228.60" width="195.75" height="81.20" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
-<text x="1052.63" y="273.93" font-size="13.50" fill="#5b6b7a" text-anchor="middle">Сцена</text>
-<rect x="1214.30" y="206.85" width="197.20" height="165.30" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
-<text x="1312.90" y="294.23" font-size="13.50" fill="#5b6b7a" text-anchor="middle">Conference-Hall</text>
-<rect x="1214.30" y="383.75" width="197.20" height="110.20" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
-<text x="1312.90" y="443.58" font-size="13.50" fill="#5b6b7a" text-anchor="middle">Small Conference-Hall</text>
-<rect x="1214.30" y="505.55" width="197.20" height="66.70" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
-<text x="1312.90" y="543.63" font-size="13.50" fill="#5b6b7a" text-anchor="middle">B2B</text>
-<rect x="1214.30" y="586.75" width="197.20" height="66.70" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
-<text x="1312.90" y="624.83" font-size="13.50" fill="#5b6b7a" text-anchor="middle">B2B</text>
-<rect x="1214.30" y="667.95" width="197.20" height="66.70" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
-<text x="1312.90" y="706.02" font-size="13.50" fill="#5b6b7a" text-anchor="middle">Переговорная</text>
-<rect x="1214.30" y="749.15" width="92.80" height="58.00" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
-<text x="1260.70" y="781.36" font-size="9.18" fill="#5b6b7a" text-anchor="middle">Винтовой выход</text>
-<rect x="45.60" y="636.05" width="89.90" height="63.80" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
-<text x="90.55" y="656.91" font-size="13.30" fill="#5b6b7a" text-anchor="middle">Выход к</text>
-<text x="90.55" y="672.61" font-size="13.30" fill="#5b6b7a" text-anchor="middle">открытому</text>
-<text x="90.55" y="688.30" font-size="13.30" fill="#5b6b7a" text-anchor="middle">павильону</text>
-<rect x="440.00" y="814.40" width="217.50" height="31.90" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
-<text x="548.75" y="835.08" font-size="13.50" fill="#5b6b7a" text-anchor="middle">Регистрация</text>
-<rect x="679.25" y="814.40" width="166.75" height="31.90" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
-<text x="762.63" y="835.08" font-size="13.50" fill="#5b6b7a" text-anchor="middle">Главный вход</text>
-<rect x="48.50" y="720.15" width="87.00" height="75.40" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
-<text x="92.00" y="762.58" font-size="13.50" fill="#5b6b7a" text-anchor="middle">WC</text>
-<rect x="1318.70" y="749.15" width="89.90" height="58.00" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
-<text x="1363.65" y="782.88" font-size="13.50" fill="#5b6b7a" text-anchor="middle">WC</text>
-<rect x="208.00" y="227.15" width="87.00" height="174.00" fill="none" stroke="#E8A33D" stroke-width="1.6" rx="5"/>
-<rect x="205.00" y="199.15" width="93.00" height="25.50" fill="#ffffff" stroke="#E8A33D" stroke-width="1.5" rx="5"/>
-<text x="251.50" y="210.65" font-size="11.00" fill="#E8A33D" font-weight="bold" text-anchor="middle">A · 72 м²</text>
-<text x="251.50" y="219.65" font-size="8.50" fill="#7b8b99" text-anchor="middle">HoReCa</text>
-<rect x="324.00" y="227.15" width="87.00" height="174.00" fill="none" stroke="#2E8B8B" stroke-width="1.6" rx="5"/>
-<rect x="321.00" y="199.15" width="93.00" height="25.50" fill="#ffffff" stroke="#2E8B8B" stroke-width="1.5" rx="5"/>
-<text x="367.50" y="210.65" font-size="11.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">B · 72 м²</text>
-<text x="367.50" y="219.65" font-size="8.50" fill="#7b8b99" text-anchor="middle">Консервы</text>
-<rect x="440.00" y="227.15" width="87.00" height="174.00" fill="none" stroke="#3E7BB6" stroke-width="1.6" rx="5"/>
-<rect x="437.00" y="199.15" width="93.00" height="25.50" fill="#ffffff" stroke="#3E7BB6" stroke-width="1.5" rx="5"/>
-<text x="483.50" y="210.65" font-size="11.00" fill="#3E7BB6" font-weight="bold" text-anchor="middle">C · 72 м²</text>
-<text x="483.50" y="219.65" font-size="8.50" fill="#7b8b99" text-anchor="middle">Рыба</text>
-<rect x="556.00" y="227.15" width="87.00" height="174.00" fill="none" stroke="#B8860B" stroke-width="1.6" rx="5"/>
-<rect x="551.73" y="199.15" width="95.53" height="25.50" fill="#ffffff" stroke="#B8860B" stroke-width="1.5" rx="5"/>
-<text x="599.50" y="210.65" font-size="11.00" fill="#B8860B" font-weight="bold" text-anchor="middle">D · 72 м²</text>
-<text x="599.50" y="219.65" font-size="8.50" fill="#7b8b99" text-anchor="middle">Фрукты и овощи</text>
-<rect x="672.00" y="227.15" width="87.00" height="174.00" fill="none" stroke="#3E9B5F" stroke-width="1.6" rx="5"/>
-<rect x="669.00" y="199.15" width="93.00" height="25.50" fill="#ffffff" stroke="#3E9B5F" stroke-width="1.5" rx="5"/>
-<text x="715.50" y="210.65" font-size="11.00" fill="#3E9B5F" font-weight="bold" text-anchor="middle">E · 72 м²</text>
-<text x="715.50" y="219.65" font-size="8.50" fill="#7b8b99" text-anchor="middle">Спорт-пит</text>
-<rect x="788.00" y="227.15" width="87.00" height="174.00" fill="none" stroke="#9B59B6" stroke-width="1.6" rx="5"/>
-<rect x="785.00" y="199.15" width="93.00" height="25.50" fill="#ffffff" stroke="#9B59B6" stroke-width="1.5" rx="5"/>
-<text x="831.50" y="210.65" font-size="11.00" fill="#9B59B6" font-weight="bold" text-anchor="middle">F · 72 м²</text>
-<text x="831.50" y="219.65" font-size="8.50" fill="#7b8b99" text-anchor="middle">Органика</text>
-<rect x="208.00" y="430.15" width="87.00" height="174.00" fill="none" stroke="#C96F2B" stroke-width="1.6" rx="5"/>
-<rect x="205.00" y="402.15" width="93.00" height="25.50" fill="#ffffff" stroke="#C96F2B" stroke-width="1.5" rx="5"/>
-<text x="251.50" y="413.65" font-size="11.00" fill="#C96F2B" font-weight="bold" text-anchor="middle">G · 72 м²</text>
-<text x="251.50" y="422.65" font-size="8.50" fill="#7b8b99" text-anchor="middle">Ингредиенты</text>
-<rect x="324.00" y="430.15" width="87.00" height="174.00" fill="none" stroke="#C0553E" stroke-width="1.6" rx="5"/>
-<rect x="321.00" y="402.15" width="93.00" height="25.50" fill="#ffffff" stroke="#C0553E" stroke-width="1.5" rx="5"/>
-<text x="367.50" y="413.65" font-size="11.00" fill="#C0553E" font-weight="bold" text-anchor="middle">H · 72 м²</text>
-<text x="367.50" y="422.65" font-size="8.50" fill="#7b8b99" text-anchor="middle">Мясо и молоко</text>
-<rect x="440.00" y="430.15" width="87.00" height="174.00" fill="none" stroke="#3E7BB6" stroke-width="1.6" rx="5"/>
-<rect x="437.00" y="402.15" width="93.00" height="25.50" fill="#ffffff" stroke="#3E7BB6" stroke-width="1.5" rx="5"/>
-<text x="483.50" y="413.65" font-size="11.00" fill="#3E7BB6" font-weight="bold" text-anchor="middle">I · 72 м²</text>
-<text x="483.50" y="422.65" font-size="8.50" fill="#7b8b99" text-anchor="middle">Рыба (2)</text>
-<rect x="556.00" y="430.15" width="87.00" height="174.00" fill="none" stroke="#2A9D8F" stroke-width="1.6" rx="5"/>
-<rect x="553.00" y="402.15" width="93.00" height="25.50" fill="#ffffff" stroke="#2A9D8F" stroke-width="1.5" rx="5"/>
-<text x="599.50" y="413.65" font-size="11.00" fill="#2A9D8F" font-weight="bold" text-anchor="middle">J · 72 м²</text>
-<text x="599.50" y="422.65" font-size="8.50" fill="#7b8b99" text-anchor="middle">Напитки</text>
-<rect x="672.00" y="430.15" width="87.00" height="174.00" fill="none" stroke="#9B59B6" stroke-width="1.6" rx="5"/>
-<rect x="669.00" y="402.15" width="93.00" height="25.50" fill="#ffffff" stroke="#9B59B6" stroke-width="1.5" rx="5"/>
-<text x="715.50" y="413.65" font-size="11.00" fill="#9B59B6" font-weight="bold" text-anchor="middle">K · 72 м²</text>
-<text x="715.50" y="422.65" font-size="8.50" fill="#7b8b99" text-anchor="middle">Органика (2)</text>
-<rect x="788.00" y="430.15" width="87.00" height="174.00" fill="none" stroke="#C96F2B" stroke-width="1.6" rx="5"/>
-<rect x="784.68" y="402.15" width="93.64" height="25.50" fill="#ffffff" stroke="#C96F2B" stroke-width="1.5" rx="5"/>
-<text x="831.50" y="413.65" font-size="11.00" fill="#C96F2B" font-weight="bold" text-anchor="middle">L · 72 м²</text>
-<text x="831.50" y="422.65" font-size="8.50" fill="#7b8b99" text-anchor="middle">Полуфабрикаты</text>
-<rect x="208.00" y="633.15" width="87.00" height="174.00" fill="none" stroke="#2A9D8F" stroke-width="1.6" rx="5"/>
-<rect x="205.00" y="605.15" width="93.00" height="25.50" fill="#ffffff" stroke="#2A9D8F" stroke-width="1.5" rx="5"/>
-<text x="251.50" y="616.65" font-size="11.00" fill="#2A9D8F" font-weight="bold" text-anchor="middle">M · 72 м²</text>
-<text x="251.50" y="625.65" font-size="8.50" fill="#7b8b99" text-anchor="middle">Напитки (2)</text>
-<rect x="324.00" y="633.15" width="87.00" height="174.00" fill="none" stroke="#C0553E" stroke-width="1.6" rx="5"/>
-<rect x="319.05" y="605.15" width="96.91" height="25.50" fill="#ffffff" stroke="#C0553E" stroke-width="1.5" rx="5"/>
-<text x="367.50" y="616.65" font-size="11.00" fill="#C0553E" font-weight="bold" text-anchor="middle">N · 72 м²</text>
-<text x="367.50" y="625.65" font-size="8.50" fill="#7b8b99" text-anchor="middle">Ингредиенты (2)</text>
-<rect x="440.00" y="633.15" width="87.00" height="174.00" fill="none" stroke="#D2691E" stroke-width="1.6" rx="5"/>
-<rect x="437.00" y="605.15" width="93.00" height="25.50" fill="#ffffff" stroke="#D2691E" stroke-width="1.5" rx="5"/>
-<text x="483.50" y="616.65" font-size="11.00" fill="#D2691E" font-weight="bold" text-anchor="middle">O · 72 м²</text>
-<text x="483.50" y="625.65" font-size="8.50" fill="#7b8b99" text-anchor="middle">Бакалея</text>
-<rect x="556.00" y="633.15" width="87.00" height="174.00" fill="none" stroke="#C2185B" stroke-width="1.6" rx="5"/>
-<rect x="553.00" y="605.15" width="93.00" height="25.50" fill="#ffffff" stroke="#C2185B" stroke-width="1.5" rx="5"/>
-<text x="599.50" y="616.65" font-size="11.00" fill="#C2185B" font-weight="bold" text-anchor="middle">P · 72 м²</text>
-<text x="599.50" y="625.65" font-size="8.50" fill="#7b8b99" text-anchor="middle">Кондитерские</text>
-<rect x="672.00" y="633.15" width="87.00" height="174.00" fill="none" stroke="#5E7A8C" stroke-width="1.6" rx="5"/>
-<rect x="669.00" y="605.15" width="93.00" height="25.50" fill="#ffffff" stroke="#5E7A8C" stroke-width="1.5" rx="5"/>
-<text x="715.50" y="616.65" font-size="11.00" fill="#5E7A8C" font-weight="bold" text-anchor="middle">Q · 72 м²</text>
-<text x="715.50" y="625.65" font-size="8.50" fill="#7b8b99" text-anchor="middle">Сладости</text>
-<rect x="788.00" y="633.15" width="87.00" height="174.00" fill="none" stroke="#7A6C4F" stroke-width="1.6" rx="5"/>
-<rect x="785.00" y="605.15" width="93.00" height="25.50" fill="#ffffff" stroke="#7A6C4F" stroke-width="1.5" rx="5"/>
-<text x="831.50" y="616.65" font-size="11.00" fill="#7A6C4F" font-weight="bold" text-anchor="middle">R · 72 м²</text>
-<text x="831.50" y="625.65" font-size="8.50" fill="#7b8b99" text-anchor="middle">Прочие</text>
-<rect x="150.00" y="145.95" width="348.00" height="43.50" fill="none" stroke="#2E8B8B" stroke-width="1.6" rx="5"/>
-<rect x="261.75" y="117.95" width="124.50" height="25.50" fill="#ffffff" stroke="#2E8B8B" stroke-width="1.5" rx="5"/>
-<text x="324.00" y="129.45" font-size="11.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">H · 72 м²</text>
-<text x="324.00" y="138.45" font-size="8.50" fill="#7b8b99" text-anchor="middle">Оборудование</text>
-<rect x="527.00" y="145.95" width="348.00" height="43.50" fill="none" stroke="#2E8B8B" stroke-width="1.6" rx="5"/>
-<rect x="638.75" y="117.95" width="124.50" height="25.50" fill="#ffffff" stroke="#2E8B8B" stroke-width="1.5" rx="5"/>
-<text x="701.00" y="129.45" font-size="11.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">W · 72 м²</text>
-<text x="701.00" y="138.45" font-size="8.50" fill="#7b8b99" text-anchor="middle">Консервные линии</text>
-<rect x="904.00" y="145.95" width="348.00" height="43.50" fill="none" stroke="#2E8B8B" stroke-width="1.6" rx="5"/>
-<rect x="1015.75" y="117.95" width="124.50" height="25.50" fill="#ffffff" stroke="#2E8B8B" stroke-width="1.5" rx="5"/>
-<text x="1078.00" y="129.45" font-size="11.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">X · 72 м²</text>
-<text x="1078.00" y="138.45" font-size="8.50" fill="#7b8b99" text-anchor="middle">Вендинг и упаковка</text>
-<rect x="251.50" y="227.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="273.25" y="247.90" font-size="12.00" fill="#E8A33D" font-weight="bold" text-anchor="middle">A2</text>
-<rect x="251.50" y="270.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="273.25" y="291.40" font-size="12.00" fill="#E8A33D" font-weight="bold" text-anchor="middle">A4</text>
-<rect x="251.50" y="314.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="273.25" y="334.90" font-size="12.00" fill="#E8A33D" font-weight="bold" text-anchor="middle">A6</text>
-<rect x="208.00" y="357.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="229.75" y="378.40" font-size="12.00" fill="#E8A33D" font-weight="bold" text-anchor="middle">A7</text>
-<rect x="251.50" y="357.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="273.25" y="378.40" font-size="12.00" fill="#E8A33D" font-weight="bold" text-anchor="middle">A8</text>
-<rect x="367.50" y="227.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="389.25" y="247.90" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">B2</text>
-<rect x="367.50" y="270.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="389.25" y="291.40" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">B4</text>
-<rect x="324.00" y="314.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="345.75" y="334.90" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">B5</text>
-<rect x="367.50" y="314.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="389.25" y="334.90" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">B6</text>
-<rect x="324.00" y="357.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="345.75" y="378.40" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">B7</text>
-<rect x="367.50" y="357.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="389.25" y="378.40" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">B8</text>
-<rect x="483.50" y="227.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="505.25" y="247.90" font-size="12.00" fill="#3E7BB6" font-weight="bold" text-anchor="middle">C2</text>
-<rect x="440.00" y="270.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="461.75" y="291.40" font-size="12.00" fill="#3E7BB6" font-weight="bold" text-anchor="middle">C3</text>
-<rect x="483.50" y="270.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="505.25" y="291.40" font-size="12.00" fill="#3E7BB6" font-weight="bold" text-anchor="middle">C4</text>
-<rect x="440.00" y="314.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="461.75" y="334.90" font-size="12.00" fill="#3E7BB6" font-weight="bold" text-anchor="middle">C5</text>
-<rect x="483.50" y="314.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="505.25" y="334.90" font-size="12.00" fill="#3E7BB6" font-weight="bold" text-anchor="middle">C6</text>
-<rect x="440.00" y="357.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="461.75" y="378.40" font-size="12.00" fill="#3E7BB6" font-weight="bold" text-anchor="middle">C7</text>
-<rect x="483.50" y="357.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="505.25" y="378.40" font-size="12.00" fill="#3E7BB6" font-weight="bold" text-anchor="middle">C8</text>
-<rect x="599.50" y="227.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="621.25" y="247.90" font-size="12.00" fill="#B8860B" font-weight="bold" text-anchor="middle">D2</text>
-<rect x="599.50" y="270.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="621.25" y="291.40" font-size="12.00" fill="#B8860B" font-weight="bold" text-anchor="middle">D4</text>
-<rect x="556.00" y="314.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="577.75" y="334.90" font-size="12.00" fill="#B8860B" font-weight="bold" text-anchor="middle">D5</text>
-<rect x="599.50" y="314.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="621.25" y="334.90" font-size="12.00" fill="#B8860B" font-weight="bold" text-anchor="middle">D6</text>
-<rect x="556.00" y="357.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="577.75" y="378.40" font-size="12.00" fill="#B8860B" font-weight="bold" text-anchor="middle">D7</text>
-<rect x="599.50" y="357.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="621.25" y="378.40" font-size="12.00" fill="#B8860B" font-weight="bold" text-anchor="middle">D8</text>
-<rect x="715.50" y="227.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="737.25" y="247.90" font-size="12.00" fill="#3E9B5F" font-weight="bold" text-anchor="middle">E2</text>
-<rect x="672.00" y="270.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="693.75" y="291.40" font-size="12.00" fill="#3E9B5F" font-weight="bold" text-anchor="middle">E3</text>
-<rect x="715.50" y="270.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="737.25" y="291.40" font-size="12.00" fill="#3E9B5F" font-weight="bold" text-anchor="middle">E4</text>
-<rect x="672.00" y="314.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="693.75" y="334.90" font-size="12.00" fill="#3E9B5F" font-weight="bold" text-anchor="middle">E5</text>
-<rect x="715.50" y="314.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="737.25" y="334.90" font-size="12.00" fill="#3E9B5F" font-weight="bold" text-anchor="middle">E6</text>
-<rect x="672.00" y="357.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="693.75" y="378.40" font-size="12.00" fill="#3E9B5F" font-weight="bold" text-anchor="middle">E7</text>
-<rect x="715.50" y="357.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="737.25" y="378.40" font-size="12.00" fill="#3E9B5F" font-weight="bold" text-anchor="middle">E8</text>
-<rect x="788.00" y="227.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="809.75" y="247.90" font-size="12.00" fill="#9B59B6" font-weight="bold" text-anchor="middle">F1</text>
-<rect x="831.50" y="227.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="853.25" y="247.90" font-size="12.00" fill="#9B59B6" font-weight="bold" text-anchor="middle">F2</text>
-<rect x="788.00" y="270.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="809.75" y="291.40" font-size="12.00" fill="#9B59B6" font-weight="bold" text-anchor="middle">F3</text>
-<rect x="831.50" y="270.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="853.25" y="291.40" font-size="12.00" fill="#9B59B6" font-weight="bold" text-anchor="middle">F4</text>
-<rect x="788.00" y="314.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="809.75" y="334.90" font-size="12.00" fill="#9B59B6" font-weight="bold" text-anchor="middle">F5</text>
-<rect x="831.50" y="314.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="853.25" y="334.90" font-size="12.00" fill="#9B59B6" font-weight="bold" text-anchor="middle">F6</text>
-<rect x="788.00" y="357.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="809.75" y="378.40" font-size="12.00" fill="#9B59B6" font-weight="bold" text-anchor="middle">F7</text>
-<rect x="831.50" y="357.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="853.25" y="378.40" font-size="12.00" fill="#9B59B6" font-weight="bold" text-anchor="middle">F8</text>
-<rect x="208.00" y="430.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="229.75" y="450.90" font-size="12.00" fill="#C96F2B" font-weight="bold" text-anchor="middle">G1</text>
-<rect x="251.50" y="430.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="273.25" y="450.90" font-size="12.00" fill="#C96F2B" font-weight="bold" text-anchor="middle">G2</text>
-<rect x="208.00" y="473.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="229.75" y="494.40" font-size="12.00" fill="#C96F2B" font-weight="bold" text-anchor="middle">G3</text>
-<rect x="251.50" y="473.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="273.25" y="494.40" font-size="12.00" fill="#C96F2B" font-weight="bold" text-anchor="middle">G4</text>
-<rect x="208.00" y="517.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="229.75" y="537.90" font-size="12.00" fill="#C96F2B" font-weight="bold" text-anchor="middle">G5</text>
-<rect x="251.50" y="517.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="273.25" y="537.90" font-size="12.00" fill="#C96F2B" font-weight="bold" text-anchor="middle">G6</text>
-<rect x="208.00" y="560.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="229.75" y="581.40" font-size="12.00" fill="#C96F2B" font-weight="bold" text-anchor="middle">G7</text>
-<rect x="251.50" y="560.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="273.25" y="581.40" font-size="12.00" fill="#C96F2B" font-weight="bold" text-anchor="middle">G8</text>
-<rect x="367.50" y="473.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="389.25" y="494.40" font-size="12.00" fill="#C0553E" font-weight="bold" text-anchor="middle">H4</text>
-<rect x="367.50" y="517.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="389.25" y="537.90" font-size="12.00" fill="#C0553E" font-weight="bold" text-anchor="middle">H6</text>
-<rect x="367.50" y="560.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="389.25" y="581.40" font-size="12.00" fill="#C0553E" font-weight="bold" text-anchor="middle">H8</text>
-<rect x="483.50" y="473.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="505.25" y="494.40" font-size="12.00" fill="#3E7BB6" font-weight="bold" text-anchor="middle">I4</text>
-<rect x="483.50" y="517.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="505.25" y="537.90" font-size="12.00" fill="#3E7BB6" font-weight="bold" text-anchor="middle">I6</text>
-<rect x="483.50" y="560.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="505.25" y="581.40" font-size="12.00" fill="#3E7BB6" font-weight="bold" text-anchor="middle">I8</text>
-<rect x="599.50" y="473.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="621.25" y="494.40" font-size="12.00" fill="#2A9D8F" font-weight="bold" text-anchor="middle">J4</text>
-<rect x="599.50" y="517.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="621.25" y="537.90" font-size="12.00" fill="#2A9D8F" font-weight="bold" text-anchor="middle">J6</text>
-<rect x="599.50" y="560.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="621.25" y="581.40" font-size="12.00" fill="#2A9D8F" font-weight="bold" text-anchor="middle">J8</text>
-<rect x="715.50" y="473.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="737.25" y="494.40" font-size="12.00" fill="#9B59B6" font-weight="bold" text-anchor="middle">K4</text>
-<rect x="715.50" y="517.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="737.25" y="537.90" font-size="12.00" fill="#9B59B6" font-weight="bold" text-anchor="middle">K6</text>
-<rect x="715.50" y="560.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="737.25" y="581.40" font-size="12.00" fill="#9B59B6" font-weight="bold" text-anchor="middle">K8</text>
-<rect x="831.50" y="430.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="853.25" y="450.90" font-size="12.00" fill="#C96F2B" font-weight="bold" text-anchor="middle">L2</text>
-<rect x="831.50" y="473.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="853.25" y="494.40" font-size="12.00" fill="#C96F2B" font-weight="bold" text-anchor="middle">L4</text>
-<rect x="831.50" y="517.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="853.25" y="537.90" font-size="12.00" fill="#C96F2B" font-weight="bold" text-anchor="middle">L6</text>
-<rect x="788.00" y="560.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="809.75" y="581.40" font-size="12.00" fill="#C96F2B" font-weight="bold" text-anchor="middle">L7</text>
-<rect x="831.50" y="560.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="853.25" y="581.40" font-size="12.00" fill="#C96F2B" font-weight="bold" text-anchor="middle">L8</text>
-<rect x="251.50" y="633.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="273.25" y="653.90" font-size="12.00" fill="#2A9D8F" font-weight="bold" text-anchor="middle">M2</text>
-<rect x="208.00" y="676.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="229.75" y="697.40" font-size="12.00" fill="#2A9D8F" font-weight="bold" text-anchor="middle">M3</text>
-<rect x="251.50" y="676.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="273.25" y="697.40" font-size="12.00" fill="#2A9D8F" font-weight="bold" text-anchor="middle">M4</text>
-<rect x="208.00" y="720.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="229.75" y="740.90" font-size="12.00" fill="#2A9D8F" font-weight="bold" text-anchor="middle">M5</text>
-<rect x="251.50" y="720.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="273.25" y="740.90" font-size="12.00" fill="#2A9D8F" font-weight="bold" text-anchor="middle">M6</text>
-<rect x="208.00" y="763.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="229.75" y="784.40" font-size="12.00" fill="#2A9D8F" font-weight="bold" text-anchor="middle">M7</text>
-<rect x="251.50" y="763.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="273.25" y="784.40" font-size="12.00" fill="#2A9D8F" font-weight="bold" text-anchor="middle">M8</text>
-<rect x="367.50" y="633.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="389.25" y="653.90" font-size="12.00" fill="#C0553E" font-weight="bold" text-anchor="middle">N2</text>
-<rect x="367.50" y="676.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="389.25" y="697.40" font-size="12.00" fill="#C0553E" font-weight="bold" text-anchor="middle">N4</text>
-<rect x="367.50" y="720.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="389.25" y="740.90" font-size="12.00" fill="#C0553E" font-weight="bold" text-anchor="middle">N6</text>
-<rect x="324.00" y="763.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="345.75" y="784.40" font-size="12.00" fill="#C0553E" font-weight="bold" text-anchor="middle">N7</text>
-<rect x="367.50" y="763.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="389.25" y="784.40" font-size="12.00" fill="#C0553E" font-weight="bold" text-anchor="middle">N8</text>
-<rect x="483.50" y="763.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="505.25" y="784.40" font-size="12.00" fill="#D2691E" font-weight="bold" text-anchor="middle">O8</text>
-<rect x="599.50" y="676.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="621.25" y="697.40" font-size="12.00" fill="#C2185B" font-weight="bold" text-anchor="middle">P4</text>
-<rect x="599.50" y="720.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="621.25" y="740.90" font-size="12.00" fill="#C2185B" font-weight="bold" text-anchor="middle">P6</text>
-<rect x="599.50" y="763.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="621.25" y="784.40" font-size="12.00" fill="#C2185B" font-weight="bold" text-anchor="middle">P8</text>
-<rect x="715.50" y="633.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="737.25" y="653.90" font-size="12.00" fill="#5E7A8C" font-weight="bold" text-anchor="middle">Q2</text>
-<rect x="715.50" y="676.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="737.25" y="697.40" font-size="12.00" fill="#5E7A8C" font-weight="bold" text-anchor="middle">Q4</text>
-<rect x="715.50" y="720.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="737.25" y="740.90" font-size="12.00" fill="#5E7A8C" font-weight="bold" text-anchor="middle">Q6</text>
-<rect x="715.50" y="763.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="737.25" y="784.40" font-size="12.00" fill="#5E7A8C" font-weight="bold" text-anchor="middle">Q8</text>
-<rect x="788.00" y="633.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="809.75" y="653.90" font-size="12.00" fill="#7A6C4F" font-weight="bold" text-anchor="middle">R1</text>
-<rect x="831.50" y="633.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="853.25" y="653.90" font-size="12.00" fill="#7A6C4F" font-weight="bold" text-anchor="middle">R2</text>
-<rect x="788.00" y="676.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="809.75" y="697.40" font-size="12.00" fill="#7A6C4F" font-weight="bold" text-anchor="middle">R3</text>
-<rect x="831.50" y="676.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="853.25" y="697.40" font-size="12.00" fill="#7A6C4F" font-weight="bold" text-anchor="middle">R4</text>
-<rect x="788.00" y="720.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="809.75" y="740.90" font-size="12.00" fill="#7A6C4F" font-weight="bold" text-anchor="middle">R5</text>
-<rect x="831.50" y="720.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="853.25" y="740.90" font-size="12.00" fill="#7A6C4F" font-weight="bold" text-anchor="middle">R6</text>
-<rect x="788.00" y="763.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="809.75" y="784.40" font-size="12.00" fill="#7A6C4F" font-weight="bold" text-anchor="middle">R7</text>
-<rect x="831.50" y="763.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="853.25" y="784.40" font-size="12.00" fill="#7A6C4F" font-weight="bold" text-anchor="middle">R8</text>
-<rect x="150.00" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="171.75" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">H1</text>
-<rect x="193.50" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="215.25" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">H2</text>
-<rect x="237.00" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="258.75" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">H3</text>
-<rect x="280.50" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="302.25" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">H4</text>
-<rect x="324.00" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="345.75" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">H5</text>
-<rect x="367.50" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="389.25" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">H6</text>
-<rect x="411.00" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="432.75" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">H7</text>
-<rect x="454.50" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="476.25" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">H8</text>
-<rect x="527.00" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="548.75" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">W1</text>
-<rect x="570.50" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="592.25" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">W2</text>
-<rect x="614.00" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="635.75" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">W3</text>
-<rect x="657.50" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="679.25" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">W4</text>
-<rect x="701.00" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="722.75" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">W5</text>
-<rect x="744.50" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="766.25" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">W6</text>
-<rect x="788.00" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="809.75" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">W7</text>
-<rect x="831.50" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="853.25" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">W8</text>
-<rect x="904.00" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="925.75" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">X1</text>
-<rect x="947.50" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="969.25" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">X2</text>
-<rect x="991.00" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="1012.75" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">X3</text>
-<rect x="1034.50" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="1056.25" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">X4</text>
-<rect x="1078.00" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="1099.75" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">X5</text>
-<rect x="1121.50" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="1143.25" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">X6</text>
-<rect x="1165.00" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="1186.75" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">X7</text>
-<rect x="1208.50" y="145.95" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="1230.25" y="166.70" font-size="12.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">X8</text>
-<rect x="48.50" y="221.35" width="87.00" height="46.28" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6" rx="3"/><text x="92.00" y="239.73" font-size="13.61" fill="#243b4a" font-weight="bold" text-anchor="middle">A6</text><text x="92.00" y="254.70" font-size="9.80" fill="#7b8b99" text-anchor="middle">19,15 м²</text>
-<rect x="48.50" y="273.55" width="87.00" height="49.11" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6" rx="3"/><text x="92.00" y="293.05" font-size="14.44" fill="#243b4a" font-weight="bold" text-anchor="middle">A5</text><text x="92.00" y="308.94" font-size="10.40" fill="#7b8b99" text-anchor="middle">20,32 м²</text>
-<rect x="48.50" y="328.65" width="87.00" height="54.78" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6" rx="3"/><text x="92.00" y="350.79" font-size="15.00" fill="#243b4a" font-weight="bold" text-anchor="middle">A4</text><text x="92.00" y="367.29" font-size="10.80" fill="#7b8b99" text-anchor="middle">22,67 м²</text>
-<rect x="48.50" y="389.55" width="87.00" height="61.38" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6" rx="3"/><text x="92.00" y="414.99" font-size="15.00" fill="#243b4a" font-weight="bold" text-anchor="middle">A3</text><text x="92.00" y="431.49" font-size="10.80" fill="#7b8b99" text-anchor="middle">25,4 м²</text>
-<rect x="48.50" y="456.25" width="87.00" height="63.39" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6" rx="3"/><text x="92.00" y="482.70" font-size="15.00" fill="#243b4a" font-weight="bold" text-anchor="middle">A2</text><text x="92.00" y="499.20" font-size="10.80" fill="#7b8b99" text-anchor="middle">26,23 м²</text>
-<rect x="48.50" y="525.85" width="87.00" height="66.24" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6" rx="3"/><text x="92.00" y="553.72" font-size="15.00" fill="#243b4a" font-weight="bold" text-anchor="middle">A1</text><text x="92.00" y="570.22" font-size="10.80" fill="#7b8b99" text-anchor="middle">27,41 м²</text>
-<path d="M208 227.15L251.5 227.15L251.5 270.65L208 270.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="209.50" y="228.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="229.75" y="253.12" font-size="11.00" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Silver</text>
-<path d="M324 227.15L367.5 227.15L367.5 270.65L324 270.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="325.50" y="228.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="345.75" y="250.97" font-size="5.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Ansor-Zoxir</text>
-<path d="M440 227.15L483.5 227.15L483.5 270.65L440 270.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="441.50" y="228.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="461.75" y="251.66" font-size="7.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Toyirxon</text>
-<path d="M556 227.15L599.5 227.15L599.5 270.65L556 270.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="557.50" y="228.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="577.75" y="242.70" font-size="7.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Xinjiang</text>
-<text x="577.75" y="251.82" font-size="7.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Lianfu</text>
-<text x="577.75" y="260.94" font-size="7.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Food</text>
-<path d="M672 227.15L715.5 227.15L715.5 270.65L672 270.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="673.50" y="228.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="693.75" y="253.20" font-size="11.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Kolna</text>
-<path d="M208 270.65L251.5 270.65L251.5 314.15L208 314.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="209.50" y="272.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="229.75" y="290.50" font-size="8.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">YaTT</text>
-<text x="229.75" y="301.06" font-size="8.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Sh.X.T.</text>
-<path d="M324 270.65L367.5 270.65L367.5 314.15L324 314.15Z" fill="#fff6e0" fill-opacity="0.92" stroke="#e0a300" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="325.50" y="272.15" width="40.50" height="3.50" fill="#e0a300" rx="1.5"/>
-<text x="345.75" y="283.91" font-size="10.40" fill="#8a5b00" font-weight="bold" text-anchor="middle">B12</text>
-<text x="345.75" y="296.39" font-size="10.40" fill="#8a5b00" font-weight="bold" text-anchor="middle">—</text>
-<text x="345.75" y="308.87" font-size="10.40" fill="#8a5b00" font-weight="bold" text-anchor="middle">бронь</text>
-<path d="M556 270.65L599.5 270.65L599.5 314.15L556 314.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="557.50" y="272.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="577.75" y="285.71" font-size="8.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Sayhal</text>
-<text x="577.75" y="295.55" font-size="8.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Agro</text>
-<text x="577.75" y="305.39" font-size="8.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Holding</text>
-<path d="M208 314.15L251.5 314.15L251.5 357.65L208 357.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="209.50" y="315.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="229.75" y="338.90" font-size="7.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Ecocups</text>
-<path d="M324 430.15L367.5 430.15L367.5 473.65L324 473.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="325.50" y="431.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="345.75" y="443.90" font-size="9.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Oltin</text>
-<text x="345.75" y="455.66" font-size="9.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Go'sht</text>
-<text x="345.75" y="467.42" font-size="9.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Sari</text>
-<path d="M367.5 430.15L411 430.15L411 473.65L367.5 473.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="369.00" y="431.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="389.25" y="440.86" font-size="7.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Saldis</text>
-<text x="389.25" y="450.22" font-size="7.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Trading</text>
-<text x="389.25" y="459.58" font-size="7.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Group</text>
-<text x="389.25" y="468.94" font-size="7.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">(2)</text>
-<path d="M440 430.15L483.5 430.15L483.5 473.65L483.5 517.15L483.5 560.65L483.5 604.15L440 604.15L440 560.65L440 517.15L440 473.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="441.50" y="431.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="461.75" y="515.72" font-size="6.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">CHORTAK</text>
-<text x="461.75" y="523.64" font-size="6.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">FIDANI</text>
-<path d="M483.5 430.15L527 430.15L527 473.65L483.5 473.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="485.00" y="431.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="505.25" y="455.51" font-size="9.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">AKULA</text>
-<path d="M556 430.15L599.5 430.15L599.5 473.65L556 473.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="557.50" y="431.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="577.75" y="449.65" font-size="10.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Brew</text>
-<text x="577.75" y="462.13" font-size="10.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Group</text>
-<path d="M599.5 430.15L643 430.15L643 473.65L599.5 473.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="601.00" y="431.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="621.25" y="449.91" font-size="9.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Bogi</text>
-<text x="621.25" y="460.95" font-size="9.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Baland</text>
-<path d="M672 430.15L715.5 430.15L715.5 473.65L715.5 517.15L715.5 560.65L715.5 604.15L672 604.15L672 560.65L672 517.15L672 473.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="673.50" y="431.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="693.75" y="520.61" font-size="9.00" fill="#8e1b1b" font-weight="bold" text-anchor="middle">ERMAK</text>
-<path d="M715.5 430.15L759 430.15L759 473.65L715.5 473.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="717.00" y="431.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="737.25" y="448.83" font-size="14.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">OOO</text>
-<text x="737.25" y="465.87" font-size="14.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">PPK</text>
-<path d="M788 430.15L831.5 430.15L831.5 473.65L831.5 517.15L788 517.15L788 473.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="789.50" y="431.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="809.75" y="476.49" font-size="7.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">MEZBON</text>
-<path d="M324 473.65L367.5 473.65L367.5 517.15L324 517.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="325.50" y="475.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="345.75" y="487.40" font-size="9.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Oltin</text>
-<text x="345.75" y="499.16" font-size="9.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Go'sht</text>
-<text x="345.75" y="510.92" font-size="9.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Turon</text>
-<path d="M556 473.65L599.5 473.65L599.5 517.15L556 517.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="557.50" y="475.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="577.75" y="489.52" font-size="7.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">New</text>
-<text x="577.75" y="498.16" font-size="7.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Leads</text>
-<text x="577.75" y="506.80" font-size="7.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Camping</text>
-<path d="M324 517.15L367.5 517.15L367.5 560.65L324 560.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="325.50" y="518.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="345.75" y="532.21" font-size="8.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Saldis</text>
-<text x="345.75" y="542.05" font-size="8.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Trading</text>
-<text x="345.75" y="551.89" font-size="8.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Group</text>
-<path d="M556 517.15L599.5 517.15L599.5 560.65L556 560.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="557.50" y="518.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="577.75" y="537.22" font-size="7.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Milliy</text>
-<text x="577.75" y="546.58" font-size="7.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Bottlers</text>
-<path d="M788 517.15L831.5 517.15L831.5 560.65L788 560.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="789.50" y="518.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="809.75" y="528.14" font-size="7.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Xinjiang</text>
-<text x="809.75" y="537.26" font-size="7.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Lianfu</text>
-<text x="809.75" y="546.38" font-size="7.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Food</text>
-<text x="809.75" y="555.50" font-size="7.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">(2)</text>
-<path d="M324 560.65L367.5 560.65L367.5 604.15L324 604.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="325.50" y="562.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="345.75" y="581.41" font-size="4.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Dobroye</text>
-<text x="345.75" y="586.93" font-size="4.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Derevenskoye</text>
-<path d="M556 560.65L599.5 560.65L599.5 604.15L556 604.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="557.50" y="562.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="577.75" y="579.51" font-size="13.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Amir</text>
-<text x="577.75" y="595.59" font-size="13.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Tea</text>
-<path d="M208 633.15L251.5 633.15L251.5 676.65L208 676.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="209.50" y="634.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="229.75" y="643.86" font-size="7.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">NEW</text>
-<text x="229.75" y="653.22" font-size="7.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">ENERGY</text>
-<text x="229.75" y="662.58" font-size="7.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">DRINKS</text>
-<text x="229.75" y="671.94" font-size="7.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">KZ</text>
-<path d="M324 633.15L367.5 633.15L367.5 676.65L324 676.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="325.50" y="634.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="345.75" y="646.97" font-size="5.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Gulf</text>
-<text x="345.75" y="653.69" font-size="5.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Flavours</text>
-<text x="345.75" y="660.41" font-size="5.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">and</text>
-<text x="345.75" y="667.13" font-size="5.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Fragrances</text>
-<path d="M440 633.15L483.5 633.15L483.5 676.65L483.5 720.15L440 720.15L440 676.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="441.50" y="634.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="461.75" y="668.00" font-size="10.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Silver</text>
-<text x="461.75" y="680.72" font-size="10.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Green</text>
-<text x="461.75" y="693.44" font-size="10.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Tea</text>
-<path d="M483.5 633.15L527 633.15L527 676.65L483.5 676.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="485.00" y="634.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="505.25" y="646.41" font-size="10.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Real</text>
-<text x="505.25" y="658.89" font-size="10.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Tea</text>
-<text x="505.25" y="671.37" font-size="10.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Zone</text>
-<path d="M556 633.15L599.5 633.15L599.5 676.65L599.5 720.15L556 720.15L556 676.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="557.50" y="634.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="577.75" y="669.80" font-size="8.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">CINDER</text>
-<text x="577.75" y="679.88" font-size="8.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">FRUIT</text>
-<text x="577.75" y="689.96" font-size="8.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">(2)</text>
-<path d="M599.5 633.15L643 633.15L643 676.65L599.5 676.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="601.00" y="634.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="621.25" y="658.05" font-size="8.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Pisobas</text>
-<path d="M672 633.15L715.5 633.15L715.5 676.65L672 676.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="673.50" y="634.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="693.75" y="657.36" font-size="6.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Perfumed</text>
-<path d="M324 676.65L367.5 676.65L367.5 720.15L324 720.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="325.50" y="678.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="345.75" y="702.32" font-size="10.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Bimak</text>
-<path d="M483.5 676.65L527 676.65L527 720.15L483.5 720.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="485.00" y="678.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="505.25" y="696.37" font-size="9.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Biana</text>
-<text x="505.25" y="707.65" font-size="9.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Konfet</text>
-<path d="M672 676.65L715.5 676.65L715.5 720.15L672 720.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="673.50" y="678.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="693.75" y="697.02" font-size="6.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Greenway</text>
-<text x="693.75" y="704.70" font-size="6.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Group</text>
-<path d="M324 720.15L367.5 720.15L367.5 763.65L324 763.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="325.50" y="721.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="345.75" y="744.59" font-size="7.00" fill="#8e1b1b" font-weight="bold" text-anchor="middle">ADMIRAL</text>
-<path d="M440 720.15L483.5 720.15L483.5 763.65L440 763.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="441.50" y="721.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="461.75" y="739.83" font-size="9.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">ASLAN</text>
-<text x="461.75" y="751.35" font-size="9.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">TEA</text>
-<path d="M483.5 720.15L527 720.15L527 763.65L483.5 763.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="485.00" y="721.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="505.25" y="739.96" font-size="9.00" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Archan</text>
-<text x="505.25" y="750.76" font-size="9.00" fill="#8e1b1b" font-weight="bold" text-anchor="middle">X</text>
-<path d="M556 720.15L599.5 720.15L599.5 763.65L556 763.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="557.50" y="721.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="577.75" y="740.09" font-size="8.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">CINDER</text>
-<text x="577.75" y="750.17" font-size="8.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">FRUIT</text>
-<path d="M672 720.15L715.5 720.15L715.5 763.65L672 763.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="673.50" y="721.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="693.75" y="733.41" font-size="10.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Dall</text>
-<text x="693.75" y="745.89" font-size="10.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Foods</text>
-<text x="693.75" y="758.37" font-size="10.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Group</text>
-<path d="M440 763.65L483.5 763.65L483.5 807.15L440 807.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="441.50" y="765.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="461.75" y="787.63" font-size="5.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">SVD-Grupp</text>
-<path d="M556 763.65L599.5 763.65L599.5 807.15L556 807.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="557.50" y="765.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="577.75" y="781.99" font-size="15.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">BIO</text>
-<text x="577.75" y="800.95" font-size="15.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">LAB</text>
-<path d="M672 763.65L715.5 763.65L715.5 807.15L672 807.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
-<rect x="673.50" y="765.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="693.75" y="780.18" font-size="6.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Javohirlar</text>
-<text x="693.75" y="787.86" font-size="6.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Food &amp;</text>
-<text x="693.75" y="795.54" font-size="6.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Drink</text>
-<text x="1009.20" y="223.85" font-size="12.00" fill="#93a4b2" font-weight="bold" text-anchor="middle" letter-spacing="0.3">Зона семинаров и форума</text>
-<text x="952.20" y="448.60" font-size="12.00" fill="#93a4b2" font-weight="bold" text-anchor="middle" letter-spacing="0.3">B2B зона</text>
-<text x="1310.00" y="223.85" font-size="12.00" fill="#93a4b2" font-weight="bold" text-anchor="middle" letter-spacing="0.3">Конференц-зоны</text>
-<text x="968.40" y="838.65" font-size="12.00" fill="#93a4b2" font-weight="bold" text-anchor="middle" letter-spacing="0.3">Парковка</text>
-<text x="34.00" y="49.00" font-size="19.00" fill="#0f2233" font-weight="bold">FOODERA EXPO 2026 — Крытый павильон · план залов</text>
-<text x="34.00" y="68.50" font-size="11.50" fill="#7b8b99">1 стенд = 3 × 3 м = 9 м² · 1 блок = 8 стендов = 72 м² · версия плана v1.4.0 · 15.09.2026</text>
-<rect x="879.70" y="36.00" width="13.00" height="13.00" fill="#ffffff" stroke="#cbd6de" stroke-width="1.3" rx="3"/>
-<text x="898.70" y="46.50" font-size="11.00" fill="#44586a">Свободно: 122 · 1 185,18 м²</text>
-<rect x="1091.18" y="36.00" width="13.00" height="13.00" fill="#fff6e0" stroke="#e0a300" stroke-width="1.3" rx="3"/>
-<text x="1110.18" y="46.50" font-size="11.00" fill="#44586a">Забронировано: 1 · 9 м²</text>
-<rect x="1279.13" y="36.00" width="13.00" height="13.00" fill="#fdecea" stroke="#c62828" stroke-width="1.3" rx="3"/>
-<text x="1298.13" y="46.50" font-size="11.00" fill="#44586a">Продано: 51 · 459 м²</text>
-<rect x="34.00" y="874.35" width="11.00" height="11.00" fill="#ffffff" stroke="#cbd6de" stroke-width="1.3" rx="3"/>
-<text x="53.00" y="884.35" font-size="11.00" fill="#44586a">Свободно: 122 стендов · 1 185,18 м²</text>
-<rect x="34.00" y="897.35" width="11.00" height="11.00" fill="#fff6e0" stroke="#e0a300" stroke-width="1.3" rx="3"/>
-<text x="53.00" y="907.35" font-size="11.00" fill="#44586a">Забронировано: 1 стендов · 9 м²</text>
-<rect x="34.00" y="920.35" width="11.00" height="11.00" fill="#fdecea" stroke="#c62828" stroke-width="1.3" rx="3"/>
-<text x="53.00" y="930.35" font-size="11.00" fill="#44586a">Продано: 51 стендов · 459 м²</text>
-<text x="34.00" y="959.35" font-size="12.00" fill="#0f2233" font-weight="bold">По разделам</text>
-<rect x="34.00" y="972.35" width="11.00" height="11.00" fill="#E8A33D" rx="2"/>
-<text x="53.00" y="982.35" font-size="11.00" fill="#44586a">Продукция для HoReCa</text>
-<text x="342.63" y="982.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 5 (45 м²)</text>
-<rect x="34.00" y="992.35" width="11.00" height="11.00" fill="#2E8B8B" rx="2"/>
-<text x="53.00" y="1002.35" font-size="11.00" fill="#44586a">Консервация</text>
-<text x="342.63" y="1002.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 6 (54 м²)</text>
-<rect x="34.00" y="1012.35" width="11.00" height="11.00" fill="#3E7BB6" rx="2"/>
-<text x="53.00" y="1022.35" font-size="11.00" fill="#44586a">Рыба и морепродукты</text>
-<text x="342.63" y="1022.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 7 (63 м²)</text>
-<rect x="34.00" y="1032.35" width="11.00" height="11.00" fill="#B8860B" rx="2"/>
-<text x="53.00" y="1042.35" font-size="11.00" fill="#44586a">Фрукты и овощи</text>
-<text x="342.63" y="1042.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 6 (54 м²)</text>
-<rect x="34.00" y="1052.35" width="11.00" height="11.00" fill="#3E9B5F" rx="2"/>
-<text x="53.00" y="1062.35" font-size="11.00" fill="#44586a">Продукты для здорового питания, Спорт Пит</text>
-<text x="342.63" y="1062.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 7 (63 м²)</text>
-<rect x="34.00" y="1072.35" width="11.00" height="11.00" fill="#9B59B6" rx="2"/>
-<text x="53.00" y="1082.35" font-size="11.00" fill="#44586a">Органика</text>
-<text x="342.63" y="1082.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
-<rect x="34.00" y="1092.35" width="11.00" height="11.00" fill="#C96F2B" rx="2"/>
-<text x="53.00" y="1102.35" font-size="11.00" fill="#44586a">Ингредиенты и компоненты</text>
-<text x="342.63" y="1102.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
-<rect x="34.00" y="1112.35" width="11.00" height="11.00" fill="#C0553E" rx="2"/>
-<text x="53.00" y="1122.35" font-size="11.00" fill="#44586a">Мясная и молочная индустрия</text>
-<text x="342.63" y="1122.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 3 (27 м²)</text>
-<rect x="34.00" y="1132.35" width="11.00" height="11.00" fill="#3E7BB6" rx="2"/>
-<text x="53.00" y="1142.35" font-size="11.00" fill="#44586a">Рыба и морепродукты (2)</text>
-<text x="342.63" y="1142.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 3 (27 м²)</text>
-<rect x="34.00" y="1152.35" width="11.00" height="11.00" fill="#2A9D8F" rx="2"/>
-<text x="53.00" y="1162.35" font-size="11.00" fill="#44586a">Напитки</text>
-<text x="342.63" y="1162.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 3 (27 м²)</text>
-<rect x="34.00" y="1172.35" width="11.00" height="11.00" fill="#9B59B6" rx="2"/>
-<text x="53.00" y="1182.35" font-size="11.00" fill="#44586a">Органика (2)</text>
-<text x="342.63" y="1182.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 3 (27 м²)</text>
-<rect x="34.00" y="1192.35" width="11.00" height="11.00" fill="#C96F2B" rx="2"/>
-<text x="53.00" y="1202.35" font-size="11.00" fill="#44586a">Полуфабрикаты</text>
-<text x="342.63" y="1202.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 5 (45 м²)</text>
-<rect x="34.00" y="1212.35" width="11.00" height="11.00" fill="#2A9D8F" rx="2"/>
-<text x="53.00" y="1222.35" font-size="11.00" fill="#44586a">Напитки (2)</text>
-<text x="342.63" y="1222.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 7 (63 м²)</text>
-<rect x="34.00" y="1232.35" width="11.00" height="11.00" fill="#C0553E" rx="2"/>
-<text x="53.00" y="1242.35" font-size="11.00" fill="#44586a">Ингредиенты и компоненты (2)</text>
-<text x="342.63" y="1242.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 5 (45 м²)</text>
-<rect x="34.00" y="1252.35" width="11.00" height="11.00" fill="#D2691E" rx="2"/>
-<text x="53.00" y="1262.35" font-size="11.00" fill="#44586a">Бакалея</text>
-<text x="342.63" y="1262.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 1 (9 м²)</text>
-<rect x="34.00" y="1272.35" width="11.00" height="11.00" fill="#C2185B" rx="2"/>
-<text x="53.00" y="1282.35" font-size="11.00" fill="#44586a">Кондитерские изделия</text>
-<text x="342.63" y="1282.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 3 (27 м²)</text>
-<rect x="34.00" y="1292.35" width="11.00" height="11.00" fill="#5E7A8C" rx="2"/>
-<text x="53.00" y="1302.35" font-size="11.00" fill="#44586a">Кондитерские изделия и сладости</text>
-<text x="342.63" y="1302.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 4 (36 м²)</text>
-<rect x="34.00" y="1312.35" width="11.00" height="11.00" fill="#7A6C4F" rx="2"/>
-<text x="53.00" y="1322.35" font-size="11.00" fill="#44586a">Прочие экспоненты</text>
-<text x="342.63" y="1322.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
-<rect x="34.00" y="1332.35" width="11.00" height="11.00" fill="#2E8B8B" rx="2"/>
-<text x="53.00" y="1342.35" font-size="11.00" fill="#44586a">Оборудование</text>
-<text x="342.63" y="1342.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
-<rect x="34.00" y="1352.35" width="11.00" height="11.00" fill="#2E8B8B" rx="2"/>
-<text x="53.00" y="1362.35" font-size="11.00" fill="#44586a">Консервные линии</text>
-<text x="342.63" y="1362.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
-<rect x="34.00" y="1372.35" width="11.00" height="11.00" fill="#2E8B8B" rx="2"/>
-<text x="53.00" y="1382.35" font-size="11.00" fill="#44586a">Вендинговые аппараты, упаковка и фасовка</text>
-<text x="342.63" y="1382.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
-<rect x="34.00" y="1392.35" width="11.00" height="11.00" fill="#E8A33D" rx="2"/>
-<text x="53.00" y="1402.35" font-size="11.00" fill="#44586a">Левое крыло — A1–A6</text>
-<text x="342.63" y="1402.35" font-size="11.00" fill="#44586a">6 стендов · 141,18 м² · свободно: 6 (141,18 м²)</text>
-<text x="1426.00" y="1372.00" font-size="11.00" fill="#5b6b7a" text-anchor="end">Итого: 174 стендов · 1 653,18 м² · свободно: 122 (1 185,18 м²)</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1273" height="1378" viewBox="0 0 1273 1378" font-family="DejaVu Sans, Helvetica, Arial, sans-serif">
+<rect x="0.00" y="0.00" width="1273.00" height="1378.00" fill="#ffffff"/>
+<rect x="132.75" y="128.75" width="1123.75" height="60.90" fill="#f0f7f7" fill-opacity="0.85" stroke="#dbe4ea" stroke-width="1" stroke-dasharray="8 6" rx="6"/>
+<rect x="176.25" y="218.65" width="696.00" height="191.40" fill="#f6f9fc" fill-opacity="0.85" stroke="#dbe4ea" stroke-width="1" stroke-dasharray="8 6" rx="6"/>
+<rect x="176.25" y="421.65" width="696.00" height="191.40" fill="#f7fbf7" fill-opacity="0.85" stroke="#dbe4ea" stroke-width="1" stroke-dasharray="8 6" rx="6"/>
+<rect x="176.25" y="624.65" width="696.00" height="191.40" fill="#f6f9fc" fill-opacity="0.85" stroke="#dbe4ea" stroke-width="1" stroke-dasharray="8 6" rx="6"/>
+<rect x="31.25" y="198.35" width="101.50" height="413.25" fill="#fff6e5" fill-opacity="0.85" stroke="#dbe4ea" stroke-width="1" stroke-dasharray="8 6" rx="6"/>
+<rect x="908.50" y="198.35" width="166.75" height="217.50" fill="#eef3fb" fill-opacity="0.85" stroke="#dbe4ea" stroke-width="1" stroke-dasharray="8 6" rx="6"/>
+<rect x="908.50" y="423.10" width="166.75" height="232.00" fill="#f3f0fb" fill-opacity="0.85" stroke="#dbe4ea" stroke-width="1" stroke-dasharray="8 6" rx="6"/>
+<rect x="1089.75" y="247.65" width="152.25" height="484.30" fill="#f0f6ff" fill-opacity="0.85" stroke="#dbe4ea" stroke-width="1" stroke-dasharray="8 6" rx="6"/>
+<rect x="923.00" y="813.15" width="159.50" height="33.35" fill="#f7f7f7" fill-opacity="0.85" stroke="#dbe4ea" stroke-width="1" stroke-dasharray="8 6" rx="6"/>
+<polygon points="24.00,125.85 1249.25,125.85 1249.25,850.85 24.00,850.85" fill="#ffffff" fill-opacity="0.55" stroke="#0f2233" stroke-width="2.2"/>
+<rect x="38.50" y="134.55" width="87.00" height="46.40" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
+<text x="82.00" y="148.24" font-size="9.84" fill="#5b6b7a" text-anchor="middle">Техническая</text>
+<text x="82.00" y="159.85" font-size="9.84" fill="#5b6b7a" text-anchor="middle">комната</text>
+<text x="82.00" y="172.50" font-size="11.00" fill="#93a4b2" text-anchor="middle">19,2 м²</text>
+<rect x="1075.25" y="198.35" width="159.50" height="46.40" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
+<text x="1155.00" y="219.65" font-size="15.00" fill="#5b6b7a" text-anchor="middle">Грузовые ворота</text>
+<text x="1155.00" y="232.30" font-size="11.00" fill="#93a4b2" text-anchor="middle">ширина 5,6 м · высота</text>
+<text x="1155.00" y="246.05" font-size="11.00" fill="#93a4b2" text-anchor="middle">5 м</text>
+<rect x="930.25" y="220.10" width="137.75" height="81.20" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
+<text x="999.13" y="258.80" font-size="15.00" fill="#5b6b7a" text-anchor="middle">Сцена</text>
+<text x="999.13" y="271.45" font-size="11.00" fill="#93a4b2" text-anchor="middle">53 м² · 9,5 × 5,6 м</text>
+<rect x="35.60" y="627.55" width="89.90" height="63.80" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
+<text x="80.55" y="648.43" font-size="13.28" fill="#5b6b7a" text-anchor="middle">Выход к</text>
+<text x="80.55" y="664.10" font-size="13.28" fill="#5b6b7a" text-anchor="middle">открытому</text>
+<text x="80.55" y="679.77" font-size="13.28" fill="#5b6b7a" text-anchor="middle">павильону</text>
+<rect x="430.00" y="805.90" width="217.50" height="31.90" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
+<text x="538.75" y="853.80" font-size="13.00" fill="#5b6b7a" text-anchor="middle">Регистрация</text>
+<rect x="669.25" y="805.90" width="166.75" height="31.90" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
+<text x="752.63" y="853.80" font-size="13.00" fill="#5b6b7a" text-anchor="middle">Главный вход</text>
+<rect x="38.50" y="711.65" width="87.00" height="75.40" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
+<text x="82.00" y="747.45" font-size="15.00" fill="#5b6b7a" text-anchor="middle">WC</text>
+<text x="82.00" y="760.10" font-size="11.00" fill="#93a4b2" text-anchor="middle">31,2 м²</text>
+<rect x="1175.30" y="743.55" width="59.45" height="55.10" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
+<text x="1205.03" y="776.35" font-size="15.00" fill="#5b6b7a" text-anchor="middle">WC</text>
+<rect x="1097.00" y="250.55" width="137.75" height="150.80" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
+<text x="1165.88" y="321.83" font-size="13.00" fill="#5b6b7a" text-anchor="middle">Conference-Hall</text>
+<text x="1165.88" y="335.58" font-size="11.00" fill="#9fb0bf" text-anchor="middle">99 м² · до 60 мест</text>
+<rect x="1097.00" y="412.95" width="137.75" height="98.60" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
+<text x="1165.88" y="457.45" font-size="11.12" fill="#5b6b7a" text-anchor="middle">Small Conference-Hall</text>
+<text x="1165.88" y="471.20" font-size="11.00" fill="#9fb0bf" text-anchor="middle">65 м² · до 40 мест</text>
+<rect x="1097.00" y="523.15" width="137.75" height="63.80" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
+<text x="1165.88" y="550.93" font-size="13.00" fill="#5b6b7a" text-anchor="middle">B2B</text>
+<text x="1165.88" y="564.68" font-size="11.00" fill="#9fb0bf" text-anchor="middle">42 м² · 4 стола · 8</text>
+<text x="1165.88" y="578.43" font-size="11.00" fill="#9fb0bf" text-anchor="middle">мест</text>
+<rect x="1097.00" y="598.55" width="137.75" height="63.80" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
+<text x="1165.88" y="626.33" font-size="13.00" fill="#5b6b7a" text-anchor="middle">B2B</text>
+<text x="1165.88" y="640.08" font-size="11.00" fill="#9fb0bf" text-anchor="middle">42 м² · 4 стола · 8</text>
+<text x="1165.88" y="653.83" font-size="11.00" fill="#9fb0bf" text-anchor="middle">мест</text>
+<rect x="1097.00" y="673.95" width="137.75" height="58.00" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
+<text x="1165.88" y="698.83" font-size="13.00" fill="#5b6b7a" text-anchor="middle">Переговорная</text>
+<text x="1165.88" y="712.58" font-size="11.00" fill="#9fb0bf" text-anchor="middle">38 м² · стол на 12</text>
+<text x="1165.88" y="726.33" font-size="11.00" fill="#9fb0bf" text-anchor="middle">мест</text>
+<rect x="1097.00" y="743.55" width="66.70" height="55.10" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
+<text x="1130.35" y="759.51" font-size="11.16" fill="#5b6b7a" text-anchor="middle">Винтовой</text>
+<text x="1130.35" y="773.13" font-size="11.16" fill="#5b6b7a" text-anchor="middle">выход</text>
+<text x="1130.35" y="786.88" font-size="11.00" fill="#9fb0bf" text-anchor="middle">17,5 м²</text>
+<rect x="198.00" y="218.65" width="87.00" height="174.00" fill="none" stroke="#E8A33D" stroke-width="1.6" rx="5"/>
+<rect x="195.00" y="188.15" width="93.00" height="28.00" fill="#ffffff" stroke="#E8A33D" stroke-width="1.5" rx="5"/>
+<text x="241.50" y="201.15" font-size="12.50" fill="#E8A33D" font-weight="bold" text-anchor="middle">A · 72 м²</text>
+<text x="241.50" y="211.15" font-size="9.50" fill="#7b8b99" text-anchor="middle">HoReCa</text>
+<rect x="314.00" y="218.65" width="87.00" height="174.00" fill="none" stroke="#2E8B8B" stroke-width="1.6" rx="5"/>
+<rect x="311.00" y="188.15" width="93.00" height="28.00" fill="#ffffff" stroke="#2E8B8B" stroke-width="1.5" rx="5"/>
+<text x="357.50" y="201.15" font-size="12.50" fill="#2E8B8B" font-weight="bold" text-anchor="middle">B · 72 м²</text>
+<text x="357.50" y="211.15" font-size="9.50" fill="#7b8b99" text-anchor="middle">Консервы</text>
+<rect x="430.00" y="218.65" width="87.00" height="174.00" fill="none" stroke="#3E7BB6" stroke-width="1.6" rx="5"/>
+<rect x="427.00" y="188.15" width="93.00" height="28.00" fill="#ffffff" stroke="#3E7BB6" stroke-width="1.5" rx="5"/>
+<text x="473.50" y="201.15" font-size="12.50" fill="#3E7BB6" font-weight="bold" text-anchor="middle">C · 72 м²</text>
+<text x="473.50" y="211.15" font-size="9.50" fill="#7b8b99" text-anchor="middle">Рыба</text>
+<rect x="546.00" y="218.65" width="87.00" height="174.00" fill="none" stroke="#B8860B" stroke-width="1.6" rx="5"/>
+<rect x="537.17" y="188.15" width="104.65" height="28.00" fill="#ffffff" stroke="#B8860B" stroke-width="1.5" rx="5"/>
+<text x="589.50" y="201.15" font-size="12.50" fill="#B8860B" font-weight="bold" text-anchor="middle">D · 72 м²</text>
+<text x="589.50" y="211.15" font-size="9.50" fill="#7b8b99" text-anchor="middle">Фрукты и овощи</text>
+<rect x="662.00" y="218.65" width="87.00" height="174.00" fill="none" stroke="#3E9B5F" stroke-width="1.6" rx="5"/>
+<rect x="659.00" y="188.15" width="93.00" height="28.00" fill="#ffffff" stroke="#3E9B5F" stroke-width="1.5" rx="5"/>
+<text x="705.50" y="201.15" font-size="12.50" fill="#3E9B5F" font-weight="bold" text-anchor="middle">E · 72 м²</text>
+<text x="705.50" y="211.15" font-size="9.50" fill="#7b8b99" text-anchor="middle">Спорт-пит</text>
+<rect x="778.00" y="218.65" width="87.00" height="174.00" fill="none" stroke="#9B59B6" stroke-width="1.6" rx="5"/>
+<rect x="775.00" y="188.15" width="93.00" height="28.00" fill="#ffffff" stroke="#9B59B6" stroke-width="1.5" rx="5"/>
+<text x="821.50" y="201.15" font-size="12.50" fill="#9B59B6" font-weight="bold" text-anchor="middle">F · 72 м²</text>
+<text x="821.50" y="211.15" font-size="9.50" fill="#7b8b99" text-anchor="middle">Органика</text>
+<rect x="198.00" y="421.65" width="87.00" height="174.00" fill="none" stroke="#C96F2B" stroke-width="1.6" rx="5"/>
+<rect x="195.00" y="391.15" width="93.00" height="28.00" fill="#ffffff" stroke="#C96F2B" stroke-width="1.5" rx="5"/>
+<text x="241.50" y="404.15" font-size="12.50" fill="#C96F2B" font-weight="bold" text-anchor="middle">G · 72 м²</text>
+<text x="241.50" y="414.15" font-size="9.50" fill="#7b8b99" text-anchor="middle">Ингредиенты</text>
+<rect x="314.00" y="421.65" width="87.00" height="174.00" fill="none" stroke="#C0553E" stroke-width="1.6" rx="5"/>
+<rect x="310.11" y="391.15" width="94.78" height="28.00" fill="#ffffff" stroke="#C0553E" stroke-width="1.5" rx="5"/>
+<text x="357.50" y="404.15" font-size="12.50" fill="#C0553E" font-weight="bold" text-anchor="middle">H · 72 м²</text>
+<text x="357.50" y="414.15" font-size="9.50" fill="#7b8b99" text-anchor="middle">Мясо и молоко</text>
+<rect x="430.00" y="421.65" width="87.00" height="174.00" fill="none" stroke="#3E7BB6" stroke-width="1.6" rx="5"/>
+<rect x="427.00" y="391.15" width="93.00" height="28.00" fill="#ffffff" stroke="#3E7BB6" stroke-width="1.5" rx="5"/>
+<text x="473.50" y="404.15" font-size="12.50" fill="#3E7BB6" font-weight="bold" text-anchor="middle">I · 72 м²</text>
+<text x="473.50" y="414.15" font-size="9.50" fill="#7b8b99" text-anchor="middle">Рыба (2)</text>
+<rect x="546.00" y="421.65" width="87.00" height="174.00" fill="none" stroke="#2A9D8F" stroke-width="1.6" rx="5"/>
+<rect x="543.00" y="391.15" width="93.00" height="28.00" fill="#ffffff" stroke="#2A9D8F" stroke-width="1.5" rx="5"/>
+<text x="589.50" y="404.15" font-size="12.50" fill="#2A9D8F" font-weight="bold" text-anchor="middle">J · 72 м²</text>
+<text x="589.50" y="414.15" font-size="9.50" fill="#7b8b99" text-anchor="middle">Напитки</text>
+<rect x="662.00" y="421.65" width="87.00" height="174.00" fill="none" stroke="#9B59B6" stroke-width="1.6" rx="5"/>
+<rect x="659.00" y="391.15" width="93.00" height="28.00" fill="#ffffff" stroke="#9B59B6" stroke-width="1.5" rx="5"/>
+<text x="705.50" y="404.15" font-size="12.50" fill="#9B59B6" font-weight="bold" text-anchor="middle">K · 72 м²</text>
+<text x="705.50" y="414.15" font-size="9.50" fill="#7b8b99" text-anchor="middle">Органика (2)</text>
+<rect x="778.00" y="421.65" width="87.00" height="174.00" fill="none" stroke="#C96F2B" stroke-width="1.6" rx="5"/>
+<rect x="770.23" y="391.15" width="102.53" height="28.00" fill="#ffffff" stroke="#C96F2B" stroke-width="1.5" rx="5"/>
+<text x="821.50" y="404.15" font-size="12.50" fill="#C96F2B" font-weight="bold" text-anchor="middle">L · 72 м²</text>
+<text x="821.50" y="414.15" font-size="9.50" fill="#7b8b99" text-anchor="middle">Полуфабрикаты</text>
+<rect x="198.00" y="624.65" width="87.00" height="174.00" fill="none" stroke="#2A9D8F" stroke-width="1.6" rx="5"/>
+<rect x="195.00" y="594.15" width="93.00" height="28.00" fill="#ffffff" stroke="#2A9D8F" stroke-width="1.5" rx="5"/>
+<text x="241.50" y="607.15" font-size="12.50" fill="#2A9D8F" font-weight="bold" text-anchor="middle">M · 72 м²</text>
+<text x="241.50" y="617.15" font-size="9.50" fill="#7b8b99" text-anchor="middle">Напитки (2)</text>
+<rect x="314.00" y="624.65" width="87.00" height="174.00" fill="none" stroke="#C0553E" stroke-width="1.6" rx="5"/>
+<rect x="304.41" y="594.15" width="106.19" height="28.00" fill="#ffffff" stroke="#C0553E" stroke-width="1.5" rx="5"/>
+<text x="357.50" y="607.15" font-size="12.50" fill="#C0553E" font-weight="bold" text-anchor="middle">N · 72 м²</text>
+<text x="357.50" y="617.15" font-size="9.50" fill="#7b8b99" text-anchor="middle">Ингредиенты (2)</text>
+<rect x="430.00" y="624.65" width="87.00" height="174.00" fill="none" stroke="#D2691E" stroke-width="1.6" rx="5"/>
+<rect x="427.00" y="594.15" width="93.00" height="28.00" fill="#ffffff" stroke="#D2691E" stroke-width="1.5" rx="5"/>
+<text x="473.50" y="607.15" font-size="12.50" fill="#D2691E" font-weight="bold" text-anchor="middle">O · 72 м²</text>
+<text x="473.50" y="617.15" font-size="9.50" fill="#7b8b99" text-anchor="middle">Бакалея</text>
+<rect x="546.00" y="624.65" width="87.00" height="174.00" fill="none" stroke="#C2185B" stroke-width="1.6" rx="5"/>
+<rect x="543.00" y="594.15" width="93.00" height="28.00" fill="#ffffff" stroke="#C2185B" stroke-width="1.5" rx="5"/>
+<text x="589.50" y="607.15" font-size="12.50" fill="#C2185B" font-weight="bold" text-anchor="middle">P · 72 м²</text>
+<text x="589.50" y="617.15" font-size="9.50" fill="#7b8b99" text-anchor="middle">Кондитерские</text>
+<rect x="662.00" y="624.65" width="87.00" height="174.00" fill="none" stroke="#5E7A8C" stroke-width="1.6" rx="5"/>
+<rect x="659.00" y="594.15" width="93.00" height="28.00" fill="#ffffff" stroke="#5E7A8C" stroke-width="1.5" rx="5"/>
+<text x="705.50" y="607.15" font-size="12.50" fill="#5E7A8C" font-weight="bold" text-anchor="middle">Q · 72 м²</text>
+<text x="705.50" y="617.15" font-size="9.50" fill="#7b8b99" text-anchor="middle">Сладости</text>
+<rect x="778.00" y="624.65" width="87.00" height="174.00" fill="none" stroke="#7A6C4F" stroke-width="1.6" rx="5"/>
+<rect x="775.00" y="594.15" width="93.00" height="28.00" fill="#ffffff" stroke="#7A6C4F" stroke-width="1.5" rx="5"/>
+<text x="821.50" y="607.15" font-size="12.50" fill="#7A6C4F" font-weight="bold" text-anchor="middle">R · 72 м²</text>
+<text x="821.50" y="617.15" font-size="9.50" fill="#7b8b99" text-anchor="middle">Прочие</text>
+<rect x="140.00" y="137.45" width="348.00" height="43.50" fill="none" stroke="#2E8B8B" stroke-width="1.6" rx="5"/>
+<rect x="251.75" y="106.95" width="124.50" height="28.00" fill="#ffffff" stroke="#2E8B8B" stroke-width="1.5" rx="5"/>
+<text x="314.00" y="119.95" font-size="12.50" fill="#2E8B8B" font-weight="bold" text-anchor="middle">H · 72 м²</text>
+<text x="314.00" y="129.95" font-size="9.50" fill="#7b8b99" text-anchor="middle">Оборудование</text>
+<rect x="517.00" y="137.45" width="348.00" height="43.50" fill="none" stroke="#2E8B8B" stroke-width="1.6" rx="5"/>
+<rect x="628.75" y="106.95" width="124.50" height="28.00" fill="#ffffff" stroke="#2E8B8B" stroke-width="1.5" rx="5"/>
+<text x="691.00" y="119.95" font-size="12.50" fill="#2E8B8B" font-weight="bold" text-anchor="middle">W · 72 м²</text>
+<text x="691.00" y="129.95" font-size="9.50" fill="#7b8b99" text-anchor="middle">Консервные линии</text>
+<rect x="894.00" y="137.45" width="348.00" height="43.50" fill="none" stroke="#2E8B8B" stroke-width="1.6" rx="5"/>
+<rect x="1005.75" y="106.95" width="124.50" height="28.00" fill="#ffffff" stroke="#2E8B8B" stroke-width="1.5" rx="5"/>
+<text x="1068.00" y="119.95" font-size="12.50" fill="#2E8B8B" font-weight="bold" text-anchor="middle">X · 72 м²</text>
+<text x="1068.00" y="129.95" font-size="9.50" fill="#7b8b99" text-anchor="middle">Вендинг и упаковка</text>
+<rect x="241.50" y="218.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="263.25" y="239.40" font-size="14.00" fill="#E8A33D" font-weight="bold" text-anchor="middle">A2</text>
+<rect x="241.50" y="262.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="263.25" y="282.90" font-size="14.00" fill="#E8A33D" font-weight="bold" text-anchor="middle">A4</text>
+<rect x="241.50" y="305.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="263.25" y="326.40" font-size="14.00" fill="#E8A33D" font-weight="bold" text-anchor="middle">A6</text>
+<rect x="198.00" y="349.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="219.75" y="369.90" font-size="14.00" fill="#E8A33D" font-weight="bold" text-anchor="middle">A7</text>
+<rect x="241.50" y="349.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="263.25" y="369.90" font-size="14.00" fill="#E8A33D" font-weight="bold" text-anchor="middle">A8</text>
+<rect x="357.50" y="218.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="379.25" y="239.40" font-size="14.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">B2</text>
+<rect x="357.50" y="262.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="379.25" y="282.90" font-size="14.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">B4</text>
+<rect x="314.00" y="305.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="335.75" y="326.40" font-size="14.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">B5</text>
+<rect x="357.50" y="305.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="379.25" y="326.40" font-size="14.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">B6</text>
+<rect x="314.00" y="349.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="335.75" y="369.90" font-size="14.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">B7</text>
+<rect x="357.50" y="349.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="379.25" y="369.90" font-size="14.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">B8</text>
+<rect x="473.50" y="218.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="495.25" y="239.40" font-size="14.00" fill="#3E7BB6" font-weight="bold" text-anchor="middle">C2</text>
+<rect x="430.00" y="262.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="451.75" y="282.90" font-size="14.00" fill="#3E7BB6" font-weight="bold" text-anchor="middle">C3</text>
+<rect x="473.50" y="262.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="495.25" y="282.90" font-size="14.00" fill="#3E7BB6" font-weight="bold" text-anchor="middle">C4</text>
+<rect x="430.00" y="305.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="451.75" y="326.40" font-size="14.00" fill="#3E7BB6" font-weight="bold" text-anchor="middle">C5</text>
+<rect x="473.50" y="305.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="495.25" y="326.40" font-size="14.00" fill="#3E7BB6" font-weight="bold" text-anchor="middle">C6</text>
+<rect x="430.00" y="349.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="451.75" y="369.90" font-size="14.00" fill="#3E7BB6" font-weight="bold" text-anchor="middle">C7</text>
+<rect x="473.50" y="349.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="495.25" y="369.90" font-size="14.00" fill="#3E7BB6" font-weight="bold" text-anchor="middle">C8</text>
+<rect x="589.50" y="218.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="611.25" y="239.40" font-size="14.00" fill="#B8860B" font-weight="bold" text-anchor="middle">D2</text>
+<rect x="589.50" y="262.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="611.25" y="282.90" font-size="14.00" fill="#B8860B" font-weight="bold" text-anchor="middle">D4</text>
+<rect x="546.00" y="305.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="567.75" y="326.40" font-size="14.00" fill="#B8860B" font-weight="bold" text-anchor="middle">D5</text>
+<rect x="589.50" y="305.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="611.25" y="326.40" font-size="14.00" fill="#B8860B" font-weight="bold" text-anchor="middle">D6</text>
+<rect x="546.00" y="349.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="567.75" y="369.90" font-size="14.00" fill="#B8860B" font-weight="bold" text-anchor="middle">D7</text>
+<rect x="589.50" y="349.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="611.25" y="369.90" font-size="14.00" fill="#B8860B" font-weight="bold" text-anchor="middle">D8</text>
+<rect x="705.50" y="218.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="727.25" y="239.40" font-size="14.00" fill="#3E9B5F" font-weight="bold" text-anchor="middle">E2</text>
+<rect x="662.00" y="262.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="683.75" y="282.90" font-size="14.00" fill="#3E9B5F" font-weight="bold" text-anchor="middle">E3</text>
+<rect x="705.50" y="262.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="727.25" y="282.90" font-size="14.00" fill="#3E9B5F" font-weight="bold" text-anchor="middle">E4</text>
+<rect x="662.00" y="305.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="683.75" y="326.40" font-size="14.00" fill="#3E9B5F" font-weight="bold" text-anchor="middle">E5</text>
+<rect x="705.50" y="305.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="727.25" y="326.40" font-size="14.00" fill="#3E9B5F" font-weight="bold" text-anchor="middle">E6</text>
+<rect x="662.00" y="349.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="683.75" y="369.90" font-size="14.00" fill="#3E9B5F" font-weight="bold" text-anchor="middle">E7</text>
+<rect x="705.50" y="349.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="727.25" y="369.90" font-size="14.00" fill="#3E9B5F" font-weight="bold" text-anchor="middle">E8</text>
+<rect x="778.00" y="218.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="799.75" y="239.40" font-size="14.00" fill="#9B59B6" font-weight="bold" text-anchor="middle">F1</text>
+<rect x="821.50" y="218.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="843.25" y="239.40" font-size="14.00" fill="#9B59B6" font-weight="bold" text-anchor="middle">F2</text>
+<rect x="778.00" y="262.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="799.75" y="282.90" font-size="14.00" fill="#9B59B6" font-weight="bold" text-anchor="middle">F3</text>
+<rect x="821.50" y="262.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="843.25" y="282.90" font-size="14.00" fill="#9B59B6" font-weight="bold" text-anchor="middle">F4</text>
+<rect x="778.00" y="305.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="799.75" y="326.40" font-size="14.00" fill="#9B59B6" font-weight="bold" text-anchor="middle">F5</text>
+<rect x="821.50" y="305.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="843.25" y="326.40" font-size="14.00" fill="#9B59B6" font-weight="bold" text-anchor="middle">F6</text>
+<rect x="778.00" y="349.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="799.75" y="369.90" font-size="14.00" fill="#9B59B6" font-weight="bold" text-anchor="middle">F7</text>
+<rect x="821.50" y="349.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="843.25" y="369.90" font-size="14.00" fill="#9B59B6" font-weight="bold" text-anchor="middle">F8</text>
+<rect x="198.00" y="421.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="219.75" y="442.40" font-size="14.00" fill="#C96F2B" font-weight="bold" text-anchor="middle">G1</text>
+<rect x="241.50" y="421.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="263.25" y="442.40" font-size="14.00" fill="#C96F2B" font-weight="bold" text-anchor="middle">G2</text>
+<rect x="198.00" y="465.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="219.75" y="485.90" font-size="14.00" fill="#C96F2B" font-weight="bold" text-anchor="middle">G3</text>
+<rect x="241.50" y="465.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="263.25" y="485.90" font-size="14.00" fill="#C96F2B" font-weight="bold" text-anchor="middle">G4</text>
+<rect x="198.00" y="508.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="219.75" y="529.40" font-size="14.00" fill="#C96F2B" font-weight="bold" text-anchor="middle">G5</text>
+<rect x="241.50" y="508.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="263.25" y="529.40" font-size="14.00" fill="#C96F2B" font-weight="bold" text-anchor="middle">G6</text>
+<rect x="198.00" y="552.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="219.75" y="572.90" font-size="14.00" fill="#C96F2B" font-weight="bold" text-anchor="middle">G7</text>
+<rect x="241.50" y="552.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="263.25" y="572.90" font-size="14.00" fill="#C96F2B" font-weight="bold" text-anchor="middle">G8</text>
+<rect x="357.50" y="465.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="379.25" y="485.90" font-size="14.00" fill="#C0553E" font-weight="bold" text-anchor="middle">H4</text>
+<rect x="357.50" y="508.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="379.25" y="529.40" font-size="14.00" fill="#C0553E" font-weight="bold" text-anchor="middle">H6</text>
+<rect x="357.50" y="552.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="379.25" y="572.90" font-size="14.00" fill="#C0553E" font-weight="bold" text-anchor="middle">H8</text>
+<rect x="473.50" y="465.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="495.25" y="485.90" font-size="14.00" fill="#3E7BB6" font-weight="bold" text-anchor="middle">I4</text>
+<rect x="473.50" y="508.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="495.25" y="529.40" font-size="14.00" fill="#3E7BB6" font-weight="bold" text-anchor="middle">I6</text>
+<rect x="473.50" y="552.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="495.25" y="572.90" font-size="14.00" fill="#3E7BB6" font-weight="bold" text-anchor="middle">I8</text>
+<rect x="589.50" y="465.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="611.25" y="485.90" font-size="14.00" fill="#2A9D8F" font-weight="bold" text-anchor="middle">J4</text>
+<rect x="589.50" y="508.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="611.25" y="529.40" font-size="14.00" fill="#2A9D8F" font-weight="bold" text-anchor="middle">J6</text>
+<rect x="589.50" y="552.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="611.25" y="572.90" font-size="14.00" fill="#2A9D8F" font-weight="bold" text-anchor="middle">J8</text>
+<rect x="705.50" y="465.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="727.25" y="485.90" font-size="14.00" fill="#9B59B6" font-weight="bold" text-anchor="middle">K4</text>
+<rect x="705.50" y="508.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="727.25" y="529.40" font-size="14.00" fill="#9B59B6" font-weight="bold" text-anchor="middle">K6</text>
+<rect x="705.50" y="552.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="727.25" y="572.90" font-size="14.00" fill="#9B59B6" font-weight="bold" text-anchor="middle">K8</text>
+<rect x="821.50" y="421.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="843.25" y="442.40" font-size="14.00" fill="#C96F2B" font-weight="bold" text-anchor="middle">L2</text>
+<rect x="821.50" y="465.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="843.25" y="485.90" font-size="14.00" fill="#C96F2B" font-weight="bold" text-anchor="middle">L4</text>
+<rect x="821.50" y="508.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="843.25" y="529.40" font-size="14.00" fill="#C96F2B" font-weight="bold" text-anchor="middle">L6</text>
+<rect x="778.00" y="552.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="799.75" y="572.90" font-size="14.00" fill="#C96F2B" font-weight="bold" text-anchor="middle">L7</text>
+<rect x="821.50" y="552.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="843.25" y="572.90" font-size="14.00" fill="#C96F2B" font-weight="bold" text-anchor="middle">L8</text>
+<rect x="241.50" y="624.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="263.25" y="645.40" font-size="14.00" fill="#2A9D8F" font-weight="bold" text-anchor="middle">M2</text>
+<rect x="198.00" y="668.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="219.75" y="688.90" font-size="14.00" fill="#2A9D8F" font-weight="bold" text-anchor="middle">M3</text>
+<rect x="241.50" y="668.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="263.25" y="688.90" font-size="14.00" fill="#2A9D8F" font-weight="bold" text-anchor="middle">M4</text>
+<rect x="198.00" y="711.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="219.75" y="732.40" font-size="14.00" fill="#2A9D8F" font-weight="bold" text-anchor="middle">M5</text>
+<rect x="241.50" y="711.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="263.25" y="732.40" font-size="14.00" fill="#2A9D8F" font-weight="bold" text-anchor="middle">M6</text>
+<rect x="198.00" y="755.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="219.75" y="775.90" font-size="14.00" fill="#2A9D8F" font-weight="bold" text-anchor="middle">M7</text>
+<rect x="241.50" y="755.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="263.25" y="775.90" font-size="14.00" fill="#2A9D8F" font-weight="bold" text-anchor="middle">M8</text>
+<rect x="357.50" y="624.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="379.25" y="645.40" font-size="14.00" fill="#C0553E" font-weight="bold" text-anchor="middle">N2</text>
+<rect x="357.50" y="668.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="379.25" y="688.90" font-size="14.00" fill="#C0553E" font-weight="bold" text-anchor="middle">N4</text>
+<rect x="357.50" y="711.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="379.25" y="732.40" font-size="14.00" fill="#C0553E" font-weight="bold" text-anchor="middle">N6</text>
+<rect x="314.00" y="755.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="335.75" y="775.90" font-size="14.00" fill="#C0553E" font-weight="bold" text-anchor="middle">N7</text>
+<rect x="357.50" y="755.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="379.25" y="775.90" font-size="14.00" fill="#C0553E" font-weight="bold" text-anchor="middle">N8</text>
+<rect x="473.50" y="755.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="495.25" y="775.90" font-size="14.00" fill="#D2691E" font-weight="bold" text-anchor="middle">O8</text>
+<rect x="589.50" y="668.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="611.25" y="688.90" font-size="14.00" fill="#C2185B" font-weight="bold" text-anchor="middle">P4</text>
+<rect x="589.50" y="711.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="611.25" y="732.40" font-size="14.00" fill="#C2185B" font-weight="bold" text-anchor="middle">P6</text>
+<rect x="589.50" y="755.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="611.25" y="775.90" font-size="14.00" fill="#C2185B" font-weight="bold" text-anchor="middle">P8</text>
+<rect x="705.50" y="624.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="727.25" y="645.40" font-size="14.00" fill="#5E7A8C" font-weight="bold" text-anchor="middle">Q2</text>
+<rect x="705.50" y="668.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="727.25" y="688.90" font-size="14.00" fill="#5E7A8C" font-weight="bold" text-anchor="middle">Q4</text>
+<rect x="705.50" y="711.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="727.25" y="732.40" font-size="14.00" fill="#5E7A8C" font-weight="bold" text-anchor="middle">Q6</text>
+<rect x="705.50" y="755.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="727.25" y="775.90" font-size="14.00" fill="#5E7A8C" font-weight="bold" text-anchor="middle">Q8</text>
+<rect x="778.00" y="624.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="799.75" y="645.40" font-size="14.00" fill="#7A6C4F" font-weight="bold" text-anchor="middle">R1</text>
+<rect x="821.50" y="624.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="843.25" y="645.40" font-size="14.00" fill="#7A6C4F" font-weight="bold" text-anchor="middle">R2</text>
+<rect x="778.00" y="668.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="799.75" y="688.90" font-size="14.00" fill="#7A6C4F" font-weight="bold" text-anchor="middle">R3</text>
+<rect x="821.50" y="668.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="843.25" y="688.90" font-size="14.00" fill="#7A6C4F" font-weight="bold" text-anchor="middle">R4</text>
+<rect x="778.00" y="711.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="799.75" y="732.40" font-size="14.00" fill="#7A6C4F" font-weight="bold" text-anchor="middle">R5</text>
+<rect x="821.50" y="711.65" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="843.25" y="732.40" font-size="14.00" fill="#7A6C4F" font-weight="bold" text-anchor="middle">R6</text>
+<rect x="778.00" y="755.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="799.75" y="775.90" font-size="14.00" fill="#7A6C4F" font-weight="bold" text-anchor="middle">R7</text>
+<rect x="821.50" y="755.15" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="843.25" y="775.90" font-size="14.00" fill="#7A6C4F" font-weight="bold" text-anchor="middle">R8</text>
+<rect x="140.00" y="137.45" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="161.75" y="158.20" font-size="14.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">H1</text>
+<rect x="183.50" y="137.45" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="205.25" y="158.20" font-size="14.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">H2</text>
+<rect x="227.00" y="137.45" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="248.75" y="158.20" font-size="14.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">H3</text>
+<rect x="270.50" y="137.45" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="292.25" y="158.20" font-size="14.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">H4</text>
+<rect x="314.00" y="137.45" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="335.75" y="158.20" font-size="14.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">H5</text>
+<rect x="357.50" y="137.45" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="379.25" y="158.20" font-size="14.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">H6</text>
+<rect x="401.00" y="137.45" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="422.75" y="158.20" font-size="14.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">H7</text>
+<rect x="444.50" y="137.45" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="466.25" y="158.20" font-size="14.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">H8</text>
+<rect x="517.00" y="137.45" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="538.75" y="158.20" font-size="14.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">W1</text>
+<rect x="560.50" y="137.45" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="582.25" y="158.20" font-size="14.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">W2</text>
+<rect x="604.00" y="137.45" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="625.75" y="158.20" font-size="14.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">W3</text>
+<rect x="647.50" y="137.45" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="669.25" y="158.20" font-size="14.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">W4</text>
+<rect x="691.00" y="137.45" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="712.75" y="158.20" font-size="14.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">W5</text>
+<rect x="734.50" y="137.45" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="756.25" y="158.20" font-size="14.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">W6</text>
+<rect x="778.00" y="137.45" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="799.75" y="158.20" font-size="14.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">W7</text>
+<rect x="821.50" y="137.45" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="843.25" y="158.20" font-size="14.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">W8</text>
+<rect x="894.00" y="137.45" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="915.75" y="158.20" font-size="14.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">X1</text>
+<rect x="937.50" y="137.45" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="959.25" y="158.20" font-size="14.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">X2</text>
+<rect x="981.00" y="137.45" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="1002.75" y="158.20" font-size="14.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">X3</text>
+<rect x="1024.50" y="137.45" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="1046.25" y="158.20" font-size="14.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">X4</text>
+<rect x="1068.00" y="137.45" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="1089.75" y="158.20" font-size="14.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">X5</text>
+<rect x="1111.50" y="137.45" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="1133.25" y="158.20" font-size="14.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">X6</text>
+<rect x="1155.00" y="137.45" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="1176.75" y="158.20" font-size="14.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">X7</text>
+<rect x="1198.50" y="137.45" width="43.50" height="43.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="1220.25" y="158.20" font-size="14.00" fill="#2E8B8B" font-weight="bold" text-anchor="middle">X8</text>
+<rect x="38.50" y="212.85" width="87.00" height="46.28" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6" rx="3"/><text x="82.00" y="231.23" font-size="13.61" fill="#243b4a" font-weight="bold" text-anchor="middle">A6</text><text x="82.00" y="246.20" font-size="9.80" fill="#7b8b99" text-anchor="middle">19,15 м²</text>
+<rect x="38.50" y="265.05" width="87.00" height="49.11" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6" rx="3"/><text x="82.00" y="284.55" font-size="14.44" fill="#243b4a" font-weight="bold" text-anchor="middle">A5</text><text x="82.00" y="300.44" font-size="10.40" fill="#7b8b99" text-anchor="middle">20,32 м²</text>
+<rect x="38.50" y="320.15" width="87.00" height="54.78" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6" rx="3"/><text x="82.00" y="342.29" font-size="15.00" fill="#243b4a" font-weight="bold" text-anchor="middle">A4</text><text x="82.00" y="358.79" font-size="10.80" fill="#7b8b99" text-anchor="middle">22,67 м²</text>
+<rect x="38.50" y="381.05" width="87.00" height="61.38" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6" rx="3"/><text x="82.00" y="406.49" font-size="15.00" fill="#243b4a" font-weight="bold" text-anchor="middle">A3</text><text x="82.00" y="422.99" font-size="10.80" fill="#7b8b99" text-anchor="middle">25,4 м²</text>
+<rect x="38.50" y="447.75" width="87.00" height="63.39" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6" rx="3"/><text x="82.00" y="474.20" font-size="15.00" fill="#243b4a" font-weight="bold" text-anchor="middle">A2</text><text x="82.00" y="490.70" font-size="10.80" fill="#7b8b99" text-anchor="middle">26,23 м²</text>
+<rect x="38.50" y="517.35" width="87.00" height="66.24" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6" rx="3"/><text x="82.00" y="545.22" font-size="15.00" fill="#243b4a" font-weight="bold" text-anchor="middle">A1</text><text x="82.00" y="561.72" font-size="10.80" fill="#7b8b99" text-anchor="middle">27,41 м²</text>
+<path d="M198 218.65L241.5 218.65L241.5 262.15L198 262.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="199.50" y="220.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="219.75" y="244.62" font-size="11.00" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Silver</text>
+<path d="M314 218.65L357.5 218.65L357.5 262.15L314 262.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="315.50" y="220.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="335.75" y="242.47" font-size="5.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Ansor-Zoxir</text>
+<path d="M430 218.65L473.5 218.65L473.5 262.15L430 262.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="431.50" y="220.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="451.75" y="243.16" font-size="7.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Toyirxon</text>
+<path d="M546 218.65L589.5 218.65L589.5 262.15L546 262.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="547.50" y="220.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="567.75" y="234.20" font-size="7.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Xinjiang</text>
+<text x="567.75" y="243.32" font-size="7.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Lianfu</text>
+<text x="567.75" y="252.44" font-size="7.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Food</text>
+<path d="M662 218.65L705.5 218.65L705.5 262.15L662 262.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="663.50" y="220.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="683.75" y="244.70" font-size="11.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Kolna</text>
+<path d="M198 262.15L241.5 262.15L241.5 305.65L198 305.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="199.50" y="263.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="219.75" y="282.00" font-size="8.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">YaTT</text>
+<text x="219.75" y="292.56" font-size="8.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Sh.X.T.</text>
+<path d="M314 262.15L357.5 262.15L357.5 305.65L314 305.65Z" fill="#fff6e0" fill-opacity="0.92" stroke="#e0a300" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="315.50" y="263.65" width="40.50" height="3.50" fill="#e0a300" rx="1.5"/>
+<text x="335.75" y="275.41" font-size="10.40" fill="#8a5b00" font-weight="bold" text-anchor="middle">B12</text>
+<text x="335.75" y="287.89" font-size="10.40" fill="#8a5b00" font-weight="bold" text-anchor="middle">—</text>
+<text x="335.75" y="300.37" font-size="10.40" fill="#8a5b00" font-weight="bold" text-anchor="middle">бронь</text>
+<path d="M546 262.15L589.5 262.15L589.5 305.65L546 305.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="547.50" y="263.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="567.75" y="277.21" font-size="8.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Sayhal</text>
+<text x="567.75" y="287.05" font-size="8.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Agro</text>
+<text x="567.75" y="296.89" font-size="8.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Holding</text>
+<path d="M198 305.65L241.5 305.65L241.5 349.15L198 349.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="199.50" y="307.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="219.75" y="330.40" font-size="7.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Ecocups</text>
+<path d="M314 421.65L357.5 421.65L357.5 465.15L314 465.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="315.50" y="423.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="335.75" y="435.40" font-size="9.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Oltin</text>
+<text x="335.75" y="447.16" font-size="9.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Go'sht</text>
+<text x="335.75" y="458.92" font-size="9.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Sari</text>
+<path d="M357.5 421.65L401 421.65L401 465.15L357.5 465.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="359.00" y="423.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="379.25" y="432.36" font-size="7.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Saldis</text>
+<text x="379.25" y="441.72" font-size="7.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Trading</text>
+<text x="379.25" y="451.08" font-size="7.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Group</text>
+<text x="379.25" y="460.44" font-size="7.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">(2)</text>
+<path d="M430 421.65L473.5 421.65L473.5 465.15L473.5 508.65L473.5 552.15L473.5 595.65L430 595.65L430 552.15L430 508.65L430 465.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="431.50" y="423.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="451.75" y="507.22" font-size="6.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">CHORTAK</text>
+<text x="451.75" y="515.14" font-size="6.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">FIDANI</text>
+<path d="M473.5 421.65L517 421.65L517 465.15L473.5 465.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="475.00" y="423.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="495.25" y="447.01" font-size="9.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">AKULA</text>
+<path d="M546 421.65L589.5 421.65L589.5 465.15L546 465.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="547.50" y="423.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="567.75" y="441.15" font-size="10.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Brew</text>
+<text x="567.75" y="453.63" font-size="10.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Group</text>
+<path d="M589.5 421.65L633 421.65L633 465.15L589.5 465.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="591.00" y="423.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="611.25" y="441.41" font-size="9.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Bogi</text>
+<text x="611.25" y="452.45" font-size="9.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Baland</text>
+<path d="M662 421.65L705.5 421.65L705.5 465.15L705.5 508.65L705.5 552.15L705.5 595.65L662 595.65L662 552.15L662 508.65L662 465.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="663.50" y="423.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="683.75" y="512.11" font-size="9.00" fill="#8e1b1b" font-weight="bold" text-anchor="middle">ERMAK</text>
+<path d="M705.5 421.65L749 421.65L749 465.15L705.5 465.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="707.00" y="423.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="727.25" y="440.33" font-size="14.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">OOO</text>
+<text x="727.25" y="457.37" font-size="14.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">PPK</text>
+<path d="M778 421.65L821.5 421.65L821.5 465.15L821.5 508.65L778 508.65L778 465.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="779.50" y="423.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="799.75" y="467.99" font-size="7.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">MEZBON</text>
+<path d="M314 465.15L357.5 465.15L357.5 508.65L314 508.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="315.50" y="466.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="335.75" y="478.90" font-size="9.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Oltin</text>
+<text x="335.75" y="490.66" font-size="9.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Go'sht</text>
+<text x="335.75" y="502.42" font-size="9.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Turon</text>
+<path d="M546 465.15L589.5 465.15L589.5 508.65L546 508.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="547.50" y="466.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="567.75" y="481.02" font-size="7.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">New</text>
+<text x="567.75" y="489.66" font-size="7.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Leads</text>
+<text x="567.75" y="498.30" font-size="7.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Camping</text>
+<path d="M314 508.65L357.5 508.65L357.5 552.15L314 552.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="315.50" y="510.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="335.75" y="523.71" font-size="8.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Saldis</text>
+<text x="335.75" y="533.55" font-size="8.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Trading</text>
+<text x="335.75" y="543.39" font-size="8.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Group</text>
+<path d="M546 508.65L589.5 508.65L589.5 552.15L546 552.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="547.50" y="510.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="567.75" y="528.72" font-size="7.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Milliy</text>
+<text x="567.75" y="538.08" font-size="7.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Bottlers</text>
+<path d="M778 508.65L821.5 508.65L821.5 552.15L778 552.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="779.50" y="510.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="799.75" y="519.64" font-size="7.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Xinjiang</text>
+<text x="799.75" y="528.76" font-size="7.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Lianfu</text>
+<text x="799.75" y="537.88" font-size="7.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Food</text>
+<text x="799.75" y="547.00" font-size="7.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">(2)</text>
+<path d="M314 552.15L357.5 552.15L357.5 595.65L314 595.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="315.50" y="553.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="335.75" y="572.91" font-size="4.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Dobroye</text>
+<text x="335.75" y="578.43" font-size="4.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Derevenskoye</text>
+<path d="M546 552.15L589.5 552.15L589.5 595.65L546 595.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="547.50" y="553.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="567.75" y="571.01" font-size="13.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Amir</text>
+<text x="567.75" y="587.09" font-size="13.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Tea</text>
+<path d="M198 624.65L241.5 624.65L241.5 668.15L198 668.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="199.50" y="626.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="219.75" y="635.36" font-size="7.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">NEW</text>
+<text x="219.75" y="644.72" font-size="7.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">ENERGY</text>
+<text x="219.75" y="654.08" font-size="7.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">DRINKS</text>
+<text x="219.75" y="663.44" font-size="7.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">KZ</text>
+<path d="M314 624.65L357.5 624.65L357.5 668.15L314 668.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="315.50" y="626.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="335.75" y="638.47" font-size="5.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Gulf</text>
+<text x="335.75" y="645.19" font-size="5.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Flavours</text>
+<text x="335.75" y="651.91" font-size="5.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">and</text>
+<text x="335.75" y="658.63" font-size="5.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Fragrances</text>
+<path d="M430 624.65L473.5 624.65L473.5 668.15L473.5 711.65L430 711.65L430 668.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="431.50" y="626.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="451.75" y="659.50" font-size="10.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Silver</text>
+<text x="451.75" y="672.22" font-size="10.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Green</text>
+<text x="451.75" y="684.94" font-size="10.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Tea</text>
+<path d="M473.5 624.65L517 624.65L517 668.15L473.5 668.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="475.00" y="626.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="495.25" y="637.91" font-size="10.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Real</text>
+<text x="495.25" y="650.39" font-size="10.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Tea</text>
+<text x="495.25" y="662.87" font-size="10.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Zone</text>
+<path d="M546 624.65L589.5 624.65L589.5 668.15L589.5 711.65L546 711.65L546 668.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="547.50" y="626.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="567.75" y="661.30" font-size="8.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">CINDER</text>
+<text x="567.75" y="671.38" font-size="8.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">FRUIT</text>
+<text x="567.75" y="681.46" font-size="8.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">(2)</text>
+<path d="M589.5 624.65L633 624.65L633 668.15L589.5 668.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="591.00" y="626.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="611.25" y="649.55" font-size="8.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Pisobas</text>
+<path d="M662 624.65L705.5 624.65L705.5 668.15L662 668.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="663.50" y="626.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="683.75" y="648.86" font-size="6.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Perfumed</text>
+<path d="M314 668.15L357.5 668.15L357.5 711.65L314 711.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="315.50" y="669.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="335.75" y="693.82" font-size="10.20" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Bimak</text>
+<path d="M473.5 668.15L517 668.15L517 711.65L473.5 711.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="475.00" y="669.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="495.25" y="687.87" font-size="9.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Biana</text>
+<text x="495.25" y="699.15" font-size="9.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Konfet</text>
+<path d="M662 668.15L705.5 668.15L705.5 711.65L662 711.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="663.50" y="669.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="683.75" y="688.52" font-size="6.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Greenway</text>
+<text x="683.75" y="696.20" font-size="6.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Group</text>
+<path d="M314 711.65L357.5 711.65L357.5 755.15L314 755.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="315.50" y="713.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="335.75" y="736.09" font-size="7.00" fill="#8e1b1b" font-weight="bold" text-anchor="middle">ADMIRAL</text>
+<path d="M430 711.65L473.5 711.65L473.5 755.15L430 755.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="431.50" y="713.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="451.75" y="731.33" font-size="9.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">ASLAN</text>
+<text x="451.75" y="742.85" font-size="9.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">TEA</text>
+<path d="M473.5 711.65L517 711.65L517 755.15L473.5 755.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="475.00" y="713.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="495.25" y="731.46" font-size="9.00" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Archan</text>
+<text x="495.25" y="742.26" font-size="9.00" fill="#8e1b1b" font-weight="bold" text-anchor="middle">X</text>
+<path d="M546 711.65L589.5 711.65L589.5 755.15L546 755.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="547.50" y="713.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="567.75" y="731.59" font-size="8.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">CINDER</text>
+<text x="567.75" y="741.67" font-size="8.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">FRUIT</text>
+<path d="M662 711.65L705.5 711.65L705.5 755.15L662 755.15Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="663.50" y="713.15" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="683.75" y="724.91" font-size="10.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Dall</text>
+<text x="683.75" y="737.39" font-size="10.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Foods</text>
+<text x="683.75" y="749.87" font-size="10.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Group</text>
+<path d="M430 755.15L473.5 755.15L473.5 798.65L430 798.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="431.50" y="756.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="451.75" y="779.13" font-size="5.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">SVD-Grupp</text>
+<path d="M546 755.15L589.5 755.15L589.5 798.65L546 798.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="547.50" y="756.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="567.75" y="773.49" font-size="15.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">BIO</text>
+<text x="567.75" y="792.45" font-size="15.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">LAB</text>
+<path d="M662 755.15L705.5 755.15L705.5 798.65L662 798.65Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
+<rect x="663.50" y="756.65" width="40.50" height="3.50" fill="#c62828" rx="1.5"/>
+<text x="683.75" y="771.68" font-size="6.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Javohirlar</text>
+<text x="683.75" y="779.36" font-size="6.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Food &amp;</text>
+<text x="683.75" y="787.04" font-size="6.40" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Drink</text>
+<text x="985.90" y="213.50" font-size="10.15" fill="#93a4b2" font-weight="bold" text-anchor="middle" letter-spacing="0.3">Зона семинаров и форума</text>
+<text x="985.90" y="230.60" font-size="9.00" fill="#bcc9d4" text-anchor="middle">172 м² · до 60 мест</text>
+<text x="945.90" y="441.60" font-size="13.50" fill="#93a4b2" font-weight="bold" text-anchor="middle" letter-spacing="0.3">B2B зона</text>
+<text x="945.90" y="462.50" font-size="11.00" fill="#bcc9d4" text-anchor="middle">184 м² · до 20 столов · 40 мест</text>
+<text x="1165.88" y="266.15" font-size="13.50" fill="#93a4b2" font-weight="bold" text-anchor="middle" letter-spacing="0.3">Конференц-зоны</text>
+<text x="1165.88" y="287.05" font-size="11.00" fill="#bcc9d4" text-anchor="middle">5 помещений · 285 м²</text>
+<text x="962.30" y="831.65" font-size="13.50" fill="#93a4b2" font-weight="bold" text-anchor="middle" letter-spacing="0.3">Парковка</text>
+<text x="24.00" y="40.00" font-size="20.00" fill="#0f2233" font-weight="bold">FOODERA EXPO 2026 — Крытый павильон · план залов</text>
+<rect x="24.00" y="68.00" width="13.00" height="13.00" fill="#ffffff" stroke="#cbd6de" stroke-width="1.3" rx="3"/>
+<text x="24.00" y="97.50" font-size="12.00" fill="#7b8b99">1 стенд = 3 × 3 м = 9 м² · 1 блок = 8 стендов = 72 м² · версия плана v1.4.1 · 15.09.2026</text>
+<text x="43.00" y="78.50" font-size="11.50" fill="#44586a">Свободно: 122 · 1 185,18 м²</text>
+<rect x="243.23" y="68.00" width="13.00" height="13.00" fill="#fff6e0" stroke="#e0a300" stroke-width="1.3" rx="3"/>
+<text x="262.23" y="78.50" font-size="11.50" fill="#44586a">Забронировано: 1 · 9 м²</text>
+<rect x="437.86" y="68.00" width="13.00" height="13.00" fill="#fdecea" stroke="#c62828" stroke-width="1.3" rx="3"/>
+<text x="456.86" y="78.50" font-size="11.50" fill="#44586a">Продано: 51 · 459 м²</text>
+<rect x="24.00" y="865.85" width="11.50" height="11.50" fill="#ffffff" stroke="#cbd6de" stroke-width="1.3" rx="3"/>
+<text x="43.50" y="876.35" font-size="11.50" fill="#44586a">Свободно: 122 стендов · 1 185,18 м²</text>
+<rect x="24.00" y="889.35" width="11.50" height="11.50" fill="#fff6e0" stroke="#e0a300" stroke-width="1.3" rx="3"/>
+<text x="43.50" y="899.85" font-size="11.50" fill="#44586a">Забронировано: 1 стендов · 9 м²</text>
+<rect x="24.00" y="912.85" width="11.50" height="11.50" fill="#fdecea" stroke="#c62828" stroke-width="1.3" rx="3"/>
+<text x="43.50" y="923.35" font-size="11.50" fill="#44586a">Продано: 51 стендов · 459 м²</text>
+<text x="24.00" y="952.85" font-size="12.50" fill="#0f2233" font-weight="bold">По разделам</text>
+<rect x="24.00" y="965.85" width="11.50" height="11.50" fill="#E8A33D" rx="2"/>
+<text x="43.50" y="976.35" font-size="11.50" fill="#44586a">Продукция для HoReCa</text>
+<text x="345.20" y="976.35" font-size="11.50" fill="#44586a">8 стендов · 72 м² · свободно: 5 (45 м²)</text>
+<rect x="24.00" y="986.35" width="11.50" height="11.50" fill="#2E8B8B" rx="2"/>
+<text x="43.50" y="996.85" font-size="11.50" fill="#44586a">Консервация</text>
+<text x="345.20" y="996.85" font-size="11.50" fill="#44586a">8 стендов · 72 м² · свободно: 6 (54 м²)</text>
+<rect x="24.00" y="1006.85" width="11.50" height="11.50" fill="#3E7BB6" rx="2"/>
+<text x="43.50" y="1017.35" font-size="11.50" fill="#44586a">Рыба и морепродукты</text>
+<text x="345.20" y="1017.35" font-size="11.50" fill="#44586a">8 стендов · 72 м² · свободно: 7 (63 м²)</text>
+<rect x="24.00" y="1027.35" width="11.50" height="11.50" fill="#B8860B" rx="2"/>
+<text x="43.50" y="1037.85" font-size="11.50" fill="#44586a">Фрукты и овощи</text>
+<text x="345.20" y="1037.85" font-size="11.50" fill="#44586a">8 стендов · 72 м² · свободно: 6 (54 м²)</text>
+<rect x="24.00" y="1047.85" width="11.50" height="11.50" fill="#3E9B5F" rx="2"/>
+<text x="43.50" y="1058.35" font-size="11.50" fill="#44586a">Продукты для здорового питания, Спорт Пит</text>
+<text x="345.20" y="1058.35" font-size="11.50" fill="#44586a">8 стендов · 72 м² · свободно: 7 (63 м²)</text>
+<rect x="24.00" y="1068.35" width="11.50" height="11.50" fill="#9B59B6" rx="2"/>
+<text x="43.50" y="1078.85" font-size="11.50" fill="#44586a">Органика</text>
+<text x="345.20" y="1078.85" font-size="11.50" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
+<rect x="24.00" y="1088.85" width="11.50" height="11.50" fill="#C96F2B" rx="2"/>
+<text x="43.50" y="1099.35" font-size="11.50" fill="#44586a">Ингредиенты и компоненты</text>
+<text x="345.20" y="1099.35" font-size="11.50" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
+<rect x="24.00" y="1109.35" width="11.50" height="11.50" fill="#C0553E" rx="2"/>
+<text x="43.50" y="1119.85" font-size="11.50" fill="#44586a">Мясная и молочная индустрия</text>
+<text x="345.20" y="1119.85" font-size="11.50" fill="#44586a">8 стендов · 72 м² · свободно: 3 (27 м²)</text>
+<rect x="24.00" y="1129.85" width="11.50" height="11.50" fill="#3E7BB6" rx="2"/>
+<text x="43.50" y="1140.35" font-size="11.50" fill="#44586a">Рыба и морепродукты (2)</text>
+<text x="345.20" y="1140.35" font-size="11.50" fill="#44586a">8 стендов · 72 м² · свободно: 3 (27 м²)</text>
+<rect x="24.00" y="1150.35" width="11.50" height="11.50" fill="#2A9D8F" rx="2"/>
+<text x="43.50" y="1160.85" font-size="11.50" fill="#44586a">Напитки</text>
+<text x="345.20" y="1160.85" font-size="11.50" fill="#44586a">8 стендов · 72 м² · свободно: 3 (27 м²)</text>
+<rect x="24.00" y="1170.85" width="11.50" height="11.50" fill="#9B59B6" rx="2"/>
+<text x="43.50" y="1181.35" font-size="11.50" fill="#44586a">Органика (2)</text>
+<text x="345.20" y="1181.35" font-size="11.50" fill="#44586a">8 стендов · 72 м² · свободно: 3 (27 м²)</text>
+<rect x="24.00" y="1191.35" width="11.50" height="11.50" fill="#C96F2B" rx="2"/>
+<text x="43.50" y="1201.85" font-size="11.50" fill="#44586a">Полуфабрикаты</text>
+<text x="345.20" y="1201.85" font-size="11.50" fill="#44586a">8 стендов · 72 м² · свободно: 5 (45 м²)</text>
+<rect x="24.00" y="1211.85" width="11.50" height="11.50" fill="#2A9D8F" rx="2"/>
+<text x="43.50" y="1222.35" font-size="11.50" fill="#44586a">Напитки (2)</text>
+<text x="345.20" y="1222.35" font-size="11.50" fill="#44586a">8 стендов · 72 м² · свободно: 7 (63 м²)</text>
+<rect x="24.00" y="1232.35" width="11.50" height="11.50" fill="#C0553E" rx="2"/>
+<text x="43.50" y="1242.85" font-size="11.50" fill="#44586a">Ингредиенты и компоненты (2)</text>
+<text x="345.20" y="1242.85" font-size="11.50" fill="#44586a">8 стендов · 72 м² · свободно: 5 (45 м²)</text>
+<rect x="24.00" y="1252.85" width="11.50" height="11.50" fill="#D2691E" rx="2"/>
+<text x="43.50" y="1263.35" font-size="11.50" fill="#44586a">Бакалея</text>
+<text x="345.20" y="1263.35" font-size="11.50" fill="#44586a">8 стендов · 72 м² · свободно: 1 (9 м²)</text>
+<rect x="24.00" y="1273.35" width="11.50" height="11.50" fill="#C2185B" rx="2"/>
+<text x="43.50" y="1283.85" font-size="11.50" fill="#44586a">Кондитерские изделия</text>
+<text x="345.20" y="1283.85" font-size="11.50" fill="#44586a">8 стендов · 72 м² · свободно: 3 (27 м²)</text>
+<rect x="24.00" y="1293.85" width="11.50" height="11.50" fill="#5E7A8C" rx="2"/>
+<text x="43.50" y="1304.35" font-size="11.50" fill="#44586a">Кондитерские изделия и сладости</text>
+<text x="345.20" y="1304.35" font-size="11.50" fill="#44586a">8 стендов · 72 м² · свободно: 4 (36 м²)</text>
+<rect x="24.00" y="1314.35" width="11.50" height="11.50" fill="#7A6C4F" rx="2"/>
+<text x="43.50" y="1324.85" font-size="11.50" fill="#44586a">Прочие экспоненты</text>
+<text x="345.20" y="1324.85" font-size="11.50" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
+<rect x="24.00" y="1334.85" width="11.50" height="11.50" fill="#2E8B8B" rx="2"/>
+<text x="43.50" y="1345.35" font-size="11.50" fill="#44586a">Оборудование</text>
+<text x="345.20" y="1345.35" font-size="11.50" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
+<rect x="24.00" y="1355.35" width="11.50" height="11.50" fill="#2E8B8B" rx="2"/>
+<text x="43.50" y="1365.85" font-size="11.50" fill="#44586a">Консервные линии</text>
+<text x="345.20" y="1365.85" font-size="11.50" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
+<rect x="24.00" y="1375.85" width="11.50" height="11.50" fill="#2E8B8B" rx="2"/>
+<text x="43.50" y="1386.35" font-size="11.50" fill="#44586a">Вендинговые аппараты, упаковка и фасовка</text>
+<text x="345.20" y="1386.35" font-size="11.50" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
+<rect x="24.00" y="1396.35" width="11.50" height="11.50" fill="#E8A33D" rx="2"/>
+<text x="43.50" y="1406.85" font-size="11.50" fill="#44586a">Левое крыло — A1–A6</text>
+<text x="345.20" y="1406.85" font-size="11.50" fill="#44586a">6 стендов · 141,18 м² · свободно: 6 (141,18 м²)</text>
+<text x="1249.00" y="1366.00" font-size="11.50" fill="#5b6b7a" text-anchor="end">Итого: 174 стендов · 1 653,18 м² · свободно: 122 (1 185,18 м²)</text>
 </svg>

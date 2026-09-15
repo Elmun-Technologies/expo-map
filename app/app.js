@@ -192,17 +192,66 @@
       hallG.appendChild(el('rect', { x: f.x, y: f.y, width: f.w ?? 2, height: f.h ?? 2, class: 'feature ' + (f.type || '') , rx: 0.2 }));
       if (f.label) {
         const w = f.w ?? 2, h = f.h ?? 2;
-        const fit = ExpoGroups.fitLabel(f.label.replace(/\s*\([^)]*\)\s*/g, ' '), w - 0.5, h - 0.5, {
-          maxFs: 1.25, minFs: 0.7, chunk: 18, bold: false,
+        const note = String(f.note || '').trim();
+        const noteFs = 0.8;
+        const fit = ExpoGroups.fitLabel(f.label.replace(/\s*\([^)]*\)\s*/g, ' '), w - 0.5, h - 0.5 - (note ? noteFs * 1.4 : 0), {
+          maxFs: 1.3, minFs: 0.7, chunk: 18, bold: false,
         });
         const lines = fit.lines.length ? fit.lines : [f.label];
         const lh = fit.fs * 1.18;
+        const fitsNote = note && ExpoGroups.textWidth(note, noteFs) <= w - 0.4;
+        const shift = fitsNote ? noteFs * 0.7 : 0;
         lines.forEach((ln, i) => {
-          const yy = f.y + h / 2 - (lines.length - 1) * lh / 2 + i * lh + fit.fs * 0.35;
+          const yy = f.y + h / 2 - (lines.length - 1) * lh / 2 + i * lh + fit.fs * 0.35 - shift;
           const t = el('text', { x: f.x + w / 2, y: yy, class: 'feature-label' }, ln);
           t.style.fontSize = fit.fs + 'px';
           hallG.appendChild(t);
         });
+        if (fitsNote) {
+          const yy = f.y + h / 2 + (lines.length - 1) * lh / 2 + noteFs * 1.15;
+          const nt = el('text', { x: f.x + w / 2, y: yy, class: 'feature-note' }, note);
+          nt.style.fontSize = noteFs + 'px';
+          hallG.appendChild(nt);
+        }
+      }
+    }
+    // служебные помещения: названия длинные — подпись ставится под рамкой, измерение внутри
+    for (const sv of layout.service || []) {
+      const w = sv.w ?? 2, h = sv.h ?? 2;
+      hallG.appendChild(el('rect', { x: sv.x, y: sv.y, width: w, height: h, class: 'feature service', rx: 0.2 }));
+      const note = String(sv.note || '').trim();
+      const innerW = w - 0.6;
+      const fit = ExpoGroups.fitLabel(sv.label, innerW, h - (note ? 1.1 : 0.2), { maxFs: 1.15, minFs: 0.62, maxLines: 2, chunk: 22, bold: false });
+      const fitsInside = fit.lines.length > 0 && fit.lines.length <= 2
+        && fit.lines.every((ln) => ExpoGroups.textWidth(ln, fit.fs) <= innerW)
+        && fit.lines.length * fit.fs * 1.22 <= h - (note ? 1.1 : 0.2);
+      if (fitsInside) {
+        const lh = fit.fs * 1.22;
+        const blockH = (fit.lines.length - 1) * lh + (note ? 1.1 : 0);
+        const top = sv.y + h / 2 - blockH / 2 + fit.fs * 0.36;
+        fit.lines.forEach((ln, i) => {
+          const t = el('text', { x: sv.x + w / 2, y: top + i * lh, class: 'feature-label' }, ln);
+          t.style.fontSize = fit.fs + 'px';
+          hallG.appendChild(t);
+        });
+        if (note && ExpoGroups.textWidth(note, 0.72) <= innerW) {
+          const nt = el('text', { x: sv.x + w / 2, y: top + (fit.lines.length - 1) * lh + 0.95, class: 'feature-note' }, note);
+          nt.style.fontSize = '0.72px';
+          hallG.appendChild(nt);
+        }
+      } else {
+        // места мало — подпись под рамкой (или над ней, если снизу край зала)
+        const above = sv.y + h + 1.6 > layout.hall.height;
+        const ly = above ? sv.y - 0.7 : sv.y + h + 1.0;
+        const fs = Math.min(0.9, ExpoGroups.fitLabel(sv.label, w + 1.6, 1.2, { maxFs: 0.9, minFs: 0.62, chunk: 22, bold: false }).fs);
+        const t = el('text', { x: sv.x + w / 2, y: ly, class: 'feature-label' }, sv.label);
+        t.style.fontSize = fs + 'px';
+        hallG.appendChild(t);
+        if (note && ExpoGroups.textWidth(note, 0.68) <= w + 1.6) {
+          const nt = el('text', { x: sv.x + w / 2, y: above ? ly - 0.95 : ly + 0.95, class: 'feature-note' }, note);
+          nt.style.fontSize = '0.68px';
+          hallG.appendChild(nt);
+        }
       }
     }
     world.appendChild(hallG);
@@ -313,6 +362,13 @@
       t.style.fontSize = fs + 'px';
       t.setAttribute('class', 'zone-label');
       lastG.appendChild(t);
+      const znote = String(z.note || '').trim();
+      if (znote && ExpoGroups.textWidth(znote, 0.8) <= z.w - 0.6) {
+        const nt = el('text', { x: cx, y: y + 1.35, fill: '#bcc9d4', 'text-anchor': 'middle' }, znote);
+        nt.style.fontSize = '0.8px';
+        nt.setAttribute('class', 'zone-note');
+        lastG.appendChild(nt);
+      }
       occupied.push({ x: x1 - 0.4, y: y - fs * 0.95, w: (x2 - x1) + 0.8, h: fs * 1.5 });   // keyingi yorliq bu yerga tushmasin
     }
     world.appendChild(lastG);

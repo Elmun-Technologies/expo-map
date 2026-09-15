@@ -86,6 +86,9 @@ body {
 .feature.food { fill: #fdf0e3; }
 .feature.entrance { fill: #dff0e0; stroke: #4c8a4f; }
 .feature-label { font-size: 1.1px; fill: #5b6b7a; text-anchor: middle; dominant-baseline: middle; pointer-events: none; }
+.feature-note { fill: #9fb0bf; text-anchor: middle; dominant-baseline: middle; pointer-events: none; }
+.feature.service { fill: #eef2f6; stroke: #dbe4ea; }
+.zone-note { pointer-events: none; }
 .block-outline { fill: none; stroke: #90a4b5; stroke-width: .18; stroke-dasharray: .7 .5; }
 .block-chip { cursor: pointer; }
 .block-chip rect.chip-bg { fill: #ffffff; stroke-width: .14; rx: .3; }

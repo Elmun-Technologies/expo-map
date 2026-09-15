@@ -21,6 +21,13 @@ const WIDTH = Number(process.argv[3] || 2200);
 const PORT = 4398;
 const BASE = `http://127.0.0.1:${PORT}`;
 
+// если порт уже занят прошлым запуском, рисуем по СТАРОМУ серверу — об этом лучше узнать сразу
+try {
+  await fetch(BASE + '/api/healthz');
+  console.error(`✗ порт ${PORT} уже занят другим сервером — остановите его (иначе предпросмотр будет устаревшим)`);
+  process.exit(1);
+} catch { /* порт свободен — как и должно быть */ }
+
 const srv = spawn('node', [path.join(ROOT, 'server.mjs')], {
   cwd: ROOT, env: { ...process.env, PORT: String(PORT), HOST: '127.0.0.1' }, stdio: 'ignore',
 });
@@ -51,7 +58,10 @@ if (process.argv.includes('--print')) {
   const sheet = w2.document.querySelector('#printSheet');
   console.log('── печатная шапка: ' + text);
   console.log('── таблицы на листе: ' + (sheet ? sheet.querySelectorAll('table').length : 0) + ' шт., body.print-tables = ' + w2.document.body.classList.contains('print-tables'));
-  console.log('── контур листа: ' + w2.document.querySelector('#printHead').children.length + ' блока(ов)');
+  const page = w2.document.querySelector('#printPage');
+  const pageSvg = page?.querySelector('svg');
+  console.log('── лист печати: ' + (pageSvg ? `${pageSvg.style.width} × ${pageSvg.style.height}` : '(не готов)')
+    + ' | классы body: ' + (w2.document.body.className || '—'));
 }
 
 const svg = window.document.querySelector('#map');
@@ -62,7 +72,9 @@ svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
 const css = fs.readFileSync(path.join(ROOT, 'app/style.css'), 'utf8');
 const inner = svg.innerHTML;
 const vb = (svg.getAttribute('viewBox') || '0 0 96 50').split(/\s+/).map(Number);
-const wrapped = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb.join(' ')}" font-family="DejaVu Sans, Arial, sans-serif">
+// width/height задаём явно: у resvg не всегда срабатывает fitTo, а атрибуты дают нужный масштаб
+const outH = Math.round((WIDTH * vb[3]) / vb[2]);
+const wrapped = `<svg xmlns="http://www.w3.org/2000/svg" width="${WIDTH}" height="${outH}" viewBox="${vb.join(' ')}" font-family="DejaVu Sans, Arial, sans-serif">
 <style>${css}</style><rect x="${vb[0]}" y="${vb[1]}" width="${vb[2]}" height="${vb[3]}" fill="#fff"/>${inner}</svg>`;
 const tmp = '/tmp/app-map-inline.svg';
 fs.writeFileSync(tmp, wrapped);

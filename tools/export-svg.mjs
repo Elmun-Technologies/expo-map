@@ -65,10 +65,11 @@ const mapOnly = args.includes('--map') || detail;              // без таб�
 const STATUS_STYLE = args.includes('--style=status') || process.env.STYLE === 'status';
 
 const F = {
-  title: 19, sub: 11.5, legend: 11, chipNum: 11, chipSec: 8.5, num: 12, area: 9,
-  zone: 12, feat: 11.5, unitName: 17, unitMeta: 10.5, secName: 11, foot: 11,
+  title: 20, sub: 12, legend: 11.5, chipNum: 12.5, chipSec: 9.5, num: 14, area: 10,
+  zone: 13.5, zoneNote: 11, feat: 13, featNote: 11, service: 13, serviceNote: 11,
+  unitName: 18, unitMeta: 11.5, secName: 12, foot: 11.5,
 };
-const PAD = 34;
+const PAD = 24;
 // Лист PDF — A4 landscape без полей: план масштабируется так, чтобы занять ширину листа
 const SHEET = { w: 297, h: 210 };
 const SHEET_RATIO = SHEET.w / SHEET.h;
@@ -347,7 +348,7 @@ if (!detail) {
     if (!z.w || !z.h) continue;
     L.zones.push(rect(X(z.x), Y(z.y), S(z.w), S(z.h), z.color || ZONE_FILL, ` fill-opacity="0.85" stroke="${ZONE_BORDER}" stroke-width="1" stroke-dasharray="8 6" rx="6"`));
     const pos = z.labelPos || 'none';
-    if (pos !== 'none') zoneLabels.push({ z, pos, fs: Math.max(8.5, Math.min(F.zone, (S(z.w) - 20) / Math.max(4, textWidth(z.label, 1)))) });
+    if (pos !== 'none') zoneLabels.push({ z, pos, fs: Math.max(9, Math.min(F.zone, (S(z.w) - 20) / Math.max(4, textWidth(z.label, 1)))) });
   }
 }
 
@@ -369,13 +370,27 @@ if (!detail) {
       // подпись внутрь прямоугольника: 1–2 строки, при нехватке — рядом (справа/снизу)
       const innerW = pw - 10, innerH = ph - 8;
       const maxLines = Math.max(1, Math.min(3, Math.floor(innerH / (9 * 1.2))));
-      const fit = fitText(f.label, Math.max(innerW, 60), innerH, { maxLines, minFs: 8, maxFs: F.feat + 2, bold: false });
+      const noteTxt = String(f.note || '').trim();
+      const noteFs = Math.max(9, Math.min(F.featNote, S(1) * 0.8));
+      const noteH = noteTxt ? noteFs * 1.3 : 0;
+      const fit = fitText(f.label, Math.max(innerW, 60), Math.max(10, innerH - noteH), { maxLines, minFs: 8.5, maxFs: F.feat + 2, bold: false });
       const lines = fit.lines.length ? fit.lines : [f.label];
-      const inside = fit.lines.length && textWidth(lines[0], fit.fs) <= innerW && lines.length * fit.fs * 1.2 <= innerH;
+      const noteW = noteTxt ? textWidth(noteTxt, noteFs) : 0;
+      const inside = fit.lines.length && textWidth(lines[0], fit.fs) <= innerW
+        && lines.length * fit.fs * 1.2 + noteH <= innerH
+        && (!noteTxt || noteW <= innerW || ph > noteFs * 3.4);
       if (inside) {
         const lh = fit.fs * 1.18;
-        const cy = py + ph / 2 - (lines.length - 1) * lh / 2 + fit.fs * 0.35;
+        const total = (lines.length - 1) * lh + noteH;
+        const cy = py + ph / 2 - total / 2 + fit.fs * 0.35;
         lines.forEach((ln, i) => L.feat.push(t(px + pw / 2, cy + i * lh, fit.fs, '#5b6b7a', ln, ' text-anchor="middle"')));
+        if (noteTxt) {
+          const nl = wrapText(noteTxt, innerW, 2, noteFs, false);
+          const fitsNote = nl.length && textWidth(nl[0], noteFs) <= innerW;
+          if (fitsNote) {
+            nl.forEach((ln, i) => L.feat.push(t(px + pw / 2, cy + (lines.length - 1) * lh + noteFs * (1.15 + i * 1.25), noteFs, '#93a4b2', ln, ' text-anchor="middle"')));
+          }
+        }
       } else {
         // не влезает — подпись под рамкой (короткая строка), рамка остаётся чистой
         const fs = Math.max(8, Math.min(F.feat, (pw + 90) / Math.max(4, textWidth(f.label, 1))));
@@ -386,6 +401,59 @@ if (!detail) {
   }
 }
 
+// ---------------------------------------------------------------- служебные зоны (регистрация, входы, залы…)
+// Названия у этих зон длинные и в ячейку не влезают — поэтому подпись ставится РЯДОМ
+// с рамкой (снизу или сверху), а внутри рамки — только короткая строка-измерение.
+if (!detail) {
+  const boxes = [];
+  for (const sv of exp.service || []) {
+    const w = sv.w ?? 2, h = sv.h ?? 2;
+    boxes.push({ sv, px: X(sv.x), py: Y(sv.y), pw: S(w), ph: S(h) });
+  }
+  for (const b of boxes) {
+    const { sv, px, py, pw, ph } = b;
+    L.feat.push(rect(px, py, pw, ph, FEAT_FILL, ` stroke="${FEAT_BORDER}" stroke-width="1.1" rx="4"`));
+
+    const note = String(sv.note || '').trim();
+    const fsNote = Math.max(9, Math.min(F.serviceNote, S(1) * 0.78));
+    // заголовок: мелкие буквы, но с запасом по ширине; при нехватке — переносим на 2 строки
+    const innerW = pw - 8;
+    const noteRoom = note ? fsNote * 1.6 : 0;
+    const fit = fitText(sv.label, Math.max(innerW, 40), Math.max(12, ph - noteRoom), { maxLines: 2, minFs: 7.5, maxFs: F.service, bold: false });
+    const fits = fit.lines.length > 0 && fit.lines.length <= 2
+      && fit.lines.every((ln) => textWidth(ln, fit.fs) <= innerW)
+      && fit.lines.length * fit.fs * 1.22 <= ph - noteRoom;
+
+    if (fits) {
+      // заголовок внутри рамки (до двух строк), измерение — под ним, если влезает
+      const lh = fit.fs * 1.22;
+      const blockH = (fit.lines.length - 1) * lh + noteRoom;
+      const cy = py + ph / 2 - blockH / 2 + fit.fs * 0.36;
+      fit.lines.forEach((ln, i) => L.feat.push(t(px + pw / 2, cy + i * lh, fit.fs, '#5b6b7a', ln, ' text-anchor="middle"')));
+      const nl = note ? wrapText(note, innerW, 2, fsNote, false) : [];
+      const fitsNote = nl.length && nl.every((ln) => textWidth(ln, fsNote) <= innerW)
+        && ph - fit.fs * 1.2 >= fsNote * 1.35 * nl.length;
+      if (fitsNote) {
+        // измерение ставится под ПОСЛЕДНЕЙ строкой заголовка, а не под первой
+        const baseY = cy + (fit.lines.length - 1) * lh;
+        nl.forEach((ln, i) => L.feat.push(t(px + pw / 2, baseY + fsNote * (1.25 + i * 1.25), fsNote, '#9fb0bf', ln, ' text-anchor="middle"')));
+      }
+    } else {
+      // подпись под рамкой, измерение — ниже (или над рамкой, если снизу нет места)
+      const above = py + ph + F.service * 3 > pageHpx - PAD;
+      const yLabel = above ? py - F.service * (note ? 2.2 : 1.5) : py + ph + F.service;
+      L.feat.push(t(px + pw / 2, yLabel, F.service, '#5b6b7a', sv.label, ' text-anchor="middle"'));
+      if (note) {
+        const roomW = Math.max(pw + 40, 60);
+        const nl2 = wrapText(note, roomW, 1, fsNote, false);
+        if (nl2.length && textWidth(nl2[0], fsNote) <= roomW) {
+          L.feat.push(t(px + pw / 2, yLabel + fsNote * 1.5, fsNote, '#9fb0bf', nl2[0], ' text-anchor="middle"'));
+        }
+      }
+    }
+    addOcc(px - 2, py - 2, pw + 4, ph + 4);
+  }
+}
 // ---------------------------------------------------------------- стенды и блоки
 /** Подпись стенда: A-01 → «A1», EQ-H-03 → «H3» (как на чертеже заказчика). */
 const idText = (b, s) => {
@@ -526,6 +594,11 @@ for (const { z, pos, fs } of zoneLabels) {
   if (!place) for (const x of uniq(xs)) for (const y of ys) if (freeAt(x - w / 2, y, w, h * 1.6)) { place = { x, y }; break; }
   place = place || { x: cx, y: ys[0] };
   L.labels.push(t(place.x, place.y + fs, fs, '#93a4b2', z.label, ' font-weight="bold" text-anchor="middle" letter-spacing="0.3"'));
+  const znote = String(z.note || '').trim();
+  if (znote) {
+    const nfs = Math.max(9, Math.min(F.zoneNote, fs - 2.5));
+    L.labels.push(t(place.x, place.y + fs + nfs * 1.9, nfs, '#bcc9d4', znote, ' text-anchor="middle"'));
+  }
 }
 
 // ---------------------------------------------------------------- подвал
