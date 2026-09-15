@@ -96,12 +96,18 @@ if ((exp.meta.status || 'draft') !== 'approved') {
 // ---------------------------------------------------------------- data
 fs.mkdirSync(DATA_DIR, { recursive: true });
 let sellers = [];
-const sellersSrc = fs.existsSync(SELLERS_FILE) ? SELLERS_FILE : SELLERS_EXAMPLE;
-sellers = JSON.parse(fs.readFileSync(sellersSrc, 'utf8')).sellers || [];
-if (sellersSrc === SELLERS_EXAMPLE) {
-  console.warn('⚠ data/sellers.json не найден — используются демо-логины (data/sellers.example.json). Перед работой замените PIN-коды.');
+if (process.env.SELLERS_JSON) {
+  const parsed = JSON.parse(process.env.SELLERS_JSON);
+  sellers = Array.isArray(parsed) ? parsed : (parsed.sellers || []);
+  console.log('✓ Список продавцов: SELLERS_JSON');
 } else {
-  console.log('✓ Список продавцов: data/sellers.json');
+  const sellersSrc = fs.existsSync(SELLERS_FILE) ? SELLERS_FILE : SELLERS_EXAMPLE;
+  sellers = JSON.parse(fs.readFileSync(sellersSrc, 'utf8')).sellers || [];
+  if (sellersSrc === SELLERS_EXAMPLE) {
+    console.warn('⚠ data/sellers.json не найден — используются демо-логины (data/sellers.example.json). Перед работой замените PIN-коды.');
+  } else {
+    console.log('✓ Список продавцов: data/sellers.json');
+  }
 }
 
 let state = { revision: 0, updatedAt: new Date().toISOString(), items: {} };
@@ -311,7 +317,7 @@ function applyAction(sess, body) {
 }
 
 // ---------------------------------------------------------------- router
-const server = http.createServer(async (req, res) => {
+async function handleRequest(req, res) {
   const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
   const p = url.pathname;
 
@@ -458,10 +464,15 @@ const server = http.createServer(async (req, res) => {
     console.error('✗', e);
     return send(res, 500, { error: 'internal', message: e.message });
   }
-});
+}
 
-server.listen(PORT, HOST, () => {
-  console.log(`\n🚀 Панель продаж: http://localhost:${PORT}  (0.0.0.0:${PORT})`);
-  console.log(`   1 стенд = 9 м² · 1 блок = 8 стендов = 72 м² · ${pricePerM2 ? 'цена ' + pricePerM2.toLocaleString('ru-RU') + ' сум/м²' : 'цена не указана (суммы не считаются)'}`);
-  console.log(PDF_EXPORT ? '   PDF-экспорт: /api/export/pdf (кнопка «Скачать PDF» в панели)' + (PDF_PNG ? ' · предпросмотр: /api/export/png\n' : '\n') : '   PDF-экспорт недоступен (нет python3 + reportlab) — работает «Печать плана»\n');
-});
+export default handleRequest;
+
+if (!process.env.VERCEL) {
+  const server = http.createServer(handleRequest);
+  server.listen(PORT, HOST, () => {
+    console.log(`\n🚀 Панель продаж: http://localhost:${PORT}  (0.0.0.0:${PORT})`);
+    console.log(`   1 стенд = 9 м² · 1 блок = 8 стендов = 72 м² · ${pricePerM2 ? 'цена ' + pricePerM2.toLocaleString('ru-RU') + ' сум/м²' : 'цена не указана (суммы не считаются)'}`);
+    console.log(PDF_EXPORT ? '   PDF-экспорт: /api/export/pdf (кнопка «Скачать PDF» в панели)' + (PDF_PNG ? ' · предпросмотр: /api/export/png\n' : '\n') : '   PDF-экспорт недоступен (нет python3 + reportlab) — работает «Печать плана»\n');
+  });
+}

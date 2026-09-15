@@ -30,7 +30,12 @@ if (!BASE) {
   // izolyatsiya: haqiqiy holatning NUSXASI bilan alohida portda server ko'taramiz
   tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'expo-smoke-'));
   const tmpState = path.join(tmpDir, 'state.json');
-  fs.copyFileSync(path.join(ROOT, 'data/state.json'), tmpState);
+  const realState = path.join(ROOT, 'data/state.json');
+  if (fs.existsSync(realState)) {
+    fs.copyFileSync(realState, tmpState);
+  } else {
+    fs.writeFileSync(tmpState, JSON.stringify({ revision: 0, updatedAt: new Date().toISOString(), items: {} }, null, 2));
+  }
   const port = Number(process.env.SMOKE_PORT || 4293);
   child = spawn(process.execPath, [path.join(ROOT, 'server.mjs')], {
     cwd: ROOT,
