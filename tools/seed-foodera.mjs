@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 /**
- * Расставляет РЕАЛЬНЫЕ компании из чертежа FOODERA EXPO 2026 по карте.
+ * Расставляет РЕАЛЬНЫЕ компании из чертежа «FOOD ERA MAP.pdf» по карте v2.0.
  *
  *   node tools/seed-foodera.mjs           → данные пишутся в data/state.json (перезапустите сервер)
  *   node tools/seed-foodera.mjs --dry     → только показать, не записывать
  *   node tools/seed-foodera.mjs --reset   → освободить все занятые места
  *
- * Размеры ячеек на исходном плане (12/18/36/40 м²) приводятся к сетке 9 м²:
- * 12 m² → 1 katak · 18 m² → 2 katak · 36 va 40 m² → 4 katak.
- * Исходная площадь с чертежа сохраняется в поле `note`.
+ * v2.0: стенды на карте = стенды чертежа (ID 1:1), каждая компания
+ * ставится на СВОЙ стенд с чертежа — без пересчёта в сетку 9 м².
+ * Уже занятые стенды не трогаются (данные менеджера важнее).
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -28,26 +28,25 @@ const SELLERS = [
   { sellerId: 's3', sellerName: 'Sardor Umarov' },
 ];
 
-/** [блок, [[компания, м² по чертежу, статус?], ...]] — прочитано с чертежа FOODERA */
+/** [standId (чертёж), компания, статус?] — прочитано с чертежа FOOD ERA MAP.pdf */
 const PLAN = [
-  ['A', [['Silver', 9], ['YaTT Sh.X.T.', 12], ['Ecocups', 12]]],
-  ['B', [['Ansor-Zoxir', 9], ['B12 — бронь', 9, 'reserved']]],
-  ['C', [['Toyirxon', 9]]],
-  ['D', [['Xinjiang Lianfu Food', 9], ['Sayhal Agro Holding', 9]]],
-  ['E', [['Kolna', 9]]],
-  ['F', []],
-  ['G', []],
-  ['H', [["Oltin Go'sht Sari", 12], ["Oltin Go'sht Turon", 12], ['Saldis Trading Group', 12], ['Dobroye Derevenskoye', 12], ['Saldis Trading Group (2)', 12]]],
-  ['I', [['AKULA', 12], ['CHORTAK FIDANI', 40]]],
-  ['J', [['Brew Group', 9], ['New Leads Camping', 9], ['Milliy Bottlers', 9], ['Amir Tea', 9], ['Bogi Baland', 9]]],
-  ['K', [['OOO PPK', 12], ['ERMAK', 36]]],
-  ['L', [['MEZBON', 18], ['Xinjiang Lianfu Food (2)', 9]]],
-  ['M', [['NEW ENERGY DRINKS KZ', 9]]],
-  ['N', [['Gulf Flavours and Fragrances', 12], ['Bimak', 12], ['ADMIRAL', 12]]],
-  ['O', [['ASLAN TEA', 12], ['SVD-Grupp', 12], ['Real Tea Zone', 9], ['Biana Konfet', 9], ['Archan X', 9], ['Silver Green Tea', 18]]],
-  ['P', [['CINDER FRUIT', 9], ['BIO LAB', 9], ['Pisobas', 12], ['CINDER FRUIT (2)', 18]]],
-  ['Q', [['Perfumed', 9], ['Greenway Group', 9], ['Dall Foods Group', 9], ['Javohirlar Food & Drink', 6]]],
-  ['R', []],
+  ['A18', 'Silver'], ['A19', 'YaTT Sh.X.T.'], ['A20', 'Ecocups'],
+  ['A5', 'Xinghua Lianfu'], ['A7', 'MEZBON'], ['A11', 'Mmiraj'],
+  ['B13', 'Ansor-Zoxir'], ['B12', 'B12 — бронь', 'reserved'],
+  ['B2', 'LOno'], ['B5', 'NEW ENERGY DRINKS KZ'],
+  ['B6', 'Dobroye Derevenskoye'], ['B7', 'Saids Trading'], ['B9', 'Saids Trading (2)'],
+  ["B10", "Oltin Go'sht · Sam"], ["B11", "Oltin Go'sht · Sam"],
+  ['C2', 'ADMIRAL'], ['C5', 'Gulf Flavours and Fragrances'], ['C6', 'Бронь (чертёж)', 'reserved'],
+  ['C7', 'CHORTAK FIDANI'], ['C11', 'AKULA'], ['C16', 'Toyirxon'],
+  ['D1', 'Silver Green Tea'], ['D3', 'Argan X'], ['D4', 'Slava konfet'], ['D5', 'Real Tea Zone'],
+  ['D6', 'СВД-Групп'], ['D7', 'ASLAN TEA'],
+  ['D9', 'Amir Tea'], ['D10', 'Bogi Baland'], ['D11', 'Milliy Bottlers'],
+  ['D13', 'Brewo Group'], ['D14', 'New Leads Camping'],
+  ['D15', 'Xinghua Lianfu Food'], ['D16', 'Payhal agro holding'],
+  ['E2', 'Flexobo'], ['E4', 'CINDER FRUIT'], ['E5', 'BIOLAB'], ['E6', 'CINDER FRUIT (2)'],
+  ['E9', 'ERMAK'], ['E11', 'Kohna'], ['PPK', 'OOO PPK'],
+  ['F1', 'Dali Foods Group'], ['F2', 'Innovatsion Texnologiya'],
+  ['F3', 'Perilafood'], ['F4', 'Qosimov Group'],
 ];
 
 const exp = expandLayout(JSON.parse(fs.readFileSync(LAYOUT, 'utf8')));
@@ -61,70 +60,34 @@ if (reset) {
   process.exit(0);
 }
 
-const cells = (a) => Math.max(1, Math.round(a / 9));
-
-/**
- * Выбор мест внутри блока: каждая компания по возможности занимает ОДИН столбец,
- * сверху вниз, подряд. В итоге «одна компания = один прямоугольник»
- * (Г-образные «лестницы» не появляются).
- */
-function allocate(block, count, used) {
-  const cols = new Map();
-  for (const s of block.stands) {
-    const c = Math.round((s.x - block.x) / (s.w || 3));
-    if (!cols.has(c)) cols.set(c, []);
-    cols.get(c).push(s);
-  }
-  for (const list of cols.values()) list.sort((a, b) => a.y - b.y);
-  for (const [, list] of [...cols].sort((a, b) => a[0] - b[0])) {
-    const free = list.filter((s) => !used.has(s.id));
-    if (free.length >= count) return free.slice(0, count);
-  }
-  const rest = block.stands.filter((s) => !used.has(s.id));
-  return rest.slice(0, count);
-}
-
-const items = {};
-let gid = 0;
+const byId = new Map(exp.stands.map((s) => [s.id, s]));
+const items = { ...state.items };
 let n = 0;
 
-for (const [blockId, companies] of PLAN) {
-  const block = exp.blocks.find((b) => b.id === blockId);
-  if (!block) { console.log(`• блок ${blockId} не найден`); continue; }
-  const used = new Set();
-  // крупные компании идут первыми — свободные места остаются ОДНИМ куском
-  // (продавец видит свободные 27 м² как единый блок)
-  const ordered = [...companies].sort((a, b) => cells(b[1]) - cells(a[1]));
-  for (const [name, planArea, status] of ordered) {
-    const count = cells(planArea);
-    const take = allocate(block, count, used);
-    take.forEach((s) => used.add(s.id));
-    if (!take.length) { console.log(`• ${blockId}: для «${name}» не хватило мест`); continue; }
-    const seller = SELLERS[n % SELLERS.length];
-    const areaM2 = take.length * 9;
-    const groupId = `gf${gid++}`;
-    for (const st of take) {
-      items[st.id] = {
-        standId: st.id,
-        blockId,
-        areaM2: 9,
-        status: status || 'sold',
-        buyer: name,
-        phone: '',
-        company: '',
-        pricePerM2: PRICE,
-        amount: 9 * PRICE,
-        sellerId: seller.sellerId,
-        sellerName: seller.sellerName,
-        updatedAt: new Date().toISOString(),
-        reservedUntil: null,
-        note: planArea !== 9 ? `по исходному плану: ${planArea} м²` : '',
-        groupId,
-      };
-    }
-    console.log(`${blockId}: ${name} → ${take.map((s) => s.id).join(', ')} (${areaM2} м²${planArea !== areaM2 ? `, в исходном плане ${planArea} м²` : ''})`);
-    n++;
-  }
+for (const [standId, name, status] of PLAN) {
+  const st = byId.get(standId);
+  if (!st) { console.log(`• стенд ${standId} («${name}») не найден в плане`); continue; }
+  if (state.items[standId]) { console.log(`• ${standId} уже занят («${state.items[standId].buyer}») — «${name}» пропущена`); continue; }
+  const seller = SELLERS[n % SELLERS.length];
+  items[standId] = {
+    standId,
+    blockId: st.blockId,
+    areaM2: st.areaM2,
+    status: status || 'sold',
+    buyer: name,
+    phone: '',
+    company: '',
+    pricePerM2: PRICE,
+    amount: st.areaM2 * PRICE,
+    sellerId: seller.sellerId,
+    sellerName: seller.sellerName,
+    updatedAt: new Date().toISOString(),
+    reservedUntil: null,
+    note: '',
+    groupId: `gf2-${standId}`,
+  };
+  console.log(`${standId}: ${name} · ${st.areaM2} м²`);
+  n++;
 }
 
 state.items = items;
@@ -132,12 +95,4 @@ state.revision = (state.revision || 0) + 1;
 if (!dry) fs.writeFileSync(STATE, JSON.stringify(state, null, 2));
 const sold = Object.values(items).filter((i) => i.status === 'sold').length;
 const res = Object.values(items).filter((i) => i.status === 'reserved').length;
-const area = Object.values(items).reduce((a, i) => a + i.areaM2, 0);
-// hisobot: fayldagi HAQIQIY holat bo'yicha (yozilgan stendlarning o'zi)
-const allItems = Object.values(state.items || {});
-const soldN = allItems.filter((i) => i.status === 'sold').length;
-const resN = allItems.filter((i) => i.status === 'reserved').length;
-const areaN = allItems.filter((i) => i.status === 'sold' || i.status === 'reserved')
-  .reduce((a, i) => a + Number(i.areaM2 || 0), 0);
-console.log(`\n✓ компаний: ${n} · продано ${soldN} + бронь ${resN} = ${soldN + resN} стендов · ${areaN.toLocaleString('ru-RU')} м² (revision ${state.revision})`);
-if (dry) console.log('(--dry: файл не записан)');
+console.log(`\n${dry ? '(dry-run, ничего не записано)' : '✓ записано'}: ${sold} продано · ${res} бронь · всего ${Object.keys(items).length} занятых (revision ${state.revision})`);

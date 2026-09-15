@@ -69,7 +69,7 @@
     if ((layout.meta.status || 'draft') !== 'approved') {
       msgs.push(`⚠ ЧЕРНОВИК ПЛАНА (v${layout.meta.version || '?'}) — размеры не подтверждены, клиенту отправлять нельзя.`);
     }
-    const deviants = (layout.blocks || []).filter((b) => b.kind !== 'custom' && Math.abs((b.areaM2 + (b.merged || []).reduce((a, m) => a + m.w * m.h, 0)) - 72) > 0.01);
+    const deviants = (layout.blocks || []).filter((b) => b.kind !== 'custom' && layout.meta?.enforceBlockRule !== false && Math.abs((b.areaM2 + (b.merged || []).reduce((a, m) => a + m.w * m.h, 0)) - 72) > 0.01);
     if (deviants.length) {
       const some = deviants.slice(0, 4).map((b) => `${b.label} = ${fmtNum(b.areaM2)} м²`).join(', ');
       msgs.push(`ℹ Группы в этом зале отличаются от правила 72 м² (8×9): ${some}${deviants.length > 4 ? ` и ещё ${deviants.length - 4}` : ''}. Площадь и цена считаются по каждой группе.`);
@@ -82,7 +82,7 @@
       $('#draftBanner').textContent = msgs.join('  |  ');
     }
     $('#hallTitle').textContent = `${layout.meta.project} — ${layout.meta.hall}`;
-    $('#hallSub').textContent = `${layout.blocks.length} блоков · ${layout.stands.length} стендов · ${fmtNum(layout.stands.length * 9)} м² · версия плана v${layout.meta.version || '?'}`;
+    $('#hallSub').textContent = `${layout.blocks.length} блоков · ${layout.stands.length} стендов · ${fmtNum(layout.stands.reduce((a, s) => a + s.areaM2, 0))} м² · версия плана v${layout.meta.version || '?'}`;
   }
 
   async function refreshState(force) {
@@ -294,7 +294,7 @@
       chip.appendChild(tnum);
       occupied.push({ x: b.x, y: chipY, w: cw, h: chH });
       const secForChip = sectionById(b.section);
-      chip.appendChild(el('title', {}, `${label} — блок${secForChip ? ' · раздел ' + secForChip.label : ''} · ${b.stands.length} стендов × 9 м² = ${fmtNum(b.areaM2)} м². Нажмите — выберется весь блок.`));
+      chip.appendChild(el('title', {}, `${label} — блок${secForChip ? ' · раздел ' + secForChip.label : ''} · ${b.stands.length} ${plural(b.stands.length, ['стенд', 'стенда', 'стендов'])} · ${fmtNum(b.areaM2)} м². Нажмите — выберется весь блок.`));
       blockG.appendChild(chip);
 
       for (const s of b.stands) if (!bookedIds.has(s.id)) { standG.appendChild(standNode(s)); occupied.push({ x: s.x, y: s.y, w: s.w, h: s.h }); }
@@ -402,9 +402,11 @@
     } else {
       const n = items[s.id]?.buyer ? null : String(s.noLabel);
       const blockId = String(s.blockId || '');
-      // подпись на стенде: A-01 → «A1», EQ-H-03 → «H3» (как на чертеже заказчика)
+      // подпись на стенде: A-01 → «A1», EQ-H-03 → «H3» (как на чертеже заказчика);
+      // чертёжные стенды (manual) подписаны как на самом чертеже — без префикса блока
       const eq = /^EQ-([A-Z])$/.exec(blockId);
-      const num = eq ? `${eq[1]}${s.noLabel}`
+      const num = s.manual ? String(s.noLabel)
+        : eq ? `${eq[1]}${s.noLabel}`
         : blockId.includes('-') ? `${blockId.replace(/^(\w+)-(\d+)$/, '$1$2')}-${s.noLabel}`
           : `${blockId}${s.noLabel}`;
       if (n) {
@@ -609,8 +611,8 @@
     const releasable = stands.filter((s) => statusOf(s.id) !== 'free' && (isAdmin() || items[s.id]?.sellerId === seller?.id || statusOf(s.id) === 'blocked'));
     $('#btnRelease').disabled = !canAct || releasable.length === 0;
     $('#btnRelease').textContent = `Освободить${releasable.length && releasable.length < stands.length ? ` (${releasable.length})` : ''}`;
-    $('#btnReserve').textContent = free.length ? `Забронировать (${fmtNum(free.length * 9)} м²)` : 'Забронировать';
-    $('#btnSell').textContent = free.length ? `Продать (${fmtNum(free.length * 9)} м²)` : 'Продать';
+    $('#btnReserve').textContent = free.length ? `Забронировать (${fmtNum(free.reduce((a, s) => a + s.areaM2, 0))} м²)` : 'Забронировать';
+    $('#btnSell').textContent = free.length ? `Продать (${fmtNum(free.reduce((a, s) => a + s.areaM2, 0))} м²)` : 'Продать';
     if (!$('#ttl').value) $('#ttl').value = ttlDefault();
 
     // детали выбранных мест
@@ -856,7 +858,7 @@
       <p style="font-size:15px"><b>${free.map((s) => s.id).join(', ')}</b></p>
       <table>
         <tr><td>Блок(и)</td><td>${blocks.join(', ')}</td></tr>
-        <tr><td>Площадь</td><td>${standsWord(free.length)} × 9 м² = ${fmtNum(area)} м²</td></tr>
+        <tr><td>Площадь</td><td>${standsWord(free.length)} = ${fmtNum(area)} м²</td></tr>
         <tr><td>Клиент</td><td>${buyer} ${$('#phone').value ? '· ' + $('#phone').value : ''}</td></tr>
         <tr><td><b>Сумма</b></td><td><b>${amount ? fmtMoney(amount) : 'цена не указана'}</b></td></tr>
       </table>
@@ -960,7 +962,7 @@
     const rows = layout.blocks.filter((b) => b.kind !== 'custom').map((b) => {
       const cnt = { free: 0, reserved: 0, sold: 0, blocked: 0 };
       b.stands.forEach((s) => cnt[statusOf(s.id)]++);
-      return `<tr><td>${b.id}</td><td>${b.stands.length} × 9 = ${fmtNum(b.areaM2)} м²</td><td>${cnt.free}</td><td>${cnt.reserved}</td><td>${cnt.sold}</td><td>${cnt.free ? b.stands.filter((s) => statusOf(s.id) === 'free').map((s) => s.id).join(', ') : '—'}</td></tr>`;
+      return `<tr><td>${b.id}</td><td>${b.stands.length} стенд. = ${fmtNum(b.areaM2)} м²</td><td>${cnt.free}</td><td>${cnt.reserved}</td><td>${cnt.sold}</td><td>${cnt.free ? b.stands.filter((s) => statusOf(s.id) === 'free').map((s) => s.id).join(', ') : '—'}</td></tr>`;
     }).join('');
     const secRows = sectionStats().map(({ sec, stands, free, area, freeArea }) => `<tr>
         <td>${sec.label}</td>
@@ -971,7 +973,7 @@
     sheet.innerHTML = `
       <h2>${layout.meta.project} — ${layout.meta.hall} · план залов (v${layout.meta.version})</h2>
       <p>1 стенд = 3×3 м = 9 м² · 1 блок = 8 стендов = 72 м² · Цена: ${layout.meta.pricePerM2 ? fmtMoney(layout.meta.pricePerM2) + '/м²' : '—'} · Дата: ${fmtDate(new Date().toISOString())}</p>
-      <p><b>Свободные места (${freeIds.length} стендов = ${fmtNum(freeIds.length * 9)} м²):</b> ${freeIds.join(', ') || '—'}</p>
+      <p><b>Свободные места (${freeIds.length} ${plural(freeIds.length, ['стенд', 'стенда', 'стендов'])} = ${fmtNum(freeIds.reduce((a, id) => a + (layout.stands.find((s) => s.id === id)?.areaM2 || 0), 0))} м²):</b> ${freeIds.join(', ') || '—'}</p>
       <table>
         <thead><tr><th>Блок</th><th>Площадь</th><th>Свободно</th><th>Бронь</th><th>Продано</th><th>ID свободных стендов</th></tr></thead>
         <tbody>${rows}</tbody>
