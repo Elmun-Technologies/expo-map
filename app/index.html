@@ -44,8 +44,8 @@
     </span>
     <button class="btn" id="zoomFit" title="Показать весь зал">Весь зал</button>
     <button class="btn" id="clientMode" title="Режим для клиента">Вид для клиента</button>
-    <button class="btn" id="printBtn" title="Одна страница A3: только план зала">Печать плана</button>
-    <button class="btn" id="pdfBtn" title="Скачать готовый PDF-файл (A3, одна страница)">Скачать PDF</button>
+    <button class="btn" id="printBtn" title="Одна страница A4 landscape: только план зала">Печать плана</button>
+    <button class="btn" id="pdfBtn" title="Скачать готовый PDF-файл (A4 landscape, одна страница)">Скачать PDF</button>
     <label class="chk" title="Таблицы (блоки, компании, разделы) печатаются отдельными страницами после плана"><input type="checkbox" id="printTables" /> с таблицами</label>
     <span class="who" id="who"></span>
     <button class="btn ghost" id="logoutBtn">Выход</button>
@@ -168,7 +168,7 @@
     <p class="muted" id="sourceHint">Чертёж, по которому собран план зала.</p>
     <div class="source-plan" id="sourcePlan"></div>
     <div class="actions">
-      <button class="btn" id="sourceShowA3">Показать готовый лист A3</button>
+      <button class="btn" id="sourceShowA3">Показать готовый лист A4</button>
     </div>
   </section>
 </div>
@@ -188,10 +188,10 @@
 <div id="pdfHelp" class="modal" hidden>
   <div class="modal-card pdf-help" role="dialog" aria-labelledby="pdfHelpTitle">
     <button class="pdf-x" id="pdfHelpClose" title="Закрыть" aria-label="Закрыть">×</button>
-    <h2 id="pdfHelpTitle">Лист A3 готов</h2>
-    <p class="muted pdf-sub">Одна страница. Скачайте файл — или сохраните его печатью в PDF.</p>
+    <h2 id="pdfHelpTitle">Лист A4 готов</h2>
+    <p class="muted pdf-sub">Одна страница A4. Скачайте файл — или сохраните его печатью в PDF.</p>
     <div class="pdf-view">
-      <img id="pdfHelpImg" alt="Предпросмотр листа A3" />
+      <img id="pdfHelpImg" alt="Предпросмотр листа A4" />
       <p class="muted" id="pdfHelpNote" hidden>Предпросмотр недоступен — скачайте файл или сохраните его печатью.</p>
     </div>
     <p class="muted pdf-hint" id="pdfHelpWhy"></p>
@@ -204,6 +204,7 @@
   </div>
 </div>
 
+<script src="./dejavu-metrics.js"></script>
 <script src="./groups.js"></script>
 <script src="./app.js"></script>
 </body>

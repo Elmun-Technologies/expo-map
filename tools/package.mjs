@@ -78,7 +78,7 @@ const f2 = path.join(outDir, '02-план-свободные-места.svg');
 if (run(['--out', f1])) made.push(f1);
 if (run(['--no-state', '--out', f2])) made.push(f2);
 
-// 1б) PDF — ТОЛЬКО ОСНОВНОЙ ПЛАН, один лист A3 landscape.
+// 1б) PDF — ТОЛЬКО ОСНОВНОЙ ПЛАН, один лист A4 landscape (формат из layout.meta.format).
 // «Печать → Сохранить как PDF» в браузере режет на несколько листов; этот файл можно
 // отправлять клиенту напрямую.
 const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'expo-pdf-'));
@@ -91,10 +91,19 @@ for (const item of [
   if (!run(['--map', ...item.extra, '--out', mapSvg])) continue;
   try {
     const line = execFileSync('python3',
-      [path.join(ROOT, 'tools/export-pdf.py'), mapSvg, pdfOut, '--title', `${raw.meta.project} — ${raw.meta.hall}`],
+      [path.join(ROOT, 'tools/export-pdf.py'), mapSvg, pdfOut, '--margin', '0',
+        '--page', String(raw.meta.format || 'A4'), '--title', `${raw.meta.project} — ${raw.meta.hall}`],
       { cwd: ROOT, encoding: 'utf8' });
     console.log('  ' + line.trim());
     made.push(pdfOut);
+    // превью (PNG) делаем из того же листа, что ушёл в PDF — картинка всегда актуальна
+    if (item.name.startsWith('01')) {
+      const png = path.join(outDir, '00-превью-плана.png');
+      const pngLine = execFileSync('node', [path.join(ROOT, 'tools/svg2png.mjs'), mapSvg, png, '2860'],
+        { cwd: ROOT, encoding: 'utf8' });
+      console.log('  ' + pngLine.trim());
+      made.push(png);
+    }
   } catch (e) {
     console.error('⚠ PDF не собран (нужны python3 + reportlab + svglib):', String(e.message).split('\n')[0]);
   }
@@ -186,10 +195,10 @@ ${secTable}
   Красный — продано
   Серый   — блокировано (техническое или для владельца)
 
-ВАЖНО: PDF-файлы — это ОДИН лист A3 (печатать «Сохранить как PDF» из браузера не нужно —
-он режет план на несколько листов). SVG открывается в браузере и остаётся редактируемым
-векторным файлом. План строится из layout-файла автоматически, поэтому план и данные
-никогда не расходятся.
+ВАЖНО: PDF-файлы — это ОДИН лист A4 landscape (печатать «Сохранить как PDF» из браузера
+не нужно — он может разрезать план на несколько листов). SVG открывается в браузере и
+остаётся редактируемым векторным файлом. План строится из layout-файла автоматически,
+поэтому план и данные никогда не расходятся.
 `;
 const f5 = path.join(outDir, '00-ПОЯСНЕНИЕ.txt');
 fs.writeFileSync(f5, izoh);
@@ -211,6 +220,15 @@ for (const old of ['00-IZOH.txt', '04-kompaniyalar.csv', '05-bosh-joylar.csv', '
     if (r.status !== 0) { bad++; process.stdout.write(r.stdout || ''); }
   }
   console.log(bad ? `\n⚠ Наложения подписей: ${bad} файл(ов) — см. выше` : '\n✓ Проверка чистоты: наложений подписей нет');
+
+  // ---- вторая проверка: каждая подпись помещается в свою ячейку (не «упирается» в рамку)
+  const fit = path.join(ROOT, 'tools/check-fit.mjs');
+  let tight = 0;
+  for (const f of made.filter((x) => x.endsWith('.svg'))) {
+    const r = spawnSync('node', [fit, f], { cwd: ROOT, encoding: 'utf8' });
+    if (r.status !== 0) { tight++; process.stdout.write(r.stdout || ''); }
+  }
+  console.log(tight ? `\n⚠ Подписи не помещаются в ячейки: ${tight} файл(ов)` : '✓ Проверка чистоты: все подписи помещаются в ячейки');
 }
 
 console.log('\nФайлы:');

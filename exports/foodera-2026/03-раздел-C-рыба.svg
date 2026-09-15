@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="590" height="566" viewBox="0 0 590 566" font-family="DejaVu Sans, Helvetica, Arial, sans-serif">
-<rect x="0.00" y="0.00" width="590.00" height="566.00" fill="#ffffff"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="638" height="566" viewBox="0 0 638 566" font-family="DejaVu Sans, Helvetica, Arial, sans-serif">
+<rect x="0.00" y="0.00" width="638.00" height="566.00" fill="#ffffff"/>
 <polygon points="-505.00,22.70 1607.00,22.70 1607.00,1122.70 -505.00,1122.70" fill="#ffffff" fill-opacity="0.55" stroke="#0f2233" stroke-width="2.2"/>
 <rect x="111.00" y="163.50" width="132.00" height="264.00" fill="none" stroke="#3E7BB6" stroke-width="1.6" rx="5"/>
 <rect x="108.00" y="135.50" width="138.00" height="25.50" fill="#ffffff" stroke="#3E7BB6" stroke-width="1.5" rx="5"/>
@@ -14,16 +14,16 @@
 <rect x="177.00" y="361.50" width="66.00" height="66.00" fill="#ffffff" stroke="#cbd6de" stroke-width="1.05" rx="3"/><text x="210.00" y="393.50" font-size="12.00" fill="#3E7BB6" font-weight="bold" text-anchor="middle">C8</text>
 <path d="M111 163.5L177 163.5L177 229.5L111 229.5Z" fill="#fdecea" fill-opacity="0.92" stroke="#c62828" stroke-width="1.8" stroke-linejoin="round"/>
 <rect x="112.50" y="165.00" width="63.00" height="3.50" fill="#c62828" rx="1.5"/>
-<text x="144.00" y="201.42" font-size="12.80" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Toyirxon</text>
+<text x="144.00" y="200.95" font-size="11.60" fill="#8e1b1b" font-weight="bold" text-anchor="middle">Toyirxon</text>
 <text x="34.00" y="49.00" font-size="19.00" fill="#0f2233" font-weight="bold">Рыба и морепродукты · раздел C</text>
 <rect x="34.00" y="76.50" width="13.00" height="13.00" fill="#ffffff" stroke="#cbd6de" stroke-width="1.3" rx="3"/>
-<text x="34.00" y="105.00" font-size="11.50" fill="#7b8b99">1 стенд = 3 × 3 м = 9 м² · 1 блок = 8 стендов = 72 м² · версия плана v1.3.0 · 15.09.2026</text>
+<text x="34.00" y="105.00" font-size="11.50" fill="#7b8b99">1 стенд = 3 × 3 м = 9 м² · 1 блок = 8 стендов = 72 м² · версия плана v1.4.0 · 15.09.2026</text>
 <text x="53.00" y="87.00" font-size="11.00" fill="#44586a">Свободно: 7 · 63 м²</text>
-<rect x="185.66" y="76.50" width="13.00" height="13.00" fill="#fff6e0" stroke="#e0a300" stroke-width="1.3" rx="3"/>
-<text x="204.66" y="87.00" font-size="11.00" fill="#44586a">Забронировано: 0</text>
-<rect x="326.47" y="76.50" width="13.00" height="13.00" fill="#fdecea" stroke="#c62828" stroke-width="1.3" rx="3"/>
-<text x="345.47" y="87.00" font-size="11.00" fill="#44586a">Продано: 1 · 9 м²</text>
+<rect x="194.25" y="76.50" width="13.00" height="13.00" fill="#fff6e0" stroke="#e0a300" stroke-width="1.3" rx="3"/>
+<text x="213.25" y="87.00" font-size="11.00" fill="#44586a">Забронировано: 0</text>
+<rect x="343.50" y="76.50" width="13.00" height="13.00" fill="#fdecea" stroke="#c62828" stroke-width="1.3" rx="3"/>
+<text x="362.50" y="87.00" font-size="11.00" fill="#44586a">Продано: 1 · 9 м²</text>
 <text x="34.00" y="517.00" font-size="11.00" fill="#5b6b7a">FOODERA EXPO 2026 · Крытый павильон</text>
 <text x="34.00" y="534.00" font-size="11.00" fill="#5b6b7a">Итого: 8 стендов · 72 м² · свободно: 7 (63 м²)</text>
-<text x="34.00" y="551.00" font-size="11.00" fill="#93a4b2">1 стенд = 3 × 3 м = 9 м² · 1 блок = 8 стендов = 72 м² · версия плана v1.3.0</text>
+<text x="34.00" y="551.00" font-size="11.00" fill="#93a4b2">1 стенд = 3 × 3 м = 9 м² · 1 блок = 8 стендов = 72 м² · версия плана v1.4.0</text>
 </svg>

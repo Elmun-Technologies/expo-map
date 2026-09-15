@@ -48,7 +48,7 @@ const PDF_PNG = PDF_EXPORT && (() => {
   } catch { return false; }
 })();
 
-/** Разметка готового листа A3 (тот же файл, что уходит клиенту) — с коротким кешем. */
+/** Разметка готового листа A4 landscape (тот же файл, что уходит клиенту) — с коротким кешем. */
 let svgCache = { key: '', svg: '' };
 async function buildPlanSvg() {
   const key = `${state.revision}|${rawLayout.meta?.version || ''}`;
@@ -69,7 +69,7 @@ async function buildPlanPdf(page) {
   const pdfPath = path.join(tmp, 'plan.pdf');
   const svgRun = spawnSync('node', [path.join(ROOT, 'tools/export-svg.mjs'), '--map', '--out', svgPath], { cwd: ROOT, encoding: 'utf8' });
   if (svgRun.status !== 0) throw Object.assign(new Error((svgRun.stderr || '').split('\n')[0] || 'сборка SVG не удалась'), { code: 'svg_failed' });
-  const pyRun = spawnSync('python3', [path.join(ROOT, 'tools/export-pdf.py'), svgPath, pdfPath, '--page', page], { cwd: ROOT, encoding: 'utf8' });
+  const pyRun = spawnSync('python3', [path.join(ROOT, 'tools/export-pdf.py'), svgPath, pdfPath, '--margin', '0', '--page', page], { cwd: ROOT, encoding: 'utf8' });
   if (pyRun.status !== 0) throw Object.assign(new Error((pyRun.stderr || '').split('\n')[0] || 'сборка PDF не удалась'), { code: 'pdf_failed' });
   return { tmp, svgPath, pdfPath };
 }
@@ -389,7 +389,7 @@ const server = http.createServer(async (req, res) => {
     }
 
     if (p === '/api/export/pdf' && req.method === 'GET') {
-      const page = String(url.searchParams.get('page') || 'A3').toUpperCase();
+      const page = String(url.searchParams.get('page') || rawLayout.meta?.format || 'A4').toUpperCase();
       // disp=inline — отдать PDF для просмотра в браузере (в новой вкладке), иначе — на скачивание
       const disp = url.searchParams.get('disp') === 'inline' ? 'inline' : 'attachment';
       if (!PDF_EXPORT) return send(res, 503, { error: 'no_pdf', message: 'На сервере нет python3 + reportlab — используйте «Печать плана» (Сохранить как PDF).' });
@@ -411,7 +411,7 @@ const server = http.createServer(async (req, res) => {
       return res.end(buf);
     }
 
-    // Разметка готового листа A3 — для печати «ровно одна страница» прямо из панели.
+    // Разметка готового листа A4 landscape — для печати «ровно одна страница» прямо из панели.
     if (p === '/api/export/svg' && req.method === 'GET') {
       try {
         const svg = await buildPlanSvg();
@@ -425,7 +425,7 @@ const server = http.createServer(async (req, res) => {
 
     // Картинка первой страницы PDF — предпросмотр плана прямо в панели (без просмотрщика PDF).
     if (p === '/api/export/png' && req.method === 'GET') {
-      const page = String(url.searchParams.get('page') || 'A3').toUpperCase();
+      const page = String(url.searchParams.get('page') || rawLayout.meta?.format || 'A4').toUpperCase();
       const scale = Math.min(3, Math.max(1, Number(url.searchParams.get('scale') || 1.6)));
       if (!PDF_EXPORT) return send(res, 503, { error: 'no_pdf', message: 'На сервере нет python3 + reportlab — используйте «Печать плана» (Сохранить как PDF).' });
       if (!PDF_PNG) return send(res, 503, { error: 'no_png', message: 'На сервере нет pypdfium2/Pillow — предпросмотр недоступен, скачайте PDF-файл.' });

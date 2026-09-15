@@ -921,7 +921,7 @@
       </table>` : ''}
       <p style="margin-top:6mm">Примечание для клиента: купленные места отмечены на плане по ID. ID стенда в договоре совпадает с местом на плане.</p>`;
   }
-  // Вписывает план в лист A3 landscape (поля 8 мм) — PDF получается на одну страницу
+  // Вписывает план в лист A4 landscape (поля 8 мм) — PDF получается на одну страницу
   function fitPrintPage() {
     const svg = $('#map');
     const vb = (svg.getAttribute('viewBox') || '').split(/\s+/).map(Number);
@@ -936,7 +936,7 @@
     const s2 = $('#map');
     s2.style.width = ''; s2.style.height = ''; s2.style.maxWidth = '';
   });
-  // ------------------------------------------------------------ печать листа A3
+  // ------------------------------------------------------------ печать листа A4 landscape
   // Готовый лист берём у сервера (/api/export/svg) — тот самый файл, что уходит клиенту:
   // он уже сверстан под А3, поэтому печать даёт ровно одну страницу, без склейки и полей.
   let planSvgMarkup = null;
@@ -950,7 +950,7 @@
     }
     if (!planSvgMarkup) {
       const r = await fetch('/api/export/svg');
-      if (!r.ok) throw new Error(`лист A3 недоступен (${r.status})`);
+      if (!r.ok) throw new Error(`лист A4 недоступен (${r.status})`);
       planSvgMarkup = await r.text();
     }
     if (!page.querySelector('svg')) {
@@ -958,7 +958,7 @@
       const svg = page.querySelector('svg');
       const vb = (svg.getAttribute('viewBox') || '').split(/[\s,]+/).map(Number);
       if (svg && vb.length === 4 && vb[2] > 0) {
-        const mm = 419; // ширина листа A3 минус запас: вписываем чертёж в страницу целиком
+        const mm = 295; // ширина листа A4 минус запас: вписываем чертёж в страницу целиком
         const k = mm / vb[2];
         svg.removeAttribute('width');
         svg.removeAttribute('height');
@@ -972,7 +972,7 @@
 
   async function preparePrint() {
     const tables = !!$('#printTables')?.checked;
-    document.body.classList.add('print-a3');
+    document.body.classList.add('print-sheet');
     document.body.classList.toggle('print-tables', tables);
     buildPrintSheet();
     try {
@@ -990,10 +990,10 @@
   $('#printBtn').addEventListener('click', async () => { await preparePrint(); window.print(); });
 
   // ------------------------------------------------------------ скачать PDF
-  const pdfPage = () => String(layout?.meta?.format || 'A3').toUpperCase();
+  const pdfPage = () => String(layout?.meta?.format || 'A4').toUpperCase();
   const pdfUrl = (disp) => `/api/export/pdf?page=${encodeURIComponent(pdfPage())}${disp ? '&disp=' + disp : ''}`;
   const pngUrl = (scale = 1.6) => `/api/export/png?page=${encodeURIComponent(pdfPage())}&scale=${scale}`;
-  const pdfName = () => `FOODERA-EXPO-2026-plan-${pdfPage()}.pdf`;
+  const pdfName = () => `FOODERA-EXPO-2026-plan-${pdfPage()}.pdf`;   // A4 landscape, одна страница
   const isEmbedded = () => { try { return window.self !== window.top; } catch { return true; } };
 
   let pdfReady = null; // null — сервер ещё не ответил, true/false — его ответ
@@ -1093,7 +1093,7 @@
       //    в таких окнах — поэтому сразу показываем окно «PDF готов» с картинкой листа и кнопками.
       if (isEmbedded()) {
         showPdfHelp('');
-        toast('Лист A3 готов — сохраните его из окна');
+        toast('Лист A4 готов — сохраните его из окна');
         return;
       }
       // 2) Обычное скачивание: забираем файл и отдаём браузеру под готовым именем.
@@ -1226,7 +1226,7 @@
     if (!box) return;
     const miss = () => {
       box.innerHTML = '<p class="muted">Исходный чертёж не загружен.</p>';
-      if (hint) hint.textContent = 'Пришлите файл чертежа (PNG/JPG) — положите его рядом с панелью как app/plan-source.png, и он появится здесь. Пока посмотрите готовый лист A3.';
+      if (hint) hint.textContent = 'Пришлите файл чертежа (PNG/JPG) — положите его рядом с панелью как app/plan-source.png, и он появится здесь. Пока посмотрите готовый лист A4.';
     };
     if (hint) hint.textContent = 'Чертёж, по которому собран план зала.';
     box.innerHTML = '<p class="muted">Загружаем…</p>';
@@ -1248,7 +1248,7 @@
     setTimeout(() => { if (!box.querySelector('img')) miss(); }, 1500);
   }
   $('#sourceShowA3')?.addEventListener('click', () => {
-    showPdfHelp('Готовый лист A3: так план уходит клиенту. Скачайте файл или сохраните его через печать.');
+    showPdfHelp('Готовый лист A4: так план уходит клиенту. Скачайте файл или сохраните его через печать.');
   });
 
   // ------------------------------------------------------------ start

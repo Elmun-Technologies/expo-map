@@ -2,7 +2,7 @@
 /**
  * Экспорт плана зала в SVG — для клиента, печати и PDF.
  *
- *   node tools/export-svg.mjs                       → весь зал (лист A3 + таблица разделов)
+ *   node tools/export-svg.mjs                       → весь зал (лист A4 landscape + таблица разделов)
  *   node tools/export-svg.mjs --map                 → ТОЛЬКО план (без таблицы) — для PDF
  *   node tools/export-svg.mjs --section A           → один раздел
  *   node tools/export-svg.mjs --block A             → один блок (8 стендов)
@@ -69,8 +69,9 @@ const F = {
   zone: 12, feat: 11.5, unitName: 17, unitMeta: 10.5, secName: 11, foot: 11,
 };
 const PAD = 34;
-const A3 = { w: 404, h: 281 };              // A3 landscape (мм) без полей
-const SHEET_RATIO = (A3.w - 16) / (A3.h - 16);   // соотношение листа PDF (поле 8 мм)
+// Лист PDF — A4 landscape без полей: план масштабируется так, чтобы занять ширину листа
+const SHEET = { w: 297, h: 210 };
+const SHEET_RATIO = SHEET.w / SHEET.h;
 
 const INK = '#243b4a';
 const SUB = '#7b8b99';
@@ -141,9 +142,32 @@ function splitWords(text, chunk = 10, maxW = 0, minFs = 5.2, bold = true) {
   const out = [];
   for (const w of String(text).trim().split(/\s+/).filter(Boolean)) {
     if (!maxW || textWidth(w, minFs, bold) <= maxW || w.length <= chunk) { out.push(w); continue; }
+    // делим слово на равные части, стараясь ставить дефис после гласной —
+    // так читается как слог: «Dereven-skoye», а не «Derevensko-ye»
+    const n = Math.ceil(w.length / chunk);
+    const VOWEL = /[aeiouyаеёиоуыэюя]/i;
     const parts = [];
-    for (let i = 0; i < w.length; i += chunk) parts.push(w.slice(i, i + chunk));
-    parts.forEach((p, i) => out.push(i < parts.length - 1 ? p + '-' : p));
+    let start = 0;
+    for (let k = 0; k < n - 1; k++) {
+      const target = Math.round(((k + 1) * w.length) / n);
+      // оцениваем варианты переноса: «Dereven-skoye» лучше, чем «Dereve-nskoye»
+      let best = null;
+      for (let c = target - 3; c <= target + 3; c++) {
+        if (c - start < 3 || w.length - c < 3) continue;
+        const rest = w.slice(c);
+        const onset = (rest.match(/^[^aeiouyаеёиоуыэюя]{2}/i) ? 2 : 0);   // стечение согласных в начале части
+        const odd = (rest.match(/^[^aeiouyаеёиоуыэюя]{3,}/i) ? 1 : 0);    // три и больше — читается хуже
+        const prevVowel = VOWEL.test(w[c - 1]) ? 1 : 0;
+        const dist = Math.abs(c - target);
+        const score = onset * 2 + prevVowel - odd * 2 - dist * 0.4;
+        if (best == null || score > best.score) best = { c, score };
+      }
+      const cut = best ? best.c : target;
+      parts.push(w.slice(start, cut));
+      start = cut;
+    }
+    parts.push(w.slice(start));
+    parts.forEach((part, i) => out.push(i < parts.length - 1 ? part + '-' : part));
   }
   return out;
 }
@@ -231,12 +255,12 @@ let headerH = F.title + F.sub + 22;
 let footerH = F.foot + 16;
 
 let pageW, pageH, contentTop;
-const sheetMode = mapOnly && !detail;   // лист под формат A3 — только для плана всего зала
+const sheetMode = mapOnly && !detail;   // лист под формат A4 landscape — только для плана всего зала
 if (sheetMode) {
-  // лист под соотношение A3: план занимает всю ширину, поля уходят в шапку/подвал
+  // лист под соотношение A4 landscape: план занимает всю ширину, поля уходят в шапку/подвал
   for (let i = 0; i < 4; i++) {
     const availW = pageW ? pageW - PAD * 2 : 0;
-    if (!availW) {                       // первая итерация: стартуем от ширины A3 в «полезных» px
+    if (!availW) {                       // первая итерация: стартуем от ширины листа в «полезных» px
       SCALE = (1400 - PAD * 2) / content.w;
     } else {
       SCALE = Math.min((pageW - PAD * 2) / content.w, (pageH - headerH - footerH - PAD * 2) / content.h);

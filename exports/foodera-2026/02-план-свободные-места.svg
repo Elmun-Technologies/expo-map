@@ -11,8 +11,8 @@
 <rect x="933.00" y="821.65" width="261.00" height="33.35" fill="#f7f7f7" fill-opacity="0.85" stroke="#dbe4ea" stroke-width="1" stroke-dasharray="8 6" rx="6"/>
 <polygon points="34.00,134.35 1426.00,134.35 1426.00,859.35 34.00,859.35" fill="#ffffff" fill-opacity="0.55" stroke="#0f2233" stroke-width="2.2"/>
 <rect x="48.50" y="143.05" width="87.00" height="46.40" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
-<text x="92.00" y="163.42" font-size="11.78" fill="#5b6b7a" text-anchor="middle">Техническая</text>
-<text x="92.00" y="177.32" font-size="11.78" fill="#5b6b7a" text-anchor="middle">комната</text>
+<text x="92.00" y="163.61" font-size="11.02" fill="#5b6b7a" text-anchor="middle">Техническая</text>
+<text x="92.00" y="176.61" font-size="11.02" fill="#5b6b7a" text-anchor="middle">комната</text>
 <rect x="1252.00" y="143.05" width="174.00" height="46.40" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
 <text x="1339.00" y="170.97" font-size="13.50" fill="#5b6b7a" text-anchor="middle">Грузовые ворота</text>
 <rect x="954.75" y="228.60" width="195.75" height="81.20" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
@@ -28,10 +28,11 @@
 <rect x="1214.30" y="667.95" width="197.20" height="66.70" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
 <text x="1312.90" y="706.02" font-size="13.50" fill="#5b6b7a" text-anchor="middle">Переговорная</text>
 <rect x="1214.30" y="749.15" width="92.80" height="58.00" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
-<text x="1260.70" y="781.75" font-size="10.30" fill="#5b6b7a" text-anchor="middle">Винтовой выход</text>
+<text x="1260.70" y="781.36" font-size="9.18" fill="#5b6b7a" text-anchor="middle">Винтовой выход</text>
 <rect x="45.60" y="636.05" width="89.90" height="63.80" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
-<text x="90.55" y="665.94" font-size="8.38" fill="#5b6b7a" text-anchor="middle">Выход к открытому</text>
-<text x="90.55" y="675.83" font-size="8.38" fill="#5b6b7a" text-anchor="middle">павильону</text>
+<text x="90.55" y="656.91" font-size="13.30" fill="#5b6b7a" text-anchor="middle">Выход к</text>
+<text x="90.55" y="672.61" font-size="13.30" fill="#5b6b7a" text-anchor="middle">открытому</text>
+<text x="90.55" y="688.30" font-size="13.30" fill="#5b6b7a" text-anchor="middle">павильону</text>
 <rect x="440.00" y="814.40" width="217.50" height="31.90" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
 <text x="548.75" y="835.08" font-size="13.50" fill="#5b6b7a" text-anchor="middle">Регистрация</text>
 <rect x="679.25" y="814.40" width="166.75" height="31.90" fill="#eef2f6" stroke="#c3ced8" stroke-width="1.1" rx="4"/>
@@ -53,7 +54,7 @@
 <text x="483.50" y="210.65" font-size="11.00" fill="#3E7BB6" font-weight="bold" text-anchor="middle">C · 72 м²</text>
 <text x="483.50" y="219.65" font-size="8.50" fill="#7b8b99" text-anchor="middle">Рыба</text>
 <rect x="556.00" y="227.15" width="87.00" height="174.00" fill="none" stroke="#B8860B" stroke-width="1.6" rx="5"/>
-<rect x="553.00" y="199.15" width="93.00" height="25.50" fill="#ffffff" stroke="#B8860B" stroke-width="1.5" rx="5"/>
+<rect x="551.73" y="199.15" width="95.53" height="25.50" fill="#ffffff" stroke="#B8860B" stroke-width="1.5" rx="5"/>
 <text x="599.50" y="210.65" font-size="11.00" fill="#B8860B" font-weight="bold" text-anchor="middle">D · 72 м²</text>
 <text x="599.50" y="219.65" font-size="8.50" fill="#7b8b99" text-anchor="middle">Фрукты и овощи</text>
 <rect x="672.00" y="227.15" width="87.00" height="174.00" fill="none" stroke="#3E9B5F" stroke-width="1.6" rx="5"/>
@@ -85,7 +86,7 @@
 <text x="715.50" y="413.65" font-size="11.00" fill="#9B59B6" font-weight="bold" text-anchor="middle">K · 72 м²</text>
 <text x="715.50" y="422.65" font-size="8.50" fill="#7b8b99" text-anchor="middle">Органика (2)</text>
 <rect x="788.00" y="430.15" width="87.00" height="174.00" fill="none" stroke="#C96F2B" stroke-width="1.6" rx="5"/>
-<rect x="785.00" y="402.15" width="93.00" height="25.50" fill="#ffffff" stroke="#C96F2B" stroke-width="1.5" rx="5"/>
+<rect x="784.68" y="402.15" width="93.64" height="25.50" fill="#ffffff" stroke="#C96F2B" stroke-width="1.5" rx="5"/>
 <text x="831.50" y="413.65" font-size="11.00" fill="#C96F2B" font-weight="bold" text-anchor="middle">L · 72 м²</text>
 <text x="831.50" y="422.65" font-size="8.50" fill="#7b8b99" text-anchor="middle">Полуфабрикаты</text>
 <rect x="208.00" y="633.15" width="87.00" height="174.00" fill="none" stroke="#2A9D8F" stroke-width="1.6" rx="5"/>
@@ -93,7 +94,7 @@
 <text x="251.50" y="616.65" font-size="11.00" fill="#2A9D8F" font-weight="bold" text-anchor="middle">M · 72 м²</text>
 <text x="251.50" y="625.65" font-size="8.50" fill="#7b8b99" text-anchor="middle">Напитки (2)</text>
 <rect x="324.00" y="633.15" width="87.00" height="174.00" fill="none" stroke="#C0553E" stroke-width="1.6" rx="5"/>
-<rect x="321.00" y="605.15" width="93.00" height="25.50" fill="#ffffff" stroke="#C0553E" stroke-width="1.5" rx="5"/>
+<rect x="319.05" y="605.15" width="96.91" height="25.50" fill="#ffffff" stroke="#C0553E" stroke-width="1.5" rx="5"/>
 <text x="367.50" y="616.65" font-size="11.00" fill="#C0553E" font-weight="bold" text-anchor="middle">N · 72 м²</text>
 <text x="367.50" y="625.65" font-size="8.50" fill="#7b8b99" text-anchor="middle">Ингредиенты (2)</text>
 <rect x="440.00" y="633.15" width="87.00" height="174.00" fill="none" stroke="#D2691E" stroke-width="1.6" rx="5"/>
@@ -298,16 +299,16 @@
 <rect x="48.50" y="389.55" width="87.00" height="61.38" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6" rx="3"/><text x="92.00" y="414.99" font-size="15.00" fill="#243b4a" font-weight="bold" text-anchor="middle">A3</text><text x="92.00" y="431.49" font-size="10.80" fill="#7b8b99" text-anchor="middle">25,4 м²</text>
 <rect x="48.50" y="456.25" width="87.00" height="63.39" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6" rx="3"/><text x="92.00" y="482.70" font-size="15.00" fill="#243b4a" font-weight="bold" text-anchor="middle">A2</text><text x="92.00" y="499.20" font-size="10.80" fill="#7b8b99" text-anchor="middle">26,23 м²</text>
 <rect x="48.50" y="525.85" width="87.00" height="66.24" fill="#ffffff" stroke="#E8A33D" stroke-width="1.6" rx="3"/><text x="92.00" y="553.72" font-size="15.00" fill="#243b4a" font-weight="bold" text-anchor="middle">A1</text><text x="92.00" y="570.22" font-size="10.80" fill="#7b8b99" text-anchor="middle">27,41 м²</text>
-<text x="999.00" y="223.85" font-size="12.00" fill="#93a4b2" font-weight="bold" text-anchor="middle" letter-spacing="0.3">Зона семинаров и форума</text>
-<text x="951.00" y="448.60" font-size="12.00" fill="#93a4b2" font-weight="bold" text-anchor="middle" letter-spacing="0.3">B2B зона</text>
+<text x="1009.20" y="223.85" font-size="12.00" fill="#93a4b2" font-weight="bold" text-anchor="middle" letter-spacing="0.3">Зона семинаров и форума</text>
+<text x="952.20" y="448.60" font-size="12.00" fill="#93a4b2" font-weight="bold" text-anchor="middle" letter-spacing="0.3">B2B зона</text>
 <text x="1310.00" y="223.85" font-size="12.00" fill="#93a4b2" font-weight="bold" text-anchor="middle" letter-spacing="0.3">Конференц-зоны</text>
-<text x="965.70" y="838.65" font-size="12.00" fill="#93a4b2" font-weight="bold" text-anchor="middle" letter-spacing="0.3">Парковка</text>
+<text x="968.40" y="838.65" font-size="12.00" fill="#93a4b2" font-weight="bold" text-anchor="middle" letter-spacing="0.3">Парковка</text>
 <text x="34.00" y="49.00" font-size="19.00" fill="#0f2233" font-weight="bold">FOODERA EXPO 2026 — Крытый павильон · план залов</text>
-<rect x="1001.58" y="36.00" width="13.00" height="13.00" fill="#ffffff" stroke="#cbd6de" stroke-width="1.3" rx="3"/>
-<text x="34.00" y="105.00" font-size="11.50" fill="#7b8b99">1 стенд = 3 × 3 м = 9 м² · 1 блок = 8 стендов = 72 м² · версия плана v1.3.0 · 15.09.2026</text>
-<text x="1020.58" y="46.50" font-size="11.00" fill="#44586a">Свободно: 174 · 1 653,18 м²</text>
-<rect x="1204.65" y="36.00" width="13.00" height="13.00" fill="#fff6e0" stroke="#e0a300" stroke-width="1.3" rx="3"/>
-<text x="1223.65" y="46.50" font-size="11.00" fill="#44586a">Забронировано: 0</text>
+<rect x="978.97" y="36.00" width="13.00" height="13.00" fill="#ffffff" stroke="#cbd6de" stroke-width="1.3" rx="3"/>
+<text x="34.00" y="105.00" font-size="11.50" fill="#7b8b99">1 стенд = 3 × 3 м = 9 м² · 1 блок = 8 стендов = 72 м² · версия плана v1.4.0 · 15.09.2026</text>
+<text x="997.97" y="46.50" font-size="11.00" fill="#44586a">Свободно: 174 · 1 653,18 м²</text>
+<rect x="1190.46" y="36.00" width="13.00" height="13.00" fill="#fff6e0" stroke="#e0a300" stroke-width="1.3" rx="3"/>
+<text x="1209.46" y="46.50" font-size="11.00" fill="#44586a">Забронировано: 0</text>
 <rect x="34.00" y="76.50" width="13.00" height="13.00" fill="#fdecea" stroke="#c62828" stroke-width="1.3" rx="3"/>
 <text x="53.00" y="87.00" font-size="11.00" fill="#44586a">Продано: 0</text>
 <rect x="34.00" y="874.35" width="11.00" height="11.00" fill="#ffffff" stroke="#cbd6de" stroke-width="1.3" rx="3"/>
@@ -319,69 +320,69 @@
 <text x="34.00" y="959.35" font-size="12.00" fill="#0f2233" font-weight="bold">По разделам</text>
 <rect x="34.00" y="972.35" width="11.00" height="11.00" fill="#E8A33D" rx="2"/>
 <text x="53.00" y="982.35" font-size="11.00" fill="#44586a">Продукция для HoReCa</text>
-<text x="316.91" y="982.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
+<text x="342.63" y="982.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
 <rect x="34.00" y="992.35" width="11.00" height="11.00" fill="#2E8B8B" rx="2"/>
 <text x="53.00" y="1002.35" font-size="11.00" fill="#44586a">Консервация</text>
-<text x="316.91" y="1002.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
+<text x="342.63" y="1002.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
 <rect x="34.00" y="1012.35" width="11.00" height="11.00" fill="#3E7BB6" rx="2"/>
 <text x="53.00" y="1022.35" font-size="11.00" fill="#44586a">Рыба и морепродукты</text>
-<text x="316.91" y="1022.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
+<text x="342.63" y="1022.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
 <rect x="34.00" y="1032.35" width="11.00" height="11.00" fill="#B8860B" rx="2"/>
 <text x="53.00" y="1042.35" font-size="11.00" fill="#44586a">Фрукты и овощи</text>
-<text x="316.91" y="1042.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
+<text x="342.63" y="1042.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
 <rect x="34.00" y="1052.35" width="11.00" height="11.00" fill="#3E9B5F" rx="2"/>
 <text x="53.00" y="1062.35" font-size="11.00" fill="#44586a">Продукты для здорового питания, Спорт Пит</text>
-<text x="316.91" y="1062.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
+<text x="342.63" y="1062.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
 <rect x="34.00" y="1072.35" width="11.00" height="11.00" fill="#9B59B6" rx="2"/>
 <text x="53.00" y="1082.35" font-size="11.00" fill="#44586a">Органика</text>
-<text x="316.91" y="1082.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
+<text x="342.63" y="1082.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
 <rect x="34.00" y="1092.35" width="11.00" height="11.00" fill="#C96F2B" rx="2"/>
 <text x="53.00" y="1102.35" font-size="11.00" fill="#44586a">Ингредиенты и компоненты</text>
-<text x="316.91" y="1102.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
+<text x="342.63" y="1102.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
 <rect x="34.00" y="1112.35" width="11.00" height="11.00" fill="#C0553E" rx="2"/>
 <text x="53.00" y="1122.35" font-size="11.00" fill="#44586a">Мясная и молочная индустрия</text>
-<text x="316.91" y="1122.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
+<text x="342.63" y="1122.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
 <rect x="34.00" y="1132.35" width="11.00" height="11.00" fill="#3E7BB6" rx="2"/>
 <text x="53.00" y="1142.35" font-size="11.00" fill="#44586a">Рыба и морепродукты (2)</text>
-<text x="316.91" y="1142.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
+<text x="342.63" y="1142.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
 <rect x="34.00" y="1152.35" width="11.00" height="11.00" fill="#2A9D8F" rx="2"/>
 <text x="53.00" y="1162.35" font-size="11.00" fill="#44586a">Напитки</text>
-<text x="316.91" y="1162.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
+<text x="342.63" y="1162.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
 <rect x="34.00" y="1172.35" width="11.00" height="11.00" fill="#9B59B6" rx="2"/>
 <text x="53.00" y="1182.35" font-size="11.00" fill="#44586a">Органика (2)</text>
-<text x="316.91" y="1182.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
+<text x="342.63" y="1182.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
 <rect x="34.00" y="1192.35" width="11.00" height="11.00" fill="#C96F2B" rx="2"/>
 <text x="53.00" y="1202.35" font-size="11.00" fill="#44586a">Полуфабрикаты</text>
-<text x="316.91" y="1202.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
+<text x="342.63" y="1202.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
 <rect x="34.00" y="1212.35" width="11.00" height="11.00" fill="#2A9D8F" rx="2"/>
 <text x="53.00" y="1222.35" font-size="11.00" fill="#44586a">Напитки (2)</text>
-<text x="316.91" y="1222.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
+<text x="342.63" y="1222.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
 <rect x="34.00" y="1232.35" width="11.00" height="11.00" fill="#C0553E" rx="2"/>
 <text x="53.00" y="1242.35" font-size="11.00" fill="#44586a">Ингредиенты и компоненты (2)</text>
-<text x="316.91" y="1242.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
+<text x="342.63" y="1242.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
 <rect x="34.00" y="1252.35" width="11.00" height="11.00" fill="#D2691E" rx="2"/>
 <text x="53.00" y="1262.35" font-size="11.00" fill="#44586a">Бакалея</text>
-<text x="316.91" y="1262.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
+<text x="342.63" y="1262.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
 <rect x="34.00" y="1272.35" width="11.00" height="11.00" fill="#C2185B" rx="2"/>
 <text x="53.00" y="1282.35" font-size="11.00" fill="#44586a">Кондитерские изделия</text>
-<text x="316.91" y="1282.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
+<text x="342.63" y="1282.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
 <rect x="34.00" y="1292.35" width="11.00" height="11.00" fill="#5E7A8C" rx="2"/>
 <text x="53.00" y="1302.35" font-size="11.00" fill="#44586a">Кондитерские изделия и сладости</text>
-<text x="316.91" y="1302.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
+<text x="342.63" y="1302.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
 <rect x="34.00" y="1312.35" width="11.00" height="11.00" fill="#7A6C4F" rx="2"/>
 <text x="53.00" y="1322.35" font-size="11.00" fill="#44586a">Прочие экспоненты</text>
-<text x="316.91" y="1322.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
+<text x="342.63" y="1322.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
 <rect x="34.00" y="1332.35" width="11.00" height="11.00" fill="#2E8B8B" rx="2"/>
 <text x="53.00" y="1342.35" font-size="11.00" fill="#44586a">Оборудование</text>
-<text x="316.91" y="1342.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
+<text x="342.63" y="1342.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
 <rect x="34.00" y="1352.35" width="11.00" height="11.00" fill="#2E8B8B" rx="2"/>
 <text x="53.00" y="1362.35" font-size="11.00" fill="#44586a">Консервные линии</text>
-<text x="316.91" y="1362.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
+<text x="342.63" y="1362.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
 <rect x="34.00" y="1372.35" width="11.00" height="11.00" fill="#2E8B8B" rx="2"/>
 <text x="53.00" y="1382.35" font-size="11.00" fill="#44586a">Вендинговые аппараты, упаковка и фасовка</text>
-<text x="316.91" y="1382.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
+<text x="342.63" y="1382.35" font-size="11.00" fill="#44586a">8 стендов · 72 м² · свободно: 8 (72 м²)</text>
 <rect x="34.00" y="1392.35" width="11.00" height="11.00" fill="#E8A33D" rx="2"/>
 <text x="53.00" y="1402.35" font-size="11.00" fill="#44586a">Левое крыло — A1–A6</text>
-<text x="316.91" y="1402.35" font-size="11.00" fill="#44586a">6 стендов · 141,18 м² · свободно: 6 (141,18 м²)</text>
+<text x="342.63" y="1402.35" font-size="11.00" fill="#44586a">6 стендов · 141,18 м² · свободно: 6 (141,18 м²)</text>
 <text x="1426.00" y="1372.00" font-size="11.00" fill="#5b6b7a" text-anchor="end">Итого: 174 стендов · 1 653,18 м² · свободно: 174 (1 653,18 м²)</text>
 </svg>

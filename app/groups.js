@@ -208,7 +208,14 @@
   const NARROW = /[ijltfrI.,:;!|'"`()[\]{}\-–—•·]/;
   const WIDE = /[mwMWШЩшщюЮМФ]/;
   const UPPER = /[A-ZА-ЯЁҚҒҲЎ]/;
-  function charWidth(ch) {
+  // Таблица ширин DejaVu Sans (app/dejavu-metrics.js). Если её нет — работаем оценкой.
+  const METRICS = (typeof window !== 'undefined' ? window : globalThis).DejaVuMetrics || null;
+  function charWidth(ch, bold) {
+    const table = METRICS && (bold ? METRICS.bold : METRICS.regular);
+    if (table) {
+      const w = table[ch];
+      return w != null ? w : 0.6;      // символа нет в таблице — консервативная оценка
+    }
     if (ch === ' ') return 0.318;
     if (ch >= '0' && ch <= '9') return 0.636;
     if (NARROW.test(ch)) return 0.38;
@@ -216,12 +223,13 @@
     if (UPPER.test(ch)) return 0.7;
     return 0.56;
   }
-  /** Ширина текста в пикселях (или единицах SVG). При bold=true добавляется 5 %. */
+  /** Ширина текста в пикселях (или единицах SVG). При bold=true берём полужирные метрики. */
   function textWidth(text, fs, bold) {
     const s = String(text ?? '');
     let w = 0;
-    for (const ch of s) w += charWidth(ch);
-    return w * fs * (bold ? 1.05 : 1) + s.length * fs * 0.02;
+    for (const ch of s) w += charWidth(ch, bold);
+    // запас на кернинг/округление: 1 % ширины и 0,02 em на символ
+    return w * fs * (METRICS ? 1.01 : 1) + s.length * fs * 0.02;
   }
 
   /** Разбивает текст на строки под заданную ширину/высоту и подбирает размер шрифта. */

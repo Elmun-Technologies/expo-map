@@ -171,22 +171,22 @@ label.inline input { width: 92px; margin: 0; }
 .modal-card td { padding: 3px 0; border-bottom: 1px dotted var(--line); }
 .modal-card td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
 
-/* ---------- печать готового листа A3 (ровно одна страница) ---------- */
+/* ---------- печать готового листа A4 landscape (ровно одна страница) ---------- */
 #printPage { display: none; }
 @media print {
-  /* лист А3 целиком: поля контролируем сами, браузерных полей нет */
-  @page { size: A3 landscape; margin: 0; }
-  body.print-a3.print-sheet-ok { margin: 0 !important; padding: 0 !important; }
-  body.print-a3.print-sheet-ok > * { display: none !important; }
-  body.print-a3.print-sheet-ok > #printPage {
+  /* лист А4 горизонтально целиком: поля контролируем сами, браузерных полей нет */
+  @page { size: A4 landscape; margin: 0; }
+  body.print-sheet.print-sheet-ok { margin: 0 !important; padding: 0 !important; }
+  body.print-sheet.print-sheet-ok > * { display: none !important; }
+  body.print-sheet.print-sheet-ok > #printPage {
     display: flex !important; align-items: center; justify-content: center;
-    /* чуть меньше самого листа A3 (420×297) — чтобы округление не вытолкнуло вторую страницу */
-    width: 419mm; height: 295mm; overflow: hidden; background: #fff;
+    /* чуть меньше самого листа A4 (297×210) — чтобы округление не вытолкнуло вторую страницу */
+    width: 296mm; height: 209mm; overflow: hidden; background: #fff;
   }
-  body.print-a3.print-sheet-ok > #printPage svg { display: block; }
+  body.print-sheet.print-sheet-ok > #printPage svg { display: block; }
   /* таблицы — только если отмечено «с таблицами» (начинаются со следующей страницы) */
-  body.print-a3.print-sheet-ok.print-tables > #printSheet {
-    display: block !important; break-before: page; padding: 10mm; font-size: 9.5pt;
+  body.print-sheet.print-sheet-ok.print-tables > #printSheet {
+    display: block !important; break-before: page; padding: 10mm; font-size: 9pt;
   }
 }
 
@@ -194,8 +194,8 @@ label.inline input { width: 92px; margin: 0; }
 .print-only { display: none; }
 .print-only-head { display: none; }
 @media print {
-  /* один лист: заголовок + ОСНОВНАЯ КАРТА (A3 landscape) */
-  @page { size: A3 landscape; margin: 8mm; }
+  /* запасной путь (если сервер недоступен): заголовок + живая карта, A4 landscape */
+  @page { size: A4 landscape; margin: 6mm; }
   html, body { background: #fff !important; display: block; }
   .topbar, .panel, #toasts, .login, .map-note, #confirm, .draft-banner, .legend,
   .stats, #report, .zoombar, .toolbar, .toast { display: none !important; }
@@ -210,7 +210,7 @@ label.inline input { width: 92px; margin: 0; }
   /* чтобы SVG не оставался размером 300x150 px по умолчанию — занимает весь лист */
   #map {
     display: block; margin: 0 auto; border: none !important;
-    width: 100% !important; height: auto !important; max-height: 262mm;
+    width: 100% !important; height: auto !important; max-height: 180mm;
     aspect-ratio: var(--map-ratio, 1.8);
   }
   /* таблицы (блоки, компании, разделы) — только если отмечено «с таблицами» */

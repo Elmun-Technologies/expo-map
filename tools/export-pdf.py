@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-SVG → PDF одним листом (A3 landscape) — готовый файл для отправки клиенту.
+SVG → PDF одним листом (A4 landscape по умолчанию) — готовый файл для отправки клиенту.
 
 Ishlatish:
     python3 tools/export-pdf.py exports/foodera-2026/01-план-зала-весь.svg exports/foodera-2026/01-план-зала-весь.pdf
     python3 tools/export-pdf.py kirish.svg chiqish.pdf --page A2 --margin 6
 
 Nega shunday: brauzerdagi "Save as PDF" ko'p varaqqa bo'lib tashlaydi va
-yozuvlar ustma-ust tushadi. Bu skript SVG'ni BITTA varaqqa (A3 landscape)
+yozuvlar ustma-ust tushadi. Bu skript SVG'ni BITTA varaqqa (A4 landscape)
 to'liq sig'diradi, shriftlarni (kirill + o'zbek harflari) PDF ichiga joylaydi.
 """
 import argparse
@@ -86,7 +86,7 @@ def remap_fonts(drawing):
     return used
 
 
-def convert(src, dst, page='A3', margin_mm=8.0, title=None):
+def convert(src, dst, page='A4', margin_mm=8.0, title=None):
     from reportlab.lib.pagesizes import A2, A3, A4, landscape  # noqa
     from reportlab.lib.units import mm
     from reportlab.pdfgen import canvas
@@ -127,10 +127,10 @@ def convert(src, dst, page='A3', margin_mm=8.0, title=None):
 
 
 def main():
-    ap = argparse.ArgumentParser(description='SVG -> bir varaqli PDF (A3 landscape)')
+    ap = argparse.ArgumentParser(description='SVG -> bir varaqli PDF (A4 landscape)')
     ap.add_argument('src')
     ap.add_argument('dst')
-    ap.add_argument('--page', default='A3', help='A4 | A3 | A2 (default: A3)')
+    ap.add_argument('--page', default='A4', help='A4 | A3 | A2 (default: A4 landscape)')
     ap.add_argument('--margin', type=float, default=8.0, help='hoshiya, mm (default: 8)')
     ap.add_argument('--title', default=None)
     a = ap.parse_args()
